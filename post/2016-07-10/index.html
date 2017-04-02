@@ -1,0 +1,134 @@
+	<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <link href="http://gmpg.org/xfn/11" rel="profile">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta name="generator" content="Hugo 0.19" />
+
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+
+  
+  <title>renpy (2) show 立繪 image 變數的妙用 &middot; Denny&#39;s Blog</title>
+  
+
+  
+  <link rel="stylesheet" href="https://cdfq152313.github.io/css/poole.css">
+  <link rel="stylesheet" href="https://cdfq152313.github.io/css/syntax.css">
+  <link rel="stylesheet" href="https://cdfq152313.github.io/css/hyde.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=PT+Sans:400,400italic,700|Abril+Fatface">
+
+  
+  <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/apple-touch-icon-144-precomposed.png">
+  <link rel="shortcut icon" href="/favicon.png">
+
+  
+  <link href="" rel="alternate" type="application/rss+xml" title="Denny&#39;s Blog" />
+</head>
+
+	<body class="theme-base-0f ">
+		<div class="sidebar">
+  <div class="container sidebar-sticky">
+    <div class="sidebar-about">
+      <a href="https://cdfq152313.github.io/"><h1>Denny&#39;s Blog</h1></a>
+      <p class="lead">
+       獸控天地 
+      </p>
+    </div>
+
+    <ul class="sidebar-nav">
+      <li><a href="/">Home</a> </li>
+      
+        <li><a href="/categories/notes"> 程式筆記 </a></li>
+      
+        <li><a href="/categories/misc"> 心得雜感 </a></li>
+      
+        <li><a href="/tags/"> 標籤列表 </a></li>
+      
+        <li><a href="/about/"> 關於我 </a></li>
+      
+    </ul>
+
+    <p>&copy; 2017. All rights reserved. </p>
+  </div>
+</div>
+
+
+		<div class="content container">
+			<div class="post">
+			 	<h1>renpy (2) show 立繪 image 變數的妙用</h1>
+			  <span class="post-date">Sun, Jul 10, 2016</span>
+			      
+
+<h1 id="問題">問題</h1>
+
+<p>在寫AVG遊戲的時候，常常遇到立繪需要變更的狀況。考量以下場景
+1. 人物A平常表情
+2. 人物A笑
+3. 人物A平常表情
+4. 人物A立繪從場上消失</p>
+
+<p>程式碼可能會長這樣</p>
+
+<pre><code class="language-python">image a_normal = &quot;a_normal.png&quot;
+image a_laugh = &quot;a_laugh.png&quot;
+
+label start:
+    show a_normal
+    
+    pause 2
+    
+    hide a_normal
+    show a_laugh
+    
+    puase 2
+    
+    hide a_laugh
+    show a_normal
+    
+    pause 2
+    
+    hide a_normal
+</code></pre>
+
+<p>如果要人物A換動作，就得先記得他上次是哪個圖片，隱藏之後再show新的，想想就累。</p>
+
+<h1 id="解法">解法</h1>
+
+<p>renpy提供了一個方便的解法。在取變數名稱的時候可以用兩個識別字來描述。
+例如可以把立繪取叫
+image a normal = &ldquo;a_normal.png&rdquo;
+image a laugh = &ldquo;a_laugh.png&rdquo;</p>
+
+<p>如此一來，renpy就會知道a normal和 a laugh為同一人的不同種表情，因為前識別字a都一樣。
+這樣show a normal時如果a laugh在場上就會自動隱藏了。
+最後若要將a隱藏起來的時候只需要hide前識別字即可。</p>
+
+<pre><code class="language-python">image a normal = &quot;a_normal.png&quot;
+image a laugh = &quot;a_laugh.png&quot;
+
+label start:
+    show a normal
+    
+    pause 2
+    
+    show a laugh
+    
+    puase 2
+
+    show a normal
+    
+    pause 2
+    
+    hide a
+</code></pre>
+
+<p>省了不少程式碼，也不需要記上次是哪種立繪。</p>
+
+			</div>
+
+			
+		</div>
+
+  </body>
+</html>

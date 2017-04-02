@@ -1,0 +1,720 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Android on Denny&#39;s Blog</title>
+    <link>https://cdfq152313.github.io/tags/android/index.xml</link>
+    <description>Recent content in Android on Denny&#39;s Blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <atom:link href="https://cdfq152313.github.io/tags/android/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>Android Dialog取消動作</title>
+      <link>https://cdfq152313.github.io/post/2017-03-27/</link>
+      <pubDate>Mon, 27 Mar 2017 00:00:00 +0000</pubDate>
+      
+      <guid>https://cdfq152313.github.io/post/2017-03-27/</guid>
+      <description>&lt;p&gt;使用AlertDialog時，當點在Dialog的外圍，Android會讓此Dialog消失，並且什麼動作都不執行。
+如果剛好positive和negative的按鈕都是有明確動作的，並不想被取消，可以透過&lt;strong&gt;setCancelable(boolean)&lt;/strong&gt;這個函式來強制使用者不得取消。
+不過有時會希望使用者可以透過點擊按鈕或點擊Dialog外圍來執行取消動作(非null空動作)，但在AlertDialog的函式庫中是無能為力的，我查了&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;setOnCancelListener&lt;/li&gt;
+&lt;li&gt;setOnDismissListener&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;這兩個函式都會導致程式異常停止。最後查到應該使用DialogFragment當中的onCancel動作來解決這個問題。
+以下範例程式碼&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;public class MyDialogFragment extends DialogFragment {
+    private final static String TAG = &amp;quot;MyDialog&amp;quot;;
+
+    @Override
+    public Dialog onCreateDialog(Bundle savedInstanceState) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder.setTitle(&amp;quot;Hello&amp;quot;)
+                .setPositiveButton(&amp;quot;YA&amp;quot;, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        Log.i(TAG, &amp;quot;Positive&amp;quot;);
+                    }
+                })
+                .setNegativeButton(&amp;quot;NO&amp;quot;, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        Log.i(TAG, &amp;quot;Negative&amp;quot;);
+                    }
+                });
+        return builder.create();
+    }
+
+    @Override
+    public void onCancel(DialogInterface dialog) {
+        super.onCancel(dialog);
+        Log.i(TAG, &amp;quot;OnCancel&amp;quot;);
+    }
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;重點如下
+1. 繼承DialogFragment
+2. 複寫onCreateDialog方法，並回傳一個Dialog (跟以往AlertDialog的使用方法一樣)
+3. 複寫onCancel方法，裡面放上&lt;strong&gt;點擊外框使AlertDialog消失&lt;/strong&gt;時要觸發的事件。
+    - 注意：如果是點positive Button或negative Button皆不會觸發這個函式。&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Java (Android) AES</title>
+      <link>https://cdfq152313.github.io/post/2017-02-22/</link>
+      <pubDate>Wed, 22 Feb 2017 00:00:00 +0000</pubDate>
+      
+      <guid>https://cdfq152313.github.io/post/2017-02-22/</guid>
+      <description>
+
+&lt;h1 id=&#34;平台&#34;&gt;平台&lt;/h1&gt;
+
+&lt;p&gt;Android Studio
+- compileSdkVersion 25
+- buildToolsVersion &amp;ldquo;25.0.1&amp;rdquo;&lt;/p&gt;
+
+&lt;h1 id=&#34;全域變數&#34;&gt;全域變數&lt;/h1&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;SecretKey secretKey; // 金鑰
+AlgorithmParameterSpec mAlgorithmParameterSpec; // 之後要放置初始化向量的參數
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h1 id=&#34;初始化&#34;&gt;初始化&lt;/h1&gt;
+
+&lt;h2 id=&#34;金鑰初始化&#34;&gt;金鑰初始化&lt;/h2&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;private void genAESKey() throws Exception {
+  KeyGenerator keyGen = KeyGenerator.getInstance(&amp;quot;AES&amp;quot;); // 指定AES演算法
+  keyGen.init(256, new SecureRandom()); // 指定256位元，並使用SecureRandom
+  secretKey = keyGen.generateKey(); // 產生AES金鑰
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;初始向量初始化&#34;&gt;初始向量初始化&lt;/h2&gt;
+
+&lt;p&gt;private void genInitializationVector() throws NoSuchPaddingException, NoSuchAlgorithmException {
+  cipher = Cipher.getInstance(&amp;ldquo;AES/CBC/PKCS5Padding&amp;rdquo;); // 指定AES演算法
+  byte [] iVAES = new byte[ cipher.getBlockSize() ]; // new AES演算法所需的block size
+  SecureRandom random = new SecureRandom();
+  random.nextBytes(iVAES); // 填充向量
+  mAlgorithmParameterSpec = new IvParameterSpec(iVAES); // 向量初始化
+}&lt;/p&gt;
+
+&lt;h1 id=&#34;將字串加密&#34;&gt;將字串加密&lt;/h1&gt;
+
+&lt;p&gt;在AES加密完之後，用Base64把結果轉成可讀的字串以便以http傳送。
+不做Base64亦可，只是到時候要以byte為單位做傳送。
+初始化模式為 ENCRYPT_MODE&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;private String encrypt(String content) throws Exception {
+    cipher = Cipher.getInstance(&amp;quot;AES/CBC/PKCS5Padding&amp;quot;);
+    cipher.init(Cipher.ENCRYPT_MODE, secretKey, mAlgorithmParameterSpec);
+    byte [] encrypt = cipher.doFinal(contentB64);
+  return Base64.encodeToString(encrypt, Base64.DEFAULT);
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h1 id=&#34;將字串解密&#34;&gt;將字串解密&lt;/h1&gt;
+
+&lt;p&gt;初始化模式為 DECRYPT_MODE&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;private String decrypt(String content) throws Exception{
+  cipher = Cipher.getInstance(&amp;quot;AES/CBC/PKCS5Padding&amp;quot;);
+  cipher.init(Cipher.DECRYPT_MODE, secretKey, mAlgorithmParameterSpec);
+  byte [] temp = Base64.decode(content, Base64.DEFAULT); // 將字串還原為bytes
+  byte [] decodeBytes = cipher.doFinal(temp); // 解密
+  return new String(decodeBytes); // 編回字串
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h1 id=&#34;匯出金鑰&#34;&gt;匯出金鑰&lt;/h1&gt;
+
+&lt;p&gt;SecretKey使用getEncoded()可以獲得金鑰，為byte形式，若要方便閱讀與傳送可以轉換為Base64
+初始化向量本身有getIV()這個method可以使用，一樣為byte形式，可轉換為Base64。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;private void export(){
+  String secretKeyB64 = Base64.encodeToString(secretKey.getEncoded(), Base64.DEFAULT);
+  IvParameterSpec iv = (IvParameterSpec) mAlgorithmParameterSpec;
+  String vectorB64 = Base64.encodeToString(iv.getIV(), Base64.DEFAULT);
+
+  Log.i(&amp;quot;Secret Key Base64&amp;quot;, secretKeyB64);
+  Log.i(&amp;quot;Vector Base64&amp;quot;, vectorB64);
+}
+&lt;/code&gt;&lt;/pre&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Android 文章整理</title>
+      <link>https://cdfq152313.github.io/post/2017-02-08/</link>
+      <pubDate>Wed, 08 Feb 2017 00:00:00 +0000</pubDate>
+      
+      <guid>https://cdfq152313.github.io/post/2017-02-08/</guid>
+      <description>
+
+&lt;h1 id=&#34;linearlayout&#34;&gt;Linearlayout&lt;/h1&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;http://blog.csdn.net/xiaanming/article/details/13630837&#34;&gt;Android 对Layout_weight属性完全解析以及使用ListView来实现表格&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h1 id=&#34;fragment&#34;&gt;fragment&lt;/h1&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://developer.android.com/guide/components/fragments.html?hl=zh-tw&#34;&gt;官方API Guide&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://blog.csdn.net/xiaanming/article/details/13630837&#34;&gt;Android Fragment 真正的完全解析（上）&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://blog.csdn.net/lmj623565791/article/details/37992017&#34;&gt;Android Fragment 真正的完全解析（下）&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://stackoverflow.com/questions/32077086/android-onattachcontext-not-called-for-api-23&#34;&gt;Fragment Lifecycle中的onAttach&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h1 id=&#34;toolbar&#34;&gt;Toolbar&lt;/h1&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://developer.android.com/training/appbar/index.html&#34;&gt;官方API Guide&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://blog.csdn.net/lovexieyuan520/article/details/9974929&#34;&gt;Toolbar左上方的返回鈕&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://stackoverflow.com/questions/26778701/how-to-add-buttons-like-refresh-and-search-in-toolbar-in-android&#34;&gt;加入新的圖示&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://wuxiaolong.me/2015/11/10/toolbar/&#34;&gt;Toolbar在Activity和Fragment下的使用情況&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h1 id=&#34;recyclerview-和-listview&#34;&gt;RecyclerView 和 ListView&lt;/h1&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;http://www.jianshu.com/p/f592f3715ae2&#34;&gt;RecyclerView 和 ListView的對比&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h1 id=&#34;ui-ux&#34;&gt;UI/UX&lt;/h1&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/wasabeef/awesome-android-ui&#34;&gt;List of Android UI/UX Libraries&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/medyo/Fancybuttons&#34;&gt;Fancy Button&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h1 id=&#34;testing&#34;&gt;Testing&lt;/h1&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;http://chriszou.com/2016/04/16/android-unit-testing-about-why.html&#34;&gt;Android单元测试（二）：再来谈谈为什么&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://chriszou.com/2016/04/29/android-unit-testing-mockito.html&#34;&gt;Android单元测试（四）：Mock以及Mockito的使用&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://chriszou.com/2016/08/06/android-unit-testing-async.html&#34;&gt;安卓单元测试(十一)：异步代码怎么测试&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h1 id=&#34;library整合&#34;&gt;Library整合&lt;/h1&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://guides.codepath.com/android/Must-Have-Libraries&#34;&gt;整合1&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h1 id=&#34;parcelable-vs-serializable&#34;&gt;Parcelable vs Serializable&lt;/h1&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;http://www.cnblogs.com/trinea/archive/2012/11/09/2763213.html&#34;&gt;Android Parcelable和Serializable的區別&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h1 id=&#34;權限管理&#34;&gt;權限管理&lt;/h1&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://litotom.com/2016/05/15/android-6-permission/&#34;&gt;Android綠豆湯 - Android 6.0的Permission權限設計&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h1 id=&#34;檔案處理&#34;&gt;檔案處理&lt;/h1&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://developer.android.com/training/basics/data-storage/files.html?hl=zh-tw&#34;&gt;Android developer - 儲存檔案&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h1 id=&#34;心得&#34;&gt;心得&lt;/h1&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/futurice/android-best-practices&#34;&gt;Best practice&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Android JNI 環境建置</title>
+      <link>https://cdfq152313.github.io/post/2016-08-05/</link>
+      <pubDate>Fri, 05 Aug 2016 00:00:00 +0000</pubDate>
+      
+      <guid>https://cdfq152313.github.io/post/2016-08-05/</guid>
+      <description>
+
+&lt;h1 id=&#34;介紹&#34;&gt;介紹&lt;/h1&gt;
+
+&lt;p&gt;主要參考這篇：
+&lt;a href=&#34;http://blog.xuite.net/lwchafter30/blog/373974237-Android+studio+1.5.1+NDK+JNI%E7%92%B0%E5%A2%83%E5%AE%89%E8A3%9D%E8%88%87%E5%9F%B7%E8%A1%8C%E5%8E%9F%E7%90%86&#34; title=&#34;Android studio 1.5.1 NDK JNI環境安裝與執行原理&#34;&gt;Android studio 1.5.1 NDK JNI環境安裝與執行原理&lt;/a&gt;
+不過Android 2.1.2上步驟稍有簡化，還是可以達到同樣效果。
+1. 載NDK
+2. 設定external tool (僅javah)
+3. 在java中增加native code，並利用javah產生JNI header
+4. 實作JNI
+5. 設定gradle (僅ndk區塊)&lt;/p&gt;
+
+&lt;h1 id=&#34;載ndk&#34;&gt;載NDK&lt;/h1&gt;
+
+&lt;p&gt;開啟SDK Manager，選擇SDK Tools，將NDK之選項給打勾。
+&lt;img src=&#34;http://i.imgur.com/nsDiPAi.png&#34; alt=&#34;SDK Manager&#34; /&gt;&lt;/p&gt;
+
+&lt;h1 id=&#34;設定external-tool&#34;&gt;設定external tool&lt;/h1&gt;
+
+&lt;p&gt;與連結相同，不過只要設定javah即可，其他不需要。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;http://i.imgur.com/m4s02Gt.png&#34; alt=&#34;javah設定&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;快速複製區 &lt;a href=&#34;http://blog.xuite.net/lwchafter30/blog/373974237-Android+studio+1.5.1+NDK+JNI%E7%92%B0%E5%A2%83%E5%AE%89%E8A3%9D%E8%88%87%E5%9F%B7%E8%A1%8C%E5%8E%9F%E7%90%86&#34; title=&#34;Android studio 1.5.1 NDK JNI環境安裝與執行原理&#34;&gt;來源&lt;/a&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$JDKPath$/bin/javah
+
+-v -jni -d $ModuleFileDir$/src/main/jni $FileClass$
+
+$SourcepathEntry$
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Windows和Linux在第1行稍有分別，只有在Windows系統中，執行檔的副檔名才是.exe。Mac和Linux皆否。
+個人是用linux系統，所以第1行javah後面並不接.exe，若是Windows系統則第1行變為。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$JDKPath$/bin/javah.exe
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h1 id=&#34;jni-header&#34;&gt;JNI header&lt;/h1&gt;
+
+&lt;p&gt;在想要使用JNI的class加入如下的程式碼。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;    static {
+            System.loadLibrary(&amp;quot;myJNI&amp;quot;);
+    }
+    public native String getMycstring();
+    public native void testLog();
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;static區塊中的myJNI會變成將來再build gradle當中的moduleName
+method加上native關鍵詞後，程式就會知道這是需要依靠JNI實作之程式碼。&lt;/p&gt;
+
+&lt;p&gt;再來在該java檔上按右鍵，使用剛剛建置好的external library javah，自動的產生JNI header。
+&lt;img src=&#34;http://i.imgur.com/ag5rJ6c.png&#34; alt=&#34;使用javah&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;此時在java目錄下，應該會多出一個jni的資料夾，裡頭放置著 OOXX.h
+打開.h檔，建置出來的code應該會如下形式&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-c++&#34;&gt;/* DO NOT EDIT THIS FILE - it is machine generated */
+#include &amp;lt;jni.h&amp;gt;
+/* Header for class com_example_isa_myapplication_MainActivity */
+
+#ifndef _Included_com_example_isa_myapplication_MainActivity
+#define _Included_com_example_isa_myapplication_MainActivity
+#ifdef __cplusplus
+extern &amp;quot;C&amp;quot; {
+#endif
+/*
+ * Class:     com_example_isa_myapplication_MainActivity
+ * Method:    getMycstring
+ * Signature: ()Ljava/lang/String;
+ */
+JNIEXPORT jstring JNICALL Java_com_example_isa_myapplication_MainActivity_getMycstring
+  (JNIEnv *, jobject);
+
+/*
+ * Class:     com_example_isa_myapplication_MainActivity
+ * Method:    testLog
+ * Signature: ()V
+ */
+JNIEXPORT void JNICALL Java_com_example_isa_myapplication_MainActivity_testLog
+  (JNIEnv *, jobject);
+
+#ifdef __cplusplus
+}
+#endif
+#endif
+
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h1 id=&#34;實作jni&#34;&gt;實作JNI&lt;/h1&gt;
+
+&lt;p&gt;步驟如下
+1. 在jni資料夾中，新增一個myJNI.cpp
+2. include剛剛自動產生的header
+3. 實作剛剛只宣告未實作的程式碼
+4. (細節注意)&lt;/p&gt;
+
+&lt;h2 id=&#34;新增myjni-cpp&#34;&gt;新增myJNI.cpp&lt;/h2&gt;
+
+&lt;p&gt;在jni資料夾中，新增一個myJNI.cpp&lt;/p&gt;
+
+&lt;h2 id=&#34;include剛剛自動產生的header&#34;&gt;include剛剛自動產生的header&lt;/h2&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-c++&#34;&gt;#include &amp;quot;com_example_isa_myapplication_MainActivity.h&amp;quot;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;實作剛剛只宣告未實作的程式碼&#34;&gt;實作剛剛只宣告未實作的程式碼&lt;/h2&gt;
+
+&lt;p&gt;由於Log功能要使用到android/log.h library，所以也要include進來。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-c++&#34;&gt;#include &amp;quot;com_example_isa_myapplication_MainActivity.h&amp;quot;
+#include &amp;lt;android/log.h&amp;gt;
+
+JNIEXPORT jstring JNICALL Java_com_example_isa_myapplication_MainActivity_getMycstring
+  (JNIEnv *env, jobject jobj){
+        return (*env).NewStringUTF(&amp;quot;MY !!  NDKString!!&amp;quot;);
+  }
+  
+JNIEXPORT void JNICALL Java_com_example_isa_myapplication_MainActivity_testLog
+  (JNIEnv * env, jobject jobj){
+    __android_log_print(ANDROID_LOG_INFO, &amp;quot;JNI&amp;quot;, &amp;quot;JNI Test&amp;quot;);
+  }
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;細節注意&#34;&gt;細節注意&lt;/h2&gt;
+
+&lt;p&gt;當然僅僅如此還不夠，觀看.h檔可以發現有extern &amp;ldquo;C&amp;rdquo;包圍著宣告的函式，所以也要一併複製。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-c++&#34;&gt;#include &amp;quot;com_example_isa_myapplication_MainActivity.h&amp;quot;
+#include &amp;lt;android/log.h&amp;gt;
+
+
+#ifdef __cplusplus
+extern &amp;quot;C&amp;quot; {
+#endif
+
+JNIEXPORT jstring JNICALL Java_com_example_isa_myapplication_MainActivity_getMycstring
+  (JNIEnv *env, jobject jobj){
+        return (*env).NewStringUTF(&amp;quot;MY !!  NDKString!!&amp;quot;);
+  }
+  
+  JNIEXPORT void JNICALL Java_com_example_isa_myapplication_MainActivity_testLog
+  (JNIEnv * env, jobject jobj){
+    __android_log_print(ANDROID_LOG_INFO, &amp;quot;JNI&amp;quot;, &amp;quot;JNI Test&amp;quot;);
+  }
+  
+#ifdef __cplusplus
+}
+#endif
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;切記不要連 #ifndef _Included_com_example_isa_myapplication_MainActivity 的相關句子也複製進來。
+在.h檔已經定義過，若在.cpp重複定義，則中間的所有內容都會被忽略掉。&lt;/p&gt;
+
+&lt;h1 id=&#34;設定gradle&#34;&gt;設定gradle&lt;/h1&gt;
+
+&lt;p&gt;在defaultConfig這個區塊內加入&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;ndk{
+  moduleName &amp;quot;myJNI&amp;quot;
+  ldLibs &amp;quot;log&amp;quot;
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;moduleName為你剛剛在System.loadLibrary裡面設定的名字。
+ldLibs &amp;ldquo;log&amp;rdquo;可以讓cpp檔include log功能的時候不會出錯。&lt;/p&gt;
+
+&lt;p&gt;整體看起來是這樣&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;android {
+    compileSdkVersion 23
+    buildToolsVersion &amp;quot;23.0.2&amp;quot;
+
+    defaultConfig {
+        applicationId &amp;quot;com.example.isa.myapplication&amp;quot;
+        minSdkVersion 15
+        targetSdkVersion 23
+        versionCode 1
+        versionName &amp;quot;1.0&amp;quot;
+        ndk{
+            moduleName &amp;quot;myJNI&amp;quot;
+            ldLibs &amp;quot;log&amp;quot;
+        }
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile(&#39;proguard-android.txt&#39;), &#39;proguard-rules.pro&#39;
+        }
+    }
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;最後編譯就完成了。&lt;/p&gt;
+
+&lt;h1 id=&#34;參考資料&#34;&gt;參考資料&lt;/h1&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://blog.xuite.net/lwchafter30/blog/373974237-Android+studio+1.5.1+NDK+JNI%E7%92%B0%E5%A2%83%E5%AE%89%E8A3%9D%E8%88%87%E5%9F%B7%E8%A1%8C%E5%8E%9F%E7%90%86&#34; title=&#34;Android studio 1.5.1 NDK JNI環境安裝與執行原理&#34;&gt;Android studio 1.5.1 NDK JNI環境安裝與執行原理&lt;/a&gt;&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>在AOSP中增加預設app (3) : 利用Android Studio來進行編輯</title>
+      <link>https://cdfq152313.github.io/post/2016-03-04/</link>
+      <pubDate>Fri, 04 Mar 2016 00:00:00 +0000</pubDate>
+      
+      <guid>https://cdfq152313.github.io/post/2016-03-04/</guid>
+      <description>
+
+&lt;h1 id=&#34;平台及環境設置&#34;&gt;平台及環境設置&lt;/h1&gt;
+
+&lt;p&gt;##平台
+實驗平台：Nexus 5
+Android版本：android-4.4_r1
+前置知識： [Howto Build Android KitKat (4.4) for the Google Nexus 5][6]&lt;/p&gt;
+
+&lt;p&gt;##環境設置
+在AOSP資料夾中&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;source build/envsetup.sh
+lunch aosp_hammerhead-userdebug
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h1 id=&#34;目標-利用android-studio來新增app-命名為world&#34;&gt;目標：利用Android Studio來新增APP (命名為World)&lt;/h1&gt;
+
+&lt;p&gt;在上一篇文章中，說明了如何copy一份已有的project來改寫。但是寫Android App有許多煩雜的地方，有時候還是需要IDE來幫助比較快，這裡找了一個比較tricky的方法來使用IDE。&lt;/p&gt;
+
+&lt;h2 id=&#34;新增android-studio-project&#34;&gt;新增Android Studio Project&lt;/h2&gt;
+
+&lt;p&gt;我們直接從Android Studio中產生一個空的project，命名為&lt;code&gt;World&lt;/code&gt;。
+新增project時記得選empty Activity，之後比較好做。
+&lt;img src=&#34;http://i.imgur.com/LTorwRZ.png&#34; alt=&#34;Alt Text&#34; /&gt;&lt;/p&gt;
+
+&lt;h2 id=&#34;建立soft-link&#34;&gt;建立soft link&lt;/h2&gt;
+
+&lt;p&gt;在剛剛產生出來的Android Project路徑底下，&lt;code&gt;World/app/src/main&lt;/code&gt;應該有&lt;strong&gt;java、res&lt;/strong&gt;資料夾，以及&lt;strong&gt;AndroidManifest.xml&lt;/strong&gt;。
+在&lt;code&gt;AOSP/packages/apps&lt;/code&gt;建立新目錄&lt;code&gt;World&lt;/code&gt;，並在其底下建立起上述3個檔案之&lt;a href=&#34;http://linux.vbird.org/linux_basic/0230filesystem.php#ln&#34; title=&#34;鳥哥 - ln解說&#34;&gt;軟連結(soft link)&lt;/a&gt;。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;mkdir $ANDROID_BUILD_TOP/packages/apps/World &amp;amp;&amp;amp; cd $_
+ln -s AndroidProject目錄/World/app/src/main/java  java
+ln -s AndroidProject目錄/World/app/src/main/res  res
+ln -s AndroidProject目錄/World/app/src/main/AndroidManifest.xml  AndroidManifest.xml
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;撰寫android-mk&#34;&gt;撰寫Android.mk&lt;/h2&gt;
+
+&lt;p&gt;參考&lt;a href=&#34;http://android.mk/&#34; title=&#34;Secrets of Android.mk&#34;&gt;Secrets of Android.mk&lt;/a&gt;此份文件當中的&lt;strong&gt;Building a simple APK&lt;/strong&gt;目錄。將其加到&lt;code&gt;AOSP/packages/apps/World&lt;/code&gt;資料夾下。&lt;/p&gt;
+
+&lt;p&gt;```makefile Android.mk
+  LOCAL_PATH := $(call my-dir)
+  include $(CLEAR_VARS)&lt;/p&gt;
+
+&lt;p&gt;# Build all java files in the java subdirectory
+  LOCAL_SRC_FILES := $(call all-subdir-java-files)&lt;/p&gt;
+
+&lt;p&gt;# Name of the APK to build
+  LOCAL_PACKAGE_NAME := LocalPackage&lt;/p&gt;
+
+&lt;p&gt;# Tell it to build an APK
+  include $(BUILD_PACKAGE)&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;
+## 修改掉所有appcompat的部份
+再來使用`mm`在`AOSP/packages/apps/World`進行編譯，運氣不好的話，編譯會出現找不到某些命名的錯誤。這是因為Google為了讓各種app看起來更有一致性，將Android Studio的新Project皆使用Appcompat此library來協調視覺效果。可是此library並不存在於預設的編譯環境當中。為了為了節省麻煩，將其去掉。
+
+```xml style.xml
+&amp;lt;resources&amp;gt;
+
+    &amp;lt;!-- Base application theme. --&amp;gt;
+    &amp;lt;style name=&amp;quot;AppTheme&amp;quot; parent=&amp;quot;android:Theme.Holo.Light.DarkActionBar&amp;quot;&amp;gt;
+        &amp;lt;!-- Customize your theme here. --&amp;gt;
+    &amp;lt;/style&amp;gt;
+
+&amp;lt;/resources&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;並把MainActivity中可能會用&lt;strong&gt;ActionBarActivity&lt;/strong&gt;或是&lt;strong&gt;AppCompatActivity&lt;/strong&gt;來替代Activity，請一律換成Activity來使用。
+```java MainActivity.java
+package com.android.world;&lt;/p&gt;
+
+&lt;p&gt;import android.app.Activity;
+import android.os.Bundle;&lt;/p&gt;
+
+&lt;p&gt;public class MainActivity extends Activity{&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;@Override
+protected void onCreate(Bundle savedInstanceState) {
+    super.onCreate(savedInstanceState);
+    setContentView(R.layout.activity_main);
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;}&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;
+最後，我在編譯途中還遇到標籤問題。預設的編譯環境似乎不允許著無命名的字串存在。也就是說，如果你有任何的**text**標籤是直接給予字串值的，可能會編譯失敗。
+```xml 修改前
+&amp;lt;TextView
+        android:layout_width=&amp;quot;wrap_content&amp;quot;
+        android:layout_height=&amp;quot;wrap_content&amp;quot;
+        android:text=&amp;quot;Hello World&amp;quot; /&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;可能要改將字串引用自string.xml才能編譯成功。
+```xml 修改後
+&lt;TextView
+        android:layout_width=&#34;wrap_content&#34;
+        android:layout_height=&#34;wrap_content&#34;
+        android:text=&#34;@string/app_name&#34; /&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;```xml res/values/string.xml
+&amp;lt;resources&amp;gt;
+    &amp;lt;string name=&amp;quot;app_name&amp;quot;&amp;gt;World&amp;lt;/string&amp;gt;
+&amp;lt;/resources&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;編譯&#34;&gt;編譯&lt;/h2&gt;
+
+&lt;p&gt;使用&lt;code&gt;mm&lt;/code&gt;進行編譯，此次應該可以順利通過了。
+之後直接在Android Studio裡對Application進行編輯，由於建立了軟連結，AOSP內部的內容也會同步更改。
+這樣就可以用Android Studio來撰寫APP囉。&lt;/p&gt;
+
+&lt;h1 id=&#34;reference&#34;&gt;Reference&lt;/h1&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;http://android.mk/&#34; title=&#34;Secrets of Android.mk&#34;&gt;Android.mk&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://linux.vbird.org/linux_basic/0230filesystem.php#ln&#34; title=&#34;鳥哥 - ln解說&#34;&gt;鳥哥 - ln解說&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>在AOSP中增加預設app (2) : 自行編譯</title>
+      <link>https://cdfq152313.github.io/post/2016-02-28/</link>
+      <pubDate>Sun, 28 Feb 2016 00:00:00 +0000</pubDate>
+      
+      <guid>https://cdfq152313.github.io/post/2016-02-28/</guid>
+      <description>
+
+&lt;h1 id=&#34;平台及環境設置&#34;&gt;平台及環境設置&lt;/h1&gt;
+
+&lt;p&gt;##平台
+實驗平台：Nexus 5
+Android版本：android-4.4_r1
+前置知識： [Howto Build Android KitKat (4.4) for the Google Nexus 5][6]&lt;/p&gt;
+
+&lt;p&gt;##環境設置
+在AOSP資料夾中&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;source build/envsetup.sh
+lunch aosp_hammerhead-userdebug
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;#目標：加入一個需編譯的預設App到AOSP裡&lt;/p&gt;
+
+&lt;p&gt;在&lt;code&gt;AOSP/development/samples&lt;/code&gt;裏面有許多可以借鑒的對象。
+這次學習的目錄為&lt;code&gt;AOSP/development/samples/HelloActivity/&lt;/code&gt;&lt;/p&gt;
+
+&lt;h2 id=&#34;複製資料夾&#34;&gt;複製資料夾&lt;/h2&gt;
+
+&lt;p&gt;首先我們先把這個資料夾複製到&lt;code&gt;packages/app/&lt;/code&gt;裏面&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;cp $ANDROID_BUILD_TOP/development/samples/HelloActivity   $ANDROID_BUILD_TOP/packages/apps/
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;使用mm進行編譯&#34;&gt;使用mm進行編譯&lt;/h2&gt;
+
+&lt;p&gt;在&lt;code&gt;packages/apps/HelloActivity&lt;/code&gt;內進行&lt;code&gt;mm&lt;/code&gt;編譯。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;cd $ANDROID_BUILD_TOP/packages/apps/HelloActivity
+mm
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;解析&#34;&gt;解析&lt;/h2&gt;
+
+&lt;p&gt;原本想長篇大論，但是好像有人寫的比我好XD
+只好直接給&lt;a href=&#34;http://kezeodsnx.pixnet.net/blog/post/26377152-%5B%E8%BD%89%E8%B2%BC%5Dandroid%E7%9A%84%E5%BA%94%E7%94%A8%E7%A8%8B%E5%BA%8F%E7%BB%93%E6%9E%84%E5%88%86%E6%9E%90%EF%BC%9Ahelloactivity&#34; title=&#34;Android的應用程序結構分析&#34;&gt;連結&lt;/a&gt;，有空再來寫自己的版本吧。
+懂的HelloAcitivity的結構之後，就可以對其進行修改，以符合自己的需求。
+對於Android.mk若有什麼不懂的也可參考上次&lt;a href=&#34;http://android.mk/&#34; title=&#34;Secrets of Android.mk&#34;&gt;這篇&lt;/a&gt;。&lt;/p&gt;
+
+&lt;h1 id=&#34;reference&#34;&gt;Reference&lt;/h1&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;http://kezeodsnx.pixnet.net/blog/post/26377152-%5B%E8%BD%89%E8%B2%BC%5Dandroid%E7%9A%84%E5%BA%94%E7%94%A8%E7%A8%8B%E5%BA%8F%E7%BB%93%E6%9E%84%E5%88%86%E6%9E%90%EF%BC%9Ahelloactivity&#34; title=&#34;Android的應用程序結構分析&#34;&gt;Android的應用程序結構分析&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://android.mk/&#34; title=&#34;Secrets of Android.mk&#34;&gt;Secrets of Android.mk&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>在AOSP中增加預設app (1) : prebuilt apk</title>
+      <link>https://cdfq152313.github.io/post/2016-02-24/</link>
+      <pubDate>Wed, 24 Feb 2016 00:00:00 +0000</pubDate>
+      
+      <guid>https://cdfq152313.github.io/post/2016-02-24/</guid>
+      <description>
+
+&lt;h1 id=&#34;平台及環境設置&#34;&gt;平台及環境設置&lt;/h1&gt;
+
+&lt;p&gt;##平台
+實驗平台：Nexus 5
+Android版本：android-4.4_r1
+前置知識： &lt;a href=&#34;https://nosemaj.org/howto-build-android-kitkat-nexus-5&#34; title=&#34;Howto Build Android KitKat (4.4) for the Google Nexus 5&#34;&gt;Howto Build Android KitKat (4.4) for the Google Nexus 5&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;##環境設置
+在AOSP資料夾中&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;source build/envsetup.sh
+lunch aosp_hammerhead-userdebug
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h1 id=&#34;目標-在aosp當中加入一個已經編譯好的apk檔-hello-apk&#34;&gt;目標：在AOSP當中加入一個已經編譯好的apk檔，Hello.apk&lt;/h1&gt;
+
+&lt;h2 id=&#34;手動編譯設置&#34;&gt;手動編譯設置&lt;/h2&gt;
+
+&lt;p&gt;預設的app放在 &lt;code&gt;AOSP/packages/apps&lt;/code&gt;下，任意觀看此目錄下的資料夾，會發現皆有&lt;strong&gt;Android.mk&lt;/strong&gt;此檔案，此為AOSP編譯規則。
+參看 &lt;a href=&#34;http://android.mk/&#34; title=&#34;Secrets of Android.mk&#34;&gt;Secrets of Android.mk&lt;/a&gt;此份文件中的&lt;a href=&#34;http://android.mk/#prebuiltAPK&#34;&gt;Adding a prebuilt APK&lt;/a&gt;章節。&lt;/p&gt;
+
+&lt;p&gt;依樣畫葫蘆，在&lt;code&gt;AOSP/packages/apps&lt;/code&gt;目錄中手動創造Hello資料夾，放入Android.mk。
+``` makefile Android.mk
+LOCAL_PATH := $(call my-dir)
+include $(CLEAR_VARS)&lt;/p&gt;
+
+&lt;h1 id=&#34;module-name-should-match-apk-name-to-be-installed&#34;&gt;Module name should match apk name to be installed.&lt;/h1&gt;
+
+&lt;p&gt;LOCAL_MODULE := Hello
+LOCAL_SRC_FILES := $(LOCAL_MODULE).apk
+LOCAL_MODULE_CLASS := APPS
+LOCAL_MODULE_SUFFIX := $(COMMON_ANDROID_PACKAGE_SUFFIX)
+LOCAL_CERTIFICATE := PRESIGNED&lt;/p&gt;
+
+&lt;p&gt;include $(BUILD_PREBUILT)&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;
+並使用Android Studio(或eclipse)隨便製造出一個Hello.apk，同樣將其放置在`AOSP/packages/apps`目錄下。
+在[設置好環境][3]後，使用指令`mm`在Hello資料夾底下進行編譯，即可將檔案複製到`AOSP/out/target/product/板子名/system/app/`裏面去。
+最後執行`make snod`即可將此apk包入system.img之中。
+
+&amp;gt; 註：若放置的apk沒簽名，可能會出現
+`build/core/prebuilt.mk:122: *** No LOCAL_CERTIFICATE specified for prebuilt &amp;quot;packages/apps/Hello/Hello .apk&amp;quot;.  Stop.`
+此錯誤訊息。
+關於如何產生簽名過後的apk，可參看[Android官網][5]。
+眼尖的人應該注意到，在上述的Android.mk當中多了一行`LOCAL_CERTIFICATE := PRESIGNED`，若沒有此行，則即使在Android Studio中已經編譯出簽名過後的apk，依然會出現錯誤訊息。要小心。
+
+## 自動編譯設置
+上述的手動編譯可總結為三步驟
+1. 在AOSP/packages/apps裡新增Hello資料夾，並放入Android.mk與Hello.apk
+2. 在Hello資料夾使用指令`mm`，檔案會複製到`AOSP/out/target/product/板子名/system/app/`
+3. 使用指令`make snod`將檔案打包進system.img之中
+
+想像每次修改檔案，皆需重複執行2,3步驟，不太方便。若有不只一個的pre-built apk，則進入每個資料夾使用mm更是麻煩。所以我們要修改make規則，讓AOSP在執行make時，也能偵測到這些新增資料夾。
+修改的地方位在`AOSP/build/target/product/generic_no_telephony.mk`，可以發現這個檔案中有不少的原生app名稱。
+將`Hello`加入`PRODUCT_PACKAGES`之下。如
+```makefile generic_no_telephony.mk
+(...省略...)
+ PRODUCT_PACKAGES := \
+      Hello
+(...省略...)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;如此一來就可以在一般make時偵測到&lt;code&gt;AOSP/packages/apps&lt;/code&gt;所新增的Hello資料夾。&lt;/p&gt;
+
+&lt;h1 id=&#34;reference&#34;&gt;Reference&lt;/h1&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://nosemaj.org/howto-build-android-kitkat-nexus-5&#34; title=&#34;Howto Build Android KitKat (4.4) for the Google Nexus 5&#34;&gt;Howto Build Android KitKat (4.4) for the Google Nexus 5&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://android.mk/&#34; title=&#34;Secrets of Android.mk&#34;&gt;Secrets of Android.mk&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://stackoverflow.com/questions/10579827/add-apk-files-in-aosp&#34; title=&#34;Add .apk files in aosp&#34;&gt;Add .apk files in aosp&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://source.android.com/source/building.html#initialize&#34; title=&#34;Set up environment&#34;&gt;Building the System&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://mrslowblog.blogspot.tw/2013/01/sign-apk-android-app.html&#34; title=&#34; [教學]簽署應用程式 sign APK 發佈 Android App &#34;&gt; [教學]簽署應用程式 sign APK 發佈 Android App &lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://developer.android.com/intl/zh-tw/tools/publishing/app-signing.html&#34; title=&#34;Signing Your Applications&#34;&gt;Signing Your Applications&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

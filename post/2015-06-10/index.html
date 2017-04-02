@@ -1,0 +1,166 @@
+	<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <link href="http://gmpg.org/xfn/11" rel="profile">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta name="generator" content="Hugo 0.19" />
+
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+
+  
+  <title>llvm - helloworld &middot; Denny&#39;s Blog</title>
+  
+
+  
+  <link rel="stylesheet" href="https://cdfq152313.github.io/css/poole.css">
+  <link rel="stylesheet" href="https://cdfq152313.github.io/css/syntax.css">
+  <link rel="stylesheet" href="https://cdfq152313.github.io/css/hyde.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=PT+Sans:400,400italic,700|Abril+Fatface">
+
+  
+  <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/apple-touch-icon-144-precomposed.png">
+  <link rel="shortcut icon" href="/favicon.png">
+
+  
+  <link href="" rel="alternate" type="application/rss+xml" title="Denny&#39;s Blog" />
+</head>
+
+	<body class="theme-base-0f ">
+		<div class="sidebar">
+  <div class="container sidebar-sticky">
+    <div class="sidebar-about">
+      <a href="https://cdfq152313.github.io/"><h1>Denny&#39;s Blog</h1></a>
+      <p class="lead">
+       獸控天地 
+      </p>
+    </div>
+
+    <ul class="sidebar-nav">
+      <li><a href="/">Home</a> </li>
+      
+        <li><a href="/categories/notes"> 程式筆記 </a></li>
+      
+        <li><a href="/categories/misc"> 心得雜感 </a></li>
+      
+        <li><a href="/tags/"> 標籤列表 </a></li>
+      
+        <li><a href="/about/"> 關於我 </a></li>
+      
+    </ul>
+
+    <p>&copy; 2017. All rights reserved. </p>
+  </div>
+</div>
+
+
+		<div class="content container">
+			<div class="post">
+			 	<h1>llvm - helloworld</h1>
+			  <span class="post-date">Wed, Jun 10, 2015</span>
+			      
+
+<h1 id="環境設置">環境設置</h1>
+
+<ul>
+<li>ubuntu體系：sudo apt-get install llvm</li>
+<li>MAC: brew install llvm</li>
+</ul>
+
+<h1 id="makefile-mac">makefile (MAC)</h1>
+
+<pre><code>BIN_PATH=/usr/local/Cellar/llvm/3.6.1/bin/
+export PATH:=$(PATH):$(BIN_PATH)
+LLVM_CONFIG=llvm-config 
+FLAGS= --cxxflags --ldflags --system-libs --libs core
+
+toy: toy.cpp
+    clang++ -g -O3 toy.cpp `$(LLVM_CONFIG) $(FLAGS)` -o toy
+clean:
+    rm -f toy
+</code></pre>
+
+<h1 id="top-module">top module</h1>
+
+<pre><code>#include &quot;llvm/LLVMContext.h&quot;
+#include &quot;llvm/Module.h&quot;
+#include &quot;llvm/Support/IRBuilder.h&quot;
+
+int main()
+{
+  llvm::LLVMContext&amp; context = llvm::getGlobalContext();
+  llvm::Module* module = new llvm::Module(&quot;top&quot;, context);
+  llvm::IRBuilder&lt;&gt; builder(context); 
+
+  module-&gt;dump( );
+}
+</code></pre>
+
+<h1 id="function">function</h1>
+
+<h2 id="宣告function">宣告function</h2>
+
+<ul>
+<li>無參數</li>
+</ul>
+
+<pre><code>  llvm::FunctionType *funcType = 
+      llvm::FunctionType::get(builder.getInt32Ty(), false);
+  llvm::Function *mainFunc = llvm::Function::Create(funcType, llvm::Function::ExternalLinkage, &quot;main&quot;, module);
+</code></pre>
+
+<ul>
+<li>有參數</li>
+</ul>
+
+<pre><code>  std::vector&lt; llvm::Type* &gt; putsArgs;
+  putsArgs.push_back(builder.getInt8Ty()-&gt;getPointerTo());
+  llvm::ArrayRef&lt; llvm::Type* &gt;  argsRef(putsArgs);
+
+  llvm::FunctionType *putsType = 
+    llvm::FunctionType::get(builder.getInt32Ty(), argsRef, false);
+</code></pre>
+
+<h2 id="定義function">定義function</h2>
+
+<ul>
+<li>引用已有的function</li>
+</ul>
+
+<pre><code>  llvm::Constant *putsFunc = module-&gt;getOrInsertFunction(&quot;puts&quot;, putsType);
+</code></pre>
+
+<ul>
+<li>創造新的function</li>
+</ul>
+
+<pre><code>  llvm::BasicBlock *entry = llvm::BasicBlock::Create(context, &quot;entrypoint&quot;, mainFunc);
+  builder.SetInsertPoint(entry);
+</code></pre>
+
+<p>增添function內容</p>
+
+<h1 id="新增變數">新增變數</h1>
+
+<ul>
+<li>global variable</li>
+</ul>
+
+<pre><code>  llvm::Value *helloWorld = builder.CreateGlobalStringPtr(&quot;hello world!\n&quot;);
+</code></pre>
+
+<ul>
+<li>local variable</li>
+</ul>
+
+<h1 id="reference">Reference</h1>
+
+<p><a href="http://www.ibm.com/developerworks/library/os-createcompilerllvm1/">Create a working compiler with the LLVM framework</a></p>
+
+			</div>
+
+			
+		</div>
+
+  </body>
+</html>

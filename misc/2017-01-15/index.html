@@ -1,0 +1,140 @@
+	<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <link href="http://gmpg.org/xfn/11" rel="profile">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta name="generator" content="Hugo 0.19" />
+
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+
+  
+  <title>寫給朋友看的function與class &middot; Denny&#39;s Blog</title>
+  
+
+  
+  <link rel="stylesheet" href="https://cdfq152313.github.io/css/poole.css">
+  <link rel="stylesheet" href="https://cdfq152313.github.io/css/syntax.css">
+  <link rel="stylesheet" href="https://cdfq152313.github.io/css/hyde.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=PT+Sans:400,400italic,700|Abril+Fatface">
+
+  
+  <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/apple-touch-icon-144-precomposed.png">
+  <link rel="shortcut icon" href="/favicon.png">
+
+  
+  <link href="" rel="alternate" type="application/rss+xml" title="Denny&#39;s Blog" />
+</head>
+
+	<body class="theme-base-0f ">
+		<div class="sidebar">
+  <div class="container sidebar-sticky">
+    <div class="sidebar-about">
+      <a href="https://cdfq152313.github.io/"><h1>Denny&#39;s Blog</h1></a>
+      <p class="lead">
+       獸控天地 
+      </p>
+    </div>
+
+    <ul class="sidebar-nav">
+      <li><a href="/">Home</a> </li>
+      
+        <li><a href="/categories/notes"> 程式筆記 </a></li>
+      
+        <li><a href="/categories/misc"> 心得雜感 </a></li>
+      
+        <li><a href="/tags/"> 標籤列表 </a></li>
+      
+        <li><a href="/about/"> 關於我 </a></li>
+      
+    </ul>
+
+    <p>&copy; 2017. All rights reserved. </p>
+  </div>
+</div>
+
+
+		<div class="content container">
+			<div class="post">
+			 	<h1>寫給朋友看的function與class</h1>
+			  <span class="post-date">Sun, Jan 15, 2017</span>
+			      
+
+<h1 id="今天有個簡易的app功能如下">今天有個簡易的app功能如下</h1>
+
+<ol>
+<li>只有一個ViewController</li>
+<li>這個ViewController上只有兩個UITextView</li>
+<li>Input: &ldquo;01/15&rdquo; 代表1月15日</li>
+<li>想要結果: 在第一個UITextView上呈現 &ldquo;1 月&rdquo;，在第二個UITextView上呈現&rdquo;15日&rdquo;</li>
+</ol>
+
+<p>這時候可能會寫一個function在Controller裡頭，叫做split，input為字串，output為陣列。
+input為&rdquo;01/15&rdquo;的話，會出現output [&ldquo;01&rdquo;, &ldquo;15&rdquo;]
+然後call一下這個function，分別把兩個UITextView給賦值陣列0和陣列1，就可以運作得很完美了。</p>
+
+<h1 id="接下來追加規格">接下來追加規格</h1>
+
+<ol>
+<li>多了兩三個ViewController，同樣需要展示日期。</li>
+</ol>
+
+<p>這時候笨方法是把剛剛的function複製到四個不同的ViewController，然後再一一呼叫。
+聰明一點的方法是放到全域變數，這樣不用重寫function，但是每一個Controller都能呼叫。</p>
+
+<h1 id="再度追加規格">再度追加規格</h1>
+
+<ol>
+<li>除了顯示月日的function，我還想要展示年分。</li>
+</ol>
+
+<p>這次可能會依樣畫葫蘆，寫個叫做splityearmonthday的function，放在全域變數裡面，讓所有Controller都能使用。</p>
+
+<h1 id="再再度追加規格">再再度追加規格</h1>
+
+<ol>
+<li>這個APP多了付款功能所以需要展示金額。</li>
+<li>這個展示金額靠著另外兩個UITextView，第一個UITextView展現整數，第二個UITextView展現小數。</li>
+<li>假設input &ldquo;23.7&rdquo;，那會在第一個UITextView出現23 第二個UITextView出現.7</li>
+</ol>
+
+<p>於是又寫了一個splitmoney的funcion，放在全域變數裡。</p>
+
+<h1 id="反思">反思</h1>
+
+<p>到了這裡可以開始反思這是不是一個良好的設計了，起初APP的功能的確很簡單，但是隨著需求的擴張，分割日期的function就出現了兩種。後期更出現了分割金額的function。我們假設需求繼續擴張下去，接下來有</p>
+
+<ol>
+<li>10個分割日期的function</li>
+<li>5個分割金額的function</li>
+<li>8個分割OOXX的function</li>
+</ol>
+
+<p>你光看全域變數上的function頭就要昏了，而且還得注意名稱不得重複，每個名稱都取的又臭又長，即使這都是一些小小的function，依然會對開發人員帶來負擔。</p>
+
+<p>此時，如果你用class將分割日期、分割金額、分割OOXX的職責區分開來，程式碼或許會變得清晰? 舉例來說
+func splityearmonthday()
+func splitmonthday()
+改為
+=&gt;
+class DateSplit{
+    func yearmonth()
+    func monthday()
+}</p>
+
+<h1 id="總結">總結</h1>
+
+<p>簡單總結：
+class的作用在於區分職責，不同功能的function盡可能的放在不同的class，這是為了可讀性。
+程式規模小的時候，可以不必花太多心力把每個功能都丟一個class，但是當程式開始漸漸擴張，就要開始思考，我這些function之間是否有類似的職責，能夠被包成一個class來執行?
+再來就是，其實並不是每件事情都可以靠function的input output就解決，有時候你可能會想記錄狀態。
+舉例來說，如果你寫了一個計算機的程式，那你會希望計算機記得你上次按了什麼按鈕，這時候如果你再使用全域變數和全域function來解決問題，等老闆要求你&rdquo;我今天要兩個計算機，不要一個&rdquo;，的時候就尷尬了，因為你的狀態是靠全域變數來記，兩個計算機參考到同一個全域變數，就G_G惹。
+希望有幫助到你。</p>
+
+			</div>
+
+			
+		</div>
+
+  </body>
+</html>

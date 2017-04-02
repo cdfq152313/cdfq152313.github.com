@@ -1,0 +1,200 @@
+	<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <link href="http://gmpg.org/xfn/11" rel="profile">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta name="generator" content="Hugo 0.19" />
+
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+
+  
+  <title>llvm study &middot; Denny&#39;s Blog</title>
+  
+
+  
+  <link rel="stylesheet" href="https://cdfq152313.github.io/css/poole.css">
+  <link rel="stylesheet" href="https://cdfq152313.github.io/css/syntax.css">
+  <link rel="stylesheet" href="https://cdfq152313.github.io/css/hyde.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=PT+Sans:400,400italic,700|Abril+Fatface">
+
+  
+  <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/apple-touch-icon-144-precomposed.png">
+  <link rel="shortcut icon" href="/favicon.png">
+
+  
+  <link href="" rel="alternate" type="application/rss+xml" title="Denny&#39;s Blog" />
+</head>
+
+	<body class="theme-base-0f ">
+		<div class="sidebar">
+  <div class="container sidebar-sticky">
+    <div class="sidebar-about">
+      <a href="https://cdfq152313.github.io/"><h1>Denny&#39;s Blog</h1></a>
+      <p class="lead">
+       獸控天地 
+      </p>
+    </div>
+
+    <ul class="sidebar-nav">
+      <li><a href="/">Home</a> </li>
+      
+        <li><a href="/categories/notes"> 程式筆記 </a></li>
+      
+        <li><a href="/categories/misc"> 心得雜感 </a></li>
+      
+        <li><a href="/tags/"> 標籤列表 </a></li>
+      
+        <li><a href="/about/"> 關於我 </a></li>
+      
+    </ul>
+
+    <p>&copy; 2017. All rights reserved. </p>
+  </div>
+</div>
+
+
+		<div class="content container">
+			<div class="post">
+			 	<h1>llvm study</h1>
+			  <span class="post-date">Sat, Jun 6, 2015</span>
+			      
+
+<h1 id="overview">Overview</h1>
+
+<p>llvm 示意圖
+<img src="http://www.aosabook.org/images/llvm/SimpleCompiler.png" alt="" />
+<img src="http://i.imgur.com/YWNh2wy.png" alt="" />
+通過front end後程式碼會被轉為中間碼( LLVM Intermediate Representation (IR) )
+紅色部分為llvm提供的功能。
+出作業應該不會用到1 (要自己寫)，但可能會用到
+2. IR interpreter (指令lli)
+3. IR compiler (指令 llc)</p>
+
+<h1 id="llvm-指令">llvm 指令</h1>
+
+<pre><code>v    =  operation   type      op1,       op2 ,     opn
+%sum =     add             i32      %op1,      %op2  
+運算結果   運算元      型態      運算子們
+</code></pre>
+
+<h1 id="llvm-function">llvm function</h1>
+
+<p>宣告</p>
+
+<pre><code>define i32            @add1       (   i32 %a,   i32 %b )
+define 回傳型態 @函數名稱(  參數列          ) 
+</code></pre>
+
+<p>回傳</p>
+
+<pre><code>ret i32 5                       ; 回傳integer ，值為5
+ret void                        ; 回傳void
+ret { i32, i8 } { i32 4, i8 2 } ; 回傳結構 {int 32, int 8} ,  值為 4 , 2
+</code></pre>
+
+<p>範例</p>
+
+<pre><code>define i32 @add1(i32 %a, i32 %b) {
+entry:
+  %tmp1 = add i32 %a, %b
+  ret i32 %tmp1
+}
+</code></pre>
+
+<h1 id="identifiers">Identifiers</h1>
+
+<ul>
+<li>regular expression: &lsquo;[%@][a-zA-Z$._][a-zA-Z$._0-9]*&lsquo;.<br /></li>
+<li>@全域變數</li>
+<li>%區域變數</li>
+<li>雙引號為字串，可用跳脫字元 \， 後面接ASCII code (ex: 換行為\0A, 而非\n)</li>
+<li>@1 $2這些應該是暫存變數(不確定)</li>
+<li>全部皆為SSA(single static assigment)
+
+<ul>
+<li>將變數編上編號</li>
+<li>每個變數只會賦值一次
+<br /></li>
+</ul></li>
+</ul>
+
+<h1 id="利用clang-front-end-做測試">利用clang front end 做測試</h1>
+
+<p>安裝</p>
+
+<pre><code>sudo apt-get install clang llvm
+</code></pre>
+
+<p>把C code 變成 llvm IR (以test.c為例)</p>
+
+<pre><code>clang test.c -emit-llvm -S
+</code></pre>
+
+<p>C code</p>
+
+<pre><code>#include&lt;stdio.h&gt;
+int main()
+{
+    int a, b;
+    a = 1;
+    b = a + 1;
+    printf(&quot;%d\n&quot;, b);
+}
+</code></pre>
+
+<p>llvm IR (test.ll)</p>
+
+<pre><code>; Function Attrs: nounwind uwtable
+define i32 @main() #0 {
+  %a = alloca i32, align 4
+  %b = alloca i32, align 4
+  store i32 1, i32* %a, align 4
+  %1 = load i32* %a, align 4
+  %2 = add nsw i32 %1, 1
+  store i32 %2, i32* %b, align 4
+  %3 = load i32* %b, align 4
+  %4 = call i32 (i8*, ...)* @printf(i8* getelementptr inbounds ([4 x i8]* @.str, i32 0, i32 0), i32 %3)
+  ret i32 0
+}
+
+declare i32 @printf(i8*, ...) #1
+</code></pre>
+
+<h2 id="1-用interpreter執行llvm-ir">1. 用interpreter執行llvm IR</h2>
+
+<pre><code>lli test.ll
+</code></pre>
+
+<h2 id="2-把llvm-ir-編譯成assembly-code">2. 把llvm IR 編譯成assembly code</h2>
+
+<pre><code>llc test.ll
+</code></pre>
+
+<p>產生出 test.s
+利用clang把assembly轉成machine code</p>
+
+<pre><code>clang test.ll
+</code></pre>
+
+<p>執行</p>
+
+<pre><code>./test.ll
+</code></pre>
+
+<h1 id="結論">結論</h1>
+
+<p>用llvm學習compiler，不需考慮暫存器分配(assembly code geneate)，但需要考慮SSA。</p>
+
+<h1 id="參考資料">參考資料</h1>
+
+<p><a href="http://www.slideshare.net/kitocheng/ss-42438227">神人投影片</a>
+<a href="http://llvm.org/docs/LangRef.html">llvm reference</a></p>
+
+			</div>
+
+			
+		</div>
+
+  </body>
+</html>

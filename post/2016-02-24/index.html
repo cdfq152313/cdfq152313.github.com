@@ -1,0 +1,145 @@
+	<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <link href="http://gmpg.org/xfn/11" rel="profile">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta name="generator" content="Hugo 0.19" />
+
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+
+  
+  <title>在AOSP中增加預設app (1) : prebuilt apk &middot; Denny&#39;s Blog</title>
+  
+
+  
+  <link rel="stylesheet" href="https://cdfq152313.github.io/css/poole.css">
+  <link rel="stylesheet" href="https://cdfq152313.github.io/css/syntax.css">
+  <link rel="stylesheet" href="https://cdfq152313.github.io/css/hyde.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=PT+Sans:400,400italic,700|Abril+Fatface">
+
+  
+  <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/apple-touch-icon-144-precomposed.png">
+  <link rel="shortcut icon" href="/favicon.png">
+
+  
+  <link href="" rel="alternate" type="application/rss+xml" title="Denny&#39;s Blog" />
+</head>
+
+	<body class="theme-base-0f ">
+		<div class="sidebar">
+  <div class="container sidebar-sticky">
+    <div class="sidebar-about">
+      <a href="https://cdfq152313.github.io/"><h1>Denny&#39;s Blog</h1></a>
+      <p class="lead">
+       獸控天地 
+      </p>
+    </div>
+
+    <ul class="sidebar-nav">
+      <li><a href="/">Home</a> </li>
+      
+        <li><a href="/categories/notes"> 程式筆記 </a></li>
+      
+        <li><a href="/categories/misc"> 心得雜感 </a></li>
+      
+        <li><a href="/tags/"> 標籤列表 </a></li>
+      
+        <li><a href="/about/"> 關於我 </a></li>
+      
+    </ul>
+
+    <p>&copy; 2017. All rights reserved. </p>
+  </div>
+</div>
+
+
+		<div class="content container">
+			<div class="post">
+			 	<h1>在AOSP中增加預設app (1) : prebuilt apk</h1>
+			  <span class="post-date">Wed, Feb 24, 2016</span>
+			      
+
+<h1 id="平台及環境設置">平台及環境設置</h1>
+
+<p>##平台
+實驗平台：Nexus 5
+Android版本：android-4.4_r1
+前置知識： <a href="https://nosemaj.org/howto-build-android-kitkat-nexus-5" title="Howto Build Android KitKat (4.4) for the Google Nexus 5">Howto Build Android KitKat (4.4) for the Google Nexus 5</a></p>
+
+<p>##環境設置
+在AOSP資料夾中</p>
+
+<pre><code class="language-bash">source build/envsetup.sh
+lunch aosp_hammerhead-userdebug
+</code></pre>
+
+<h1 id="目標-在aosp當中加入一個已經編譯好的apk檔-hello-apk">目標：在AOSP當中加入一個已經編譯好的apk檔，Hello.apk</h1>
+
+<h2 id="手動編譯設置">手動編譯設置</h2>
+
+<p>預設的app放在 <code>AOSP/packages/apps</code>下，任意觀看此目錄下的資料夾，會發現皆有<strong>Android.mk</strong>此檔案，此為AOSP編譯規則。
+參看 <a href="http://android.mk/" title="Secrets of Android.mk">Secrets of Android.mk</a>此份文件中的<a href="http://android.mk/#prebuiltAPK">Adding a prebuilt APK</a>章節。</p>
+
+<p>依樣畫葫蘆，在<code>AOSP/packages/apps</code>目錄中手動創造Hello資料夾，放入Android.mk。
+``` makefile Android.mk
+LOCAL_PATH := $(call my-dir)
+include $(CLEAR_VARS)</p>
+
+<h1 id="module-name-should-match-apk-name-to-be-installed">Module name should match apk name to be installed.</h1>
+
+<p>LOCAL_MODULE := Hello
+LOCAL_SRC_FILES := $(LOCAL_MODULE).apk
+LOCAL_MODULE_CLASS := APPS
+LOCAL_MODULE_SUFFIX := $(COMMON_ANDROID_PACKAGE_SUFFIX)
+LOCAL_CERTIFICATE := PRESIGNED</p>
+
+<p>include $(BUILD_PREBUILT)</p>
+
+<pre><code>
+並使用Android Studio(或eclipse)隨便製造出一個Hello.apk，同樣將其放置在`AOSP/packages/apps`目錄下。
+在[設置好環境][3]後，使用指令`mm`在Hello資料夾底下進行編譯，即可將檔案複製到`AOSP/out/target/product/板子名/system/app/`裏面去。
+最後執行`make snod`即可將此apk包入system.img之中。
+
+&gt; 註：若放置的apk沒簽名，可能會出現
+`build/core/prebuilt.mk:122: *** No LOCAL_CERTIFICATE specified for prebuilt &quot;packages/apps/Hello/Hello .apk&quot;.  Stop.`
+此錯誤訊息。
+關於如何產生簽名過後的apk，可參看[Android官網][5]。
+眼尖的人應該注意到，在上述的Android.mk當中多了一行`LOCAL_CERTIFICATE := PRESIGNED`，若沒有此行，則即使在Android Studio中已經編譯出簽名過後的apk，依然會出現錯誤訊息。要小心。
+
+## 自動編譯設置
+上述的手動編譯可總結為三步驟
+1. 在AOSP/packages/apps裡新增Hello資料夾，並放入Android.mk與Hello.apk
+2. 在Hello資料夾使用指令`mm`，檔案會複製到`AOSP/out/target/product/板子名/system/app/`
+3. 使用指令`make snod`將檔案打包進system.img之中
+
+想像每次修改檔案，皆需重複執行2,3步驟，不太方便。若有不只一個的pre-built apk，則進入每個資料夾使用mm更是麻煩。所以我們要修改make規則，讓AOSP在執行make時，也能偵測到這些新增資料夾。
+修改的地方位在`AOSP/build/target/product/generic_no_telephony.mk`，可以發現這個檔案中有不少的原生app名稱。
+將`Hello`加入`PRODUCT_PACKAGES`之下。如
+```makefile generic_no_telephony.mk
+(...省略...)
+ PRODUCT_PACKAGES := \
+      Hello
+(...省略...)
+</code></pre>
+
+<p>如此一來就可以在一般make時偵測到<code>AOSP/packages/apps</code>所新增的Hello資料夾。</p>
+
+<h1 id="reference">Reference</h1>
+
+<ul>
+<li><a href="https://nosemaj.org/howto-build-android-kitkat-nexus-5" title="Howto Build Android KitKat (4.4) for the Google Nexus 5">Howto Build Android KitKat (4.4) for the Google Nexus 5</a></li>
+<li><a href="http://android.mk/" title="Secrets of Android.mk">Secrets of Android.mk</a></li>
+<li><a href="http://stackoverflow.com/questions/10579827/add-apk-files-in-aosp" title="Add .apk files in aosp">Add .apk files in aosp</a></li>
+<li><a href="https://source.android.com/source/building.html#initialize" title="Set up environment">Building the System</a></li>
+<li><a href="http://mrslowblog.blogspot.tw/2013/01/sign-apk-android-app.html" title=" [教學]簽署應用程式 sign APK 發佈 Android App "> [教學]簽署應用程式 sign APK 發佈 Android App </a></li>
+<li><a href="http://developer.android.com/intl/zh-tw/tools/publishing/app-signing.html" title="Signing Your Applications">Signing Your Applications</a></li>
+</ul>
+
+			</div>
+
+			
+		</div>
+
+  </body>
+</html>

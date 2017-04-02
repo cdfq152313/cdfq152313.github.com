@@ -1,0 +1,345 @@
+	<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <link href="http://gmpg.org/xfn/11" rel="profile">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta name="generator" content="Hugo 0.19" />
+
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+
+  
+  <title>Swift 檔案路徑與讀寫檔 &middot; Denny&#39;s Blog</title>
+  
+
+  
+  <link rel="stylesheet" href="https://cdfq152313.github.io/css/poole.css">
+  <link rel="stylesheet" href="https://cdfq152313.github.io/css/syntax.css">
+  <link rel="stylesheet" href="https://cdfq152313.github.io/css/hyde.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=PT+Sans:400,400italic,700|Abril+Fatface">
+
+  
+  <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/apple-touch-icon-144-precomposed.png">
+  <link rel="shortcut icon" href="/favicon.png">
+
+  
+  <link href="" rel="alternate" type="application/rss+xml" title="Denny&#39;s Blog" />
+</head>
+
+	<body class="theme-base-0f ">
+		<div class="sidebar">
+  <div class="container sidebar-sticky">
+    <div class="sidebar-about">
+      <a href="https://cdfq152313.github.io/"><h1>Denny&#39;s Blog</h1></a>
+      <p class="lead">
+       獸控天地 
+      </p>
+    </div>
+
+    <ul class="sidebar-nav">
+      <li><a href="/">Home</a> </li>
+      
+        <li><a href="/categories/notes"> 程式筆記 </a></li>
+      
+        <li><a href="/categories/misc"> 心得雜感 </a></li>
+      
+        <li><a href="/tags/"> 標籤列表 </a></li>
+      
+        <li><a href="/about/"> 關於我 </a></li>
+      
+    </ul>
+
+    <p>&copy; 2017. All rights reserved. </p>
+  </div>
+</div>
+
+
+		<div class="content container">
+			<div class="post">
+			 	<h1>Swift 檔案路徑與讀寫檔</h1>
+			  <span class="post-date">Tue, Oct 11, 2016</span>
+			      
+
+<h1 id="ios的路徑">iOS的路徑</h1>
+
+<h2 id="專案資料夾內的路徑">專案資料夾內的路徑</h2>
+
+<p>利用Bundle.main獲取
+可以指定檔案名稱以及副檔名。</p>
+
+<pre><code class="language-swift">// 得到url
+let url = Bundle.main.url(forResource: &quot;myjson&quot;, withExtension: &quot;json&quot;)
+// 得到path
+let path = Bundle.main.path(forResource: &quot;myjson&quot;, ofType: &quot;json&quot;)
+</code></pre>
+
+<h2 id="一般app路徑">一般App路徑</h2>
+
+<p>Document範例</p>
+
+<pre><code class="language-swift">// 透過路徑尋找URL
+let path = NSHomeDirectory() + &quot;/Document&quot;
+let urlfrompath = URL(fileURLWithPath: path)
+
+// 直接拿取URL，陣列第0個是資料夾本身(雖然也只有一個url)
+let url = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
+</code></pre>
+
+<p>Caches 範例</p>
+
+<pre><code class="language-swift">// 透過路徑尋找URL
+let path = NSHomeDirectory() + &quot;/Library/Caches&quot;
+let urlfrompath = URL(fileURLWithPath: path)
+
+// 直接拿取URL
+let url = FileManager.default.urls(for: .cachesDirectory, in: .userDomainMask)[0]
+</code></pre>
+
+<p>Temp 範例</p>
+
+<pre><code class="language-swift">// 兩種路徑取得的方法
+let pathFromNSHome = NSHomeDirectory() + &quot;/tmp&quot;
+let pathFromLibrary = NSTemporaryDirectory()
+
+// URL
+let urlfrompath = URL(fileURLWithPath: pathFromNSHome)
+</code></pre>
+
+<h2 id="新增路徑">新增路徑</h2>
+
+<ol>
+<li>將想要新增的路徑名稱寫出來</li>
+<li>利用FileManager.default.createDirectory新增路徑
+
+<ul>
+<li>此方法的withIntermediateDirctories參數若設成true，可以幫你遞迴建立不存在的資料夾
+<br /></li>
+</ul></li>
+</ol>
+
+<pre><code class="language-swift">let directoryPath = NSTemporaryDirectory() + &quot;/images&quot;
+do{
+    try FileManager.default.createDirectory(atPath: directoryPath, withIntermediateDirectories: true, attributes: nil)
+}catch{
+    print(&quot;Cannot create directory&quot;)
+}
+</code></pre>
+
+<h2 id="列出某個路徑下的所有檔案">列出某個路徑下的所有檔案</h2>
+
+<ol>
+<li>先找到想列出檔案的路徑</li>
+<li>利用 FileManager.default.contentsOfDirectory來列出此資料夾底下的檔案</li>
+</ol>
+
+<pre><code class="language-swift">let tempPath = NSTemporaryDirectory()
+do{
+  let fileList = try FileManager.default.contentsOfDirectory(atPath: tempPath)
+  for file in fileList{
+    print(file)
+  }
+}
+catch{
+    print(&quot;Cannot list directory&quot;)
+}
+</code></pre>
+
+<h2 id="查看路徑資訊">查看路徑資訊</h2>
+
+<p>FileManager.default.fileExists 可以幫你查看這個檔案是否存在，以及該檔案是否為一個Directory。
+需要特別注意的是OBJCBool的使用</p>
+
+<pre><code class="language-swift">let path = NSTemporaryDirectory() + &quot;/images&quot;
+var isDirectory:ObjCBool = false
+let isExist = FileManager.default.fileExists(atPath: path, isDirectory: &amp;isDirectory)
+if isExist == true &amp;&amp; isDirectory.boolValue == true{
+    print(&quot;File exist and it is a direcotry&quot;)
+}
+else if isExist == true &amp;&amp; isDirectory.boolValue == false{
+    print(&quot;File exist but it is not a direcotry&quot;)
+}
+else{
+    print(&quot;File isn't exist&quot;)
+}
+</code></pre>
+
+<h2 id="複製貼上刪除檔案">複製貼上刪除檔案</h2>
+
+<p>使用下方函式，記得加上do try catch。</p>
+
+<pre><code class="language-swift">FileManager.default.copyItem(atPath: path, toPath: cpPath)
+FileManager.default.moveItem(atPath: path, toPath: mvPath)
+FileManager.default.removeItem(atPath: path)
+</code></pre>
+
+<h1 id="一般型別寫檔讀檔">一般型別寫檔讀檔</h1>
+
+<h2 id="讀寫string">讀寫String</h2>
+
+<p>寫檔要呼叫String的方法</p>
+
+<pre><code class="language-swift">let text = &quot;Hello World&quot;
+let filePath = NSTemporaryDirectory() + &quot;Text.txt&quot;
+do{
+    try text.write(toFile: filePath, atomically: true, encoding: .utf8)
+}catch{
+    print(&quot;Not save correctly&quot;)
+}
+</code></pre>
+
+<p>讀檔要使用NSString</p>
+
+<pre><code class="language-swift">let filePath = NSTemporaryDirectory() + &quot;Text.txt&quot;
+do{
+  let loading = try NSString(contentsOfFile: filePath, encoding: String.Encoding.utf8.rawValue)
+  print(loading)
+}catch{
+    print(&quot;No save file&quot;)
+}
+</code></pre>
+
+<h2 id="讀寫array">讀寫Array</h2>
+
+<p>利用NSArray做寫入</p>
+
+<pre><code class="language-swift">let originalArray = [&quot;Apple&quot;, &quot;Banana&quot;, &quot;MAngo&quot;]
+let arrayToSave = NSArray(array: originalArray)
+let filePath = NSTemporaryDirectory() + &quot;saveArray.txt&quot;
+arrayToSave.write(toFile: filePath, atomically: true)
+</code></pre>
+
+<p>利用NSArray做讀出</p>
+
+<pre><code class="language-swift">let filePath = NSTemporaryDirectory() + &quot;saveArray.txt&quot;
+if let loadArray = NSArray(contentsOfFile: filePath) as? [String]{
+    print(loadArray)
+}
+</code></pre>
+
+<h2 id="讀寫dict">讀寫Dict</h2>
+
+<p>寫入靠NSDictionary</p>
+
+<pre><code class="language-swift">let originalDict = [&quot;1&quot;:&quot;apple&quot;, &quot;2&quot;:&quot;banana&quot;, &quot;3&quot;:&quot;orange&quot;]
+let dictToSave = NSDictionary(dictionary: originalDict)
+let filePath = NSTemporaryDirectory() + &quot;saveDict.txt&quot;
+dictToSave.write(toFile: filePath, atomically: true)
+</code></pre>
+
+<p>讀取靠NSDictionary</p>
+
+<pre><code class="language-swift">let filePath = NSTemporaryDirectory() + &quot;saveDict.txt&quot;
+  if let loadDict = NSDictionary(contentsOfFile: filePath) as? [String:String]{
+  print(loadDict)
+}
+</code></pre>
+
+<h1 id="多媒體寫檔讀檔">多媒體寫檔讀檔</h1>
+
+<h2 id="圖檔">圖檔</h2>
+
+<p>存檔
+多媒體的寫檔只能依靠URL而不能靠檔案路徑。</p>
+
+<ol>
+<li>先拿到要儲存的UIImage (可靠照相機或手機已有的圖片)</li>
+<li>以指定格式載入圖片 (UIImagePNGRepresentation或UIImageJPGRepresentation)</li>
+<li>產生路徑及URL</li>
+<li>在指定URL下存檔</li>
+</ol>
+
+<pre><code class="language-swift">// 拿到UIImage
+guard let image = UIImage(named: &quot;Tails&quot;) else {
+  print (&quot;Cannot find image&quot;)
+  return
+}
+
+if let dataToSave = UIImagePNGRepresentation(image){
+    // 產生路徑
+  let filePath = NSTemporaryDirectory() + &quot;savedImage.png&quot;
+  let fileURL = URL(fileURLWithPath: filePath)
+  // 寫入
+  do{
+    try dataToSave.write(to: fileURL)
+  }catch{
+    print(&quot;Can not save Image&quot;)
+  }
+}
+</code></pre>
+
+<p>讀檔
+1. 先用UIImage載入
+2. 把載入圖片放在UIImageView上面</p>
+
+<pre><code class="language-swift">let filePath = NSTemporaryDirectory() + &quot;savedImage.png&quot;
+let image = UIImage(contentsOfFile: filePath)
+myImageView.image = image
+</code></pre>
+
+<h1 id="自定義class讀寫檔">自定義class讀寫檔</h1>
+
+<p>要寫檔的class必須繼承
+- NSObject
+- NSCoding</p>
+
+<p>並複寫相關function</p>
+
+<pre><code class="language-swift">class Item : NSObject, NSCoding{
+    var name:String?
+    var detail:String?
+    
+    init(name:String, detail:String) {
+        self.name = name
+        self.detail = detail
+    }
+    
+    required init?(coder aDecoder: NSCoder) {       
+        name = aDecoder.decodeObject(forKey: &quot;name&quot;) as! String
+        detail = aDecoder.decodeObject(forKey: &quot;detail&quot;) as! String
+    }
+    
+    func encode(with aCoder: NSCoder) {
+        aCoder.encode(name, forKey: &quot;name&quot;)
+        aCoder.encode(detail, forKey: &quot;detail&quot;)
+    }
+}
+</code></pre>
+
+<p>可以來試著測試了
+寫檔
+1. 產生物件
+2. 利用NSKeyedArchiver.archivedData包裹物件，產生data
+3. 找到寫檔路徑
+4. 將data寫入指定路徑</p>
+
+<pre><code class="language-swift">let item = Item(name: &quot;危城&quot;, detail: &quot;動作&quot;)
+let data = NSKeyedArchiver.archivedData(withRootObject: item)
+let docUrl = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
+let url = docUrl.appendingPathComponent(&quot;myfile.txt&quot;)
+try! data.write(to: url)
+</code></pre>
+
+<p>讀檔
+1. 找到讀檔路徑
+2. 獲取Data
+3. 利用NSKeyedUnarchiver.unarchiveObject，將data轉換成指定物件</p>
+
+<pre><code class="language-swift">let docUrl = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
+let url = docUrl.appendingPathComponent(&quot;myfile.txt&quot;)
+let data = try? Data(contentsOf: url)
+
+if let data = data {
+    let item = NSKeyedUnarchiver.unarchiveObject(with: data) as! Item
+    print(&quot;=== Read ===&quot;)
+    print(item.name)
+    print(item.detail)
+}
+</code></pre>
+
+			</div>
+
+			
+		</div>
+
+  </body>
+</html>

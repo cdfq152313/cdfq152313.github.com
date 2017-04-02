@@ -1,0 +1,258 @@
+	<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <link href="http://gmpg.org/xfn/11" rel="profile">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta name="generator" content="Hugo 0.19" />
+
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+
+  
+  <title>Swift 聲音播放與錄製 &middot; Denny&#39;s Blog</title>
+  
+
+  
+  <link rel="stylesheet" href="https://cdfq152313.github.io/css/poole.css">
+  <link rel="stylesheet" href="https://cdfq152313.github.io/css/syntax.css">
+  <link rel="stylesheet" href="https://cdfq152313.github.io/css/hyde.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=PT+Sans:400,400italic,700|Abril+Fatface">
+
+  
+  <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/apple-touch-icon-144-precomposed.png">
+  <link rel="shortcut icon" href="/favicon.png">
+
+  
+  <link href="" rel="alternate" type="application/rss+xml" title="Denny&#39;s Blog" />
+</head>
+
+	<body class="theme-base-0f ">
+		<div class="sidebar">
+  <div class="container sidebar-sticky">
+    <div class="sidebar-about">
+      <a href="https://cdfq152313.github.io/"><h1>Denny&#39;s Blog</h1></a>
+      <p class="lead">
+       獸控天地 
+      </p>
+    </div>
+
+    <ul class="sidebar-nav">
+      <li><a href="/">Home</a> </li>
+      
+        <li><a href="/categories/notes"> 程式筆記 </a></li>
+      
+        <li><a href="/categories/misc"> 心得雜感 </a></li>
+      
+        <li><a href="/tags/"> 標籤列表 </a></li>
+      
+        <li><a href="/about/"> 關於我 </a></li>
+      
+    </ul>
+
+    <p>&copy; 2017. All rights reserved. </p>
+  </div>
+</div>
+
+
+		<div class="content container">
+			<div class="post">
+			 	<h1>Swift 聲音播放與錄製</h1>
+			  <span class="post-date">Thu, Oct 6, 2016</span>
+			      
+
+<h1 id="播放系統音效">播放系統音效</h1>
+
+<p>超簡單只需要兩行</p>
+
+<pre><code class="language-swift">import AudioToolbox
+AudioServicesPlaySystemSound(1000)
+</code></pre>
+
+<h1 id="播放自己放在app的音樂">播放自己放在app的音樂</h1>
+
+<p>先把自己的音效拖進Xcode，記得選擇&rdquo;copy items if needed&rdquo;，否則只會放入reference。
+可以開一個新的Group(資料夾圖示)來專門放置音檔。</p>
+
+<h2 id="步驟">步驟</h2>
+
+<ol>
+<li>找到檔案在哪(用Bundle)</li>
+<li>產生URL</li>
+<li>產生AVAudioPlayer</li>
+</ol>
+
+<pre><code class="language-swift">// AVAudioPlayer初始化
+func myPlayerInit()-&gt;AVAudioPlayer?{
+    guard let path = Bundle.main.path(forResource: &quot;Right&quot;, ofType:&quot;mp3&quot;) else{
+        return nil
+    }
+
+  let audioURL = URL(fileURLWithPath: path)
+  do{
+    return try AVAudioPlayer(contentsOf: audioURL)
+  }
+  catch{
+    print(&quot;AVAudio Player Init failed&quot;)
+    return nil
+  }
+}
+</code></pre>
+
+<pre><code class="language-swift">// 利用button播放 每次按下都將聲音時間歸零
+let myPlayer = myPlayerInit()
+myPlayer?.play()
+</code></pre>
+
+<h2 id="其他好用的方法">其他好用的方法</h2>
+
+<pre><code class="language-swift">myPlayer?.stop() // 停止
+myPlayer?.currentTime = 0 // 把音檔時間歸零
+myPlayer?.numberOfLoops = 2 // 重複播放次數，若為負數則為無限次播放
+myPlayer?.volume = 0.5 // 調整音量
+
+// 把播放速度調慢或調快
+myPlayer?.enableRate = true
+myPlayer?.rate = 0.5
+</code></pre>
+
+<h1 id="播放手機內部的音樂">播放手機內部的音樂</h1>
+
+<p>利用MPMediaPickerController，此一Controller會讓你選擇音樂。我們只需要指定選完音樂(或沒選到)要做什麼動作即可。</p>
+
+<h2 id="步驟-1">步驟</h2>
+
+<ol>
+<li>在Xcode調整權限
+
+<ul>
+<li>在info.plist裡面新增 &ldquo;Privacy - Media Library Ussage Description&rdquo;</li>
+<li>在右方新增你的理由</li>
+</ul></li>
+<li>新增MPMediaPickerController</li>
+<li>實作MPMediaPickerController之delegate (MPMediaPickerControllerDelegate)
+
+<ul>
+<li>取消不動作</li>
+<li>選取到音樂則播放</li>
+</ul></li>
+<li>指定2實作的delegate給1</li>
+</ol>
+
+<h3 id="權限設定">權限設定</h3>
+
+<p><img src="http://i.imgur.com/m9279lW.png" alt="存取影音檔案權限" /></p>
+
+<h3 id="mpmediapickercontrollerdelegate的實作">MPMediaPickerControllerDelegate的實作</h3>
+
+<pre><code class="language-swift">// 取消不動作直接消除視窗
+func mediaPickerDidCancel(_ mediaPicker: MPMediaPickerController) {
+    dismiss(animated: true, completion: nil)
+}
+
+// 選取到音樂則播放
+func mediaPicker(_ mediaPicker: MPMediaPickerController, didPickMediaItems mediaItemCollection: MPMediaItemCollection) {
+  let musicPlayer = MPMusicPlayerController.applicationMusicPlayer()
+  musicPlayer.setQueue(with:mediaItemCollection)
+  musicPlayer.play()
+  dismiss(animated:true, completion: nil)
+}
+</code></pre>
+
+<p>若要停止MPmusicPlayerController一樣可以使用.stop函數</p>
+
+<h1 id="錄音">錄音</h1>
+
+<ol>
+<li>在info.plist增加麥克風權限</li>
+<li>選好放置路徑並產生URL</li>
+<li>設定錄音數據(dict)</li>
+<li>產生AVAudioRecorder實體</li>
+<li>指定AVAudioRecorder的delegate
+
+<ul>
+<li>指定錄完音後執行的動作</li>
+</ul></li>
+<li>開始錄音</li>
+</ol>
+
+<h2 id="權限設定-1">權限設定</h2>
+
+<p><img src="http://i.imgur.com/WwJpAMB.png" alt="麥克風權限" /></p>
+
+<h2 id="步驟2-3-4-5">步驟2 3 4 5</h2>
+
+<pre><code class="language-swift">func audioRecorderInit()-&gt;AVAudioRecorder?{
+    // 步驟2 設定路徑
+  let path = NSHomeDirectory() + &quot;/Documents/user.wav&quot;
+  let url = URL(fileURLWithPath: path)
+  // 步驟3 設定錄音數據(dict)
+  let recordSettings:[String:Any] = [
+    AVEncoderAudioQualityKey : AVAudioQuality.min.rawValue,
+    AVEncoderBitRateKey: 16,
+    AVNumberOfChannelsKey: 2,
+    AVSampleRateKey: 44100.0
+  ]
+  do {
+    // 步驟4 5 產生實體並指定delegate
+    let audioRecorder = try AVAudioRecorder(url: url, settings:recordSettings)
+    audioRecorder.delegate = self
+    return audioRecorder
+  }
+  catch{
+    print(&quot;something is worng&quot;)
+    return nil
+  }
+}
+</code></pre>
+
+<h2 id="avaudiorecorderdelegate的實作">AVAudioRecorderDelegate的實作</h2>
+
+<p>參數recorder的屬性url可以拿到錄製好的檔案路徑</p>
+
+<pre><code class="language-swift">func audioRecorderDidFinishRecording(_ recorder: AVAudioRecorder, successfully flag: Bool) {
+  if flag == true{
+    do {
+        try audioPlayer = AVAudioPlayer(contentsOf: recorder.url)
+    }
+    catch{
+        print(&quot;something is Wrong...&quot;)
+    }
+  }
+}
+</code></pre>
+
+<h2 id="開始錄音">開始錄音</h2>
+
+<p>將AVAudioSession調成AVAudioSessionCatetoryPlayAndRecord，可有效增大錄音音量。若不調整則會很小聲。</p>
+
+<pre><code class="language-swift">do {
+    try AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategoryPlayAndRecord)
+}
+catch{
+    print(&quot;can't set audio session&quot;)
+}
+audioRecorder?.prepareToRecord()
+audioRecorder?.record()
+</code></pre>
+
+<h2 id="停止錄音">停止錄音</h2>
+
+<p>記得把剛剛的AVAudioSession.sharedInstance()調回原樣</p>
+
+<pre><code class="language-swift">self.audioRecorder?.stop()
+do{
+    try AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategoryPlayback)
+    try AVAudioSession.sharedInstance().setActive(false)
+}
+catch{
+    print(&quot;can't set audio session&quot;)
+}
+</code></pre>
+
+			</div>
+
+			
+		</div>
+
+  </body>
+</html>

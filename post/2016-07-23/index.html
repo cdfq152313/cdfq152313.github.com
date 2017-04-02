@@ -1,0 +1,131 @@
+	<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <link href="http://gmpg.org/xfn/11" rel="profile">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta name="generator" content="Hugo 0.19" />
+
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+
+  
+  <title>renpy (4) button / imagebutton / textbutton 按鈕變色效果 (hover / unhover) &middot; Denny&#39;s Blog</title>
+  
+
+  
+  <link rel="stylesheet" href="https://cdfq152313.github.io/css/poole.css">
+  <link rel="stylesheet" href="https://cdfq152313.github.io/css/syntax.css">
+  <link rel="stylesheet" href="https://cdfq152313.github.io/css/hyde.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=PT+Sans:400,400italic,700|Abril+Fatface">
+
+  
+  <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/apple-touch-icon-144-precomposed.png">
+  <link rel="shortcut icon" href="/favicon.png">
+
+  
+  <link href="" rel="alternate" type="application/rss+xml" title="Denny&#39;s Blog" />
+</head>
+
+	<body class="theme-base-0f ">
+		<div class="sidebar">
+  <div class="container sidebar-sticky">
+    <div class="sidebar-about">
+      <a href="https://cdfq152313.github.io/"><h1>Denny&#39;s Blog</h1></a>
+      <p class="lead">
+       獸控天地 
+      </p>
+    </div>
+
+    <ul class="sidebar-nav">
+      <li><a href="/">Home</a> </li>
+      
+        <li><a href="/categories/notes"> 程式筆記 </a></li>
+      
+        <li><a href="/categories/misc"> 心得雜感 </a></li>
+      
+        <li><a href="/tags/"> 標籤列表 </a></li>
+      
+        <li><a href="/about/"> 關於我 </a></li>
+      
+    </ul>
+
+    <p>&copy; 2017. All rights reserved. </p>
+  </div>
+</div>
+
+
+		<div class="content container">
+			<div class="post">
+			 	<h1>renpy (4) button / imagebutton / textbutton 按鈕變色效果 (hover / unhover)</h1>
+			  <span class="post-date">Sat, Jul 23, 2016</span>
+			      
+
+<p>當滑鼠移上按鈕，咻，按鈕變色了。當滑鼠離開按鈕，咻，按鈕又變回來了。
+藉由這樣的效果，可以讓玩家清楚感受到這是一個可點選的按鈕。
+要如何製作這樣的效果呢?</p>
+
+<h1 id="imagebutton">imagebutton</h1>
+
+<p>難度：簡單</p>
+
+<pre><code class="language-python">Imagebutton:
+    idle &quot;滑鼠離開時照片&quot;
+    hover &quot;滑鼠移上時照片&quot;
+    action NullAction()
+</code></pre>
+
+<p>參閱<a href="https://www.renpy.org/doc/html/screens.html#imagebutton">官網</a>
+只要設定屬性idle及hover即可，要注意的一點是，必須要有任意Action，變色效果才會顯現出來。
+如果不打算有任何Action，則使用NullAction吧，此方法就是為了變色而設立的。</p>
+
+<h1 id="textbutton">textbutton</h1>
+
+<p>難度：中等
+參閱<a href="https://www.renpy.org/doc/html/thequestion.html#options-rpy">官網</a>在<strong>options.rpy</strong>當中，有欄位為</p>
+
+<pre><code class="language-python">widget_text = &quot;滑鼠離開時顏色&quot;,
+widget_selected = &quot;滑鼠移上時顏色&quot;,
+</code></pre>
+
+<p>設定好後，textbutton的變色就會依照此設定來做調整囉。
+缺點是不能在任意的textbutton指定變數顏色，如果今天有兩個textbutton，想指定為
+1. textbutton1 滑鼠移上紅色 滑鼠離開白色
+2. textbutton2 滑鼠移上藍色 滑鼠離開白色</p>
+
+<p>在此方法中是無能為力的。</p>
+
+<h1 id="button">button</h1>
+
+<p>難度：困難，但textbutton或imagebutton也可用此方法來變色，最萬用。</p>
+
+<pre><code class="language-python">Screen button_test:
+    default myhover = False
+    button:
+        action SetScreenVariable(&quot;myhover&quot;, False)
+        hovered SetScreenVariable(&quot;myhover&quot;, True)
+        unhovered SetScreenVariable(&quot;myhover&quot;, False)
+        if myhover:
+          image &quot;滑鼠移上時照片&quot;
+          text (&quot;YA&quot;) color &quot;滑鼠移上時顏色&quot;
+        else:
+          image &quot;滑鼠離開時圖片&quot;
+          text (&quot;YA&quot;) color &quot;滑鼠離開時顏色&quot;
+</code></pre>
+
+<p>在Screen Language當中，可以使用defalut這個字眼來定義專屬於某個Screen的變數，並且可使用<a href="https://www.renpy.org/doc/html/screen_actions.html#SetScreenVariable">SetScreenVariable</a>此Action來指定變數值。
+所以只要指定，在滑鼠移上時，變數值為True，滑鼠離開時，變數值為False。
+最後再根據True/False之值，來決定畫面上要顯示什麼即可。</p>
+
+<p>另外，除了if else寫法以外，單純圖片變色也可以使用ConditionSwitch這個函式</p>
+
+<pre><code class="language-python">image ConditionSwitch( myhover, &quot;滑鼠移上時圖片&quot;,
+                        True, &quot;滑鼠離開時圖片&quot;)
+</code></pre>
+
+			</div>
+
+			
+		</div>
+
+  </body>
+</html>

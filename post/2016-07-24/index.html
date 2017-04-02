@@ -1,0 +1,116 @@
+	<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <link href="http://gmpg.org/xfn/11" rel="profile">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta name="generator" content="Hugo 0.19" />
+
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+
+  
+  <title>renpy (5) 自己撰寫button的Action &middot; Denny&#39;s Blog</title>
+  
+
+  
+  <link rel="stylesheet" href="https://cdfq152313.github.io/css/poole.css">
+  <link rel="stylesheet" href="https://cdfq152313.github.io/css/syntax.css">
+  <link rel="stylesheet" href="https://cdfq152313.github.io/css/hyde.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=PT+Sans:400,400italic,700|Abril+Fatface">
+
+  
+  <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/apple-touch-icon-144-precomposed.png">
+  <link rel="shortcut icon" href="/favicon.png">
+
+  
+  <link href="" rel="alternate" type="application/rss+xml" title="Denny&#39;s Blog" />
+</head>
+
+	<body class="theme-base-0f ">
+		<div class="sidebar">
+  <div class="container sidebar-sticky">
+    <div class="sidebar-about">
+      <a href="https://cdfq152313.github.io/"><h1>Denny&#39;s Blog</h1></a>
+      <p class="lead">
+       獸控天地 
+      </p>
+    </div>
+
+    <ul class="sidebar-nav">
+      <li><a href="/">Home</a> </li>
+      
+        <li><a href="/categories/notes"> 程式筆記 </a></li>
+      
+        <li><a href="/categories/misc"> 心得雜感 </a></li>
+      
+        <li><a href="/tags/"> 標籤列表 </a></li>
+      
+        <li><a href="/about/"> 關於我 </a></li>
+      
+    </ul>
+
+    <p>&copy; 2017. All rights reserved. </p>
+  </div>
+</div>
+
+
+		<div class="content container">
+			<div class="post">
+			 	<h1>renpy (5) 自己撰寫button的Action</h1>
+			  <span class="post-date">Sun, Jul 24, 2016</span>
+			      
+
+<p>在<a href="https://www.renpy.org/doc/html/screen_actions.html">官網</a>可以看到有很多可使的Action。
+萬一想要的功能並不在裡面呢? 其實也有<a href="https://www.renpy.org/doc/html/screen_actions.html#Function">Function</a>此一Action的存在，可自己撰寫Function傳進去使用。</p>
+
+<p>這裡只是提點一些Function使用上的誤區。</p>
+
+<h1 id="絕對要使用function此action">絕對要使用Function此Action</h1>
+
+<ul>
+<li>絕對要使用Function此Action</li>
+<li>絕對不要直接把自己寫的function當Action</li>
+</ul>
+
+<h2 id="錯誤範例">錯誤範例</h2>
+
+<pre><code class="language-python">python:
+    def test():
+        pass
+textbutton &quot;Click Me!!&quot;:
+    action test()
+</code></pre>
+
+<p>在renpy眼中，這是一個正常行為，他不會報錯。
+但是這會導致此button並非在點擊才觸發Action，而是在載入、textbutton出來的那瞬間，就執行了action。</p>
+
+<h2 id="正確寫法">正確寫法</h2>
+
+<pre><code class="language-python">python:
+    def test():
+        pass
+textbutton &quot;Click Me!!&quot;:
+    action Function(test)
+</code></pre>
+
+<h1 id="傳入參數">傳入參數</h1>
+
+<p>如果這個function需要支援參數傳遞呢? 一樣可以用Function達到</p>
+
+<pre><code class="language-python">python:
+    def test(text):
+        pass
+textbutton &quot;Click Me!!&quot;:
+    action Function(test, text = &quot;apple&quot;)
+</code></pre>
+
+<p>Function在官方的文件上說支援args和kwargs的參數傳遞。
+但實際測試後發現，<strong>args的參數傳遞是壞的</strong>，並不能使用。所以請都用kwargs的參數傳遞法。</p>
+
+			</div>
+
+			
+		</div>
+
+  </body>
+</html>

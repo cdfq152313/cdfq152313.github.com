@@ -1,0 +1,385 @@
+	<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <link href="http://gmpg.org/xfn/11" rel="profile">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta name="generator" content="Hugo 0.19" />
+
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+
+  
+  <title>Swift 快速筆記 &middot; Denny&#39;s Blog</title>
+  
+
+  
+  <link rel="stylesheet" href="https://cdfq152313.github.io/css/poole.css">
+  <link rel="stylesheet" href="https://cdfq152313.github.io/css/syntax.css">
+  <link rel="stylesheet" href="https://cdfq152313.github.io/css/hyde.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=PT+Sans:400,400italic,700|Abril+Fatface">
+
+  
+  <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/apple-touch-icon-144-precomposed.png">
+  <link rel="shortcut icon" href="/favicon.png">
+
+  
+  <link href="" rel="alternate" type="application/rss+xml" title="Denny&#39;s Blog" />
+</head>
+
+	<body class="theme-base-0f ">
+		<div class="sidebar">
+  <div class="container sidebar-sticky">
+    <div class="sidebar-about">
+      <a href="https://cdfq152313.github.io/"><h1>Denny&#39;s Blog</h1></a>
+      <p class="lead">
+       獸控天地 
+      </p>
+    </div>
+
+    <ul class="sidebar-nav">
+      <li><a href="/">Home</a> </li>
+      
+        <li><a href="/categories/notes"> 程式筆記 </a></li>
+      
+        <li><a href="/categories/misc"> 心得雜感 </a></li>
+      
+        <li><a href="/tags/"> 標籤列表 </a></li>
+      
+        <li><a href="/about/"> 關於我 </a></li>
+      
+    </ul>
+
+    <p>&copy; 2017. All rights reserved. </p>
+  </div>
+</div>
+
+
+		<div class="content container">
+			<div class="post">
+			 	<h1>Swift 快速筆記</h1>
+			  <span class="post-date">Tue, Sep 13, 2016</span>
+			      
+
+<h1 id="autolayout">AutoLayout</h1>
+
+<p>只要確定好下面的參數，autoLayout就不會跑警告
+1. x
+2. y
+3. width
+4. height</p>
+
+<h1 id="alertcontroller">AlertController</h1>
+
+<ol>
+<li>新增AlertController
+
+<ul>
+<li>.ActionSheet可藉由點警告視窗外面而取消</li>
+<li>.alert不可藉由點警告視窗外面而取消</li>
+</ul></li>
+<li>如果需要&rdquo;OK&rdquo;等選項的話，新增UIAction (.alert必做，不然會回不去)</li>
+<li>將UIAction放置到AlertController上</li>
+<li>present</li>
+</ol>
+
+<pre><code class="language-swift">let myAlert = UIAlertController(title: &quot;Please enter something&quot;, message: nil, preferredStyle: .alert)
+let myAction = UIAlertAction(title: &quot;OK&quot;, style: .default, handler:nil)
+myAlert.addAction(myAction)
+present(myAlert, animated: true, completion: nil)
+</code></pre>
+
+<p>嘗試加入文字框</p>
+
+<pre><code class="language-swift">let myAlert = UIAlertController(title: &quot;Add New Task&quot;, message: nil, preferredStyle: .alert)
+myAlert.addTextField {
+  (textfield:UITextField) in
+  textfield.placeholder = &quot;Add New Task'&quot;
+}
+</code></pre>
+
+<p>嘗試對加入的UIAction執行一些動作</p>
+
+<pre><code class="language-swift">let ok = UIAlertAction(title: &quot;OK&quot;, style: .default){
+    (action) in
+  // action是UIAlertAction
+  // 在下面填入想要執行的動作
+  ...
+  ...
+}
+</code></pre>
+
+<h1 id="讓鍵盤自動彈出">讓鍵盤自動彈出</h1>
+
+<p>在可輸入的View中(Ex: textfield)，會有<code>becomeFirstResponder()</code>方法</p>
+
+<h1 id="pickerview">PickerView</h1>
+
+<h2 id="選中某一列後立刻執行某動作">選中某一列後立刻執行某動作</h2>
+
+<p>複寫</p>
+
+<pre><code class="language-swift">func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
+    chooseColor = colorArray[row]
+}
+</code></pre>
+
+<h2 id="得知目前是選中哪一列">得知目前是選中哪一列</h2>
+
+<p>call function，並指定是哪個Component</p>
+
+<pre><code class="language-swift">myPickerView.selectedRow(inComponent: 0)
+</code></pre>
+
+<h2 id="更為簡單的datepickerview">更為簡單的DatePickerView</h2>
+
+<p>若想得知DatePickerView所擷取到的日期或時間只要使用</p>
+
+<pre><code class="language-swift">let date = myDatePicker.date
+</code></pre>
+
+<p>一行即可，其他的都是date格式的問題。
+DatePickerView的樣式可以從storyBoard中選擇。</p>
+
+<h1 id="播放影片">播放影片</h1>
+
+<h2 id="流程">流程</h2>
+
+<ol>
+<li>找到播放影片URL</li>
+<li>初始化AVPlayer(將URL放進去)</li>
+<li>初始化AVPlayerViewController</li>
+<li>將AVPlayerController的player設成剛剛的AVPlayer</li>
+<li>present並播放</li>
+</ol>
+
+<pre><code class="language-swift">guard let path = Bundle.main.url(forResource: &quot;HipHop&quot;, withExtension: &quot;mp4&quot;) else {
+    return
+}
+
+let videoPlayer = AVPlayer(url: path)
+let videoPlayerController = AVPlayerViewController()
+videoPlayerController.player = videoPlayer
+present(videoPlayerController, animated: true, completion: nil)
+videoPlayer.play()
+</code></pre>
+
+<h2 id="重複播放">重複播放</h2>
+
+<p>不同於播放音樂可以簡單設置loop，重複播放影片是要傾聽影片播完後所發送的notification。</p>
+
+<p>監聽播放完成notification</p>
+
+<pre><code class="language-swift">NotificationCenter.default.addObserver(self, selector: #selector(ViewController.playerDidReachEnd(notification:)), name: Notification.Name.AVPlayerItemDidPlayToEndTime, object: nil)
+
+// 監聽function
+func playerDidReachEnd(notification:Notification){
+    videoPlayer?.currentItem?.seek(to: kCMTimeZero)
+    videoPlayer?.play()
+}
+</code></pre>
+
+<h1 id="錄影">錄影</h1>
+
+<h1 id="照相">照相</h1>
+
+<ol>
+<li>在info.plist設定照相權限</li>
+<li>產生image picker Controller</li>
+<li>設定 sourceType</li>
+<li>設定delegate屬性，決定照相完畢後要做什麼</li>
+<li>推出image Picker
+這邊要特別注意，模擬器是沒有camera的，所以若要用模擬器最好先檢查。</li>
+</ol>
+
+<p>照相權限
+<img src="http://i.imgur.com/Yf8lCmd.png" alt="照相權限" /></p>
+
+<pre><code class="language-swift">let imagePicker = UIImagePickerController()
+imagePicker.sourceType = .camera
+imagePicker.delegate = self
+present(imagePicker, animated:true, completion:nil)
+</code></pre>
+
+<p>delegate寫法</p>
+
+<pre><code class="language-swift">func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
+  guard let image = info[UIImagePickerControllerMediaURL] as? UIImage{
+    print(&quot;Cannot get picture url&quot;)
+    return
+  }
+  myImageView.image = image
+  dismiss(animated: true, completion: nil)
+}
+</code></pre>
+
+<h2 id="其他實用方法">其他實用方法</h2>
+
+<p>若想存檔可使用下方程式碼</p>
+
+<pre><code>UIImageWriteToSavedPhotosAlbum(image, nil, nil, nil)
+</code></pre>
+
+<p>若想直接從已拍照圖庫裡面選擇圖片，可以透過更改sourcetype來完成</p>
+
+<pre><code>imagePicker.sourceType = .photoLibrary
+</code></pre>
+
+<h1 id="使用資源">使用資源</h1>
+
+<ul>
+<li><p>先找路徑再找URL</p>
+
+<pre><code class="language-swift">let path = Bundle.main.path(forResource: &quot;Right&quot;, ofType:&quot;mp3&quot;)
+let audioURL = URL(fileURLWithPath: path)
+</code></pre></li>
+
+<li><p>直接找URL</p>
+
+<pre><code class="language-swift">let path = Bundle.main.url(forResource: &quot;HipHop&quot;, withExtension: &quot;mp4&quot;)
+</code></pre></li>
+</ul>
+
+<h1 id="存資料-物件">存資料(物件)</h1>
+
+<p>使用UserDefaults.standard.set和UserDefaults.standard.synchronize
+1. 用set並給一個key
+2. synchronize</p>
+
+<pre><code class="language-swift">var toDo = [&quot;Buy milk&quot;, &quot;iOS exam&quot;, &quot;Sleep&quot;, &quot;Make money&quot;]
+UserDefaults.standard.set(toDo, forKey:&quot;todo&quot;)
+UserDefaults.standard.synchronize()
+</code></pre>
+
+<p>取值，要記得取出來是anyObject，必須轉型，而且可能為nil(key不存在)。</p>
+
+<pre><code class="language-swift">guard let loaded = UserDefaults.standard.object(forKey: &quot;toDo&quot;) as? [String] else{
+  print(&quot;No such key&quot;)
+  return
+}
+print(loaded)
+</code></pre>
+
+<p>如果存的是預設型別(像是Int)，取值方法可以不用轉型</p>
+
+<pre><code class="language-swift">guard let loaded = UserDefaults.standard.integer(forKey: &quot;toDo&quot;) else{
+  print(&quot;No such key&quot;)
+  return
+}
+print(loaded)
+</code></pre>
+
+<h1 id="property-list-plist">Property List (Plist)</h1>
+
+<p>Info.plist就是一種Property List的檔案。
+plist可以很方便地幫你用Array或dictionary的形式存取資訊(String, Int &hellip;)，個人覺得跟json沒兩樣。
+使用的步驟如下
+1. 新增一個Property List檔案
+2. 在上面加上一些資訊(假設是一串Array)
+3. 使用Bundle.main.path拿到資源(檔案型態是plist)
+4. 利用NSArray將檔案轉成Array，或是NSDictionary檔案轉成dict</p>
+
+<pre><code class="language-swift">guard let scorePlist = Bundle.main.path(forResource: &quot;Score&quot;, ofType: &quot;plist&quot;),
+  let scoreArray = NSArray(contentsOfFile: scorePlist) else{
+    print(&quot;Get Plist Error&quot;)
+    return
+}
+print(scoreArray)
+</code></pre>
+
+<h1 id="activity-indicator">Activity Indicator</h1>
+
+<ul>
+<li>用StoryBoard直接拉</li>
+<li>記得把Hides when stop打勾，不然圖案一直都在</li>
+<li>startAnimating()開始轉</li>
+<li>stopAnimationg()停止轉</li>
+</ul>
+
+<h1 id="cocoapods">COCOAPODS</h1>
+
+<p>先安裝
+<a href="https://cocoapods.org/">https://cocoapods.org/</a></p>
+
+<p>在Xcode專案底下</p>
+
+<pre><code class="language-bash">pod init
+</code></pre>
+
+<p>編輯生出來podfile
+加入需要的pod 專案</p>
+
+<pre><code class="language-Podfile"># Uncomment the next line to define a global platform for your project
+# platform :ios, '9.0'
+
+target 'HelloCoCoaPods' do
+  # Comment the next line if you're not using Swift and don't want to use dynamic frameworks
+  use_frameworks!
+
+  # Pods for HelloCoCoaPods
+  pod 'Firebase/Database'
+
+end
+</code></pre>
+
+<p>安裝專案</p>
+
+<pre><code class="language-bash">pod install
+</code></pre>
+
+<h1 id="reachability-測試有無連網">Reachability 測試有無連網</h1>
+
+<ol>
+<li>下載<a href="https://developer.apple.com/library/content/samplecode/Reachability/Introduction/Intro.html">reachability</a></li>
+<li>將Reachablility.h 及.m一起拖到專案，選擇新增Bridge</li>
+<li>Bridege中寫入<code>#import &quot;Reachability.h&quot;</code></li>
+<li>初始化<code>Reachability(hostName: &quot;www.apple.com&quot;)</code>
+
+<ul>
+<li>必須指定一個可連線的網址</li>
+</ul></li>
+<li>使用方法startNotifier</li>
+<li>addObserver</li>
+<li>接收notification</li>
+</ol>
+
+<h1 id="xml">XML</h1>
+
+<p>解析XML XML delegate</p>
+
+<h1 id="值得用的app">值得用的APP</h1>
+
+<p>figure</p>
+
+<h1 id="登入與非登入狀態用不同的controller">登入與非登入狀態用不同的Controller</h1>
+
+<p>在Appdelegate裡面</p>
+
+<pre><code class="language-swift">func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -&gt; Bool {
+  if check != 1 {
+    let controller = UIStoryboard(name: &quot;LogIn&quot;, bundle: nil).instantiateViewController(withIdentifier: &quot;logIn&quot;)
+    self.window?.rootViewController = controller
+  } else {
+    let controller = UIStoryboard(name: &quot;Main&quot;, bundle: nil).instantiateViewController(withIdentifier: &quot;tab&quot;)
+    self.window?.rootViewController = controller
+  }
+    return true
+}
+</code></pre>
+
+<h1 id="keyboard">keyboard</h1>
+
+<h2 id="彈出來時畫面自動向上">彈出來時畫面自動向上</h2>
+
+<p><a href="http://stackoverflow.com/questions/25693130/move-textfield-when-keyboard-appears-swift">http://stackoverflow.com/questions/25693130/move-textfield-when-keyboard-appears-swift</a></p>
+
+<h2 id="點旁邊畫面自動縮回去">點旁邊畫面自動縮回去</h2>
+
+<p><a href="http://stackoverflow.com/questions/24126678/close-ios-keyboard-by-touching-anywhere-using-swift">http://stackoverflow.com/questions/24126678/close-ios-keyboard-by-touching-anywhere-using-swift</a></p>
+
+			</div>
+
+			
+		</div>
+
+  </body>
+</html>

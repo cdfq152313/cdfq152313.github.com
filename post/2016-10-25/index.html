@@ -1,0 +1,244 @@
+	<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <link href="http://gmpg.org/xfn/11" rel="profile">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta name="generator" content="Hugo 0.19" />
+
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+
+  
+  <title>Swift TableView 與 Collection View &middot; Denny&#39;s Blog</title>
+  
+
+  
+  <link rel="stylesheet" href="https://cdfq152313.github.io/css/poole.css">
+  <link rel="stylesheet" href="https://cdfq152313.github.io/css/syntax.css">
+  <link rel="stylesheet" href="https://cdfq152313.github.io/css/hyde.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=PT+Sans:400,400italic,700|Abril+Fatface">
+
+  
+  <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/apple-touch-icon-144-precomposed.png">
+  <link rel="shortcut icon" href="/favicon.png">
+
+  
+  <link href="" rel="alternate" type="application/rss+xml" title="Denny&#39;s Blog" />
+</head>
+
+	<body class="theme-base-0f ">
+		<div class="sidebar">
+  <div class="container sidebar-sticky">
+    <div class="sidebar-about">
+      <a href="https://cdfq152313.github.io/"><h1>Denny&#39;s Blog</h1></a>
+      <p class="lead">
+       獸控天地 
+      </p>
+    </div>
+
+    <ul class="sidebar-nav">
+      <li><a href="/">Home</a> </li>
+      
+        <li><a href="/categories/notes"> 程式筆記 </a></li>
+      
+        <li><a href="/categories/misc"> 心得雜感 </a></li>
+      
+        <li><a href="/tags/"> 標籤列表 </a></li>
+      
+        <li><a href="/about/"> 關於我 </a></li>
+      
+    </ul>
+
+    <p>&copy; 2017. All rights reserved. </p>
+  </div>
+</div>
+
+
+		<div class="content container">
+			<div class="post">
+			 	<h1>Swift TableView 與 Collection View</h1>
+			  <span class="post-date">Tue, Oct 25, 2016</span>
+			      
+
+<h1 id="tableview">TableView</h1>
+
+<h2 id="indexpath-section-row">IndexPath: Section &amp; Row</h2>
+
+<p><img src="http://i.imgur.com/razNcl9.png" alt="Section and Row" />
+看圖應該可以明瞭Section和Row的含意，Apple把tableView劃分為section，每個section下又有row。
+在IOS中有一個叫做IndexPath的類別專門儲存這兩個值，在tableView以後要override的方法會經常看到。</p>
+
+<h2 id="必定要override的method-幾個section-幾個row">必定要override的method: 幾個section 幾個row</h2>
+
+<p>使用tableView必須指定DataSource和Delegate (若是TableViewController則已經指定好自己作為這兩個protocol的實作)</p>
+
+<p>其中有些function是必定要override的
+1. 總共有幾個section
+2. 每個section裡面有幾個row</p>
+
+<p>在這個範例中，我指定兩個section，section 0有2 row，section 1有3 row。</p>
+
+<pre><code class="language-swift">// 總共幾個section
+override func numberOfSections(in tableView: UITableView) -&gt; Int {
+  return 2
+}
+
+// 每個section裡面有幾個row
+override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -&gt; Int {
+    if section == 0{
+    return 2
+  }
+  else{
+    return 3
+    }
+}
+</code></pre>
+
+<h2 id="某一列的內容">某一列的內容</h2>
+
+<p>但是只有這樣，顯示出來會是空白一片，所以必須要回傳顯示的內容。
+在做這個項目之前，必須先到storyBoard，將tableView裏頭的cell指定一個identifier，否則會錯誤。
+在此我指定cell的identifier為myCell
+<img src="http://i.imgur.com/0mgnfd6.png" alt="Identifier" /></p>
+
+<p>然後才可以在程式碼中使用myCell</p>
+
+<pre><code class="language-swift">override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -&gt; UITableViewCell {
+  let cell = tableView.dequeueReusableCell(withIdentifier: &quot;myCell&quot;, for: indexPath)
+
+  // 顯示目前是第幾Row
+  cell.textLabel?.text = &quot;Row &quot; + String(indexPath.row)
+  return cell
+}
+</code></pre>
+
+<p><img src="http://i.imgur.com/MFz1Rhv.png" alt="目前畫面" /></p>
+
+<h2 id="section-title">Section Title</h2>
+
+<p>但是這樣少了每個section的title，沒有段落感，所以用以下的code加上。</p>
+
+<pre><code class="language-swift">override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -&gt; String? {
+  if section == 0{
+    return &quot;Section 0&quot;
+  }
+  else{
+    return &quot;Section 1&quot;
+  }
+}
+</code></pre>
+
+<p><img src="http://i.imgur.com/razNcl9.png" alt="目前畫面" /></p>
+
+<h2 id="點擊某列跳轉到下一個controller-並傳值">點擊某列跳轉到下一個Controller，並傳值</h2>
+
+<p><a href="http://dennycheng-blog.logdown.com/posts/946492-controller-interaction">請參閱之前的傳值方法</a>，我們選用方法一。這邊要補充的是：可以藉由tableview中的indexPathForselectedRow屬性來得知哪一列被選中。</p>
+
+<ol>
+<li>在prepare裡裡面進行傳值的預備動作。</li>
+<li>轉型Controller，這樣才可以塞property
+
+<ul>
+<li>在此我們假設SecondViewController中有selectedIndexPath這個屬性。</li>
+</ul></li>
+<li>可以藉由tableView中的indexPathForselectedRow來判定哪個Row被選中。</li>
+</ol>
+
+<pre><code class="language-swift">override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+  if let indexPath = tableView.indexPathForSelectedRow{
+    let controller = segue.destination as! SecondViewController
+    controller.selectedIndexPath = indexPath
+  }
+}
+</code></pre>
+
+<h2 id="滑動刪除">滑動刪除</h2>
+
+<p>只要複寫方法即可，記得必須同時刪除實際的Array以及畫面上的元件，否則會造成畫面與實際資料不同步的問題。</p>
+
+<pre><code class="language-swift">override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
+  if editingStyle == .delete {
+    // 刪除元素
+    myArray.remove(at: indexPath.row)
+    // 刪除畫面上的元素
+    tableView.deleteRows(at: [indexPath], with: .fade)
+  } 
+}
+</code></pre>
+
+<p>但使用這個方法，只能滑出一個按鈕。如果想滑動時有多個按鈕可以選擇請看下節。</p>
+
+<h2 id="自訂滑動選項">自訂滑動選項</h2>
+
+<p>如果想要自訂滑動按鈕的文字樣式，或是想指定多個滑動按鈕，那就不能使用上述的複寫方法。而必須改用下面這個。
+1. 複寫方法
+2. 自訂UITableViewRowAction
+3. 回傳UITableViewRowAction陣列
+因為此方法回傳陣列，所以可以塞進多個按鈕。</p>
+
+<pre><code class="language-swift">override func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -&gt; [UITableViewRowAction]? {
+        let addAction = UITableViewRowAction(style: .normal, title: &quot;insert&quot;) { 
+            (action, indexPath) in
+          // 下面可寫插入元素的動作  
+        }
+        
+        let deleteAction = UITableViewRowAction(style: .default, title: &quot;delete&quot;) { 
+            (action, indexPath) in
+          // 下面可寫刪除元素的動作  
+        }
+        return [deleteAction, addAction]
+    }
+</code></pre>
+
+<h2 id="更新畫面的method">更新畫面的method</h2>
+
+<p>TableView裡面有三個method可以更新畫面。列表如下
+- 刪除：需提供IndexPath的陣列，一次可以刪一串。
+- 插入：需提供IndexPath的陣列，一次可以加入一串。
+- 重新整理</p>
+
+<p>程式碼如下</p>
+
+<pre><code class="language-swift">tableView.deleteRows(at: [indexPath], with: .fade)
+tableView.insertRows(at: [indexPath], with: .fade)
+tableView.reloadData()
+</code></pre>
+
+<h2 id="更換位置">更換位置</h2>
+
+<h2 id="下拉更新">下拉更新</h2>
+
+<p>常常會看到有APP在tableView下拉時畫面會開始轉圈圈，然後更新，現在試著製作這個效果。
+1. 在StoryBoard中點選TableViewController。
+2. 將Refreshing設定成enable
+3. 此時左方會出現一個Refresh Control，將其拉到程式碼中，選擇Action，動作為value changed。
+    - <img src="http://i.imgur.com/QYt5WVC.png" alt="設定" />
+4. 接下來就可以對剛剛拉出的action做一些事，做完後使用self.refreshControl?.endRefreshing()，就可以結束轉圈圈的畫面。</p>
+
+<pre><code class="language-swift">  @IBAction func reload(_ sender: AnyObject) {
+      // do something
+      self.refreshControl?.endRefreshing()
+  }
+</code></pre>
+
+<h2 id="搜尋">搜尋</h2>
+
+<pre><code class="language-swift">let searchController = UISearchController(searchResultsController: nil)
+searchController.searchResultsUpdater = self
+self.tableView.tableHeaderView = searchController.searchBar
+searchController.dimsBackgroundDuringPresentation = false
+</code></pre>
+
+<h1 id="uicollectionview">UICollectionView</h1>
+
+<h2 id="uicollectionviewdelegateflowlayout">UICollectionViewDelegateFlowLayout</h2>
+
+<p>可以調整cell的大小</p>
+
+			</div>
+
+			
+		</div>
+
+  </body>
+</html>

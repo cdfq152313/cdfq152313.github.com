@@ -1,0 +1,189 @@
+	<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <link href="http://gmpg.org/xfn/11" rel="profile">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta name="generator" content="Hugo 0.19" />
+
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+
+  
+  <title>在AOSP中增加預設app (3) : 利用Android Studio來進行編輯 &middot; Denny&#39;s Blog</title>
+  
+
+  
+  <link rel="stylesheet" href="https://cdfq152313.github.io/css/poole.css">
+  <link rel="stylesheet" href="https://cdfq152313.github.io/css/syntax.css">
+  <link rel="stylesheet" href="https://cdfq152313.github.io/css/hyde.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=PT+Sans:400,400italic,700|Abril+Fatface">
+
+  
+  <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/apple-touch-icon-144-precomposed.png">
+  <link rel="shortcut icon" href="/favicon.png">
+
+  
+  <link href="" rel="alternate" type="application/rss+xml" title="Denny&#39;s Blog" />
+</head>
+
+	<body class="theme-base-0f ">
+		<div class="sidebar">
+  <div class="container sidebar-sticky">
+    <div class="sidebar-about">
+      <a href="https://cdfq152313.github.io/"><h1>Denny&#39;s Blog</h1></a>
+      <p class="lead">
+       獸控天地 
+      </p>
+    </div>
+
+    <ul class="sidebar-nav">
+      <li><a href="/">Home</a> </li>
+      
+        <li><a href="/categories/notes"> 程式筆記 </a></li>
+      
+        <li><a href="/categories/misc"> 心得雜感 </a></li>
+      
+        <li><a href="/tags/"> 標籤列表 </a></li>
+      
+        <li><a href="/about/"> 關於我 </a></li>
+      
+    </ul>
+
+    <p>&copy; 2017. All rights reserved. </p>
+  </div>
+</div>
+
+
+		<div class="content container">
+			<div class="post">
+			 	<h1>在AOSP中增加預設app (3) : 利用Android Studio來進行編輯</h1>
+			  <span class="post-date">Fri, Mar 4, 2016</span>
+			      
+
+<h1 id="平台及環境設置">平台及環境設置</h1>
+
+<p>##平台
+實驗平台：Nexus 5
+Android版本：android-4.4_r1
+前置知識： [Howto Build Android KitKat (4.4) for the Google Nexus 5][6]</p>
+
+<p>##環境設置
+在AOSP資料夾中</p>
+
+<pre><code class="language-bash">source build/envsetup.sh
+lunch aosp_hammerhead-userdebug
+</code></pre>
+
+<h1 id="目標-利用android-studio來新增app-命名為world">目標：利用Android Studio來新增APP (命名為World)</h1>
+
+<p>在上一篇文章中，說明了如何copy一份已有的project來改寫。但是寫Android App有許多煩雜的地方，有時候還是需要IDE來幫助比較快，這裡找了一個比較tricky的方法來使用IDE。</p>
+
+<h2 id="新增android-studio-project">新增Android Studio Project</h2>
+
+<p>我們直接從Android Studio中產生一個空的project，命名為<code>World</code>。
+新增project時記得選empty Activity，之後比較好做。
+<img src="http://i.imgur.com/LTorwRZ.png" alt="Alt Text" /></p>
+
+<h2 id="建立soft-link">建立soft link</h2>
+
+<p>在剛剛產生出來的Android Project路徑底下，<code>World/app/src/main</code>應該有<strong>java、res</strong>資料夾，以及<strong>AndroidManifest.xml</strong>。
+在<code>AOSP/packages/apps</code>建立新目錄<code>World</code>，並在其底下建立起上述3個檔案之<a href="http://linux.vbird.org/linux_basic/0230filesystem.php#ln" title="鳥哥 - ln解說">軟連結(soft link)</a>。</p>
+
+<pre><code class="language-bash">mkdir $ANDROID_BUILD_TOP/packages/apps/World &amp;&amp; cd $_
+ln -s AndroidProject目錄/World/app/src/main/java  java
+ln -s AndroidProject目錄/World/app/src/main/res  res
+ln -s AndroidProject目錄/World/app/src/main/AndroidManifest.xml  AndroidManifest.xml
+</code></pre>
+
+<h2 id="撰寫android-mk">撰寫Android.mk</h2>
+
+<p>參考<a href="http://android.mk/" title="Secrets of Android.mk">Secrets of Android.mk</a>此份文件當中的<strong>Building a simple APK</strong>目錄。將其加到<code>AOSP/packages/apps/World</code>資料夾下。</p>
+
+<p>```makefile Android.mk
+  LOCAL_PATH := $(call my-dir)
+  include $(CLEAR_VARS)</p>
+
+<p># Build all java files in the java subdirectory
+  LOCAL_SRC_FILES := $(call all-subdir-java-files)</p>
+
+<p># Name of the APK to build
+  LOCAL_PACKAGE_NAME := LocalPackage</p>
+
+<p># Tell it to build an APK
+  include $(BUILD_PACKAGE)</p>
+
+<pre><code>
+## 修改掉所有appcompat的部份
+再來使用`mm`在`AOSP/packages/apps/World`進行編譯，運氣不好的話，編譯會出現找不到某些命名的錯誤。這是因為Google為了讓各種app看起來更有一致性，將Android Studio的新Project皆使用Appcompat此library來協調視覺效果。可是此library並不存在於預設的編譯環境當中。為了為了節省麻煩，將其去掉。
+
+```xml style.xml
+&lt;resources&gt;
+
+    &lt;!-- Base application theme. --&gt;
+    &lt;style name=&quot;AppTheme&quot; parent=&quot;android:Theme.Holo.Light.DarkActionBar&quot;&gt;
+        &lt;!-- Customize your theme here. --&gt;
+    &lt;/style&gt;
+
+&lt;/resources&gt;
+</code></pre>
+
+<p>並把MainActivity中可能會用<strong>ActionBarActivity</strong>或是<strong>AppCompatActivity</strong>來替代Activity，請一律換成Activity來使用。
+```java MainActivity.java
+package com.android.world;</p>
+
+<p>import android.app.Activity;
+import android.os.Bundle;</p>
+
+<p>public class MainActivity extends Activity{</p>
+
+<pre><code>@Override
+protected void onCreate(Bundle savedInstanceState) {
+    super.onCreate(savedInstanceState);
+    setContentView(R.layout.activity_main);
+}
+</code></pre>
+
+<p>}</p>
+
+<pre><code>
+最後，我在編譯途中還遇到標籤問題。預設的編譯環境似乎不允許著無命名的字串存在。也就是說，如果你有任何的**text**標籤是直接給予字串值的，可能會編譯失敗。
+```xml 修改前
+&lt;TextView
+        android:layout_width=&quot;wrap_content&quot;
+        android:layout_height=&quot;wrap_content&quot;
+        android:text=&quot;Hello World&quot; /&gt;
+</code></pre>
+
+<p>可能要改將字串引用自string.xml才能編譯成功。
+```xml 修改後
+<TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/app_name" /></p>
+
+<pre><code>```xml res/values/string.xml
+&lt;resources&gt;
+    &lt;string name=&quot;app_name&quot;&gt;World&lt;/string&gt;
+&lt;/resources&gt;
+</code></pre>
+
+<h2 id="編譯">編譯</h2>
+
+<p>使用<code>mm</code>進行編譯，此次應該可以順利通過了。
+之後直接在Android Studio裡對Application進行編輯，由於建立了軟連結，AOSP內部的內容也會同步更改。
+這樣就可以用Android Studio來撰寫APP囉。</p>
+
+<h1 id="reference">Reference</h1>
+
+<ul>
+<li><a href="http://android.mk/" title="Secrets of Android.mk">Android.mk</a></li>
+<li><a href="http://linux.vbird.org/linux_basic/0230filesystem.php#ln" title="鳥哥 - ln解說">鳥哥 - ln解說</a></li>
+</ul>
+
+			</div>
+
+			
+		</div>
+
+  </body>
+</html>

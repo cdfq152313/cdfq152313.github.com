@@ -1,0 +1,144 @@
+	<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <link href="http://gmpg.org/xfn/11" rel="profile">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta name="generator" content="Hugo 0.19" />
+
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+
+  
+  <title>Java (Android) AES &middot; Denny&#39;s Blog</title>
+  
+
+  
+  <link rel="stylesheet" href="https://cdfq152313.github.io/css/poole.css">
+  <link rel="stylesheet" href="https://cdfq152313.github.io/css/syntax.css">
+  <link rel="stylesheet" href="https://cdfq152313.github.io/css/hyde.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=PT+Sans:400,400italic,700|Abril+Fatface">
+
+  
+  <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/apple-touch-icon-144-precomposed.png">
+  <link rel="shortcut icon" href="/favicon.png">
+
+  
+  <link href="" rel="alternate" type="application/rss+xml" title="Denny&#39;s Blog" />
+</head>
+
+	<body class="theme-base-0f ">
+		<div class="sidebar">
+  <div class="container sidebar-sticky">
+    <div class="sidebar-about">
+      <a href="https://cdfq152313.github.io/"><h1>Denny&#39;s Blog</h1></a>
+      <p class="lead">
+       獸控天地 
+      </p>
+    </div>
+
+    <ul class="sidebar-nav">
+      <li><a href="/">Home</a> </li>
+      
+        <li><a href="/categories/notes"> 程式筆記 </a></li>
+      
+        <li><a href="/categories/misc"> 心得雜感 </a></li>
+      
+        <li><a href="/tags/"> 標籤列表 </a></li>
+      
+        <li><a href="/about/"> 關於我 </a></li>
+      
+    </ul>
+
+    <p>&copy; 2017. All rights reserved. </p>
+  </div>
+</div>
+
+
+		<div class="content container">
+			<div class="post">
+			 	<h1>Java (Android) AES</h1>
+			  <span class="post-date">Wed, Feb 22, 2017</span>
+			      
+
+<h1 id="平台">平台</h1>
+
+<p>Android Studio
+- compileSdkVersion 25
+- buildToolsVersion &ldquo;25.0.1&rdquo;</p>
+
+<h1 id="全域變數">全域變數</h1>
+
+<pre><code class="language-java">SecretKey secretKey; // 金鑰
+AlgorithmParameterSpec mAlgorithmParameterSpec; // 之後要放置初始化向量的參數
+</code></pre>
+
+<h1 id="初始化">初始化</h1>
+
+<h2 id="金鑰初始化">金鑰初始化</h2>
+
+<pre><code class="language-java">private void genAESKey() throws Exception {
+  KeyGenerator keyGen = KeyGenerator.getInstance(&quot;AES&quot;); // 指定AES演算法
+  keyGen.init(256, new SecureRandom()); // 指定256位元，並使用SecureRandom
+  secretKey = keyGen.generateKey(); // 產生AES金鑰
+}
+</code></pre>
+
+<h2 id="初始向量初始化">初始向量初始化</h2>
+
+<p>private void genInitializationVector() throws NoSuchPaddingException, NoSuchAlgorithmException {
+  cipher = Cipher.getInstance(&ldquo;AES/CBC/PKCS5Padding&rdquo;); // 指定AES演算法
+  byte [] iVAES = new byte[ cipher.getBlockSize() ]; // new AES演算法所需的block size
+  SecureRandom random = new SecureRandom();
+  random.nextBytes(iVAES); // 填充向量
+  mAlgorithmParameterSpec = new IvParameterSpec(iVAES); // 向量初始化
+}</p>
+
+<h1 id="將字串加密">將字串加密</h1>
+
+<p>在AES加密完之後，用Base64把結果轉成可讀的字串以便以http傳送。
+不做Base64亦可，只是到時候要以byte為單位做傳送。
+初始化模式為 ENCRYPT_MODE</p>
+
+<pre><code class="language-java">private String encrypt(String content) throws Exception {
+    cipher = Cipher.getInstance(&quot;AES/CBC/PKCS5Padding&quot;);
+    cipher.init(Cipher.ENCRYPT_MODE, secretKey, mAlgorithmParameterSpec);
+    byte [] encrypt = cipher.doFinal(contentB64);
+  return Base64.encodeToString(encrypt, Base64.DEFAULT);
+}
+</code></pre>
+
+<h1 id="將字串解密">將字串解密</h1>
+
+<p>初始化模式為 DECRYPT_MODE</p>
+
+<pre><code class="language-java">private String decrypt(String content) throws Exception{
+  cipher = Cipher.getInstance(&quot;AES/CBC/PKCS5Padding&quot;);
+  cipher.init(Cipher.DECRYPT_MODE, secretKey, mAlgorithmParameterSpec);
+  byte [] temp = Base64.decode(content, Base64.DEFAULT); // 將字串還原為bytes
+  byte [] decodeBytes = cipher.doFinal(temp); // 解密
+  return new String(decodeBytes); // 編回字串
+}
+</code></pre>
+
+<h1 id="匯出金鑰">匯出金鑰</h1>
+
+<p>SecretKey使用getEncoded()可以獲得金鑰，為byte形式，若要方便閱讀與傳送可以轉換為Base64
+初始化向量本身有getIV()這個method可以使用，一樣為byte形式，可轉換為Base64。</p>
+
+<pre><code class="language-java">private void export(){
+  String secretKeyB64 = Base64.encodeToString(secretKey.getEncoded(), Base64.DEFAULT);
+  IvParameterSpec iv = (IvParameterSpec) mAlgorithmParameterSpec;
+  String vectorB64 = Base64.encodeToString(iv.getIV(), Base64.DEFAULT);
+
+  Log.i(&quot;Secret Key Base64&quot;, secretKeyB64);
+  Log.i(&quot;Vector Base64&quot;, vectorB64);
+}
+</code></pre>
+
+			</div>
+
+			
+		</div>
+
+  </body>
+</html>

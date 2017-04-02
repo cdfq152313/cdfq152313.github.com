@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Tags on Denny&#39;s Blog</title>
+    <link>https://cdfq152313.github.io/categories/tags/index.xml</link>
+    <description>Recent content in Tags on Denny&#39;s Blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <atom:link href="https://cdfq152313.github.io/categories/tags/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>標籤列表</title>
+      <link>https://cdfq152313.github.io/tags/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://cdfq152313.github.io/tags/</guid>
+      <description>&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://cdfq152313.github.io/tags/general&#34;&gt;general&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://cdfq152313.github.io/tags/android&#34;&gt;android&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://cdfq152313.github.io/tags/java&#34;&gt;java&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://cdfq152313.github.io/tags/jni&#34;&gt;jni&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://cdfq152313.github.io/tags/aosp&#34;&gt;AOSP&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://cdfq152313.github.io/tags/ios&#34;&gt;iOS&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://cdfq152313.github.io/tags/swift&#34;&gt;Swift&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://cdfq152313.github.io/tags/uwp&#34;&gt;UWP&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://cdfq152313.github.io/tags/compiler&#34;&gt;compiler&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://cdfq152313.github.io/tags/llvm&#34;&gt;LLVM&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://cdfq152313.github.io/tags/git&#34;&gt;git&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://cdfq152313.github.io/tags/python&#34;&gt;python&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://cdfq152313.github.io/tags/renpy&#34;&gt;renpy&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://cdfq152313.github.io/tags/cryptography&#34;&gt;Cryptography&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://cdfq152313.github.io/tags/mutt&#34;&gt;mutt&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

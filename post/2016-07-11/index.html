@@ -1,0 +1,134 @@
+	<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <link href="http://gmpg.org/xfn/11" rel="profile">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta name="generator" content="Hugo 0.19" />
+
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+
+  
+  <title>renpy (3) 改良tooltip的方法 &middot; Denny&#39;s Blog</title>
+  
+
+  
+  <link rel="stylesheet" href="https://cdfq152313.github.io/css/poole.css">
+  <link rel="stylesheet" href="https://cdfq152313.github.io/css/syntax.css">
+  <link rel="stylesheet" href="https://cdfq152313.github.io/css/hyde.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=PT+Sans:400,400italic,700|Abril+Fatface">
+
+  
+  <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/apple-touch-icon-144-precomposed.png">
+  <link rel="shortcut icon" href="/favicon.png">
+
+  
+  <link href="" rel="alternate" type="application/rss+xml" title="Denny&#39;s Blog" />
+</head>
+
+	<body class="theme-base-0f ">
+		<div class="sidebar">
+  <div class="container sidebar-sticky">
+    <div class="sidebar-about">
+      <a href="https://cdfq152313.github.io/"><h1>Denny&#39;s Blog</h1></a>
+      <p class="lead">
+       獸控天地 
+      </p>
+    </div>
+
+    <ul class="sidebar-nav">
+      <li><a href="/">Home</a> </li>
+      
+        <li><a href="/categories/notes"> 程式筆記 </a></li>
+      
+        <li><a href="/categories/misc"> 心得雜感 </a></li>
+      
+        <li><a href="/tags/"> 標籤列表 </a></li>
+      
+        <li><a href="/about/"> 關於我 </a></li>
+      
+    </ul>
+
+    <p>&copy; 2017. All rights reserved. </p>
+  </div>
+</div>
+
+
+		<div class="content container">
+			<div class="post">
+			 	<h1>renpy (3) 改良tooltip的方法</h1>
+			  <span class="post-date">Mon, Jul 11, 2016</span>
+			      
+
+<h1 id="tooltip">tooltip</h1>
+
+<p>所謂的tooltip，就是當你滑鼠移到一個button上後，可以顯示一些說明，讓使用者更了解這個button的功能。
+可以用以下的程式碼簡單的實作tootip</p>
+
+<pre><code class="language-python">screen tooltip(tip, positon):
+    frame:
+        text tip pos position
+</code></pre>
+
+<p>然後在button上的hovered和unhovered加上action即可
+- hovered : Show(tooltip, tip=&ldquo;說明文字&rdquo;, position = (10,20) )
+- unhovered : Hide(tooltip)</p>
+
+<h1 id="出現在滑鼠的位置">出現在滑鼠的位置</h1>
+
+<p>目前這個簡陋的tooltip，它的位置是被固定死的。也就是說，每次有新的tooltip，都得自己先行想好tooltip的位置。
+能不能要tooltip直接顯示在滑鼠旁邊呢? 可行的，renpy有提供滑鼠位置的函式。</p>
+
+<pre><code class="language-python">screen tooltip(tip=None):
+    frame:
+        $ position = renpy.get_mouse_pos()
+        text tip pos position
+</code></pre>
+
+<p>ok，如此一來，不用輸入position也可以直接顯示在滑鼠上了，使用者想要自己加減pixel，讓tooltip出現在滑鼠的上下左右方也是非常輕而易舉。</p>
+
+<h1 id="隨著滑鼠而移動">隨著滑鼠而移動</h1>
+
+<p>如果想要tooltip不僅僅只是閃現的那刻出現在滑鼠旁，而是無時無刻的跟著滑鼠移動呢?
+查閱<a href="https://www.renpy.org/doc/html/screens.html">官網</a>，影響位置的參數有兩個。大部分的Screen物件都有兩種可調的位置屬性，第一個是Common Properties中的at，第二個是Position Style Properties。
+據我所知，Position Style Properties是無法動態調整的，所以我們只能依靠關鍵字at後面所接續的<a href="https://www.renpy.org/doc/html/atl.h">trnasform statement</a>來解決這個問題了。</p>
+
+<h2 id="具體步驟">具體步驟</h2>
+
+<ol>
+<li>新增一個transform執行function</li>
+<li>此function內容為定時更新位置(範例為0.05秒)</li>
+<li>在tooltip當中對frame加上at 步驟1的transform</li>
+</ol>
+
+<h2 id="範例">範例</h2>
+
+<pre><code class="language-python">transform follow_mouse:
+    function follow_mouse_func
+    
+init python:
+    def follow_mouse_func(trans, st, at):
+        trans.pos = renpy.get_mouse_pos()
+        return 0.05
+
+screen tooltip(tip=None):
+    frame:
+        at follow_mouse
+        if tip is not None:
+            text tip size 14 color &quot;#000000&quot;
+</code></pre>
+
+<p>function的撰寫可以參考<a href="https://www.renpy.org/doc/html/atl.html#function-statement">官網</a>
+簡略的說一下內容：
+1. 必須有3個參數
+2. 第一個參數為transfrom物件，物件的資訊一樣看<a href="https://www.renpy.org/doc/html/atl.html#list-of-transform-properties">官網</a>
+3. 第二、三個參數跟執行時間相關，較不重要。
+4. 回傳值為<strong>希望多久後再呼叫一次此function</strong>，0秒代表立刻，None代表不再call function，可以繼續向下執行其他transition內容。</p>
+
+			</div>
+
+			
+		</div>
+
+  </body>
+</html>

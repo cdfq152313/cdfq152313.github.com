@@ -1,0 +1,195 @@
+	<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <link href="http://gmpg.org/xfn/11" rel="profile">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta name="generator" content="Hugo 0.19" />
+
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+
+  
+  <title>在linux上跑git server &middot; Denny&#39;s Blog</title>
+  
+
+  
+  <link rel="stylesheet" href="https://cdfq152313.github.io/css/poole.css">
+  <link rel="stylesheet" href="https://cdfq152313.github.io/css/syntax.css">
+  <link rel="stylesheet" href="https://cdfq152313.github.io/css/hyde.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=PT+Sans:400,400italic,700|Abril+Fatface">
+
+  
+  <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/apple-touch-icon-144-precomposed.png">
+  <link rel="shortcut icon" href="/favicon.png">
+
+  
+  <link href="" rel="alternate" type="application/rss+xml" title="Denny&#39;s Blog" />
+</head>
+
+	<body class="theme-base-0f ">
+		<div class="sidebar">
+  <div class="container sidebar-sticky">
+    <div class="sidebar-about">
+      <a href="https://cdfq152313.github.io/"><h1>Denny&#39;s Blog</h1></a>
+      <p class="lead">
+       獸控天地 
+      </p>
+    </div>
+
+    <ul class="sidebar-nav">
+      <li><a href="/">Home</a> </li>
+      
+        <li><a href="/categories/notes"> 程式筆記 </a></li>
+      
+        <li><a href="/categories/misc"> 心得雜感 </a></li>
+      
+        <li><a href="/tags/"> 標籤列表 </a></li>
+      
+        <li><a href="/about/"> 關於我 </a></li>
+      
+    </ul>
+
+    <p>&copy; 2017. All rights reserved. </p>
+  </div>
+</div>
+
+
+		<div class="content container">
+			<div class="post">
+			 	<h1>在linux上跑git server</h1>
+			  <span class="post-date">Sun, Jun 7, 2015</span>
+			      
+
+<h1 id="環境設定">環境設定</h1>
+
+<p>系統: linux mint
+套件: <code>sudo apt-get install openssh-server git</code></p>
+
+<h1 id="基本操作">基本操作</h1>
+
+<p>安裝完openssh-server和git後，即可開始嘗試創建remote repository。
+為了之後的安全性議題，創建一個新的帳號來管理git server</p>
+
+<pre><code>sudo adduser git
+</code></pre>
+
+<p>下方指令新增project.git目錄做為remote repository
+(我新增在此帳號的家目錄下，而git官方文件則是放在 /opt/git/ 裡)</p>
+
+<pre><code>su git
+mkdir /home/git/project.git
+cd /home/git/project.git
+git --bare init
+</code></pre>
+
+<p>remote repository已經建立，可以開始使用。
+<strong>git@gitserver</strong> 代表 <strong>登入帳號@serverIP位置</strong>
+試著用ssh連線抓下git repository吧。</p>
+
+<pre><code>git clone git@gitserver:/home/git/project.git
+git remote -v
+origin git@gitserver:/home/git/project.git (fetch)
+origin git@gitserver:/home/git/project.git (push)
+</code></pre>
+
+<p>當然push pull指令也沒問題囉~ 只要有該帳戶密碼即可。</p>
+
+<pre><code>git push origin master
+git pull origin master
+</code></pre>
+
+<h1 id="安全性議題-ssh-public-key-authentication">安全性議題 - SSH Public Key Authentication</h1>
+
+<p>上述推送git repository的流程中，只需要有帳號密碼即可登入。
+我們可以改以更安全的SSH Public Key Authentication來登入</p>
+
+<h2 id="client">client</h2>
+
+<p>在terminal上輸入<code>ssh-keygen</code>
+全部使用預設值後，成對的公私鑰會出現在~/.ssh裡
+- 公鑰:id_rsa.pub
+- 私鑰:id_rsa</p>
+
+<p>公鑰長起來像這樣</p>
+
+<pre><code>ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCB007n/ww+ouN4gSLKssMxXnBOvf9LGt4LojG6rs6hPB09j9R/T17/x4lhJA0F3FR1rP6kYBRsWj2aThGw6HXLm9/5zytK6Ztg3RPKK+4kYjh6541NYsnEAZuXz0jTTyAUfrtU3Z5E003C4oxOj6H0rfIF1kKI9MAQLMdpGW1GYEIgS9EzSdfd8AcCIicTDWbqLAcU4UpkaX8KyGlLwsNuuGztobF8m72ALC/nLF6JLtPofwFBlgc+myivO7TCUSBdLQlgMVOFq1I2uPWQOkOWQAHukEOmfjy2jctxSDBQ220ymjaNsHT4kgtZg2AYYgPqdAv8JggJICUvax2T9va5 gsg-keypair
+</code></pre>
+
+<h2 id="server">server</h2>
+
+<p>登入管理git server的帳戶</p>
+
+<pre><code>su git
+</code></pre>
+
+<p>把允許連到這個server的用戶公鑰，複製貼上到~/.ssh/authorized_keys文件中。</p>
+
+<pre><code>mkdir ~/.ssh
+vi ~/.ssh/authorized_keys
+</code></pre>
+
+<p>authorized_keys中，有幾個公鑰就放幾行。</p>
+
+<pre><code>公鑰1
+公鑰2
+公鑰3
+...
+</code></pre>
+
+<h1 id="安全性議題-限制shell功能">安全性議題 - 限制shell功能</h1>
+
+<p>如果有人遠端登入伺服器後，使用vi、rm、touch等指令隨便更改repository內容，豈不是很危險。
+因此要限制此帳戶只能拿來做為唯一用途──推送版本庫。
+將原本的bash-shell改為git-shell，使此帳戶只剩下git相關功能吧。
+編輯權限檔</p>
+
+<pre><code>sudo vim /etc/passwd
+</code></pre>
+
+<p>passwd檔案底會出現剛剛的帳戶，這行可能長這樣。</p>
+
+<pre><code>git:x :1001:1001:/home/git:/bin/sh
+</code></pre>
+
+<p>由左到右分別代表
+<strong>帳戶:密碼(以x代替):UID(使用者識別碼):GID(群組識別碼):家目錄位置:使用的shell</strong>
+將shell替代成git-shell，使此帳戶只剩下git相關功能。</p>
+
+<pre><code>git:x :1001:1001::/home/git:/usr/bin/git-shell
+</code></pre>
+
+<p>git-shell的位置可以用下列指令找到</p>
+
+<pre><code>which git-shell
+</code></pre>
+
+<p>調整完權限後，再想以ssh登入此帳戶就會出現</p>
+
+<pre><code>$ ssh git@gitserver
+Welcome to Linux Mint 17.1 Rebecca (GNU/Linux 3.13.0-37-generic x86_64)
+Welcome to Linux Mint
+ * Documentation:  http://www.linuxmint.com
+Last login: Sat Jun  6 19:55:30 2015 from localhost
+fatal: Interactive git shell is not enabled.
+hint: ~/git-shell-commands should exist and have read and execute access.
+Connection to gitserver closed.
+</code></pre>
+
+<p>此帳號無法再使用shell囉~</p>
+
+<h1 id="reference">reference</h1>
+
+<ul>
+<li><a href="https://git-scm.com/book/zh-tw/v1/%E4%BC%BA%E6%9C%8D%E5%99%A8%E4%B8%8A%E7%9A%84-Git">git server官方文件</a></li>
+<li><a href="http://linux.vbird.org/linux_basic/0410accountmanager.php#passwd_file">/etc/passwd文件含意</a></li>
+<li><a href="http://blogger.gtwang.org/2014/05/linux-ssh-public-key-authentication.html">ssh產生金鑰</a></li>
+<li><a href="http://blog.udn.com/nigerchen/2262865">ssh安全性設定</a></li>
+</ul>
+
+			</div>
+
+			
+		</div>
+
+  </body>
+</html>

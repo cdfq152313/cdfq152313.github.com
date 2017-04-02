@@ -1,0 +1,165 @@
+	<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <link href="http://gmpg.org/xfn/11" rel="profile">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta name="generator" content="Hugo 0.19" />
+
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+
+  
+  <title>基礎知識惡補 - Http協定 &middot; Denny&#39;s Blog</title>
+  
+
+  
+  <link rel="stylesheet" href="https://cdfq152313.github.io/css/poole.css">
+  <link rel="stylesheet" href="https://cdfq152313.github.io/css/syntax.css">
+  <link rel="stylesheet" href="https://cdfq152313.github.io/css/hyde.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=PT+Sans:400,400italic,700|Abril+Fatface">
+
+  
+  <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/apple-touch-icon-144-precomposed.png">
+  <link rel="shortcut icon" href="/favicon.png">
+
+  
+  <link href="" rel="alternate" type="application/rss+xml" title="Denny&#39;s Blog" />
+</head>
+
+	<body class="theme-base-0f ">
+		<div class="sidebar">
+  <div class="container sidebar-sticky">
+    <div class="sidebar-about">
+      <a href="https://cdfq152313.github.io/"><h1>Denny&#39;s Blog</h1></a>
+      <p class="lead">
+       獸控天地 
+      </p>
+    </div>
+
+    <ul class="sidebar-nav">
+      <li><a href="/">Home</a> </li>
+      
+        <li><a href="/categories/notes"> 程式筆記 </a></li>
+      
+        <li><a href="/categories/misc"> 心得雜感 </a></li>
+      
+        <li><a href="/tags/"> 標籤列表 </a></li>
+      
+        <li><a href="/about/"> 關於我 </a></li>
+      
+    </ul>
+
+    <p>&copy; 2017. All rights reserved. </p>
+  </div>
+</div>
+
+
+		<div class="content container">
+			<div class="post">
+			 	<h1>基礎知識惡補 - Http協定</h1>
+			  <span class="post-date">Thu, Nov 24, 2016</span>
+			      
+
+<p>來源網址：<a href="https://read01.com/J8P4L.html">https://read01.com/J8P4L.html</a>
+要注意最後一段說get比較不安全是錯的，你他媽的不轉成https通通都是不安全。</p>
+
+<h1 id="client端">Client端</h1>
+
+<p>分三區塊
+- Request line
+- Request header
+- Body</p>
+
+<h2 id="request-line">Request line</h2>
+
+<ul>
+<li>有著方法描述，資源位置，協議版本</li>
+<li>例如：GET <a href="http://www.cnblogs.com/">http://www.cnblogs.com/</a> HTTP/1.1</li>
+</ul>
+
+<h2 id="request-header">Request header</h2>
+
+<ul>
+<li>Accept：client告知server可以接受的媒體類型(json, xml, html &hellip;)，大部分使用*/*代表全部都接受。</li>
+<li>Referer：告訴伺服器端我是從哪裡連過來</li>
+<li>Accept-Language：瀏覽器端接受的語言
+
+<ul>
+<li>EX: 中文、英文&hellip;</li>
+</ul></li>
+<li>Accept-Charset：瀏覽器端接受的字符集
+
+<ul>
+<li>EX: BIG5, UTF-8, GBK &hellip;</li>
+</ul></li>
+<li>Content-Type
+
+<ul>
+<li>Body的檔案類型</li>
+<li><a href="http://webmasters.stackexchange.com/questions/31212/difference-between-the-accept-and-content-type-http-headers">補充資料</a>，與Accept的差別</li>
+<li>簡單的說，當client傳送檔案給server，content-type可以描述這個檔案的類型。當server吐response回給client，content-type一樣可以描述這個檔案的類型。</li>
+<li>accept是請求對方返回的類型，content-type是實際一個request或response中夾帶的類型。</li>
+</ul></li>
+<li>Accept-Encoding：client端的編碼(壓縮)方法</li>
+<li>User-Agent：client端的作業系統，瀏覽器名稱</li>
+<li>Connection
+
+<ul>
+<li>是否在接收完檔案後立刻斷開TCP</li>
+<li>[補充資料])(<a href="https://www.byvoid.com/zht/blog/http-keep-alive-header">https://www.byvoid.com/zht/blog/http-keep-alive-header</a>)</li>
+</ul></li>
+<li>Content-length: 訊息長度</li>
+<li>Host：該資源的domain Name</li>
+<li>剩下一些懶得看
+
+<ul>
+<li>Pragma</li>
+<li>Cookie</li>
+</ul></li>
+</ul>
+
+<h2 id="body">Body</h2>
+
+<p>就是個Body</p>
+
+<h1 id="server端">Server端</h1>
+
+<p>一樣分三區塊
+- Response line
+- Response header
+- Body</p>
+
+<h2 id="response-line">Response line</h2>
+
+<ul>
+<li>協議版本及狀態碼</li>
+<li>例如：HTTP/1.1 200 OK</li>
+</ul>
+
+<h2 id="response-header">Response header</h2>
+
+<p>有些部分跟request一樣，少部分懶得看。</p>
+
+<p>Content-Type：回傳資料的型態
+Expired：回傳資料過期時間
+- 懶得看
+    - Cache-Control
+  - Last-Modified:
+    - Server
+    - X-AspNet-Version:
+    - X-Powered-By:
+    - Connection
+    - Content-Length
+    - Date</p>
+
+<h2 id="body-1">Body</h2>
+
+<p>就只是個Body</p>
+
+			</div>
+
+			
+		</div>
+
+  </body>
+</html>

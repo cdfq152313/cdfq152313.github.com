@@ -9,7 +9,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
 
   
-  <title>About &middot; Denny&#39;s Blog</title>
+  <title>git 基本指令 &middot; Denny&#39;s Blog</title>
   
 
   
@@ -56,13 +56,78 @@
 
 		<div class="content container">
 			<div class="post">
-			 	<h1>About</h1>
-			  <span class="post-date">Mon, Jan 1, 0001</span>
-			      <p>Denny Cheng / 月月冬瓜<br />
-獸控兼工程師，目前寫Android、IOS和UWP。<br />
-家有大貓程式。<br />
-我的噗浪：<a href="https://www.plurk.com/cdfq152313">https://www.plurk.com/cdfq152313</a><br />
-我的信箱：cdfq152313@gmail.com</p>
+			 	<h1>git 基本指令</h1>
+			  <span class="post-date">Fri, Jun 5, 2015</span>
+			      <p>初始化</p>
+
+<pre><code>git init
+git config --global user.name &quot;你的ID&quot;
+git config --global user.email &quot;你的信箱&quot;
+</code></pre>
+
+<p>狀態
+    git status</p>
+
+<p>新增</p>
+
+<pre><code>git add 檔名
+git add -A
+git add -u
+</code></pre>
+
+<p>提交</p>
+
+<pre><code>git commit -m &quot;改動訊息&quot;
+</code></pre>
+
+<p>歷史訊息</p>
+
+<pre><code>git log
+</code></pre>
+
+<p>忽略</p>
+
+<pre><code>.gitignore
+</code></pre>
+
+<p>比較不同</p>
+
+<pre><code>git diff (工作和暫存)
+git diff 分支名稱 (工作和分支)
+</code></pre>
+
+<p>分支(版本)名稱
+HEAD(目前頭分支) : HEAD HEAD^ HEAD^^ HEAD^^^
+master(branch名)
+695606fc5e31&hellip;.. (commit hash名)</p>
+
+<p>重置</p>
+
+<pre><code>git reset --hard 分支名稱(分支覆蓋暫存區和工作區，後悔藥，危險不可逆)
+git reset 分支名稱 (分支覆蓋暫存區，通常拿來撤銷git add操作)
+
+git checkout 分支名稱 (看以前的版本)
+
+git tag -m &quot;wahaha version 1000&quot; v_1000
+</code></pre>
+
+<p>在git中，為了吃後悔藥，完成一個小功能立刻commit
+在git中，為了找尋方便，完成大改版記得tag</p>
+
+<pre><code>git describe (方便產生版本號)
+</code></pre>
+
+<p>老闆叫你交東西給客戶 但是你程式改到一半</p>
+
+<pre><code>git stash
+git stash pop
+</code></pre>
+
+<p>交成品囉 []裡面為可加可不加的內容</p>
+
+<pre><code>git archive -o 輸出.zip 分支名稱 [想要複製的資料夾/檔案，可多個]
+git archive -o output.zip HEAD src obj
+</code></pre>
 
 			</div>
 

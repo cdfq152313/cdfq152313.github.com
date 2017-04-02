@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Python on Denny&#39;s Blog</title>
+    <link>https://cdfq152313.github.io/tags/python/index.xml</link>
+    <description>Recent content in Python on Denny&#39;s Blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <atom:link href="https://cdfq152313.github.io/tags/python/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>Python AES (PyCrypto)</title>
+      <link>https://cdfq152313.github.io/post/2017-02-23/</link>
+      <pubDate>Thu, 23 Feb 2017 00:00:00 +0000</pubDate>
+      
+      <guid>https://cdfq152313.github.io/post/2017-02-23/</guid>
+      <description>
+
+&lt;h1 id=&#34;程式碼&#34;&gt;程式碼&lt;/h1&gt;
+
+&lt;p&gt;為了易於保存，所有金鑰、向量、輸出結果都是以Base64編碼。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;from Crypto.Cipher import AES
+from Crypto import Random
+import base64
+
+BS = AES.block_size
+pad = lambda s: s + (BS - len(s) % BS) * chr(BS - len(s) % BS)
+unpad = lambda s : s[0:-ord(s[-1])]
+
+class AES_HELPER(object):
+    def __init__(self):
+        print &#39;init&#39;
+
+    def key_generator(self, bits=256):
+        random = Random.new()
+        key = random.read( bits/8 )
+        return base64.b64encode(key)
+
+    def iv_generator(self):
+        &#39;&#39;&#39;
+        AES Initialization Vector is 128 bits(16 bytes).
+        &#39;&#39;&#39;
+        random = Random.new()
+        key = random.read( 16 )
+        return base64.b64encode(key)
+
+    def encrypt(self, b64key, b64iv, data):
+        key = base64.b64decode(b64key)
+        iv = base64.b64decode(b64iv)
+
+        cryptor = AES.new(key, AES.MODE_CBC, iv)
+        data = pad(data)
+        encrypted = cryptor.encrypt(data)
+        encrypted = base64.b64encode(encrypted)
+        return encrypted
+
+    def decrypt(self, b64key, b64iv, data):
+        key = base64.b64decode(b64key)
+        iv = base64.b64decode(b64iv)
+
+        cryptor = AES.new(key, AES.MODE_CBC, iv)
+        decrypted = base64.b64decode(data)
+        decrypted = cryptor.decrypt(decrypted)
+        decrypted = unpad( decrypted )
+        return decrypted
+
+aes_helper = AES_HELPER()
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;使用上也蠻容易的&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;if __name__ == &#39;__main__&#39;:
+    key = aes_helper.key_generator()
+    iv = aes_helper.iv_generator()
+    data = &amp;quot;Hello moto. I&#39;m fire. Thank you. I got fired. Thank you. Madadabi meow meow Madadabi meow.&amp;quot;
+    encrypted = aes_helper.encrypt(key, iv, data)
+    decrypted = aes_helper.decrypt(key, iv, encrypted)
+    print (&#39;data: %s&#39; % data )
+    print (&#39;encrypted: %s&#39; % encrypted )
+    print (&#39;decrypted: %s&#39; % decrypted )
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h1 id=&#34;random的使用&#34;&gt;Random的使用&lt;/h1&gt;
+
+&lt;p&gt;在使用AES的時候會需要用到兩個隨機生產的東西
+1. 金鑰: 可為128 192 256 bits，金鑰長度越長越不容易被破解。
+2. 初始化向量: 只有128 bits的形式，為了避免同樣的文章在同一金鑰下會被加密為同樣密文，從而增加被破解風險。&lt;/p&gt;
+
+&lt;p&gt;這邊要特別注意的是必須使用pycrypto所提供的Random，而不能用python原生地random，不然亂數會不夠安全。
+以下為產生金鑰的程式碼&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;from Crypto import Random
+import base64
+
+def key_generator(bits=256):
+  random = Random.new()
+  key = random.read( bits/8 )
+  return base64.b64encode(key)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;使用random.read()來產生隨機的金鑰串，裡面的參數決定了金鑰串的長度，&lt;strong&gt;單位是bytes&lt;/strong&gt;。
+初始向量也是同樣的作法，只是這次要限制在128 bits(16 bytes)&lt;/p&gt;
+
+&lt;h1 id=&#34;padding-pkcs5-pkcs7&#34;&gt;Padding (PKCS5 / PKCS7)&lt;/h1&gt;
+
+&lt;p&gt;這邊要特別注意有所謂的padding問題，在網路上找了一些解決的方法，以下是程式碼。
+&lt;a href=&#34;http://likang.me/blog/2013/06/05/python-pycrypto-aes-ecb-pkcs-5/&#34;&gt;http://likang.me/blog/2013/06/05/python-pycrypto-aes-ecb-pkcs-5/&lt;/a&gt;
+&lt;a href=&#34;https://gist.github.com/crmccreary/5610068&#34;&gt;https://gist.github.com/crmccreary/5610068&lt;/a&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;BS = 16
+pad = lambda s: s + (BS - len(s) % BS) * chr(BS - len(s) % BS) 
+unpad = lambda s : s[0:-ord(s[-1])]
+&lt;/code&gt;&lt;/pre&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Python Mac Sierra pyinstaller py2app 的權限問題</title>
+      <link>https://cdfq152313.github.io/post/2016-12-27/</link>
+      <pubDate>Tue, 27 Dec 2016 00:00:00 +0000</pubDate>
+      
+      <guid>https://cdfq152313.github.io/post/2016-12-27/</guid>
+      <description>&lt;p&gt;最近遇到一個問題，使用pyinstaller製作執行檔後，在本機運作上ok，但是一傳給別人使用就會出問題。
+可是用右鍵show packages裡面的Content/MacOS/執行檔，是可以正常使用的。
+這讓我非常困惑，後來才發現是Sierra權限設定更改。&lt;/p&gt;
+
+&lt;p&gt;英文好的可以直接看下面就解決了：
+&lt;a href=&#34;http://lapcatsoftware.com/articles/app-translocation.html&#34;&gt;http://lapcatsoftware.com/articles/app-translocation.html&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;英文不好的簡單翻譯就是：
+解壓縮zip後的任何app檔，在執行期的時候會自動放入App Translocation這個唯讀資料夾運行。
+因為是唯讀資料夾，所以不能寫入，我的程式就是因為有寫入功能才失敗。
+解決方法是拖拉這個app到任意其他位置(ex:桌面)，OSX就不會再幫你把這個app放進唯讀資料夾執行。&lt;/p&gt;
+
+&lt;p&gt;還記得幾乎所有的MAC app都需要拖拉到應用程式裡面才能使用嗎? MAC應該就是希望你對想使用的APP進行過此一確認才加上這個功能。&lt;/p&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

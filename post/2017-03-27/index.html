@@ -1,0 +1,115 @@
+	<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <link href="http://gmpg.org/xfn/11" rel="profile">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta name="generator" content="Hugo 0.19" />
+
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+
+  
+  <title>Android Dialog取消動作 &middot; Denny&#39;s Blog</title>
+  
+
+  
+  <link rel="stylesheet" href="https://cdfq152313.github.io/css/poole.css">
+  <link rel="stylesheet" href="https://cdfq152313.github.io/css/syntax.css">
+  <link rel="stylesheet" href="https://cdfq152313.github.io/css/hyde.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=PT+Sans:400,400italic,700|Abril+Fatface">
+
+  
+  <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/apple-touch-icon-144-precomposed.png">
+  <link rel="shortcut icon" href="/favicon.png">
+
+  
+  <link href="" rel="alternate" type="application/rss+xml" title="Denny&#39;s Blog" />
+</head>
+
+	<body class="theme-base-0f ">
+		<div class="sidebar">
+  <div class="container sidebar-sticky">
+    <div class="sidebar-about">
+      <a href="https://cdfq152313.github.io/"><h1>Denny&#39;s Blog</h1></a>
+      <p class="lead">
+       獸控天地 
+      </p>
+    </div>
+
+    <ul class="sidebar-nav">
+      <li><a href="/">Home</a> </li>
+      
+        <li><a href="/categories/notes"> 程式筆記 </a></li>
+      
+        <li><a href="/categories/misc"> 心得雜感 </a></li>
+      
+        <li><a href="/tags/"> 標籤列表 </a></li>
+      
+        <li><a href="/about/"> 關於我 </a></li>
+      
+    </ul>
+
+    <p>&copy; 2017. All rights reserved. </p>
+  </div>
+</div>
+
+
+		<div class="content container">
+			<div class="post">
+			 	<h1>Android Dialog取消動作</h1>
+			  <span class="post-date">Mon, Mar 27, 2017</span>
+			      <p>使用AlertDialog時，當點在Dialog的外圍，Android會讓此Dialog消失，並且什麼動作都不執行。
+如果剛好positive和negative的按鈕都是有明確動作的，並不想被取消，可以透過<strong>setCancelable(boolean)</strong>這個函式來強制使用者不得取消。
+不過有時會希望使用者可以透過點擊按鈕或點擊Dialog外圍來執行取消動作(非null空動作)，但在AlertDialog的函式庫中是無能為力的，我查了</p>
+
+<ul>
+<li>setOnCancelListener</li>
+<li>setOnDismissListener</li>
+</ul>
+
+<p>這兩個函式都會導致程式異常停止。最後查到應該使用DialogFragment當中的onCancel動作來解決這個問題。
+以下範例程式碼</p>
+
+<pre><code class="language-java">public class MyDialogFragment extends DialogFragment {
+    private final static String TAG = &quot;MyDialog&quot;;
+
+    @Override
+    public Dialog onCreateDialog(Bundle savedInstanceState) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder.setTitle(&quot;Hello&quot;)
+                .setPositiveButton(&quot;YA&quot;, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        Log.i(TAG, &quot;Positive&quot;);
+                    }
+                })
+                .setNegativeButton(&quot;NO&quot;, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        Log.i(TAG, &quot;Negative&quot;);
+                    }
+                });
+        return builder.create();
+    }
+
+    @Override
+    public void onCancel(DialogInterface dialog) {
+        super.onCancel(dialog);
+        Log.i(TAG, &quot;OnCancel&quot;);
+    }
+}
+</code></pre>
+
+<p>重點如下
+1. 繼承DialogFragment
+2. 複寫onCreateDialog方法，並回傳一個Dialog (跟以往AlertDialog的使用方法一樣)
+3. 複寫onCancel方法，裡面放上<strong>點擊外框使AlertDialog消失</strong>時要觸發的事件。
+    - 注意：如果是點positive Button或negative Button皆不會觸發這個函式。</p>
+
+			</div>
+
+			
+		</div>
+
+  </body>
+</html>

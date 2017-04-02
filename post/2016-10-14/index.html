@@ -1,0 +1,170 @@
+	<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <link href="http://gmpg.org/xfn/11" rel="profile">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta name="generator" content="Hugo 0.19" />
+
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+
+  
+  <title>Swift 多執行緒與檔案下載 &middot; Denny&#39;s Blog</title>
+  
+
+  
+  <link rel="stylesheet" href="https://cdfq152313.github.io/css/poole.css">
+  <link rel="stylesheet" href="https://cdfq152313.github.io/css/syntax.css">
+  <link rel="stylesheet" href="https://cdfq152313.github.io/css/hyde.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=PT+Sans:400,400italic,700|Abril+Fatface">
+
+  
+  <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/apple-touch-icon-144-precomposed.png">
+  <link rel="shortcut icon" href="/favicon.png">
+
+  
+  <link href="" rel="alternate" type="application/rss+xml" title="Denny&#39;s Blog" />
+</head>
+
+	<body class="theme-base-0f ">
+		<div class="sidebar">
+  <div class="container sidebar-sticky">
+    <div class="sidebar-about">
+      <a href="https://cdfq152313.github.io/"><h1>Denny&#39;s Blog</h1></a>
+      <p class="lead">
+       獸控天地 
+      </p>
+    </div>
+
+    <ul class="sidebar-nav">
+      <li><a href="/">Home</a> </li>
+      
+        <li><a href="/categories/notes"> 程式筆記 </a></li>
+      
+        <li><a href="/categories/misc"> 心得雜感 </a></li>
+      
+        <li><a href="/tags/"> 標籤列表 </a></li>
+      
+        <li><a href="/about/"> 關於我 </a></li>
+      
+    </ul>
+
+    <p>&copy; 2017. All rights reserved. </p>
+  </div>
+</div>
+
+
+		<div class="content container">
+			<div class="post">
+			 	<h1>Swift 多執行緒與檔案下載</h1>
+			  <span class="post-date">Fri, Oct 14, 2016</span>
+			      
+
+<p>Swift的執行緒分為主要和背景。
+Main Queue / Concurrent Queue
+主執行緒不能執行同步工作，只能執行非同步工作。</p>
+
+<h1 id="主執行緒語法">主執行緒語法</h1>
+
+<pre><code class="language-swift">let task1 = {
+    for i in 1...5{
+        print (&quot;Task1: (\i)&quot;)
+    }
+}
+
+// DispatchQueue.main.sync(execute: task1)
+DispatchQueue.main.async(execute: task1)
+
+</code></pre>
+
+<h1 id="背景執行緒語法">背景執行緒語法</h1>
+
+<p>不指定執行緒</p>
+
+<pre><code class="language-swift">DispatchQueue.global().sync(execute: task1)
+DispatchQueue.global().async(execute: task1)
+</code></pre>
+
+<p>指定執行緒</p>
+
+<pre><code class="language-swift">DispatchQueue.global(qos: .background).sync(execute:task1)
+DispatchQueue.global(qos: .background).async(execute:task1)
+</code></pre>
+
+<h1 id="下載方法">下載方法</h1>
+
+<h2 id="nsdata">NSData</h2>
+
+<ol>
+<li>利用url生出網址</li>
+<li>利用Data Class下載(以前叫NSData)</li>
+<li>把下載下來的資料指定給想要的檔案</li>
+</ol>
+
+<p>記得要使用DispatchQueue.global().async使用此function，否則畫面會被block住。
+下載完畢後要更新UI時要使用ispatchQueue.main.async否則畫面不會即時更新。</p>
+
+<pre><code class="language-swift">func download(){
+  if let url = URL(string: &quot;http://www.carlosicaza.com/wp-content/uploads/2014/07/Swift-logo.png&quot;){
+    do {
+      let data = try Data(contentsOf:url)
+      let image = UIImage(data:data)
+      DispatchQueue.main.async{
+        self.myImage.image = image
+      }
+    }
+    catch{
+      print(&quot;Cannot download image&quot;)
+    }
+  }
+}
+
+DispatchQueue.global().async {
+    self.download()
+}
+</code></pre>
+
+<h2 id="session">Session</h2>
+
+<p>改利用Session來下載
+Session的ataTask本身即是非同步，所以不會擋住UI畫面。
+一樣在任務結束要更新UI時要使用main thread來更新。</p>
+
+<ol>
+<li>利用url生出網址</li>
+<li>利用Session的dataTask
+
+<ul>
+<li>指定網址</li>
+<li>指定下載完成後要做的事 (若要更新UI，記得要在Mainthread執行)</li>
+<li>會回傳一個URLSessionDataTask的instance作為此任務的標記</li>
+</ul></li>
+<li>將剛剛接收到的instance.resume()才會開始執行任務</li>
+</ol>
+
+<pre><code class="language-swift">self.image = nil
+let task = session.dataTask(with: url) {
+    (data, response, error) in
+    if error != nil{
+        return
+    }
+    
+    if let loadedData = data{
+        let loadedImage = UIImage(data: loadedData)
+        DispatchQueue.main.async{
+            self.image = loadedImage
+            self.loading?.stopAnimating()
+        }
+    }
+    
+}
+task.resume()
+</code></pre>
+
+			</div>
+
+			
+		</div>
+
+  </body>
+</html>

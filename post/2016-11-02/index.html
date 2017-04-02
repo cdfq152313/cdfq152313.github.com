@@ -1,0 +1,165 @@
+	<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <link href="http://gmpg.org/xfn/11" rel="profile">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta name="generator" content="Hugo 0.19" />
+
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+
+  
+  <title>Swift Mail &amp; Message &middot; Denny&#39;s Blog</title>
+  
+
+  
+  <link rel="stylesheet" href="https://cdfq152313.github.io/css/poole.css">
+  <link rel="stylesheet" href="https://cdfq152313.github.io/css/syntax.css">
+  <link rel="stylesheet" href="https://cdfq152313.github.io/css/hyde.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=PT+Sans:400,400italic,700|Abril+Fatface">
+
+  
+  <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/apple-touch-icon-144-precomposed.png">
+  <link rel="shortcut icon" href="/favicon.png">
+
+  
+  <link href="" rel="alternate" type="application/rss+xml" title="Denny&#39;s Blog" />
+</head>
+
+	<body class="theme-base-0f ">
+		<div class="sidebar">
+  <div class="container sidebar-sticky">
+    <div class="sidebar-about">
+      <a href="https://cdfq152313.github.io/"><h1>Denny&#39;s Blog</h1></a>
+      <p class="lead">
+       獸控天地 
+      </p>
+    </div>
+
+    <ul class="sidebar-nav">
+      <li><a href="/">Home</a> </li>
+      
+        <li><a href="/categories/notes"> 程式筆記 </a></li>
+      
+        <li><a href="/categories/misc"> 心得雜感 </a></li>
+      
+        <li><a href="/tags/"> 標籤列表 </a></li>
+      
+        <li><a href="/about/"> 關於我 </a></li>
+      
+    </ul>
+
+    <p>&copy; 2017. All rights reserved. </p>
+  </div>
+</div>
+
+
+		<div class="content container">
+			<div class="post">
+			 	<h1>Swift Mail &amp; Message</h1>
+			  <span class="post-date">Wed, Nov 2, 2016</span>
+			      
+
+<h1 id="mail">Mail</h1>
+
+<p>不能在模擬器上跑，會crash。</p>
+
+<h2 id="簡單流程">簡單流程</h2>
+
+<ol>
+<li>初始化MFMailComposeViewController</li>
+<li>設定標題以及收件者</li>
+<li>推出MFMailComposeViewController</li>
+</ol>
+
+<pre><code class="language-swift">import MessageUI
+
+func sendMail(){
+  let mailController = MFMailComposeViewController()
+  mailController.setSubject(&quot;swift程式設計入門&quot;)
+  mailController.setToRecipients([&quot;cdfq152313@gmail.com&quot;])
+  self.present(mailController, animated: true, completion: nil)
+}
+</code></pre>
+
+<h2 id="測試能不能使用mail功能">測試能不能使用Mail功能</h2>
+
+<p>像是在模擬器上就不能使用。</p>
+
+<pre><code class="language-swift">if MFMailComposeViewController.canSendMail(){
+    // 可以寄信
+}
+else{
+    // 不能寄信
+}
+</code></pre>
+
+<h2 id="mailcomposedelegate">mailComposeDelegate</h2>
+
+<p>設定mailComposeDelegate可以讓寄信完後，dismiss到原來畫面，這邊要注意的是不要設成一般delegate了。</p>
+
+<pre><code class="language-swift">mailController.mailComposeDelegate = self
+
+func mailComposeController(_ controller: MFMailComposeViewController, didFinishWith result: MFMailComposeResult, error: Error?) {
+        dismiss(animated: true, completion: nil)
+}
+
+</code></pre>
+
+<p>如果想知道寄信後的狀態可參考第二個參數didFinishWith result。按住command + 滑鼠左鍵在MFMailCompseResult可以知道有下列狀態。</p>
+
+<pre><code class="language-swift">public enum MFMailComposeResult : Int {
+    case cancelled
+    case saved
+    case sent
+    case failed
+}
+</code></pre>
+
+<h2 id="夾帶圖片">夾帶圖片</h2>
+
+<pre><code class="language-swift">// 夾一張圖片
+func mailCo
+var image = UIImage(named: &quot;book1&quot;)
+var data = UIImageJPEGRepresentation(image!, 0.9)
+mailController.addAttachmentData(data!, mimeType:&quot;image/jpg&quot;, fileName: &quot;book1.jpg&quot;)
+
+// 可以夾不只一個圖片
+image = UIImage(named: &quot;book2&quot;)
+data = UIImageJPEGRepresentation(image!, 0.9)
+mailController.addAttachmentData(data!, mimeType: &quot;image/jpg&quot;, fileName: &quot;book2.jpg&quot;)
+</code></pre>
+
+<h2 id="放置html檔">放置HTML檔</h2>
+
+<pre><code class="language-swift">let body = &quot;&lt;h1&gt;HelloWorld&lt;/h1&gt;&quot;
+mailController.setMessageBody(body, isHTML:true)
+</code></pre>
+
+<h1 id="message">Message</h1>
+
+<p>同樣不能在模擬器上跑，會crash。</p>
+
+<h2 id="簡單流程-1">簡單流程</h2>
+
+<p>由於是訊息，只要填body即可。
+收件者可以是
+- 人名
+- 手機號碼
+- 郵件信箱</p>
+
+<pre><code class="language-swift">func sendMessage(){
+  let controller = MFMessageComposeViewController()
+  controller.body = &quot;hello&quot;
+  controller.recipients = [&quot;Denny&quot;, &quot;0978948787&quot;, &quot;cdfq152313@gmail.com&quot;]
+  self.present(controller, animated: true, completion: nil)
+}
+</code></pre>
+
+			</div>
+
+			
+		</div>
+
+  </body>
+</html>

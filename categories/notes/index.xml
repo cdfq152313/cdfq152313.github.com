@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Denny&#39;s Blog</title>
-    <link>https://cdfq152313.github.io/index.xml</link>
-    <description>Recent content on Denny&#39;s Blog</description>
+    <title>Notes on Denny&#39;s Blog</title>
+    <link>https://cdfq152313.github.io/categories/notes/index.xml</link>
+    <description>Recent content in Notes on Denny&#39;s Blog</description>
     <generator>Hugo -- gohugo.io</generator>
-    <lastBuildDate>Mon, 27 Mar 2017 00:00:00 +0000</lastBuildDate>
-    <atom:link href="https://cdfq152313.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="https://cdfq152313.github.io/categories/notes/index.xml" rel="self" type="application/rss+xml" />
     
     <item>
       <title>Android Dialog取消動作</title>
@@ -342,87 +341,6 @@ AlgorithmParameterSpec mAlgorithmParameterSpec; // 之後要放置初始化向�
     </item>
     
     <item>
-      <title>寫給朋友看的function與class</title>
-      <link>https://cdfq152313.github.io/misc/2017-01-15/</link>
-      <pubDate>Sun, 15 Jan 2017 00:00:00 +0000</pubDate>
-      
-      <guid>https://cdfq152313.github.io/misc/2017-01-15/</guid>
-      <description>
-
-&lt;h1 id=&#34;今天有個簡易的app功能如下&#34;&gt;今天有個簡易的app功能如下&lt;/h1&gt;
-
-&lt;ol&gt;
-&lt;li&gt;只有一個ViewController&lt;/li&gt;
-&lt;li&gt;這個ViewController上只有兩個UITextView&lt;/li&gt;
-&lt;li&gt;Input: &amp;ldquo;01/15&amp;rdquo; 代表1月15日&lt;/li&gt;
-&lt;li&gt;想要結果: 在第一個UITextView上呈現 &amp;ldquo;1 月&amp;rdquo;，在第二個UITextView上呈現&amp;rdquo;15日&amp;rdquo;&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;這時候可能會寫一個function在Controller裡頭，叫做split，input為字串，output為陣列。
-input為&amp;rdquo;01/15&amp;rdquo;的話，會出現output [&amp;ldquo;01&amp;rdquo;, &amp;ldquo;15&amp;rdquo;]
-然後call一下這個function，分別把兩個UITextView給賦值陣列0和陣列1，就可以運作得很完美了。&lt;/p&gt;
-
-&lt;h1 id=&#34;接下來追加規格&#34;&gt;接下來追加規格&lt;/h1&gt;
-
-&lt;ol&gt;
-&lt;li&gt;多了兩三個ViewController，同樣需要展示日期。&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;這時候笨方法是把剛剛的function複製到四個不同的ViewController，然後再一一呼叫。
-聰明一點的方法是放到全域變數，這樣不用重寫function，但是每一個Controller都能呼叫。&lt;/p&gt;
-
-&lt;h1 id=&#34;再度追加規格&#34;&gt;再度追加規格&lt;/h1&gt;
-
-&lt;ol&gt;
-&lt;li&gt;除了顯示月日的function，我還想要展示年分。&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;這次可能會依樣畫葫蘆，寫個叫做splityearmonthday的function，放在全域變數裡面，讓所有Controller都能使用。&lt;/p&gt;
-
-&lt;h1 id=&#34;再再度追加規格&#34;&gt;再再度追加規格&lt;/h1&gt;
-
-&lt;ol&gt;
-&lt;li&gt;這個APP多了付款功能所以需要展示金額。&lt;/li&gt;
-&lt;li&gt;這個展示金額靠著另外兩個UITextView，第一個UITextView展現整數，第二個UITextView展現小數。&lt;/li&gt;
-&lt;li&gt;假設input &amp;ldquo;23.7&amp;rdquo;，那會在第一個UITextView出現23 第二個UITextView出現.7&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;於是又寫了一個splitmoney的funcion，放在全域變數裡。&lt;/p&gt;
-
-&lt;h1 id=&#34;反思&#34;&gt;反思&lt;/h1&gt;
-
-&lt;p&gt;到了這裡可以開始反思這是不是一個良好的設計了，起初APP的功能的確很簡單，但是隨著需求的擴張，分割日期的function就出現了兩種。後期更出現了分割金額的function。我們假設需求繼續擴張下去，接下來有&lt;/p&gt;
-
-&lt;ol&gt;
-&lt;li&gt;10個分割日期的function&lt;/li&gt;
-&lt;li&gt;5個分割金額的function&lt;/li&gt;
-&lt;li&gt;8個分割OOXX的function&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;你光看全域變數上的function頭就要昏了，而且還得注意名稱不得重複，每個名稱都取的又臭又長，即使這都是一些小小的function，依然會對開發人員帶來負擔。&lt;/p&gt;
-
-&lt;p&gt;此時，如果你用class將分割日期、分割金額、分割OOXX的職責區分開來，程式碼或許會變得清晰? 舉例來說
-func splityearmonthday()
-func splitmonthday()
-改為
-=&amp;gt;
-class DateSplit{
-    func yearmonth()
-    func monthday()
-}&lt;/p&gt;
-
-&lt;h1 id=&#34;總結&#34;&gt;總結&lt;/h1&gt;
-
-&lt;p&gt;簡單總結：
-class的作用在於區分職責，不同功能的function盡可能的放在不同的class，這是為了可讀性。
-程式規模小的時候，可以不必花太多心力把每個功能都丟一個class，但是當程式開始漸漸擴張，就要開始思考，我這些function之間是否有類似的職責，能夠被包成一個class來執行?
-再來就是，其實並不是每件事情都可以靠function的input output就解決，有時候你可能會想記錄狀態。
-舉例來說，如果你寫了一個計算機的程式，那你會希望計算機記得你上次按了什麼按鈕，這時候如果你再使用全域變數和全域function來解決問題，等老闆要求你&amp;rdquo;我今天要兩個計算機，不要一個&amp;rdquo;，的時候就尷尬了，因為你的狀態是靠全域變數來記，兩個計算機參考到同一個全域變數，就G_G惹。
-希望有幫助到你。&lt;/p&gt;
-</description>
-    </item>
-    
-    <item>
       <title>Python Mac Sierra pyinstaller py2app 的權限問題</title>
       <link>https://cdfq152313.github.io/post/2016-12-27/</link>
       <pubDate>Tue, 27 Dec 2016 00:00:00 +0000</pubDate>
@@ -441,22 +359,6 @@ class的作用在於區分職責，不同功能的function盡可能的放在不�
 解決方法是拖拉這個app到任意其他位置(ex:桌面)，OSX就不會再幫你把這個app放進唯讀資料夾執行。&lt;/p&gt;
 
 &lt;p&gt;還記得幾乎所有的MAC app都需要拖拉到應用程式裡面才能使用嗎? MAC應該就是希望你對想使用的APP進行過此一確認才加上這個功能。&lt;/p&gt;
-</description>
-    </item>
-    
-    <item>
-      <title>[讀書心得] 圖解密碼學與比特幣原理</title>
-      <link>https://cdfq152313.github.io/misc/2016-12-27/</link>
-      <pubDate>Tue, 27 Dec 2016 00:00:00 +0000</pubDate>
-      
-      <guid>https://cdfq152313.github.io/misc/2016-12-27/</guid>
-      <description>&lt;p&gt;&lt;a href=&#34;https://www.tenlong.com.tw/items/9864761935?item_id=1025404&#34;&gt;圖解密碼學與比特幣原理&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;花了很久才斷斷續續的看完這本，覺得是一本很不錯的科普書，沒有太艱深的數學。&lt;/p&gt;
-
-&lt;p&gt;書中有系統的把目前密碼學的發展介紹了一遍，非常著重在oo密碼技術可以解決xx難題，或是oo技術無法解決xx難題。以及oo技術中的yy演算法目前無人破解，或是oo技術的yy演算法已經被破解。&lt;/p&gt;
-
-&lt;p&gt;書中最後也提到了不少混合型密碼系統在現今世界上的應用，讓這本書不會只流於技術介紹的紙上談兵。對我這個密碼學大外行幫助很大，好書，極推。&lt;/p&gt;
 </description>
     </item>
     
@@ -1562,6 +1464,524 @@ if let data = data {
     print(item.detail)
 }
 &lt;/code&gt;&lt;/pre&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Swift 聲音播放與錄製</title>
+      <link>https://cdfq152313.github.io/post/2016-10-06/</link>
+      <pubDate>Thu, 06 Oct 2016 00:00:00 +0000</pubDate>
+      
+      <guid>https://cdfq152313.github.io/post/2016-10-06/</guid>
+      <description>
+
+&lt;h1 id=&#34;播放系統音效&#34;&gt;播放系統音效&lt;/h1&gt;
+
+&lt;p&gt;超簡單只需要兩行&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-swift&#34;&gt;import AudioToolbox
+AudioServicesPlaySystemSound(1000)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h1 id=&#34;播放自己放在app的音樂&#34;&gt;播放自己放在app的音樂&lt;/h1&gt;
+
+&lt;p&gt;先把自己的音效拖進Xcode，記得選擇&amp;rdquo;copy items if needed&amp;rdquo;，否則只會放入reference。
+可以開一個新的Group(資料夾圖示)來專門放置音檔。&lt;/p&gt;
+
+&lt;h2 id=&#34;步驟&#34;&gt;步驟&lt;/h2&gt;
+
+&lt;ol&gt;
+&lt;li&gt;找到檔案在哪(用Bundle)&lt;/li&gt;
+&lt;li&gt;產生URL&lt;/li&gt;
+&lt;li&gt;產生AVAudioPlayer&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-swift&#34;&gt;// AVAudioPlayer初始化
+func myPlayerInit()-&amp;gt;AVAudioPlayer?{
+    guard let path = Bundle.main.path(forResource: &amp;quot;Right&amp;quot;, ofType:&amp;quot;mp3&amp;quot;) else{
+        return nil
+    }
+
+  let audioURL = URL(fileURLWithPath: path)
+  do{
+    return try AVAudioPlayer(contentsOf: audioURL)
+  }
+  catch{
+    print(&amp;quot;AVAudio Player Init failed&amp;quot;)
+    return nil
+  }
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-swift&#34;&gt;// 利用button播放 每次按下都將聲音時間歸零
+let myPlayer = myPlayerInit()
+myPlayer?.play()
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;其他好用的方法&#34;&gt;其他好用的方法&lt;/h2&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-swift&#34;&gt;myPlayer?.stop() // 停止
+myPlayer?.currentTime = 0 // 把音檔時間歸零
+myPlayer?.numberOfLoops = 2 // 重複播放次數，若為負數則為無限次播放
+myPlayer?.volume = 0.5 // 調整音量
+
+// 把播放速度調慢或調快
+myPlayer?.enableRate = true
+myPlayer?.rate = 0.5
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h1 id=&#34;播放手機內部的音樂&#34;&gt;播放手機內部的音樂&lt;/h1&gt;
+
+&lt;p&gt;利用MPMediaPickerController，此一Controller會讓你選擇音樂。我們只需要指定選完音樂(或沒選到)要做什麼動作即可。&lt;/p&gt;
+
+&lt;h2 id=&#34;步驟-1&#34;&gt;步驟&lt;/h2&gt;
+
+&lt;ol&gt;
+&lt;li&gt;在Xcode調整權限
+
+&lt;ul&gt;
+&lt;li&gt;在info.plist裡面新增 &amp;ldquo;Privacy - Media Library Ussage Description&amp;rdquo;&lt;/li&gt;
+&lt;li&gt;在右方新增你的理由&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;新增MPMediaPickerController&lt;/li&gt;
+&lt;li&gt;實作MPMediaPickerController之delegate (MPMediaPickerControllerDelegate)
+
+&lt;ul&gt;
+&lt;li&gt;取消不動作&lt;/li&gt;
+&lt;li&gt;選取到音樂則播放&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;指定2實作的delegate給1&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h3 id=&#34;權限設定&#34;&gt;權限設定&lt;/h3&gt;
+
+&lt;p&gt;&lt;img src=&#34;http://i.imgur.com/m9279lW.png&#34; alt=&#34;存取影音檔案權限&#34; /&gt;&lt;/p&gt;
+
+&lt;h3 id=&#34;mpmediapickercontrollerdelegate的實作&#34;&gt;MPMediaPickerControllerDelegate的實作&lt;/h3&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-swift&#34;&gt;// 取消不動作直接消除視窗
+func mediaPickerDidCancel(_ mediaPicker: MPMediaPickerController) {
+    dismiss(animated: true, completion: nil)
+}
+
+// 選取到音樂則播放
+func mediaPicker(_ mediaPicker: MPMediaPickerController, didPickMediaItems mediaItemCollection: MPMediaItemCollection) {
+  let musicPlayer = MPMusicPlayerController.applicationMusicPlayer()
+  musicPlayer.setQueue(with:mediaItemCollection)
+  musicPlayer.play()
+  dismiss(animated:true, completion: nil)
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;若要停止MPmusicPlayerController一樣可以使用.stop函數&lt;/p&gt;
+
+&lt;h1 id=&#34;錄音&#34;&gt;錄音&lt;/h1&gt;
+
+&lt;ol&gt;
+&lt;li&gt;在info.plist增加麥克風權限&lt;/li&gt;
+&lt;li&gt;選好放置路徑並產生URL&lt;/li&gt;
+&lt;li&gt;設定錄音數據(dict)&lt;/li&gt;
+&lt;li&gt;產生AVAudioRecorder實體&lt;/li&gt;
+&lt;li&gt;指定AVAudioRecorder的delegate
+
+&lt;ul&gt;
+&lt;li&gt;指定錄完音後執行的動作&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;開始錄音&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h2 id=&#34;權限設定-1&#34;&gt;權限設定&lt;/h2&gt;
+
+&lt;p&gt;&lt;img src=&#34;http://i.imgur.com/WwJpAMB.png&#34; alt=&#34;麥克風權限&#34; /&gt;&lt;/p&gt;
+
+&lt;h2 id=&#34;步驟2-3-4-5&#34;&gt;步驟2 3 4 5&lt;/h2&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-swift&#34;&gt;func audioRecorderInit()-&amp;gt;AVAudioRecorder?{
+    // 步驟2 設定路徑
+  let path = NSHomeDirectory() + &amp;quot;/Documents/user.wav&amp;quot;
+  let url = URL(fileURLWithPath: path)
+  // 步驟3 設定錄音數據(dict)
+  let recordSettings:[String:Any] = [
+    AVEncoderAudioQualityKey : AVAudioQuality.min.rawValue,
+    AVEncoderBitRateKey: 16,
+    AVNumberOfChannelsKey: 2,
+    AVSampleRateKey: 44100.0
+  ]
+  do {
+    // 步驟4 5 產生實體並指定delegate
+    let audioRecorder = try AVAudioRecorder(url: url, settings:recordSettings)
+    audioRecorder.delegate = self
+    return audioRecorder
+  }
+  catch{
+    print(&amp;quot;something is worng&amp;quot;)
+    return nil
+  }
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;avaudiorecorderdelegate的實作&#34;&gt;AVAudioRecorderDelegate的實作&lt;/h2&gt;
+
+&lt;p&gt;參數recorder的屬性url可以拿到錄製好的檔案路徑&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-swift&#34;&gt;func audioRecorderDidFinishRecording(_ recorder: AVAudioRecorder, successfully flag: Bool) {
+  if flag == true{
+    do {
+        try audioPlayer = AVAudioPlayer(contentsOf: recorder.url)
+    }
+    catch{
+        print(&amp;quot;something is Wrong...&amp;quot;)
+    }
+  }
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;開始錄音&#34;&gt;開始錄音&lt;/h2&gt;
+
+&lt;p&gt;將AVAudioSession調成AVAudioSessionCatetoryPlayAndRecord，可有效增大錄音音量。若不調整則會很小聲。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-swift&#34;&gt;do {
+    try AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategoryPlayAndRecord)
+}
+catch{
+    print(&amp;quot;can&#39;t set audio session&amp;quot;)
+}
+audioRecorder?.prepareToRecord()
+audioRecorder?.record()
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;停止錄音&#34;&gt;停止錄音&lt;/h2&gt;
+
+&lt;p&gt;記得把剛剛的AVAudioSession.sharedInstance()調回原樣&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-swift&#34;&gt;self.audioRecorder?.stop()
+do{
+    try AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategoryPlayback)
+    try AVAudioSession.sharedInstance().setActive(false)
+}
+catch{
+    print(&amp;quot;can&#39;t set audio session&amp;quot;)
+}
+&lt;/code&gt;&lt;/pre&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Swift 基礎語法筆記</title>
+      <link>https://cdfq152313.github.io/post/2016-10-04/</link>
+      <pubDate>Tue, 04 Oct 2016 00:00:00 +0000</pubDate>
+      
+      <guid>https://cdfq152313.github.io/post/2016-10-04/</guid>
+      <description>
+
+&lt;h1 id=&#34;參考資料&#34;&gt;參考資料&lt;/h1&gt;
+
+&lt;p&gt;感謝大大～～
+&lt;a href=&#34;https://itisjoe.gitbooks.io/swiftgo/content/&#34;&gt;https://itisjoe.gitbooks.io/swiftgo/content/&lt;/a&gt;
+因應swift3，筆記內容與gitbook上略有不同&lt;/p&gt;
+
+&lt;h1 id=&#34;struct和enum是value-type-class是reference-type&#34;&gt;struct和enum是value type, class是reference type&lt;/h1&gt;
+
+&lt;ul&gt;
+&lt;li&gt;struct宣告為常數，就無法更改內部的值，但class可以。&lt;/li&gt;
+&lt;li&gt;struct和enum這種value type，內部member function不能修改member data的值&lt;/li&gt;
+&lt;li&gt;如果真的要修改要加上mutating修飾字&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-swift&#34;&gt;struct Apple{
+    var x = 0.0
+    mutating func add(num:Double){
+        x += num
+    }
+}
+
+var x = Apple(x:1.2)
+x.add(1.5)
+print(x.x)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;ul&gt;
+&lt;li&gt;mutating 還可以替換掉本身的實體結構&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-swift&#34;&gt;struct Apple{
+    var x = 0.0
+    mutating func new(num:Double){
+        x = Apple()
+    }
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h1 id=&#34;function注意事項&#34;&gt;function注意事項&lt;/h1&gt;
+
+&lt;p&gt;call function時，參數後要指定參數名稱，不可以省略&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-swift&#34;&gt;func plus(a :Int, b:Int){
+  print(a+b)
+}
+plus(a:1, b:3)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;如果要省略要加上底線&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-swift&#34;&gt;func plus(_ a :Int,_ b:Int){
+  print(a+b)
+}
+plus(1, 3)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;外部參數名稱-external-parameter-name&#34;&gt;外部參數名稱(External parameter Name)&lt;/h2&gt;
+
+&lt;p&gt;事實上a前面的底線是External parameter Name的意思。External parameter Name用於外部呼叫Function時的參數識別名，若不寫則與內部名稱相同。
+而底線代表不在意參數識別名稱，即為可忽略的意思。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-swift&#34;&gt;func plus(AAA a :Int,BBB b:Int){
+  print(a+b)
+}
+plus(AAA:1, BBB:3)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h1 id=&#34;型別方法&#34;&gt;型別方法&lt;/h1&gt;
+
+&lt;p&gt;在class中要宣告class方法(非object方法)，可以用關鍵字&lt;strong&gt;class&lt;/strong&gt;或&lt;strong&gt;static&lt;/strong&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-swift&#34;&gt;class SomeClass {
+    // 定義一個型別方法
+    class func someTypeMethod() {
+        print(&amp;quot;型別方法&amp;quot;)
+    }
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h1 id=&#34;closure&#34;&gt;Closure&lt;/h1&gt;
+
+&lt;h2 id=&#34;函式也是一種型別&#34;&gt;函式也是一種型別&lt;/h2&gt;
+
+&lt;p&gt;型別名稱為
+(參數型別)-&amp;gt;回傳型別&lt;/p&gt;
+
+&lt;h2 id=&#34;化function為clousure&#34;&gt;化function為Clousure&lt;/h2&gt;
+
+&lt;ol&gt;
+&lt;li&gt;刪掉func與函式名&lt;/li&gt;
+&lt;li&gt;將大括號移到最外側&lt;/li&gt;
+&lt;li&gt;在參數後面加上in&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;before&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-swift&#34;&gt;func add(x:Int, y:Int)-&amp;gt;Int{
+    return x + y
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;after&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-swift&#34;&gt;{
+    (x:Int, y:Int)-&amp;gt;Int in
+  return x + y
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;closure簡寫&#34;&gt;Closure簡寫&lt;/h2&gt;
+
+&lt;ol&gt;
+&lt;li&gt;&lt;p&gt;如果已經知道參數跟回傳值的型別的話，可以省略Clousure裡的參數與回傳值型別&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-swift&#34;&gt;let numberArray=[1,3,6,8,10,45]
+  numberArray.map( {(number) in return number+10} ) // 省略型別
+&lt;/code&gt;&lt;/pre&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;如果Closure有回傳值，而且程式碼是一行的話，可以省略return，&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-swift&#34;&gt;let numberArray=[1,3,6,8,10,45]
+  numberArray.map( {(number) in number+10} ) // 回傳number+10
+&lt;/code&gt;&lt;/pre&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;可以用$0, $1 &amp;hellip; 代表參數。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-swift&#34;&gt;let numberArray=[1,3,6,8,10,45]
+  numberArray.map( {$0 + 10} ) // 省略參數，利用$0代表參數
+&lt;/code&gt;&lt;/pre&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;如果Closure是最後一個參數的話，可以把clousure寫在小括號的外面。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-swift&#34;&gt;  let numberArray=[1,3,6,8,10,45]
+  numberArray.map(){$0 + 10} // 寫在小括號的外面
+&lt;/code&gt;&lt;/pre&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;如果Closure是唯一的參數的話，可以省略小括號&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-swift&#34;&gt;let numberArray=[1,3,6,8,10,45]
+  numberArray.map{$0 + 10} // 直接省掉小括號
+&lt;/code&gt;&lt;/pre&gt;&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h1 id=&#34;guard的用途&#34;&gt;guard的用途&lt;/h1&gt;
+
+&lt;p&gt;guard比if能更好的實行Defensive Programming，因為在guard中的可選綁定可以在接下來code中使用。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-swift&#34;&gt;var text:String? = &amp;quot;abc&amp;quot;
+if let apple = text{
+    print(apple)
+}
+// 在這邊用會失敗
+// print(apple)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-swift&#34;&gt;var text:String? = &amp;quot;abc&amp;quot;
+guard let apple = text else{
+    print(apple)
+}
+// 照用
+print(apple)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h1 id=&#34;error&#34;&gt;Error&lt;/h1&gt;
+
+&lt;p&gt;Swift丟出的異常是一種enum，實作時繼承Error。
+有幾種方法
+1. 最基本的do try catch
+2. 向上拋擲function填throw
+3. try? : 如果出現錯誤則回傳nil(不用再寫do catch)，可搭配optinal binding
+4. try! : 一定成功。(若沒成功會crash)&lt;/p&gt;
+
+&lt;h1 id=&#34;init&#34;&gt;init&lt;/h1&gt;
+
+&lt;h2 id=&#34;init-1&#34;&gt;init?&lt;/h2&gt;
+
+&lt;p&gt;init?代表可以回傳nil，也就是可能init失敗。
+參看下面的code&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-swift&#34;&gt;class Baby{
+    var age:Int
+    init?(age:Int){
+    if age &amp;lt; 0{
+        return nil
+    }
+    self.age = age
+  }
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;一個寶寶生出來小於一歲是不合理的，所以init失敗回傳nil&lt;/p&gt;
+
+&lt;h2 id=&#34;init的順序&#34;&gt;init的順序&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;原則1：屬性的初始,必須在當初宣告屬性的類別裡進⾏。&lt;/li&gt;
+&lt;li&gt;原則2：⼦類別得先完成⾃⼰屬性的初始後，才能進⾏⽗類別屬性的初始。
+
+&lt;ul&gt;
+&lt;li&gt;此原則是為了防止繼承的class複寫基礎class的方法，而基礎的class使用此方法來初始化。&lt;/li&gt;
+&lt;li&gt;若此function剛好動用到繼承class之porperty，那就會出現問題。&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;假設有一個基礎型別寶寶&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-swift&#34;&gt;class Baby{
+    var age:Int
+    init(age:Int){
+        self.age = age
+    }
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;正確的範例&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-swift&#34;&gt;class SuperBaby: Baby{
+    var magic:Int
+    init(age:Int, magic:Int){
+        self.magic = magic
+        super.init(age: age)
+    }
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;錯誤的範例: 違反原則1，age屬性的初始化不在宣告的類別裡。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-swift&#34;&gt;class SuperBaby: Baby{
+    var magic:Int
+    init(age:Int, magic:Int){
+        self.magic = magic
+        self.age = age
+        super.init(age: age)
+    }
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;錯誤的範例: 違反原則2，必須先將自己的屬性先初始化完畢，才能call super init&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-swift&#34;&gt;class SuperBaby: Baby{
+    var magic:Int
+    init(age:Int, magic:Int){
+            super.init(age: age)
+        self.magic = magic
+    }
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;正確的範例: 在age初始化後才改變age的值&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-swift&#34;&gt;class SuperBaby: Baby{
+    var magic:Int
+    init(age:Int, magic:Int){
+        self.magic = magic
+        super.init(age: age)
+        self.age = age
+    }
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;convenience-init&#34;&gt;convenience init&lt;/h2&gt;
+
+&lt;p&gt;有兩種類型的init
+- designated initializer : 一般的init
+- convenience initializer : 加了關鍵字convenience的init&lt;/p&gt;
+
+&lt;p&gt;擁有convenience關鍵字的init才可以call其他init function，來減少重複工作，非常&lt;strong&gt;方便&lt;/strong&gt;。
+舉例來說：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-swift&#34;&gt;class Baby{
+    var age:Int
+    var name:String
+    init(age:Int, name:String){
+        self.age = age
+        self.name = name
+    }
+    
+    convenience init(name:String){
+            self.init(age:1, name:name)
+    }
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;init的繼承&#34;&gt;init的繼承&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;designated initializer的繼承
+
+&lt;ul&gt;
+&lt;li&gt;子類別沒有定義任何designated initializer，預設全部自動繼承。&lt;/li&gt;
+&lt;li&gt;子類別定義了任意init，不會自動繼承父類別的init。&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;convenience initializer的繼承
+
+&lt;ul&gt;
+&lt;li&gt;子類別沒有定義任何designated initializer，預設全部自動繼承。&lt;/li&gt;
+&lt;li&gt;子類別覆寫了父類別所有的designated initializer，則自動繼承所有convenience initializer。&lt;/li&gt;
+&lt;li&gt;子類別複寫不完全，則不會繼承convenience initializer。&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-swift&#34;&gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-swift&#34;&gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;使用required防止init失傳&#34;&gt;使用required防止init失傳&lt;/h2&gt;
 </description>
     </item>
     

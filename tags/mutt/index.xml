@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Mutt on Denny&#39;s Blog</title>
+    <link>https://cdfq152313.github.io/tags/mutt/index.xml</link>
+    <description>Recent content in Mutt on Denny&#39;s Blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <atom:link href="https://cdfq152313.github.io/tags/mutt/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>在mutt設定gmail</title>
+      <link>https://cdfq152313.github.io/post/2015-08-12/</link>
+      <pubDate>Wed, 12 Aug 2015 00:00:00 +0000</pubDate>
+      
+      <guid>https://cdfq152313.github.io/post/2015-08-12/</guid>
+      <description>
+
+&lt;h1 id=&#34;總設定&#34;&gt;總設定&lt;/h1&gt;
+
+&lt;pre&gt;&lt;code&gt;set editor = &amp;quot;vim&amp;quot;
+set send_charset=&amp;quot;us-ascii:utf-8&amp;quot;
+set from = &amp;quot;你的帳號@gmail.com&amp;quot;  
+set realname = &amp;quot;你的名字 可隨便打&amp;quot;
+set imap_user = &amp;quot;你的帳號@gmail.com&amp;quot;  
+set imap_pass = &amp;quot;你的密碼&amp;quot;  
+set folder = &amp;quot;imaps://imap.gmail.com:993&amp;quot;  
+set spoolfile = &amp;quot;+INBOX&amp;quot;  
+set postponed =&amp;quot;+[Gmail]/Drafts&amp;quot;  
+set header_cache =~/.mutt/cache/headers  
+set message_cachedir =~/.mutt/cache/bodies  
+set certificate_file =~/.mutt/certificates  
+set smtp_url = &amp;quot;smtp://你的帳號@smtp.gmail.com:587/&amp;quot;  
+set smtp_pass = &amp;quot;你的密碼&amp;quot;  
+set move = no
+set imap_keepalive = 900  
+
+bind pager &amp;lt;up&amp;gt; previous-line #scroll inside the message rather than the index
+bind pager &amp;lt;down&amp;gt; next-line
+bind index &amp;lt;left&amp;gt; last-entry
+bind pager &amp;lt;left&amp;gt; exit
+bind index &amp;lt;right&amp;gt; display-message
+bind pager &amp;lt;right&amp;gt; next-page
+bind browser &amp;lt;right&amp;gt; select-entry 
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h1 id=&#34;細部設定&#34;&gt;細部設定&lt;/h1&gt;
+
+&lt;h2 id=&#34;編碼與編輯器&#34;&gt;編碼與編輯器&lt;/h2&gt;
+
+&lt;p&gt;通常在Ubuntu底下的預設編輯器是nano而不是vim，所以需要調整。
+utf-8則是&lt;a href=&#34;http://lxr.free-electrons.com/source/Documentation/email-clients.txt&#34;&gt;Linux Cross Reference&lt;/a&gt;中建議的。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;set editor = &amp;quot;vim&amp;quot;
+set send_charset=&amp;quot;us-ascii:utf-8&amp;quot;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;imap&#34;&gt;imap&lt;/h2&gt;
+
+&lt;p&gt;imap的服務可以讓你同步本機端與雲端上的信件，當你在mutt刪除/標記信件，gmail的內容也會隨之改變。
+使用這項服務前請記得到gmail中，設定-&amp;gt;轉寄和POP/IMAP-&amp;gt;IMAP存取-&amp;gt;啟用IMAP
+需要設定的項目有imap_user,imap_pass,folder。
+- imap_user無須贅言，你的gmail帳號。
+- imap_pass此處輸入密碼，但有兩種情況。
+  - 無二階段驗證：使用你平常的密碼即可。
+  - 有二階段驗證：必須申請應用程式密碼，請參閱&lt;a href=&#34;https://support.google.com/accounts/answer/185833?hl=zh-Hant&#34;&gt;使用應用程式密碼登入&lt;/a&gt;。
+- folder統一使用imaps://imap.gmail.com:993即可，可參閱&lt;a href=&#34;https://support.google.com/mail/troubleshooter/1668960?hl=zh-Hant#ts=1665018,1665144&#34;&gt;開始使用 IMAP 和 POP3&lt;/a&gt;。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;set imap_user = &amp;quot;你的帳號@gmail.com&amp;quot;  
+set imap_pass = &amp;quot;你的密碼&amp;quot;  
+set folder = &amp;quot;imaps://imap.gmail.com:993&amp;quot;  
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;smtp&#34;&gt;smtp&lt;/h2&gt;
+
+&lt;p&gt;設定smtp可以讓你的mutt可以透過gmail傳送信件，可參考&lt;a href=&#34;https://support.google.com/mail/answer/78775?hl=zh-Hant&#34;&gt;使用 POP 或 IMAP 發送郵件時遇到問題&lt;/a&gt;
+smtp_pass同imap密碼。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;set smtp_url = &amp;quot;smtp://你的帳號@smtp.gmail.com:587/&amp;quot;  
+set smtp_pass = &amp;quot;你的密碼&amp;quot;  
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;其他設定&#34;&gt;其他設定&lt;/h2&gt;
+
+&lt;p&gt;下面是由 &lt;a href=&#34;http://go2linux.garron.me/linux/2010/10/how-send-email-command-line-gmail-mutt-789/&#34;&gt;How to send email from the command line - Gmail Mutt -&lt;/a&gt; 照抄來的設定&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;set spoolfile = &amp;quot;+INBOX&amp;quot;  
+set postponed =&amp;quot;+[Gmail]/Drafts&amp;quot;  
+set header_cache =~/.mutt/cache/headers  
+set message_cachedir =~/.mutt/cache/bodies
+set certificate_file =~/.mutt/certificates
+
+set move = no
+set imap_keepalive = 900  
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;快捷鍵&#34;&gt;快捷鍵&lt;/h2&gt;
+
+&lt;p&gt;原始的鍵盤設定有點彆扭，如果你在讀email時按&amp;rdquo;下&amp;rdquo;，則會跳至下一封信，而非下一行。
+透過更改快捷鍵把他改成類似bbs的設定。
+上：讀信件時向上一行
+下：讀信件時向下一行
+左：讀信件時離開信件，在信件目錄時跳到最底部的信件
+右：讀信件時向下一頁，在信件目錄時進入信件，在信箱時進入信箱&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;bind pager &amp;lt;up&amp;gt; previous-line #scroll inside the message rather than the index
+bind pager &amp;lt;down&amp;gt; next-line
+bind index &amp;lt;left&amp;gt; last-entry
+bind pager &amp;lt;left&amp;gt; exit
+bind index &amp;lt;right&amp;gt; display-message
+bind pager &amp;lt;right&amp;gt; next-page
+bind browser &amp;lt;right&amp;gt; select-entry 
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h1 id=&#34;reference&#34;&gt;Reference&lt;/h1&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;http://lxr.free-electrons.com/source/Documentation/email-clients.txt&#34;&gt;Linux Cross Reference&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://support.google.com/accounts/answer/185833?hl=zh-Hant&#34;&gt;使用應用程式密碼登入&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://support.google.com/mail/troubleshooter/1668960?hl=zh-Hant#ts=1665018,1665144&#34;&gt;開始使用 IMAP 和 POP3&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://support.google.com/mail/answer/78775?hl=zh-Hant&#34;&gt;使用 POP 或 IMAP 發送郵件時遇到問題&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://go2linux.garron.me/linux/2010/10/how-send-email-command-line-gmail-mutt-789/&#34;&gt;How to send email from the command line - Gmail Mutt -&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

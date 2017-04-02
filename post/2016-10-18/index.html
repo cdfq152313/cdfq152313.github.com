@@ -1,0 +1,247 @@
+	<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <link href="http://gmpg.org/xfn/11" rel="profile">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta name="generator" content="Hugo 0.19" />
+
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+
+  
+  <title>.net的RSA加解密與UWP &middot; Denny&#39;s Blog</title>
+  
+
+  
+  <link rel="stylesheet" href="https://cdfq152313.github.io/css/poole.css">
+  <link rel="stylesheet" href="https://cdfq152313.github.io/css/syntax.css">
+  <link rel="stylesheet" href="https://cdfq152313.github.io/css/hyde.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=PT+Sans:400,400italic,700|Abril+Fatface">
+
+  
+  <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/apple-touch-icon-144-precomposed.png">
+  <link rel="shortcut icon" href="/favicon.png">
+
+  
+  <link href="" rel="alternate" type="application/rss+xml" title="Denny&#39;s Blog" />
+</head>
+
+	<body class="theme-base-0f ">
+		<div class="sidebar">
+  <div class="container sidebar-sticky">
+    <div class="sidebar-about">
+      <a href="https://cdfq152313.github.io/"><h1>Denny&#39;s Blog</h1></a>
+      <p class="lead">
+       獸控天地 
+      </p>
+    </div>
+
+    <ul class="sidebar-nav">
+      <li><a href="/">Home</a> </li>
+      
+        <li><a href="/categories/notes"> 程式筆記 </a></li>
+      
+        <li><a href="/categories/misc"> 心得雜感 </a></li>
+      
+        <li><a href="/tags/"> 標籤列表 </a></li>
+      
+        <li><a href="/about/"> 關於我 </a></li>
+      
+    </ul>
+
+    <p>&copy; 2017. All rights reserved. </p>
+  </div>
+</div>
+
+
+		<div class="content container">
+			<div class="post">
+			 	<h1>.net的RSA加解密與UWP</h1>
+			  <span class="post-date">Tue, Oct 18, 2016</span>
+			      
+
+<h1 id="前言牢騷">前言牢騷</h1>
+
+<p>我是要在uwp下使用加密演算法並傳送到server去，由Server進行解密。於是在google中下關鍵字&rdquo;.net rsa encrypt&rdquo;，所以就找到了最舊也最多人討論的RSACryptoServiceProvider。我使用Visual studio 2015開command line，想在弄到uwp前先行測試，結果發現了許多與伺服器(python)的解密不相容之處，不管是金鑰格式，還是填補方法。等到把這些問題都搞定了，又發現不能在UWP中使用，真是想死的心都有了&hellip;。再次google了&rdquo;uwp encrpyt&rdquo;後找到了CryptographicEngine + AsymmetricKeyAlgorithmProvider這組library，才終於搞定加解密問題。</p>
+
+<p>這篇文章會大概描述下列兩種加解密方法與金鑰格式。
+1. RSACryptoServiceProvider/RSACng
+2. CryptographicEngine + AsymmetricKeyAlgorithmProvider</p>
+
+<h1 id="net-rsa-api概觀">.net RSA API概觀</h1>
+
+<p>在.net中RSA的加解密有三組。分別是
+1. <a href="https://msdn.microsoft.com/zh-tw/library/system.security.cryptography.rsacryptoserviceprovider(v=vs.110).aspx">RSACryptoServiceProvider</a>
+2. <a href="https://msdn.microsoft.com/zh-tw/library/system.security.cryptography.rsacng(v=vs.110).aspx">RSACng</a>
+3. <a href="https://msdn.microsoft.com/library/windows/apps/br241490">CryptographicEngine</a> + <a href="https://msdn.microsoft.com/library/windows/apps/br241478">AsymmetricKeyAlgorithmProvider</a></p>
+
+<p>以格式來說，1,2是同一組介面實作，有著類似的操作方式，AsymmetricKeyAlgorithmProvider則是另外的class.
+以新舊來說，RSACryptoServiceProvider是最舊的，提供的填補格式極少。RSACng是後繼更加完善的class，但是要在.net4.6後才能用，選擇版本時要注意。至於CryptographicEngine，只能在windows app(含uwp)當中使用。</p>
+
+<h1 id="rsacryptoserviceprovider與rsacng">RSACryptoServiceProvider與RSACng</h1>
+
+<h2 id="加密">加密</h2>
+
+<p>步驟如下
+1. 先將字串轉換成Byte (可以用ASCIIEncoding或UTF8Encdoing，記得怎麼轉回來就好)
+2. 初始化RSACryptoServiceProvider (可用來加解密，在此只用來加密)
+3. 進行加密
+4. 對加密結果進行Base64(理由說明如下)
+    - RSA對byte進行加密，結果也是byte。
+  - 將加密結果直接轉回string，看起來是亂碼，會涵蓋許多無法顯示的字元。
+  - 因此如果要進行傳輸，最好以Base64重新編碼過，出來的字串才會全部都是可顯示的文字。
+  - <a href="https://zh.wikipedia.org/wiki/Base64">Base64介紹</a></p>
+
+<pre><code class="language-csharp">static String Encrypt(String _content)
+{
+    // 先轉成Byte再加密
+  Encoding ByteConverter = new ASCIIEncoding();
+  var content = ByteConverter.GetBytes(_content);
+
+  // 初始化RSACryptoServiceProvider
+  RSACryptoServiceProvider rsa = getRSACrypto();
+
+  // 加密
+  var encrypt = rsa.Encrypt(content, false);
+  // 轉成base64
+  var encryptStr = System.Convert.ToBase64String(encrypt);
+  return encryptStr;
+}
+</code></pre>
+
+<p>在步驟2的時候，我使用了自己撰寫的getRSACrypto，透過匯入金鑰來產生實體，在下一小節會說明。
+不過從來沒有產生過金鑰的人，可能會需要自己先行產生。程式碼如下。</p>
+
+<pre><code class="language-csharp">// 指定金鑰長度在2048以上比較安全
+RSACryptoServiceProvider rsa = RSACryptoServiceProvider (2048);
+String publickey = rsa.ToXmlString(false)
+String privatekey = rsa.ToXmlString(true)
+</code></pre>
+
+<p>再將這兩個key儲存起來即可。</p>
+
+<h2 id="匯入金鑰">匯入金鑰</h2>
+
+<p>那來看看要如何匯入金鑰，其實只要引用FromXmlString即可。</p>
+
+<pre><code class="language-csharp">static RSACryptoServiceProvider getRSACrypto()
+{
+  RSACryptoServiceProvider rsa = new RSACryptoServiceProvider();
+  var pubkey = &quot;&lt;RSAKeyValue&gt;&lt;Modulus&gt;w3XOM8su/sXvgAIhwlNhpihgVIjWQUhW9zoocwCNWGI8b4YtU/qfOlX3bsWzqw6IqRF/Ncmkbs6Rr5uiDzhHwt7cz/+vgZ9Hm346OM6K2N70a7Lbzr/LlDDb4Yt/PzBEOHEffCkKnpy31KL6Xkfg2a0OkZiF8dny9PbKQaYbXQUJIhCx9YcZ4JZ5cRGMvpNKpS+Wx2q22GV5akKVZ6jVcIgotAgp+MtMJoSr8av61eX6sOl0JborsuuX8Cao278MGKCkUldU1hUDTJtH6IOQfeeJhWolEUS6KXj0FAReWR76aYXBDQ3xJAQHvB/mjMLSiB4mpfk0JETz9Bh0o9FvXw==&lt;/Modulus&gt;&lt;Exponent&gt;AQAB&lt;/Exponent&gt;&lt;/RSAKeyValue&gt;&quot;;
+  rsa.FromXmlString(pubkey);
+  return rsa;
+}
+</code></pre>
+
+<p>特別將金鑰的地方提出來看看，是一個XML
+```xml publickey.xml
+<RSAKeyValue>
+<Modulus>
+w3XOM8su/sXvgAIhwlNhpihgVIjWQUhW9zoocwCNWGI8b4YtU/qfOlX3bsWzqw6IqRF/Ncmkbs6Rr5uiDzhHwt7cz/+vgZ9Hm346OM6K2N70a7Lbzr/LlDDb4Yt/PzBEOHEffCkKnpy31KL6Xkfg2a0OkZiF8dny9PbKQaYbXQUJIhCx9YcZ4JZ5cRGMvpNKpS+Wx2q22GV5akKVZ6jVcIgotAgp+MtMJoSr8av61eX6sOl0JborsuuX8Cao278MGKCkUldU1hUDTJtH6IOQfeeJhWolEUS6KXj0FAReWR76aYXBDQ3xJAQHvB/mjMLSiB4mpfk0JETz9Bh0o9FvXw==
+</Modulus>
+<Exponent>AQAB</Exponent>
+</RSAKeyValue></p>
+
+<pre><code>
+## PEM to XML
+上述的金鑰有一個問題，目前大多數的linux server產出的金鑰都是PEM格式，頂多是base64後的PEM格式，根本沒辦法匯入RSACryptoServiceProvider。
+幸好網路上有人幫忙解決這個問題[RSA Key Converter
+](https://superdry.apphb.com/tools/online-rsa-key-converter)，不過美中不足的是XML to PEM似乎有BUG。以server產key來說，應該還堪用就是。
+
+## RSACng與填補
+RSACng的使用方法與RSACryptoServiceProvider幾乎一模一樣，只在加密的時候，可以選擇更多種類的填補。
+關於填補的種類可以參閱[RSAEncryptionPadding](https://msdn.microsoft.com/zh-tw/library/system.security.cryptography.rsaencryptionpadding(v=vs.110).aspx)此一class。注意，只有.net4.6以上才支援此class。
+RSACryptoServiceProvider的Encrypt只有
+- OaepSHA1
+- Pkcs1
+
+RASCng除了上述兩種外還有
+- OaepSHA256
+- OaepSHA384
+- OaepSHA512
+
+# CryptographicEngine + AsymmetricKeyAlgorithmProvider
+CryptographicEngine和AsymmetricKeyAlgorithmProvider是用在**Windows app(UWP)**上的Library，在**一般的.net中似乎無法使用**。
+
+## 加密
+大致流程如下
+1. 先將字串轉換成IBuffer，可藉由先轉成Byte，再使用AsBuffer來轉換
+2. 初始化CryptographicKey，此key包含指定的加密之演算法與金鑰
+3. 利用CryptographicEngine進行加密，需匯入步驟2的key與想加密的內容
+4. 對加密結果進行Base64(理由剛剛已經說明過了)
+
+```csharp
+public String Encrypt(string _content)
+{
+  // 將字串轉換成IBuffer
+  Encoding ByteConverter = new ASCIIEncoding();
+  byte[] contentByte = ByteConverter.GetBytes(_content);
+  IBuffer content = contentByte.AsBuffer();
+
+    CryptographicKey key = getCryptographicKey();
+  // 加密
+  IBuffer encrypt = CryptographicEngine.Encrypt(key, content, null);
+  
+  // 轉換成Base64
+  String encryptStr = CryptographicBuffer.EncodeToBase64String(encrypt);
+
+  return encryptStr;
+}
+</code></pre>
+
+<p>在步驟2的時候，我使用了自己撰寫的getCryptographicKey，透過選擇演算法和匯入金鑰來產生實體，在下一小節會說明。</p>
+
+<h2 id="cryptographickey的初始化">CryptographicKey的初始化</h2>
+
+<ol>
+<li>使用AsymmetricKeyAlgorithmProvider.OpenAlgorithm選擇加密演算法，返回一個實體
+
+<ul>
+<li>演算法種類可以上<a href="https://msdn.microsoft.com/en-us/library/windows/apps/windows.security.cryptography.core.asymmetricalgorithmnames.aspx">MSDN</a>查詢</li>
+</ul></li>
+<li>使用此實體指定金鑰(ImportKeyPair / ImportPublicKey)，會產生一個CryptographicKey實體
+
+<ul>
+<li>值得注意的是，這次的金鑰不再是XML格式，而是大部分通用之pem格式</li>
+<li>ImportPublicKey這個method似乎還可以讀取更多的格式，詳請請參閱<a href="https://msdn.microsoft.com/en-us/library/windows/apps/hh967858.aspx">MSDN</a></li>
+</ul></li>
+</ol>
+
+<pre><code class="language-csharp">public Encrypter getCryptographicKey()
+{
+    String publickey = &quot;MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAw3XOM8su/sXvgAIhwlNhpihgVIjWQUhW9zoocwCNWGI8b4YtU/qfOlX3bsWzqw6IqRF/Ncmkbs6Rr5uiDzhHwt7cz/+vgZ9Hm346OM6K2N70a7Lbzr/LlDDb4Yt/PzBEOHEffCkKnpy31KL6Xkfg2a0OkZiF8dny9PbKQaYbXQUJIhCx9YcZ4JZ5cRGMvpNKpS+Wx2q22GV5akKVZ6jVcIgotAgp+MtMJoSr8av61eX6sOl0JborsuuX8Cao278MGKCkUldU1hUDTJtH6IOQfeeJhWolEUS6KXj0FAReWR76aYXBDQ3xJAQHvB/mjMLSiB4mpfk0JETz9Bh0o9FvXwIDAQAB&quot;;
+  AsymmetricKeyAlgorithmProvider asymmAlg = AsymmetricKeyAlgorithmProvider.OpenAlgorithm(AsymmetricAlgorithmNames.RsaPkcs1);
+  CryptographicKey key = asymmAlg.ImportPublicKey(CryptographicBuffer.DecodeFromBase64String(publickey), CryptographicPublicKeyBlobType.X509SubjectPublicKeyInfo);
+  return key;
+}
+</code></pre>
+
+<p>單獨把pulbic key拿出來看，是一個pem格式的金鑰。
+```pem publickey
+MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAw3XOM8su/sXvgAIhwlNhpihgVIjWQUhW9zoocwCNWGI8b4YtU/qfOlX3bsWzqw6IqRF/Ncmkbs6Rr5uiDzhHwt7cz/+vgZ9Hm346OM6K2N70a7Lbzr/LlDDb4Yt/PzBEOHEffCkKnpy31KL6Xkfg2a0OkZiF8dny9PbKQaYbXQUJIhCx9YcZ4JZ5cRGMvpNKpS+Wx2q22GV5akKVZ6jVcIgotAgp+MtMJoSr8av61eX6sOl0JborsuuX8Cao278MGKCkUldU1hUDTJtH6IOQfeeJhWolEUS6KXj0FAReWR76aYXBDQ3xJAQHvB/mjMLSiB4mpfk0JETz9Bh0o9FvXwIDAQAB</p>
+
+<pre><code>
+# 與python共舞
+如果安裝pycrypto並使用
+```python
+from Crypto.PublicKey import RSA
+from Crypto.Cipher import PKCS1_v1_5
+</code></pre>
+
+<p>Crypto.Cipher裡似乎有很多不同Module，我目前測試只有PKCS1_v1_5可以和.net的三個library互通。</p>
+
+<ol>
+<li>RSACryptoServiceProvider：Encrypt時選Pkcs1(或false)</li>
+<li>RSACng：Encrypt時選Pkcs1</li>
+<li>AsymmetricKeyAlgorithmProvider：OpenAlgorithm時選RsaPkcs1</li>
+</ol>
+
+<p>如果有其他種類可以互通請務必留言給我知道XD</p>
+
+			</div>
+
+			
+		</div>
+
+  </body>
+</html>

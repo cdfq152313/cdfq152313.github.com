@@ -1,0 +1,162 @@
+	<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <link href="http://gmpg.org/xfn/11" rel="profile">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta name="generator" content="Hugo 0.19" />
+
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+
+  
+  <title>Swift Map 地圖功能 &middot; Denny&#39;s Blog</title>
+  
+
+  
+  <link rel="stylesheet" href="https://cdfq152313.github.io/css/poole.css">
+  <link rel="stylesheet" href="https://cdfq152313.github.io/css/syntax.css">
+  <link rel="stylesheet" href="https://cdfq152313.github.io/css/hyde.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=PT+Sans:400,400italic,700|Abril+Fatface">
+
+  
+  <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/apple-touch-icon-144-precomposed.png">
+  <link rel="shortcut icon" href="/favicon.png">
+
+  
+  <link href="" rel="alternate" type="application/rss+xml" title="Denny&#39;s Blog" />
+</head>
+
+	<body class="theme-base-0f ">
+		<div class="sidebar">
+  <div class="container sidebar-sticky">
+    <div class="sidebar-about">
+      <a href="https://cdfq152313.github.io/"><h1>Denny&#39;s Blog</h1></a>
+      <p class="lead">
+       獸控天地 
+      </p>
+    </div>
+
+    <ul class="sidebar-nav">
+      <li><a href="/">Home</a> </li>
+      
+        <li><a href="/categories/notes"> 程式筆記 </a></li>
+      
+        <li><a href="/categories/misc"> 心得雜感 </a></li>
+      
+        <li><a href="/tags/"> 標籤列表 </a></li>
+      
+        <li><a href="/about/"> 關於我 </a></li>
+      
+    </ul>
+
+    <p>&copy; 2017. All rights reserved. </p>
+  </div>
+</div>
+
+
+		<div class="content container">
+			<div class="post">
+			 	<h1>Swift Map 地圖功能</h1>
+			  <span class="post-date">Fri, Oct 21, 2016</span>
+			      
+
+<h1 id="環境設定">環境設定</h1>
+
+<h2 id="權限">權限</h2>
+
+<p>開啟地圖本身不需要權限，如果若需要GPS位置，請在info.plist中開啟
+<img src="http://i.imgur.com/sHeMOKN.png" alt="Alt Text" /></p>
+
+<h2 id="storyboard-iboutlet">StoryBoard &amp; IBOutlet</h2>
+
+<p>在StoryBoard上地圖套件名稱叫做<strong>Map Kit View</strong>
+如果想要拉IBOutlet到自己的class中，會發現出現Error，這是因為Map class並不包含在UIKit當中。
+所以請import Mapkit</p>
+
+<pre><code class="language-swift">import Mapkit
+</code></pre>
+
+<h2 id="mkmapviewdelegate">MKMapViewDelegate</h2>
+
+<p>最後就是記得設定mapView的delegate
+如果需要特殊效果的時候非常有用，例如：開始讀取map位置的時候要做什麼，結束讀取位置的時候要做什麼&hellip;</p>
+
+<h1 id="將地址解析為gps">將地址解析為GPS</h1>
+
+<p>可以利用CLGeocoder這個class來達成，以下是一個簡單的範例
+1. 初始化CLGeocoder
+2. 使用geocodeAddressString此方法，傳入兩個參數
+    - 需解析之address (字串)
+  - 解析完後的動作(closure)，參數如下
+    - [CLPlacemark]?: 一個地址有多個可能符合之GPS位置，所以是一個Array。
+    - Error?: 若無則為nil
+3. 在closure當中，把經緯度印出來
+    - 我們可以從CLPlacemark的location屬性當中，找到經度和緯度。</p>
+
+<pre><code class="language-swift">// 初始化
+let geoCoder = CLGeocoder()
+
+// 解析字串
+geoCoder.geocodeAddressString(address) {
+    (places, error) in
+  // 如果解析失敗，直接回傳不做任何事
+    guard error == nil else {
+        print (&quot;Get position error&quot;)
+        return
+    }
+    
+  // 印出位置
+    if(places?.count)! &gt; 0 {
+        let placeMark = places?.first
+        print(&quot;Location: \(placeMark?.location)&quot;)
+    }
+
+}
+</code></pre>
+
+<h1 id="標註位置">標註位置</h1>
+
+<p>先拿到要標註的GPS位置，再開始進行標註。
+1. 初始化MKPointAnnotation
+2. 設定title / subtitle / image等等欄位
+3. 設定GPS位置
+4. 使用方法addAnnotation方法將大頭針插在地圖上</p>
+
+<pre><code class="language-swift">func setAnnotation(placeMark:CLPlacemark){
+    // 開始進行標註
+    let annotation = MKPointAnnotation()
+    annotation.title = &quot;Hello~~&quot;
+    annotation.subtitle = &quot;Moto&quot;
+    annotation.coordinate = (placeMark.location?.coordinate)!
+    self.mapView.addAnnotation(annotation)
+}
+</code></pre>
+
+<h1 id="將畫面拉到特定位置">將畫面拉到特定位置</h1>
+
+<p>標註畫面只是將大頭針插上位置，地圖並沒有移動。如果想要將地圖zoom in到某個地點附近，就必須使用這個功能。
+1. 初始化座標，需要使用到經緯度。
+2. 初始化想顯示範圍，MKCoordinateSpanMake的兩個參數分別代表經緯度長度。
+3. 用上述兩個參數初始化MKCoordinateRegion
+4. 使用setRegion方法</p>
+
+<pre><code class="language-swift">func zoomInMap(placeMark:CLPlacemark){
+        // set region
+    let cl2d = CLLocationCoordinate2D(latitude: (placeMark.location?.coordinate.latitude)!, longitude: (placeMark.location?.coordinate.longitude)!)
+        let span = MKCoordinateSpanMake(0.075, 0.075)
+        let region = MKCoordinateRegion(center: cl2d, span: span)
+        self.mapView.setRegion(region, animated: true)
+}
+</code></pre>
+
+<h1 id="以下難產中">以下難產中</h1>
+
+<h1 id="mapkit-位置改變時定位">MapKit 位置改變時定位</h1>
+
+			</div>
+
+			
+		</div>
+
+  </body>
+</html>

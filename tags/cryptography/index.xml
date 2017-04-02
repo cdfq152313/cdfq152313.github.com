@@ -1,0 +1,342 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Cryptography on Denny&#39;s Blog</title>
+    <link>https://cdfq152313.github.io/tags/cryptography/index.xml</link>
+    <description>Recent content in Cryptography on Denny&#39;s Blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <atom:link href="https://cdfq152313.github.io/tags/cryptography/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>Python AES (PyCrypto)</title>
+      <link>https://cdfq152313.github.io/post/2017-02-23/</link>
+      <pubDate>Thu, 23 Feb 2017 00:00:00 +0000</pubDate>
+      
+      <guid>https://cdfq152313.github.io/post/2017-02-23/</guid>
+      <description>
+
+&lt;h1 id=&#34;程式碼&#34;&gt;程式碼&lt;/h1&gt;
+
+&lt;p&gt;為了易於保存，所有金鑰、向量、輸出結果都是以Base64編碼。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;from Crypto.Cipher import AES
+from Crypto import Random
+import base64
+
+BS = AES.block_size
+pad = lambda s: s + (BS - len(s) % BS) * chr(BS - len(s) % BS)
+unpad = lambda s : s[0:-ord(s[-1])]
+
+class AES_HELPER(object):
+    def __init__(self):
+        print &#39;init&#39;
+
+    def key_generator(self, bits=256):
+        random = Random.new()
+        key = random.read( bits/8 )
+        return base64.b64encode(key)
+
+    def iv_generator(self):
+        &#39;&#39;&#39;
+        AES Initialization Vector is 128 bits(16 bytes).
+        &#39;&#39;&#39;
+        random = Random.new()
+        key = random.read( 16 )
+        return base64.b64encode(key)
+
+    def encrypt(self, b64key, b64iv, data):
+        key = base64.b64decode(b64key)
+        iv = base64.b64decode(b64iv)
+
+        cryptor = AES.new(key, AES.MODE_CBC, iv)
+        data = pad(data)
+        encrypted = cryptor.encrypt(data)
+        encrypted = base64.b64encode(encrypted)
+        return encrypted
+
+    def decrypt(self, b64key, b64iv, data):
+        key = base64.b64decode(b64key)
+        iv = base64.b64decode(b64iv)
+
+        cryptor = AES.new(key, AES.MODE_CBC, iv)
+        decrypted = base64.b64decode(data)
+        decrypted = cryptor.decrypt(decrypted)
+        decrypted = unpad( decrypted )
+        return decrypted
+
+aes_helper = AES_HELPER()
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;使用上也蠻容易的&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;if __name__ == &#39;__main__&#39;:
+    key = aes_helper.key_generator()
+    iv = aes_helper.iv_generator()
+    data = &amp;quot;Hello moto. I&#39;m fire. Thank you. I got fired. Thank you. Madadabi meow meow Madadabi meow.&amp;quot;
+    encrypted = aes_helper.encrypt(key, iv, data)
+    decrypted = aes_helper.decrypt(key, iv, encrypted)
+    print (&#39;data: %s&#39; % data )
+    print (&#39;encrypted: %s&#39; % encrypted )
+    print (&#39;decrypted: %s&#39; % decrypted )
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h1 id=&#34;random的使用&#34;&gt;Random的使用&lt;/h1&gt;
+
+&lt;p&gt;在使用AES的時候會需要用到兩個隨機生產的東西
+1. 金鑰: 可為128 192 256 bits，金鑰長度越長越不容易被破解。
+2. 初始化向量: 只有128 bits的形式，為了避免同樣的文章在同一金鑰下會被加密為同樣密文，從而增加被破解風險。&lt;/p&gt;
+
+&lt;p&gt;這邊要特別注意的是必須使用pycrypto所提供的Random，而不能用python原生地random，不然亂數會不夠安全。
+以下為產生金鑰的程式碼&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;from Crypto import Random
+import base64
+
+def key_generator(bits=256):
+  random = Random.new()
+  key = random.read( bits/8 )
+  return base64.b64encode(key)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;使用random.read()來產生隨機的金鑰串，裡面的參數決定了金鑰串的長度，&lt;strong&gt;單位是bytes&lt;/strong&gt;。
+初始向量也是同樣的作法，只是這次要限制在128 bits(16 bytes)&lt;/p&gt;
+
+&lt;h1 id=&#34;padding-pkcs5-pkcs7&#34;&gt;Padding (PKCS5 / PKCS7)&lt;/h1&gt;
+
+&lt;p&gt;這邊要特別注意有所謂的padding問題，在網路上找了一些解決的方法，以下是程式碼。
+&lt;a href=&#34;http://likang.me/blog/2013/06/05/python-pycrypto-aes-ecb-pkcs-5/&#34;&gt;http://likang.me/blog/2013/06/05/python-pycrypto-aes-ecb-pkcs-5/&lt;/a&gt;
+&lt;a href=&#34;https://gist.github.com/crmccreary/5610068&#34;&gt;https://gist.github.com/crmccreary/5610068&lt;/a&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;BS = 16
+pad = lambda s: s + (BS - len(s) % BS) * chr(BS - len(s) % BS) 
+unpad = lambda s : s[0:-ord(s[-1])]
+&lt;/code&gt;&lt;/pre&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>[讀書心得] 圖解密碼學與比特幣原理</title>
+      <link>https://cdfq152313.github.io/misc/2016-12-27/</link>
+      <pubDate>Tue, 27 Dec 2016 00:00:00 +0000</pubDate>
+      
+      <guid>https://cdfq152313.github.io/misc/2016-12-27/</guid>
+      <description>&lt;p&gt;&lt;a href=&#34;https://www.tenlong.com.tw/items/9864761935?item_id=1025404&#34;&gt;圖解密碼學與比特幣原理&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;花了很久才斷斷續續的看完這本，覺得是一本很不錯的科普書，沒有太艱深的數學。&lt;/p&gt;
+
+&lt;p&gt;書中有系統的把目前密碼學的發展介紹了一遍，非常著重在oo密碼技術可以解決xx難題，或是oo技術無法解決xx難題。以及oo技術中的yy演算法目前無人破解，或是oo技術的yy演算法已經被破解。&lt;/p&gt;
+
+&lt;p&gt;書中最後也提到了不少混合型密碼系統在現今世界上的應用，讓這本書不會只流於技術介紹的紙上談兵。對我這個密碼學大外行幫助很大，好書，極推。&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Java RSA</title>
+      <link>https://cdfq152313.github.io/post/2016-12-01/</link>
+      <pubDate>Thu, 01 Dec 2016 00:00:00 +0000</pubDate>
+      
+      <guid>https://cdfq152313.github.io/post/2016-12-01/</guid>
+      <description>
+
+&lt;h1 id=&#34;讀金鑰&#34;&gt;讀金鑰&lt;/h1&gt;
+
+&lt;p&gt;感謝大大無私分享，大大一生平安
+&lt;a href=&#34;http://stackoverflow.com/questions/11410770/load-rsa-public-key-from-file&#34;&gt;http://stackoverflow.com/questions/11410770/load-rsa-public-key-from-file&lt;/a&gt;&lt;/p&gt;
+
+&lt;h1 id=&#34;加密&#34;&gt;加密&lt;/h1&gt;
+
+&lt;p&gt;感謝大大無私分享，大大一生平安
+&lt;a href=&#34;http://jimwayne.blogspot.tw/2012/06/java_25.html&#34;&gt;http://jimwayne.blogspot.tw/2012/06/java_25.html&lt;/a&gt;&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>.net的RSA加解密與UWP</title>
+      <link>https://cdfq152313.github.io/post/2016-10-18/</link>
+      <pubDate>Tue, 18 Oct 2016 00:00:00 +0000</pubDate>
+      
+      <guid>https://cdfq152313.github.io/post/2016-10-18/</guid>
+      <description>
+
+&lt;h1 id=&#34;前言牢騷&#34;&gt;前言牢騷&lt;/h1&gt;
+
+&lt;p&gt;我是要在uwp下使用加密演算法並傳送到server去，由Server進行解密。於是在google中下關鍵字&amp;rdquo;.net rsa encrypt&amp;rdquo;，所以就找到了最舊也最多人討論的RSACryptoServiceProvider。我使用Visual studio 2015開command line，想在弄到uwp前先行測試，結果發現了許多與伺服器(python)的解密不相容之處，不管是金鑰格式，還是填補方法。等到把這些問題都搞定了，又發現不能在UWP中使用，真是想死的心都有了&amp;hellip;。再次google了&amp;rdquo;uwp encrpyt&amp;rdquo;後找到了CryptographicEngine + AsymmetricKeyAlgorithmProvider這組library，才終於搞定加解密問題。&lt;/p&gt;
+
+&lt;p&gt;這篇文章會大概描述下列兩種加解密方法與金鑰格式。
+1. RSACryptoServiceProvider/RSACng
+2. CryptographicEngine + AsymmetricKeyAlgorithmProvider&lt;/p&gt;
+
+&lt;h1 id=&#34;net-rsa-api概觀&#34;&gt;.net RSA API概觀&lt;/h1&gt;
+
+&lt;p&gt;在.net中RSA的加解密有三組。分別是
+1. &lt;a href=&#34;https://msdn.microsoft.com/zh-tw/library/system.security.cryptography.rsacryptoserviceprovider(v=vs.110).aspx&#34;&gt;RSACryptoServiceProvider&lt;/a&gt;
+2. &lt;a href=&#34;https://msdn.microsoft.com/zh-tw/library/system.security.cryptography.rsacng(v=vs.110).aspx&#34;&gt;RSACng&lt;/a&gt;
+3. &lt;a href=&#34;https://msdn.microsoft.com/library/windows/apps/br241490&#34;&gt;CryptographicEngine&lt;/a&gt; + &lt;a href=&#34;https://msdn.microsoft.com/library/windows/apps/br241478&#34;&gt;AsymmetricKeyAlgorithmProvider&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;以格式來說，1,2是同一組介面實作，有著類似的操作方式，AsymmetricKeyAlgorithmProvider則是另外的class.
+以新舊來說，RSACryptoServiceProvider是最舊的，提供的填補格式極少。RSACng是後繼更加完善的class，但是要在.net4.6後才能用，選擇版本時要注意。至於CryptographicEngine，只能在windows app(含uwp)當中使用。&lt;/p&gt;
+
+&lt;h1 id=&#34;rsacryptoserviceprovider與rsacng&#34;&gt;RSACryptoServiceProvider與RSACng&lt;/h1&gt;
+
+&lt;h2 id=&#34;加密&#34;&gt;加密&lt;/h2&gt;
+
+&lt;p&gt;步驟如下
+1. 先將字串轉換成Byte (可以用ASCIIEncoding或UTF8Encdoing，記得怎麼轉回來就好)
+2. 初始化RSACryptoServiceProvider (可用來加解密，在此只用來加密)
+3. 進行加密
+4. 對加密結果進行Base64(理由說明如下)
+    - RSA對byte進行加密，結果也是byte。
+  - 將加密結果直接轉回string，看起來是亂碼，會涵蓋許多無法顯示的字元。
+  - 因此如果要進行傳輸，最好以Base64重新編碼過，出來的字串才會全部都是可顯示的文字。
+  - &lt;a href=&#34;https://zh.wikipedia.org/wiki/Base64&#34;&gt;Base64介紹&lt;/a&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-csharp&#34;&gt;static String Encrypt(String _content)
+{
+    // 先轉成Byte再加密
+  Encoding ByteConverter = new ASCIIEncoding();
+  var content = ByteConverter.GetBytes(_content);
+
+  // 初始化RSACryptoServiceProvider
+  RSACryptoServiceProvider rsa = getRSACrypto();
+
+  // 加密
+  var encrypt = rsa.Encrypt(content, false);
+  // 轉成base64
+  var encryptStr = System.Convert.ToBase64String(encrypt);
+  return encryptStr;
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;在步驟2的時候，我使用了自己撰寫的getRSACrypto，透過匯入金鑰來產生實體，在下一小節會說明。
+不過從來沒有產生過金鑰的人，可能會需要自己先行產生。程式碼如下。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-csharp&#34;&gt;// 指定金鑰長度在2048以上比較安全
+RSACryptoServiceProvider rsa = RSACryptoServiceProvider (2048);
+String publickey = rsa.ToXmlString(false)
+String privatekey = rsa.ToXmlString(true)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;再將這兩個key儲存起來即可。&lt;/p&gt;
+
+&lt;h2 id=&#34;匯入金鑰&#34;&gt;匯入金鑰&lt;/h2&gt;
+
+&lt;p&gt;那來看看要如何匯入金鑰，其實只要引用FromXmlString即可。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-csharp&#34;&gt;static RSACryptoServiceProvider getRSACrypto()
+{
+  RSACryptoServiceProvider rsa = new RSACryptoServiceProvider();
+  var pubkey = &amp;quot;&amp;lt;RSAKeyValue&amp;gt;&amp;lt;Modulus&amp;gt;w3XOM8su/sXvgAIhwlNhpihgVIjWQUhW9zoocwCNWGI8b4YtU/qfOlX3bsWzqw6IqRF/Ncmkbs6Rr5uiDzhHwt7cz/+vgZ9Hm346OM6K2N70a7Lbzr/LlDDb4Yt/PzBEOHEffCkKnpy31KL6Xkfg2a0OkZiF8dny9PbKQaYbXQUJIhCx9YcZ4JZ5cRGMvpNKpS+Wx2q22GV5akKVZ6jVcIgotAgp+MtMJoSr8av61eX6sOl0JborsuuX8Cao278MGKCkUldU1hUDTJtH6IOQfeeJhWolEUS6KXj0FAReWR76aYXBDQ3xJAQHvB/mjMLSiB4mpfk0JETz9Bh0o9FvXw==&amp;lt;/Modulus&amp;gt;&amp;lt;Exponent&amp;gt;AQAB&amp;lt;/Exponent&amp;gt;&amp;lt;/RSAKeyValue&amp;gt;&amp;quot;;
+  rsa.FromXmlString(pubkey);
+  return rsa;
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;特別將金鑰的地方提出來看看，是一個XML
+```xml publickey.xml
+&lt;RSAKeyValue&gt;
+&lt;Modulus&gt;
+w3XOM8su/sXvgAIhwlNhpihgVIjWQUhW9zoocwCNWGI8b4YtU/qfOlX3bsWzqw6IqRF/Ncmkbs6Rr5uiDzhHwt7cz/+vgZ9Hm346OM6K2N70a7Lbzr/LlDDb4Yt/PzBEOHEffCkKnpy31KL6Xkfg2a0OkZiF8dny9PbKQaYbXQUJIhCx9YcZ4JZ5cRGMvpNKpS+Wx2q22GV5akKVZ6jVcIgotAgp+MtMJoSr8av61eX6sOl0JborsuuX8Cao278MGKCkUldU1hUDTJtH6IOQfeeJhWolEUS6KXj0FAReWR76aYXBDQ3xJAQHvB/mjMLSiB4mpfk0JETz9Bh0o9FvXw==
+&lt;/Modulus&gt;
+&lt;Exponent&gt;AQAB&lt;/Exponent&gt;
+&lt;/RSAKeyValue&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;
+## PEM to XML
+上述的金鑰有一個問題，目前大多數的linux server產出的金鑰都是PEM格式，頂多是base64後的PEM格式，根本沒辦法匯入RSACryptoServiceProvider。
+幸好網路上有人幫忙解決這個問題[RSA Key Converter
+](https://superdry.apphb.com/tools/online-rsa-key-converter)，不過美中不足的是XML to PEM似乎有BUG。以server產key來說，應該還堪用就是。
+
+## RSACng與填補
+RSACng的使用方法與RSACryptoServiceProvider幾乎一模一樣，只在加密的時候，可以選擇更多種類的填補。
+關於填補的種類可以參閱[RSAEncryptionPadding](https://msdn.microsoft.com/zh-tw/library/system.security.cryptography.rsaencryptionpadding(v=vs.110).aspx)此一class。注意，只有.net4.6以上才支援此class。
+RSACryptoServiceProvider的Encrypt只有
+- OaepSHA1
+- Pkcs1
+
+RASCng除了上述兩種外還有
+- OaepSHA256
+- OaepSHA384
+- OaepSHA512
+
+# CryptographicEngine + AsymmetricKeyAlgorithmProvider
+CryptographicEngine和AsymmetricKeyAlgorithmProvider是用在**Windows app(UWP)**上的Library，在**一般的.net中似乎無法使用**。
+
+## 加密
+大致流程如下
+1. 先將字串轉換成IBuffer，可藉由先轉成Byte，再使用AsBuffer來轉換
+2. 初始化CryptographicKey，此key包含指定的加密之演算法與金鑰
+3. 利用CryptographicEngine進行加密，需匯入步驟2的key與想加密的內容
+4. 對加密結果進行Base64(理由剛剛已經說明過了)
+
+```csharp
+public String Encrypt(string _content)
+{
+  // 將字串轉換成IBuffer
+  Encoding ByteConverter = new ASCIIEncoding();
+  byte[] contentByte = ByteConverter.GetBytes(_content);
+  IBuffer content = contentByte.AsBuffer();
+
+    CryptographicKey key = getCryptographicKey();
+  // 加密
+  IBuffer encrypt = CryptographicEngine.Encrypt(key, content, null);
+  
+  // 轉換成Base64
+  String encryptStr = CryptographicBuffer.EncodeToBase64String(encrypt);
+
+  return encryptStr;
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;在步驟2的時候，我使用了自己撰寫的getCryptographicKey，透過選擇演算法和匯入金鑰來產生實體，在下一小節會說明。&lt;/p&gt;
+
+&lt;h2 id=&#34;cryptographickey的初始化&#34;&gt;CryptographicKey的初始化&lt;/h2&gt;
+
+&lt;ol&gt;
+&lt;li&gt;使用AsymmetricKeyAlgorithmProvider.OpenAlgorithm選擇加密演算法，返回一個實體
+
+&lt;ul&gt;
+&lt;li&gt;演算法種類可以上&lt;a href=&#34;https://msdn.microsoft.com/en-us/library/windows/apps/windows.security.cryptography.core.asymmetricalgorithmnames.aspx&#34;&gt;MSDN&lt;/a&gt;查詢&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;使用此實體指定金鑰(ImportKeyPair / ImportPublicKey)，會產生一個CryptographicKey實體
+
+&lt;ul&gt;
+&lt;li&gt;值得注意的是，這次的金鑰不再是XML格式，而是大部分通用之pem格式&lt;/li&gt;
+&lt;li&gt;ImportPublicKey這個method似乎還可以讀取更多的格式，詳請請參閱&lt;a href=&#34;https://msdn.microsoft.com/en-us/library/windows/apps/hh967858.aspx&#34;&gt;MSDN&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-csharp&#34;&gt;public Encrypter getCryptographicKey()
+{
+    String publickey = &amp;quot;MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAw3XOM8su/sXvgAIhwlNhpihgVIjWQUhW9zoocwCNWGI8b4YtU/qfOlX3bsWzqw6IqRF/Ncmkbs6Rr5uiDzhHwt7cz/+vgZ9Hm346OM6K2N70a7Lbzr/LlDDb4Yt/PzBEOHEffCkKnpy31KL6Xkfg2a0OkZiF8dny9PbKQaYbXQUJIhCx9YcZ4JZ5cRGMvpNKpS+Wx2q22GV5akKVZ6jVcIgotAgp+MtMJoSr8av61eX6sOl0JborsuuX8Cao278MGKCkUldU1hUDTJtH6IOQfeeJhWolEUS6KXj0FAReWR76aYXBDQ3xJAQHvB/mjMLSiB4mpfk0JETz9Bh0o9FvXwIDAQAB&amp;quot;;
+  AsymmetricKeyAlgorithmProvider asymmAlg = AsymmetricKeyAlgorithmProvider.OpenAlgorithm(AsymmetricAlgorithmNames.RsaPkcs1);
+  CryptographicKey key = asymmAlg.ImportPublicKey(CryptographicBuffer.DecodeFromBase64String(publickey), CryptographicPublicKeyBlobType.X509SubjectPublicKeyInfo);
+  return key;
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;單獨把pulbic key拿出來看，是一個pem格式的金鑰。
+```pem publickey
+MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAw3XOM8su/sXvgAIhwlNhpihgVIjWQUhW9zoocwCNWGI8b4YtU/qfOlX3bsWzqw6IqRF/Ncmkbs6Rr5uiDzhHwt7cz/+vgZ9Hm346OM6K2N70a7Lbzr/LlDDb4Yt/PzBEOHEffCkKnpy31KL6Xkfg2a0OkZiF8dny9PbKQaYbXQUJIhCx9YcZ4JZ5cRGMvpNKpS+Wx2q22GV5akKVZ6jVcIgotAgp+MtMJoSr8av61eX6sOl0JborsuuX8Cao278MGKCkUldU1hUDTJtH6IOQfeeJhWolEUS6KXj0FAReWR76aYXBDQ3xJAQHvB/mjMLSiB4mpfk0JETz9Bh0o9FvXwIDAQAB&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;
+# 與python共舞
+如果安裝pycrypto並使用
+```python
+from Crypto.PublicKey import RSA
+from Crypto.Cipher import PKCS1_v1_5
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Crypto.Cipher裡似乎有很多不同Module，我目前測試只有PKCS1_v1_5可以和.net的三個library互通。&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;RSACryptoServiceProvider：Encrypt時選Pkcs1(或false)&lt;/li&gt;
+&lt;li&gt;RSACng：Encrypt時選Pkcs1&lt;/li&gt;
+&lt;li&gt;AsymmetricKeyAlgorithmProvider：OpenAlgorithm時選RsaPkcs1&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;如果有其他種類可以互通請務必留言給我知道XD&lt;/p&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>
