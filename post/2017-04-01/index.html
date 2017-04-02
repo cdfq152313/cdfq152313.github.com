@@ -1,0 +1,106 @@
+	<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <link href="http://gmpg.org/xfn/11" rel="profile">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta name="generator" content="Hugo 0.19" />
+
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+
+  
+  <title>Android 利用gson解析json &middot; Denny&#39;s Blog</title>
+  
+
+  
+  <link rel="stylesheet" href="https://cdfq152313.github.io/css/poole.css">
+  <link rel="stylesheet" href="https://cdfq152313.github.io/css/syntax.css">
+  <link rel="stylesheet" href="https://cdfq152313.github.io/css/hyde.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=PT+Sans:400,400italic,700|Abril+Fatface">
+
+  
+  <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/apple-touch-icon-144-precomposed.png">
+  <link rel="shortcut icon" href="/favicon.png">
+
+  
+  <link href="" rel="alternate" type="application/rss+xml" title="Denny&#39;s Blog" />
+</head>
+
+	<body class="theme-base-0f ">
+		<div class="sidebar">
+  <div class="container sidebar-sticky">
+    <div class="sidebar-about">
+      <a href="https://cdfq152313.github.io/"><h1>Denny&#39;s Blog</h1></a>
+      <p class="lead">
+       獸控天地 
+      </p>
+    </div>
+
+    <ul class="sidebar-nav">
+      <li><a href="/">Home</a> </li>
+      
+        <li><a href="/categories/notes"> 程式筆記 </a></li>
+      
+        <li><a href="/categories/misc"> 心得雜感 </a></li>
+      
+        <li><a href="/tags/"> 標籤列表 </a></li>
+      
+        <li><a href="/about/"> 關於我 </a></li>
+      
+    </ul>
+
+    <p>&copy; 2017. All rights reserved. </p>
+  </div>
+</div>
+
+
+		<div class="content container">
+			<div class="post">
+			 	<h1>Android 利用gson解析json</h1>
+			  <span class="post-date">Sun, Apr 2, 2017</span>
+			      
+
+<h1 id="android-利用gson解析json">Android 利用gson解析json</h1>
+
+<p><a href="http://www.cnblogs.com/shaosks/p/5201837.html">反射和序列化</a><br />
+在開始前先貼篇文章暖暖身，讓大家了解Reflection(反射)和Serialization(序列化)的不同</p>
+
+<p>常常在串接API時，伺服器端傳過來的是json格式。
+我個人是很不相信自己的眼睛，所以直接用string get field的動作我是盡量不寫的。
+取而代之的是用Gson提供的Deserializatione(反序列化)工具來達成這個目標，反序列化底層的實作是依賴Reflection(反射)機制而達成，不過不是這篇的重點。</p>
+
+<p>如果有json data如下</p>
+
+<pre><code class="language-json">{
+    &quot;fruit&quot;: &quot;apple&quot;,
+    &quot;hello&quot;: &quot;world&quot;
+}
+</code></pre>
+
+<p>我會用一個class，有著跟json檔一模一樣的field。</p>
+
+<pre><code class="language-java">class Data{
+    public String fruit;
+    public String hello;
+}
+</code></pre>
+
+<p>然後利用Gson的fromJson函式</p>
+
+<pre><code class="language-java">Data jsonData(String jsonStr){
+    Gson gson = new Gson();
+    Data result = gson.fromJson(jsonStr, Data.class);
+    return result;
+}
+</code></pre>
+
+<p>將檔案給解析出來，如果實際的json物件屬性跟class資料屬性對不上的話，就會拋擲異常。
+fromJson這個函式就是Gson的反序列化工具。</p>
+
+			</div>
+
+			
+		</div>
+
+  </body>
+</html>
