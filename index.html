@@ -4803,10 +4803,11 @@ class的作用在於區分職責，不同功能的function盡可能的放在不�
 <p>英文好的可以直接看下面就解決了：
 <a href="http://lapcatsoftware.com/articles/app-translocation.html">http://lapcatsoftware.com/articles/app-translocation.html</a></p>
 
-<p>英文不好的簡單翻譯就是：
-解壓縮zip後的任何app檔，在執行期的時候會自動放入App Translocation這個唯讀資料夾運行。
-因為是唯讀資料夾，所以不能寫入，我的程式就是因為有寫入功能才失敗。
-解決方法是拖拉這個app到任意其他位置(ex:桌面)，OSX就不會再幫你把這個app放進唯讀資料夾執行。</p>
+<p>英文不好的簡單翻譯就是：</p>
+
+<p>macos在Sierra的版本改變了對未知的應用程式的行為。如果你的應用程式是不明來源(Ex:網路下載)，那macos在執行這個程式的時候就會把程式挪進App Translocation這個唯讀空間再執行。這有可能出現兩個問題，第一是你的程式如果涉及資料儲存，唯讀空間是不能存的，程式就會失敗。第二個問題是被移動的只有程式本身，萬一你的程式必須仰賴資料夾中的其他的檔案才能執行，那也會失敗。</p>
+
+<p>解決方法是拖拉這個app到任意其他位置(ex:桌面)，OSX就不會再幫你把這個app放進唯讀資料夾執行。</p>
 
 <p>還記得幾乎所有的MAC app都需要拖拉到應用程式裡面才能使用嗎? MAC應該就是希望你對想使用的APP進行過此一確認才加上這個功能。</p>
 
