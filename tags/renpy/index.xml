@@ -408,7 +408,7 @@ python:
 &lt;p&gt;python區段也可以為init，在最初的時候就先行載入，而非等到程式執行到了才動態載入。語法如下&lt;/p&gt;
 
 &lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;init 2 python:
-    x = &amp;quot;abc&amp;quot;
+	x = &amp;quot;abc&amp;quot;
 &lt;/code&gt;&lt;/pre&gt;
 
 &lt;p&gt;同樣的init後面的數字為載入之優先權，若無指定則為0。&lt;/p&gt;

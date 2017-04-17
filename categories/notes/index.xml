@@ -265,9 +265,9 @@ AlgorithmParameterSpec mAlgorithmParameterSpec; // 之後要放置初始化向�
 初始化模式為 ENCRYPT_MODE&lt;/p&gt;
 
 &lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;private String encrypt(String content) throws Exception {
-    cipher = Cipher.getInstance(&amp;quot;AES/CBC/PKCS5Padding&amp;quot;);
-    cipher.init(Cipher.ENCRYPT_MODE, secretKey, mAlgorithmParameterSpec);
-    byte [] encrypt = cipher.doFinal(contentB64);
+	cipher = Cipher.getInstance(&amp;quot;AES/CBC/PKCS5Padding&amp;quot;);
+	cipher.init(Cipher.ENCRYPT_MODE, secretKey, mAlgorithmParameterSpec);
+	byte [] encrypt = cipher.doFinal(contentB64);
   return Base64.encodeToString(encrypt, Base64.DEFAULT);
 }
 &lt;/code&gt;&lt;/pre&gt;
@@ -570,10 +570,10 @@ func sendMail(){
 &lt;p&gt;像是在模擬器上就不能使用。&lt;/p&gt;
 
 &lt;pre&gt;&lt;code class=&#34;language-swift&#34;&gt;if MFMailComposeViewController.canSendMail(){
-    // 可以寄信
+	// 可以寄信
 }
 else{
-    // 不能寄信
+	// 不能寄信
 }
 &lt;/code&gt;&lt;/pre&gt;
 
@@ -584,7 +584,7 @@ else{
 &lt;pre&gt;&lt;code class=&#34;language-swift&#34;&gt;mailController.mailComposeDelegate = self
 
 func mailComposeController(_ controller: MFMailComposeViewController, didFinishWith result: MFMailComposeResult, error: Error?) {
-        dismiss(animated: true, completion: nil)
+		dismiss(animated: true, completion: nil)
 }
 
 &lt;/code&gt;&lt;/pre&gt;
@@ -674,12 +674,12 @@ override func numberOfSections(in tableView: UITableView) -&amp;gt; Int {
 
 // 每個section裡面有幾個row
 override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -&amp;gt; Int {
-    if section == 0{
-    return 2
+	if section == 0{
+  	return 2
   }
   else{
-    return 3
-    }
+  	return 3
+	}
 }
 &lt;/code&gt;&lt;/pre&gt;
 
@@ -709,10 +709,10 @@ override func tableView(_ tableView: UITableView, numberOfRowsInSection section:
 
 &lt;pre&gt;&lt;code class=&#34;language-swift&#34;&gt;override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -&amp;gt; String? {
   if section == 0{
-    return &amp;quot;Section 0&amp;quot;
+  	return &amp;quot;Section 0&amp;quot;
   }
   else{
-    return &amp;quot;Section 1&amp;quot;
+  	return &amp;quot;Section 1&amp;quot;
   }
 }
 &lt;/code&gt;&lt;/pre&gt;
@@ -767,12 +767,12 @@ override func tableView(_ tableView: UITableView, numberOfRowsInSection section:
 
 &lt;pre&gt;&lt;code class=&#34;language-swift&#34;&gt;override func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -&amp;gt; [UITableViewRowAction]? {
         let addAction = UITableViewRowAction(style: .normal, title: &amp;quot;insert&amp;quot;) { 
-            (action, indexPath) in
+        	(action, indexPath) in
           // 下面可寫插入元素的動作  
         }
         
         let deleteAction = UITableViewRowAction(style: .default, title: &amp;quot;delete&amp;quot;) { 
-            (action, indexPath) in
+        	(action, indexPath) in
           // 下面可寫刪除元素的動作  
         }
         return [deleteAction, addAction]
@@ -872,18 +872,18 @@ let geoCoder = CLGeocoder()
 
 // 解析字串
 geoCoder.geocodeAddressString(address) {
-    (places, error) in
+	(places, error) in
   // 如果解析失敗，直接回傳不做任何事
-    guard error == nil else {
-        print (&amp;quot;Get position error&amp;quot;)
-        return
-    }
-    
+	guard error == nil else {
+		print (&amp;quot;Get position error&amp;quot;)
+		return
+	}
+	
   // 印出位置
-    if(places?.count)! &amp;gt; 0 {
-        let placeMark = places?.first
-        print(&amp;quot;Location: \(placeMark?.location)&amp;quot;)
-    }
+	if(places?.count)! &amp;gt; 0 {
+		let placeMark = places?.first
+		print(&amp;quot;Location: \(placeMark?.location)&amp;quot;)
+	}
 
 }
 &lt;/code&gt;&lt;/pre&gt;
@@ -915,11 +915,11 @@ geoCoder.geocodeAddressString(address) {
 4. 使用setRegion方法&lt;/p&gt;
 
 &lt;pre&gt;&lt;code class=&#34;language-swift&#34;&gt;func zoomInMap(placeMark:CLPlacemark){
-        // set region
+		// set region
     let cl2d = CLLocationCoordinate2D(latitude: (placeMark.location?.coordinate.latitude)!, longitude: (placeMark.location?.coordinate.longitude)!)
-        let span = MKCoordinateSpanMake(0.075, 0.075)
-        let region = MKCoordinateRegion(center: cl2d, span: span)
-        self.mapView.setRegion(region, animated: true)
+		let span = MKCoordinateSpanMake(0.075, 0.075)
+		let region = MKCoordinateRegion(center: cl2d, span: span)
+		self.mapView.setRegion(region, animated: true)
 }
 &lt;/code&gt;&lt;/pre&gt;
 
@@ -971,7 +971,7 @@ geoCoder.geocodeAddressString(address) {
 
 &lt;pre&gt;&lt;code class=&#34;language-csharp&#34;&gt;static String Encrypt(String _content)
 {
-    // 先轉成Byte再加密
+	// 先轉成Byte再加密
   Encoding ByteConverter = new ASCIIEncoding();
   var content = ByteConverter.GetBytes(_content);
 
@@ -1055,7 +1055,7 @@ public String Encrypt(string _content)
   byte[] contentByte = ByteConverter.GetBytes(_content);
   IBuffer content = contentByte.AsBuffer();
 
-    CryptographicKey key = getCryptographicKey();
+	CryptographicKey key = getCryptographicKey();
   // 加密
   IBuffer encrypt = CryptographicEngine.Encrypt(key, content, null);
   
@@ -1086,7 +1086,7 @@ public String Encrypt(string _content)
 
 &lt;pre&gt;&lt;code class=&#34;language-csharp&#34;&gt;public Encrypter getCryptographicKey()
 {
-    String publickey = &amp;quot;MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAw3XOM8su/sXvgAIhwlNhpihgVIjWQUhW9zoocwCNWGI8b4YtU/qfOlX3bsWzqw6IqRF/Ncmkbs6Rr5uiDzhHwt7cz/+vgZ9Hm346OM6K2N70a7Lbzr/LlDDb4Yt/PzBEOHEffCkKnpy31KL6Xkfg2a0OkZiF8dny9PbKQaYbXQUJIhCx9YcZ4JZ5cRGMvpNKpS+Wx2q22GV5akKVZ6jVcIgotAgp+MtMJoSr8av61eX6sOl0JborsuuX8Cao278MGKCkUldU1hUDTJtH6IOQfeeJhWolEUS6KXj0FAReWR76aYXBDQ3xJAQHvB/mjMLSiB4mpfk0JETz9Bh0o9FvXwIDAQAB&amp;quot;;
+	String publickey = &amp;quot;MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAw3XOM8su/sXvgAIhwlNhpihgVIjWQUhW9zoocwCNWGI8b4YtU/qfOlX3bsWzqw6IqRF/Ncmkbs6Rr5uiDzhHwt7cz/+vgZ9Hm346OM6K2N70a7Lbzr/LlDDb4Yt/PzBEOHEffCkKnpy31KL6Xkfg2a0OkZiF8dny9PbKQaYbXQUJIhCx9YcZ4JZ5cRGMvpNKpS+Wx2q22GV5akKVZ6jVcIgotAgp+MtMJoSr8av61eX6sOl0JborsuuX8Cao278MGKCkUldU1hUDTJtH6IOQfeeJhWolEUS6KXj0FAReWR76aYXBDQ3xJAQHvB/mjMLSiB4mpfk0JETz9Bh0o9FvXwIDAQAB&amp;quot;;
   AsymmetricKeyAlgorithmProvider asymmAlg = AsymmetricKeyAlgorithmProvider.OpenAlgorithm(AsymmetricAlgorithmNames.RsaPkcs1);
   CryptographicKey key = asymmAlg.ImportPublicKey(CryptographicBuffer.DecodeFromBase64String(publickey), CryptographicPublicKeyBlobType.X509SubjectPublicKeyInfo);
   return key;
@@ -1132,9 +1132,9 @@ Main Queue / Concurrent Queue
 &lt;h1 id=&#34;主執行緒語法&#34;&gt;主執行緒語法&lt;/h1&gt;
 
 &lt;pre&gt;&lt;code class=&#34;language-swift&#34;&gt;let task1 = {
-    for i in 1...5{
-        print (&amp;quot;Task1: (\i)&amp;quot;)
-    }
+	for i in 1...5{
+		print (&amp;quot;Task1: (\i)&amp;quot;)
+	}
 }
 
 // DispatchQueue.main.sync(execute: task1)
@@ -1185,7 +1185,7 @@ DispatchQueue.global(qos: .background).async(execute:task1)
 }
 
 DispatchQueue.global().async {
-    self.download()
+	self.download()
 }
 &lt;/code&gt;&lt;/pre&gt;
 
@@ -1295,9 +1295,9 @@ let urlfrompath = URL(fileURLWithPath: pathFromNSHome)
 
 &lt;pre&gt;&lt;code class=&#34;language-swift&#34;&gt;let directoryPath = NSTemporaryDirectory() + &amp;quot;/images&amp;quot;
 do{
-    try FileManager.default.createDirectory(atPath: directoryPath, withIntermediateDirectories: true, attributes: nil)
+	try FileManager.default.createDirectory(atPath: directoryPath, withIntermediateDirectories: true, attributes: nil)
 }catch{
-    print(&amp;quot;Cannot create directory&amp;quot;)
+	print(&amp;quot;Cannot create directory&amp;quot;)
 }
 &lt;/code&gt;&lt;/pre&gt;
 
@@ -1312,11 +1312,11 @@ do{
 do{
   let fileList = try FileManager.default.contentsOfDirectory(atPath: tempPath)
   for file in fileList{
-    print(file)
+  	print(file)
   }
 }
 catch{
-    print(&amp;quot;Cannot list directory&amp;quot;)
+	print(&amp;quot;Cannot list directory&amp;quot;)
 }
 &lt;/code&gt;&lt;/pre&gt;
 
@@ -1329,13 +1329,13 @@ catch{
 var isDirectory:ObjCBool = false
 let isExist = FileManager.default.fileExists(atPath: path, isDirectory: &amp;amp;isDirectory)
 if isExist == true &amp;amp;&amp;amp; isDirectory.boolValue == true{
-    print(&amp;quot;File exist and it is a direcotry&amp;quot;)
+	print(&amp;quot;File exist and it is a direcotry&amp;quot;)
 }
 else if isExist == true &amp;amp;&amp;amp; isDirectory.boolValue == false{
-    print(&amp;quot;File exist but it is not a direcotry&amp;quot;)
+	print(&amp;quot;File exist but it is not a direcotry&amp;quot;)
 }
 else{
-    print(&amp;quot;File isn&#39;t exist&amp;quot;)
+	print(&amp;quot;File isn&#39;t exist&amp;quot;)
 }
 &lt;/code&gt;&lt;/pre&gt;
 
@@ -1357,9 +1357,9 @@ FileManager.default.removeItem(atPath: path)
 &lt;pre&gt;&lt;code class=&#34;language-swift&#34;&gt;let text = &amp;quot;Hello World&amp;quot;
 let filePath = NSTemporaryDirectory() + &amp;quot;Text.txt&amp;quot;
 do{
-    try text.write(toFile: filePath, atomically: true, encoding: .utf8)
+	try text.write(toFile: filePath, atomically: true, encoding: .utf8)
 }catch{
-    print(&amp;quot;Not save correctly&amp;quot;)
+	print(&amp;quot;Not save correctly&amp;quot;)
 }
 &lt;/code&gt;&lt;/pre&gt;
 
@@ -1370,7 +1370,7 @@ do{
   let loading = try NSString(contentsOfFile: filePath, encoding: String.Encoding.utf8.rawValue)
   print(loading)
 }catch{
-    print(&amp;quot;No save file&amp;quot;)
+	print(&amp;quot;No save file&amp;quot;)
 }
 &lt;/code&gt;&lt;/pre&gt;
 
@@ -1388,7 +1388,7 @@ arrayToSave.write(toFile: filePath, atomically: true)
 
 &lt;pre&gt;&lt;code class=&#34;language-swift&#34;&gt;let filePath = NSTemporaryDirectory() + &amp;quot;saveArray.txt&amp;quot;
 if let loadArray = NSArray(contentsOfFile: filePath) as? [String]{
-    print(loadArray)
+	print(loadArray)
 }
 &lt;/code&gt;&lt;/pre&gt;
 
@@ -1431,14 +1431,14 @@ guard let image = UIImage(named: &amp;quot;Tails&amp;quot;) else {
 }
 
 if let dataToSave = UIImagePNGRepresentation(image){
-    // 產生路徑
+	// 產生路徑
   let filePath = NSTemporaryDirectory() + &amp;quot;savedImage.png&amp;quot;
   let fileURL = URL(fileURLWithPath: filePath)
   // 寫入
   do{
-    try dataToSave.write(to: fileURL)
+  	try dataToSave.write(to: fileURL)
   }catch{
-    print(&amp;quot;Can not save Image&amp;quot;)
+  	print(&amp;quot;Can not save Image&amp;quot;)
   }
 }
 &lt;/code&gt;&lt;/pre&gt;
@@ -1505,10 +1505,10 @@ let url = docUrl.appendingPathComponent(&amp;quot;myfile.txt&amp;quot;)
 let data = try? Data(contentsOf: url)
 
 if let data = data {
-    let item = NSKeyedUnarchiver.unarchiveObject(with: data) as! Item
-    print(&amp;quot;=== Read ===&amp;quot;)
-    print(item.name)
-    print(item.detail)
+	let item = NSKeyedUnarchiver.unarchiveObject(with: data) as! Item
+	print(&amp;quot;=== Read ===&amp;quot;)
+	print(item.name)
+	print(item.detail)
 }
 &lt;/code&gt;&lt;/pre&gt;
 </description>
@@ -1545,13 +1545,13 @@ AudioServicesPlaySystemSound(1000)
 
 &lt;pre&gt;&lt;code class=&#34;language-swift&#34;&gt;// AVAudioPlayer初始化
 func myPlayerInit()-&amp;gt;AVAudioPlayer?{
-    guard let path = Bundle.main.path(forResource: &amp;quot;Right&amp;quot;, ofType:&amp;quot;mp3&amp;quot;) else{
-        return nil
-    }
+	guard let path = Bundle.main.path(forResource: &amp;quot;Right&amp;quot;, ofType:&amp;quot;mp3&amp;quot;) else{
+		return nil
+	}
 
   let audioURL = URL(fileURLWithPath: path)
   do{
-    return try AVAudioPlayer(contentsOf: audioURL)
+  	return try AVAudioPlayer(contentsOf: audioURL)
   }
   catch{
     print(&amp;quot;AVAudio Player Init failed&amp;quot;)
@@ -1608,7 +1608,7 @@ myPlayer?.rate = 0.5
 
 &lt;pre&gt;&lt;code class=&#34;language-swift&#34;&gt;// 取消不動作直接消除視窗
 func mediaPickerDidCancel(_ mediaPicker: MPMediaPickerController) {
-    dismiss(animated: true, completion: nil)
+	dismiss(animated: true, completion: nil)
 }
 
 // 選取到音樂則播放
@@ -1644,7 +1644,7 @@ func mediaPicker(_ mediaPicker: MPMediaPickerController, didPickMediaItems media
 &lt;h2 id=&#34;步驟2-3-4-5&#34;&gt;步驟2 3 4 5&lt;/h2&gt;
 
 &lt;pre&gt;&lt;code class=&#34;language-swift&#34;&gt;func audioRecorderInit()-&amp;gt;AVAudioRecorder?{
-    // 步驟2 設定路徑
+	// 步驟2 設定路徑
   let path = NSHomeDirectory() + &amp;quot;/Documents/user.wav&amp;quot;
   let url = URL(fileURLWithPath: path)
   // 步驟3 設定錄音數據(dict)
@@ -1655,14 +1655,14 @@ func mediaPicker(_ mediaPicker: MPMediaPickerController, didPickMediaItems media
     AVSampleRateKey: 44100.0
   ]
   do {
-    // 步驟4 5 產生實體並指定delegate
-    let audioRecorder = try AVAudioRecorder(url: url, settings:recordSettings)
+  	// 步驟4 5 產生實體並指定delegate
+  	let audioRecorder = try AVAudioRecorder(url: url, settings:recordSettings)
     audioRecorder.delegate = self
     return audioRecorder
   }
   catch{
-    print(&amp;quot;something is worng&amp;quot;)
-    return nil
+  	print(&amp;quot;something is worng&amp;quot;)
+  	return nil
   }
 }
 &lt;/code&gt;&lt;/pre&gt;
@@ -1674,10 +1674,10 @@ func mediaPicker(_ mediaPicker: MPMediaPickerController, didPickMediaItems media
 &lt;pre&gt;&lt;code class=&#34;language-swift&#34;&gt;func audioRecorderDidFinishRecording(_ recorder: AVAudioRecorder, successfully flag: Bool) {
   if flag == true{
     do {
-        try audioPlayer = AVAudioPlayer(contentsOf: recorder.url)
-    }
+    	try audioPlayer = AVAudioPlayer(contentsOf: recorder.url)
+  	}
     catch{
-        print(&amp;quot;something is Wrong...&amp;quot;)
+    	print(&amp;quot;something is Wrong...&amp;quot;)
     }
   }
 }
@@ -1688,10 +1688,10 @@ func mediaPicker(_ mediaPicker: MPMediaPickerController, didPickMediaItems media
 &lt;p&gt;將AVAudioSession調成AVAudioSessionCatetoryPlayAndRecord，可有效增大錄音音量。若不調整則會很小聲。&lt;/p&gt;
 
 &lt;pre&gt;&lt;code class=&#34;language-swift&#34;&gt;do {
-    try AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategoryPlayAndRecord)
+	try AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategoryPlayAndRecord)
 }
 catch{
-    print(&amp;quot;can&#39;t set audio session&amp;quot;)
+	print(&amp;quot;can&#39;t set audio session&amp;quot;)
 }
 audioRecorder?.prepareToRecord()
 audioRecorder?.record()
@@ -1703,11 +1703,11 @@ audioRecorder?.record()
 
 &lt;pre&gt;&lt;code class=&#34;language-swift&#34;&gt;self.audioRecorder?.stop()
 do{
-    try AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategoryPlayback)
-    try AVAudioSession.sharedInstance().setActive(false)
+	try AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategoryPlayback)
+	try AVAudioSession.sharedInstance().setActive(false)
 }
 catch{
-    print(&amp;quot;can&#39;t set audio session&amp;quot;)
+	print(&amp;quot;can&#39;t set audio session&amp;quot;)
 }
 &lt;/code&gt;&lt;/pre&gt;
 </description>

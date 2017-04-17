@@ -55,9 +55,9 @@ AlgorithmParameterSpec mAlgorithmParameterSpec; // 之後要放置初始化向�
 初始化模式為 ENCRYPT_MODE&lt;/p&gt;
 
 &lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;private String encrypt(String content) throws Exception {
-    cipher = Cipher.getInstance(&amp;quot;AES/CBC/PKCS5Padding&amp;quot;);
-    cipher.init(Cipher.ENCRYPT_MODE, secretKey, mAlgorithmParameterSpec);
-    byte [] encrypt = cipher.doFinal(contentB64);
+	cipher = Cipher.getInstance(&amp;quot;AES/CBC/PKCS5Padding&amp;quot;);
+	cipher.init(Cipher.ENCRYPT_MODE, secretKey, mAlgorithmParameterSpec);
+	byte [] encrypt = cipher.doFinal(contentB64);
   return Base64.encodeToString(encrypt, Base64.DEFAULT);
 }
 &lt;/code&gt;&lt;/pre&gt;

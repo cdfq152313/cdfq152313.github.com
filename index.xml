@@ -266,9 +266,9 @@ AlgorithmParameterSpec mAlgorithmParameterSpec; // 之後要放置初始化向�
 初始化模式為 ENCRYPT_MODE&lt;/p&gt;
 
 &lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;private String encrypt(String content) throws Exception {
-    cipher = Cipher.getInstance(&amp;quot;AES/CBC/PKCS5Padding&amp;quot;);
-    cipher.init(Cipher.ENCRYPT_MODE, secretKey, mAlgorithmParameterSpec);
-    byte [] encrypt = cipher.doFinal(contentB64);
+	cipher = Cipher.getInstance(&amp;quot;AES/CBC/PKCS5Padding&amp;quot;);
+	cipher.init(Cipher.ENCRYPT_MODE, secretKey, mAlgorithmParameterSpec);
+	byte [] encrypt = cipher.doFinal(contentB64);
   return Base64.encodeToString(encrypt, Base64.DEFAULT);
 }
 &lt;/code&gt;&lt;/pre&gt;
@@ -668,10 +668,10 @@ func sendMail(){
 &lt;p&gt;像是在模擬器上就不能使用。&lt;/p&gt;
 
 &lt;pre&gt;&lt;code class=&#34;language-swift&#34;&gt;if MFMailComposeViewController.canSendMail(){
-    // 可以寄信
+	// 可以寄信
 }
 else{
-    // 不能寄信
+	// 不能寄信
 }
 &lt;/code&gt;&lt;/pre&gt;
 
@@ -682,7 +682,7 @@ else{
 &lt;pre&gt;&lt;code class=&#34;language-swift&#34;&gt;mailController.mailComposeDelegate = self
 
 func mailComposeController(_ controller: MFMailComposeViewController, didFinishWith result: MFMailComposeResult, error: Error?) {
-        dismiss(animated: true, completion: nil)
+		dismiss(animated: true, completion: nil)
 }
 
 &lt;/code&gt;&lt;/pre&gt;
@@ -772,12 +772,12 @@ override func numberOfSections(in tableView: UITableView) -&amp;gt; Int {
 
 // 每個section裡面有幾個row
 override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -&amp;gt; Int {
-    if section == 0{
-    return 2
+	if section == 0{
+  	return 2
   }
   else{
-    return 3
-    }
+  	return 3
+	}
 }
 &lt;/code&gt;&lt;/pre&gt;
 
@@ -807,10 +807,10 @@ override func tableView(_ tableView: UITableView, numberOfRowsInSection section:
 
 &lt;pre&gt;&lt;code class=&#34;language-swift&#34;&gt;override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -&amp;gt; String? {
   if section == 0{
-    return &amp;quot;Section 0&amp;quot;
+  	return &amp;quot;Section 0&amp;quot;
   }
   else{
-    return &amp;quot;Section 1&amp;quot;
+  	return &amp;quot;Section 1&amp;quot;
   }
 }
 &lt;/code&gt;&lt;/pre&gt;
@@ -865,12 +865,12 @@ override func tableView(_ tableView: UITableView, numberOfRowsInSection section:
 
 &lt;pre&gt;&lt;code class=&#34;language-swift&#34;&gt;override func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -&amp;gt; [UITableViewRowAction]? {
         let addAction = UITableViewRowAction(style: .normal, title: &amp;quot;insert&amp;quot;) { 
-            (action, indexPath) in
+        	(action, indexPath) in
           // 下面可寫插入元素的動作  
         }
         
         let deleteAction = UITableViewRowAction(style: .default, title: &amp;quot;delete&amp;quot;) { 
-            (action, indexPath) in
+        	(action, indexPath) in
           // 下面可寫刪除元素的動作  
         }
         return [deleteAction, addAction]
@@ -970,18 +970,18 @@ let geoCoder = CLGeocoder()
 
 // 解析字串
 geoCoder.geocodeAddressString(address) {
-    (places, error) in
+	(places, error) in
   // 如果解析失敗，直接回傳不做任何事
-    guard error == nil else {
-        print (&amp;quot;Get position error&amp;quot;)
-        return
-    }
-    
+	guard error == nil else {
+		print (&amp;quot;Get position error&amp;quot;)
+		return
+	}
+	
   // 印出位置
-    if(places?.count)! &amp;gt; 0 {
-        let placeMark = places?.first
-        print(&amp;quot;Location: \(placeMark?.location)&amp;quot;)
-    }
+	if(places?.count)! &amp;gt; 0 {
+		let placeMark = places?.first
+		print(&amp;quot;Location: \(placeMark?.location)&amp;quot;)
+	}
 
 }
 &lt;/code&gt;&lt;/pre&gt;
@@ -1013,11 +1013,11 @@ geoCoder.geocodeAddressString(address) {
 4. 使用setRegion方法&lt;/p&gt;
 
 &lt;pre&gt;&lt;code class=&#34;language-swift&#34;&gt;func zoomInMap(placeMark:CLPlacemark){
-        // set region
+		// set region
     let cl2d = CLLocationCoordinate2D(latitude: (placeMark.location?.coordinate.latitude)!, longitude: (placeMark.location?.coordinate.longitude)!)
-        let span = MKCoordinateSpanMake(0.075, 0.075)
-        let region = MKCoordinateRegion(center: cl2d, span: span)
-        self.mapView.setRegion(region, animated: true)
+		let span = MKCoordinateSpanMake(0.075, 0.075)
+		let region = MKCoordinateRegion(center: cl2d, span: span)
+		self.mapView.setRegion(region, animated: true)
 }
 &lt;/code&gt;&lt;/pre&gt;
 
@@ -1069,7 +1069,7 @@ geoCoder.geocodeAddressString(address) {
 
 &lt;pre&gt;&lt;code class=&#34;language-csharp&#34;&gt;static String Encrypt(String _content)
 {
-    // 先轉成Byte再加密
+	// 先轉成Byte再加密
   Encoding ByteConverter = new ASCIIEncoding();
   var content = ByteConverter.GetBytes(_content);
 
@@ -1153,7 +1153,7 @@ public String Encrypt(string _content)
   byte[] contentByte = ByteConverter.GetBytes(_content);
   IBuffer content = contentByte.AsBuffer();
 
-    CryptographicKey key = getCryptographicKey();
+	CryptographicKey key = getCryptographicKey();
   // 加密
   IBuffer encrypt = CryptographicEngine.Encrypt(key, content, null);
   
@@ -1184,7 +1184,7 @@ public String Encrypt(string _content)
 
 &lt;pre&gt;&lt;code class=&#34;language-csharp&#34;&gt;public Encrypter getCryptographicKey()
 {
-    String publickey = &amp;quot;MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAw3XOM8su/sXvgAIhwlNhpihgVIjWQUhW9zoocwCNWGI8b4YtU/qfOlX3bsWzqw6IqRF/Ncmkbs6Rr5uiDzhHwt7cz/+vgZ9Hm346OM6K2N70a7Lbzr/LlDDb4Yt/PzBEOHEffCkKnpy31KL6Xkfg2a0OkZiF8dny9PbKQaYbXQUJIhCx9YcZ4JZ5cRGMvpNKpS+Wx2q22GV5akKVZ6jVcIgotAgp+MtMJoSr8av61eX6sOl0JborsuuX8Cao278MGKCkUldU1hUDTJtH6IOQfeeJhWolEUS6KXj0FAReWR76aYXBDQ3xJAQHvB/mjMLSiB4mpfk0JETz9Bh0o9FvXwIDAQAB&amp;quot;;
+	String publickey = &amp;quot;MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAw3XOM8su/sXvgAIhwlNhpihgVIjWQUhW9zoocwCNWGI8b4YtU/qfOlX3bsWzqw6IqRF/Ncmkbs6Rr5uiDzhHwt7cz/+vgZ9Hm346OM6K2N70a7Lbzr/LlDDb4Yt/PzBEOHEffCkKnpy31KL6Xkfg2a0OkZiF8dny9PbKQaYbXQUJIhCx9YcZ4JZ5cRGMvpNKpS+Wx2q22GV5akKVZ6jVcIgotAgp+MtMJoSr8av61eX6sOl0JborsuuX8Cao278MGKCkUldU1hUDTJtH6IOQfeeJhWolEUS6KXj0FAReWR76aYXBDQ3xJAQHvB/mjMLSiB4mpfk0JETz9Bh0o9FvXwIDAQAB&amp;quot;;
   AsymmetricKeyAlgorithmProvider asymmAlg = AsymmetricKeyAlgorithmProvider.OpenAlgorithm(AsymmetricAlgorithmNames.RsaPkcs1);
   CryptographicKey key = asymmAlg.ImportPublicKey(CryptographicBuffer.DecodeFromBase64String(publickey), CryptographicPublicKeyBlobType.X509SubjectPublicKeyInfo);
   return key;
@@ -1230,9 +1230,9 @@ Main Queue / Concurrent Queue
 &lt;h1 id=&#34;主執行緒語法&#34;&gt;主執行緒語法&lt;/h1&gt;
 
 &lt;pre&gt;&lt;code class=&#34;language-swift&#34;&gt;let task1 = {
-    for i in 1...5{
-        print (&amp;quot;Task1: (\i)&amp;quot;)
-    }
+	for i in 1...5{
+		print (&amp;quot;Task1: (\i)&amp;quot;)
+	}
 }
 
 // DispatchQueue.main.sync(execute: task1)
@@ -1283,7 +1283,7 @@ DispatchQueue.global(qos: .background).async(execute:task1)
 }
 
 DispatchQueue.global().async {
-    self.download()
+	self.download()
 }
 &lt;/code&gt;&lt;/pre&gt;
 

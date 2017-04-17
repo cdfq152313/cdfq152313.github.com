@@ -106,7 +106,7 @@ protected void onCreate(Bundle savedInstanceState) {
 &amp;lt;TextView
         android:layout_width=&amp;quot;wrap_content&amp;quot;
         android:layout_height=&amp;quot;wrap_content&amp;quot;
-        android:text=&amp;quot;Hello World&amp;quot; /&amp;gt;
+		android:text=&amp;quot;Hello World&amp;quot; /&amp;gt;
 &lt;/code&gt;&lt;/pre&gt;
 
 &lt;p&gt;可能要改將字串引用自string.xml才能編譯成功。

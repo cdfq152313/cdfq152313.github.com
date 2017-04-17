@@ -30,9 +30,9 @@ LLVM_CONFIG=llvm-config
 FLAGS= --cxxflags --ldflags --system-libs --libs core
 
 toy: toy.cpp
-    clang++ -g -O3 toy.cpp `$(LLVM_CONFIG) $(FLAGS)` -o toy
+	clang++ -g -O3 toy.cpp `$(LLVM_CONFIG) $(FLAGS)` -o toy
 clean:
-    rm -f toy
+	rm -f toy
 &lt;/code&gt;&lt;/pre&gt;
 
 &lt;h1 id=&#34;top-module&#34;&gt;top module&lt;/h1&gt;
