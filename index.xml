@@ -5,8 +5,17 @@
     <link>https://cdfq152313.github.io/index.xml</link>
     <description>Recent content on Denny&#39;s Blog</description>
     <generator>Hugo -- gohugo.io</generator>
-    <lastBuildDate>Sun, 02 Apr 2017 15:23:51 +0800</lastBuildDate>
+    <lastBuildDate>Mon, 17 Apr 2017 23:33:53 +0800</lastBuildDate>
     <atom:link href="https://cdfq152313.github.io/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>archives</title>
+      <link>https://cdfq152313.github.io/archives/</link>
+      <pubDate>Mon, 17 Apr 2017 23:33:53 +0800</pubDate>
+      
+      <guid>https://cdfq152313.github.io/archives/</guid>
+      <description></description>
+    </item>
     
     <item>
       <title>Android 利用gson解析json</title>
@@ -1212,117 +1221,6 @@ from Crypto.Cipher import PKCS1_v1_5
 &lt;/ol&gt;
 
 &lt;p&gt;如果有其他種類可以互通請務必留言給我知道XD&lt;/p&gt;
-</description>
-    </item>
-    
-    <item>
-      <title>Swift 多執行緒與檔案下載</title>
-      <link>https://cdfq152313.github.io/post/2016-10-14/</link>
-      <pubDate>Fri, 14 Oct 2016 00:00:00 +0000</pubDate>
-      
-      <guid>https://cdfq152313.github.io/post/2016-10-14/</guid>
-      <description>
-
-&lt;p&gt;Swift的執行緒分為主要和背景。
-Main Queue / Concurrent Queue
-主執行緒不能執行同步工作，只能執行非同步工作。&lt;/p&gt;
-
-&lt;h1 id=&#34;主執行緒語法&#34;&gt;主執行緒語法&lt;/h1&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-swift&#34;&gt;let task1 = {
-	for i in 1...5{
-		print (&amp;quot;Task1: (\i)&amp;quot;)
-	}
-}
-
-// DispatchQueue.main.sync(execute: task1)
-DispatchQueue.main.async(execute: task1)
-
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h1 id=&#34;背景執行緒語法&#34;&gt;背景執行緒語法&lt;/h1&gt;
-
-&lt;p&gt;不指定執行緒&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-swift&#34;&gt;DispatchQueue.global().sync(execute: task1)
-DispatchQueue.global().async(execute: task1)
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;指定執行緒&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-swift&#34;&gt;DispatchQueue.global(qos: .background).sync(execute:task1)
-DispatchQueue.global(qos: .background).async(execute:task1)
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h1 id=&#34;下載方法&#34;&gt;下載方法&lt;/h1&gt;
-
-&lt;h2 id=&#34;nsdata&#34;&gt;NSData&lt;/h2&gt;
-
-&lt;ol&gt;
-&lt;li&gt;利用url生出網址&lt;/li&gt;
-&lt;li&gt;利用Data Class下載(以前叫NSData)&lt;/li&gt;
-&lt;li&gt;把下載下來的資料指定給想要的檔案&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;記得要使用DispatchQueue.global().async使用此function，否則畫面會被block住。
-下載完畢後要更新UI時要使用ispatchQueue.main.async否則畫面不會即時更新。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-swift&#34;&gt;func download(){
-  if let url = URL(string: &amp;quot;http://www.carlosicaza.com/wp-content/uploads/2014/07/Swift-logo.png&amp;quot;){
-    do {
-      let data = try Data(contentsOf:url)
-      let image = UIImage(data:data)
-      DispatchQueue.main.async{
-        self.myImage.image = image
-      }
-    }
-    catch{
-      print(&amp;quot;Cannot download image&amp;quot;)
-    }
-  }
-}
-
-DispatchQueue.global().async {
-	self.download()
-}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h2 id=&#34;session&#34;&gt;Session&lt;/h2&gt;
-
-&lt;p&gt;改利用Session來下載
-Session的ataTask本身即是非同步，所以不會擋住UI畫面。
-一樣在任務結束要更新UI時要使用main thread來更新。&lt;/p&gt;
-
-&lt;ol&gt;
-&lt;li&gt;利用url生出網址&lt;/li&gt;
-&lt;li&gt;利用Session的dataTask
-
-&lt;ul&gt;
-&lt;li&gt;指定網址&lt;/li&gt;
-&lt;li&gt;指定下載完成後要做的事 (若要更新UI，記得要在Mainthread執行)&lt;/li&gt;
-&lt;li&gt;會回傳一個URLSessionDataTask的instance作為此任務的標記&lt;/li&gt;
-&lt;/ul&gt;&lt;/li&gt;
-&lt;li&gt;將剛剛接收到的instance.resume()才會開始執行任務&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-swift&#34;&gt;self.image = nil
-let task = session.dataTask(with: url) {
-    (data, response, error) in
-    if error != nil{
-        return
-    }
-    
-    if let loadedData = data{
-        let loadedImage = UIImage(data: loadedData)
-        DispatchQueue.main.async{
-            self.image = loadedImage
-            self.loading?.stopAnimating()
-        }
-    }
-    
-}
-task.resume()
-&lt;/code&gt;&lt;/pre&gt;
 </description>
     </item>
     

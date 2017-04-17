@@ -4214,6 +4214,84 @@ body {
 
   <article class="post">
     <h2 class="title"> 
+        <a href="/post/2016-02-28/">在AOSP中增加預設app (2) : 自行編譯</a>
+    </h2>
+    <div class="entry-content">
+    <div class="meta">
+        <div class="date">Published on: <time datetime='2016-02-28T00:00:00.000&#43;00:00' itemprop="datePublished">2016-02-28</time>
+</div>
+        <div class="tags">Tags: 
+
+<a href="https://cdfq152313.github.io//tags/android">android</a>
+
+<a href="https://cdfq152313.github.io//tags/aosp">aosp</a>
+
+
+</div>
+    </div>
+        
+
+<h1 id="平台及環境設置">平台及環境設置</h1>
+
+<p>##平台
+實驗平台：Nexus 5
+Android版本：android-4.4_r1
+前置知識： [Howto Build Android KitKat (4.4) for the Google Nexus 5][6]</p>
+
+<p>##環境設置
+在AOSP資料夾中</p>
+
+<pre><code class="language-bash">source build/envsetup.sh
+lunch aosp_hammerhead-userdebug
+</code></pre>
+
+<p>#目標：加入一個需編譯的預設App到AOSP裡</p>
+
+<p>在<code>AOSP/development/samples</code>裏面有許多可以借鑒的對象。
+這次學習的目錄為<code>AOSP/development/samples/HelloActivity/</code></p>
+
+<h2 id="複製資料夾">複製資料夾</h2>
+
+<p>首先我們先把這個資料夾複製到<code>packages/app/</code>裏面</p>
+
+<pre><code class="language-bash">cp $ANDROID_BUILD_TOP/development/samples/HelloActivity   $ANDROID_BUILD_TOP/packages/apps/
+</code></pre>
+
+<h2 id="使用mm進行編譯">使用mm進行編譯</h2>
+
+<p>在<code>packages/apps/HelloActivity</code>內進行<code>mm</code>編譯。</p>
+
+<pre><code class="language-bash">cd $ANDROID_BUILD_TOP/packages/apps/HelloActivity
+mm
+</code></pre>
+
+<h2 id="解析">解析</h2>
+
+<p>原本想長篇大論，但是好像有人寫的比我好XD
+只好直接給<a href="http://kezeodsnx.pixnet.net/blog/post/26377152-%5B%E8%BD%89%E8%B2%BC%5Dandroid%E7%9A%84%E5%BA%94%E7%94%A8%E7%A8%8B%E5%BA%8F%E7%BB%93%E6%9E%84%E5%88%86%E6%9E%90%EF%BC%9Ahelloactivity" title="Android的應用程序結構分析">連結</a>，有空再來寫自己的版本吧。
+懂的HelloAcitivity的結構之後，就可以對其進行修改，以符合自己的需求。
+對於Android.mk若有什麼不懂的也可參考上次<a href="http://android.mk/" title="Secrets of Android.mk">這篇</a>。</p>
+
+<h1 id="reference">Reference</h1>
+
+<ul>
+<li><a href="http://kezeodsnx.pixnet.net/blog/post/26377152-%5B%E8%BD%89%E8%B2%BC%5Dandroid%E7%9A%84%E5%BA%94%E7%94%A8%E7%A8%8B%E5%BA%8F%E7%BB%93%E6%9E%84%E5%88%86%E6%9E%90%EF%BC%9Ahelloactivity" title="Android的應用程序結構分析">Android的應用程序結構分析</a></li>
+<li><a href="http://android.mk/" title="Secrets of Android.mk">Secrets of Android.mk</a></li>
+</ul>
+
+    </div>
+
+<div class="meta">
+    
+    
+    <span class="comments"><a href="/post/2016-02-28/#disqus_thread">Comments</a></span>
+    
+    
+</div>
+</article>
+
+  <article class="post">
+    <h2 class="title"> 
         <a href="/post/2016-02-24/">在AOSP中增加預設app (1) : prebuilt apk</a>
     </h2>
     <div class="entry-content">
