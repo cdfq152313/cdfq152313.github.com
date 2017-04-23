@@ -1,7 +1,7 @@
 <!DOCTYPE HTML>
 <html>
 <head>
-	<meta name="generator" content="Hugo 0.19" />
+	<meta name="generator" content="Hugo 0.20.2" />
 	<meta charset="utf-8">
     
     
@@ -4214,6 +4214,46 @@ body {
 
   <article class="post">
     <h2 class="title"> 
+        <a href="/post/2016-12-01/">Java RSA</a>
+    </h2>
+    <div class="entry-content">
+    <div class="meta">
+        <div class="date">Published on: <time datetime='2016-12-01T00:00:00.000&#43;00:00' itemprop="datePublished">2016-12-01</time>
+</div>
+        <div class="tags">Tags: 
+
+<a href="https://cdfq152313.github.io//tags/java">java</a>
+
+<a href="https://cdfq152313.github.io//tags/cryptography">cryptography</a>
+
+
+</div>
+    </div>
+        
+
+<h1 id="讀金鑰">讀金鑰</h1>
+
+<p>感謝大大無私分享，大大一生平安
+<a href="http://stackoverflow.com/questions/11410770/load-rsa-public-key-from-file">http://stackoverflow.com/questions/11410770/load-rsa-public-key-from-file</a></p>
+
+<h1 id="加密">加密</h1>
+
+<p>感謝大大無私分享，大大一生平安
+<a href="http://jimwayne.blogspot.tw/2012/06/java_25.html">http://jimwayne.blogspot.tw/2012/06/java_25.html</a></p>
+
+    </div>
+
+<div class="meta">
+    
+    
+    <span class="comments"><a href="/post/2016-12-01/#disqus_thread">Comments</a></span>
+    
+    
+</div>
+</article>
+
+  <article class="post">
+    <h2 class="title"> 
         <a href="/post/2016-11-24/">基礎知識惡補 - Http協定</a>
     </h2>
     <div class="entry-content">
@@ -4384,10 +4424,10 @@ func sendMail(){
 <p>像是在模擬器上就不能使用。</p>
 
 <pre><code class="language-swift">if MFMailComposeViewController.canSendMail(){
-	// 可以寄信
+    // 可以寄信
 }
 else{
-	// 不能寄信
+    // 不能寄信
 }
 </code></pre>
 
@@ -4398,7 +4438,7 @@ else{
 <pre><code class="language-swift">mailController.mailComposeDelegate = self
 
 func mailComposeController(_ controller: MFMailComposeViewController, didFinishWith result: MFMailComposeResult, error: Error?) {
-		dismiss(animated: true, completion: nil)
+        dismiss(animated: true, completion: nil)
 }
 
 </code></pre>
@@ -4508,12 +4548,12 @@ override func numberOfSections(in tableView: UITableView) -&gt; Int {
 
 // 每個section裡面有幾個row
 override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -&gt; Int {
-	if section == 0{
-  	return 2
+    if section == 0{
+    return 2
   }
   else{
-  	return 3
-	}
+    return 3
+    }
 }
 </code></pre>
 
@@ -4543,10 +4583,10 @@ override func tableView(_ tableView: UITableView, numberOfRowsInSection section:
 
 <pre><code class="language-swift">override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -&gt; String? {
   if section == 0{
-  	return &quot;Section 0&quot;
+    return &quot;Section 0&quot;
   }
   else{
-  	return &quot;Section 1&quot;
+    return &quot;Section 1&quot;
   }
 }
 </code></pre>
@@ -4601,12 +4641,12 @@ override func tableView(_ tableView: UITableView, numberOfRowsInSection section:
 
 <pre><code class="language-swift">override func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -&gt; [UITableViewRowAction]? {
         let addAction = UITableViewRowAction(style: .normal, title: &quot;insert&quot;) { 
-        	(action, indexPath) in
+            (action, indexPath) in
           // 下面可寫插入元素的動作  
         }
         
         let deleteAction = UITableViewRowAction(style: .default, title: &quot;delete&quot;) { 
-        	(action, indexPath) in
+            (action, indexPath) in
           // 下面可寫刪除元素的動作  
         }
         return [deleteAction, addAction]
@@ -4726,18 +4766,18 @@ let geoCoder = CLGeocoder()
 
 // 解析字串
 geoCoder.geocodeAddressString(address) {
-	(places, error) in
+    (places, error) in
   // 如果解析失敗，直接回傳不做任何事
-	guard error == nil else {
-		print (&quot;Get position error&quot;)
-		return
-	}
-	
+    guard error == nil else {
+        print (&quot;Get position error&quot;)
+        return
+    }
+    
   // 印出位置
-	if(places?.count)! &gt; 0 {
-		let placeMark = places?.first
-		print(&quot;Location: \(placeMark?.location)&quot;)
-	}
+    if(places?.count)! &gt; 0 {
+        let placeMark = places?.first
+        print(&quot;Location: \(placeMark?.location)&quot;)
+    }
 
 }
 </code></pre>
@@ -4769,11 +4809,11 @@ geoCoder.geocodeAddressString(address) {
 4. 使用setRegion方法</p>
 
 <pre><code class="language-swift">func zoomInMap(placeMark:CLPlacemark){
-		// set region
+        // set region
     let cl2d = CLLocationCoordinate2D(latitude: (placeMark.location?.coordinate.latitude)!, longitude: (placeMark.location?.coordinate.longitude)!)
-		let span = MKCoordinateSpanMake(0.075, 0.075)
-		let region = MKCoordinateRegion(center: cl2d, span: span)
-		self.mapView.setRegion(region, animated: true)
+        let span = MKCoordinateSpanMake(0.075, 0.075)
+        let region = MKCoordinateRegion(center: cl2d, span: span)
+        self.mapView.setRegion(region, animated: true)
 }
 </code></pre>
 
@@ -4845,7 +4885,7 @@ geoCoder.geocodeAddressString(address) {
 
 <pre><code class="language-csharp">static String Encrypt(String _content)
 {
-	// 先轉成Byte再加密
+    // 先轉成Byte再加密
   Encoding ByteConverter = new ASCIIEncoding();
   var content = ByteConverter.GetBytes(_content);
 
@@ -4929,7 +4969,7 @@ public String Encrypt(string _content)
   byte[] contentByte = ByteConverter.GetBytes(_content);
   IBuffer content = contentByte.AsBuffer();
 
-	CryptographicKey key = getCryptographicKey();
+    CryptographicKey key = getCryptographicKey();
   // 加密
   IBuffer encrypt = CryptographicEngine.Encrypt(key, content, null);
   
@@ -4960,7 +5000,7 @@ public String Encrypt(string _content)
 
 <pre><code class="language-csharp">public Encrypter getCryptographicKey()
 {
-	String publickey = &quot;MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAw3XOM8su/sXvgAIhwlNhpihgVIjWQUhW9zoocwCNWGI8b4YtU/qfOlX3bsWzqw6IqRF/Ncmkbs6Rr5uiDzhHwt7cz/+vgZ9Hm346OM6K2N70a7Lbzr/LlDDb4Yt/PzBEOHEffCkKnpy31KL6Xkfg2a0OkZiF8dny9PbKQaYbXQUJIhCx9YcZ4JZ5cRGMvpNKpS+Wx2q22GV5akKVZ6jVcIgotAgp+MtMJoSr8av61eX6sOl0JborsuuX8Cao278MGKCkUldU1hUDTJtH6IOQfeeJhWolEUS6KXj0FAReWR76aYXBDQ3xJAQHvB/mjMLSiB4mpfk0JETz9Bh0o9FvXwIDAQAB&quot;;
+    String publickey = &quot;MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAw3XOM8su/sXvgAIhwlNhpihgVIjWQUhW9zoocwCNWGI8b4YtU/qfOlX3bsWzqw6IqRF/Ncmkbs6Rr5uiDzhHwt7cz/+vgZ9Hm346OM6K2N70a7Lbzr/LlDDb4Yt/PzBEOHEffCkKnpy31KL6Xkfg2a0OkZiF8dny9PbKQaYbXQUJIhCx9YcZ4JZ5cRGMvpNKpS+Wx2q22GV5akKVZ6jVcIgotAgp+MtMJoSr8av61eX6sOl0JborsuuX8Cao278MGKCkUldU1hUDTJtH6IOQfeeJhWolEUS6KXj0FAReWR76aYXBDQ3xJAQHvB/mjMLSiB4mpfk0JETz9Bh0o9FvXwIDAQAB&quot;;
   AsymmetricKeyAlgorithmProvider asymmAlg = AsymmetricKeyAlgorithmProvider.OpenAlgorithm(AsymmetricAlgorithmNames.RsaPkcs1);
   CryptographicKey key = asymmAlg.ImportPublicKey(CryptographicBuffer.DecodeFromBase64String(publickey), CryptographicPublicKeyBlobType.X509SubjectPublicKeyInfo);
   return key;
@@ -5026,9 +5066,9 @@ Main Queue / Concurrent Queue
 <h1 id="主執行緒語法">主執行緒語法</h1>
 
 <pre><code class="language-swift">let task1 = {
-	for i in 1...5{
-		print (&quot;Task1: (\i)&quot;)
-	}
+    for i in 1...5{
+        print (&quot;Task1: (\i)&quot;)
+    }
 }
 
 // DispatchQueue.main.sync(execute: task1)
@@ -5079,7 +5119,7 @@ DispatchQueue.global(qos: .background).async(execute:task1)
 }
 
 DispatchQueue.global().async {
-	self.download()
+    self.download()
 }
 </code></pre>
 
@@ -5209,9 +5249,9 @@ let urlfrompath = URL(fileURLWithPath: pathFromNSHome)
 
 <pre><code class="language-swift">let directoryPath = NSTemporaryDirectory() + &quot;/images&quot;
 do{
-	try FileManager.default.createDirectory(atPath: directoryPath, withIntermediateDirectories: true, attributes: nil)
+    try FileManager.default.createDirectory(atPath: directoryPath, withIntermediateDirectories: true, attributes: nil)
 }catch{
-	print(&quot;Cannot create directory&quot;)
+    print(&quot;Cannot create directory&quot;)
 }
 </code></pre>
 
@@ -5226,11 +5266,11 @@ do{
 do{
   let fileList = try FileManager.default.contentsOfDirectory(atPath: tempPath)
   for file in fileList{
-  	print(file)
+    print(file)
   }
 }
 catch{
-	print(&quot;Cannot list directory&quot;)
+    print(&quot;Cannot list directory&quot;)
 }
 </code></pre>
 
@@ -5243,13 +5283,13 @@ catch{
 var isDirectory:ObjCBool = false
 let isExist = FileManager.default.fileExists(atPath: path, isDirectory: &amp;isDirectory)
 if isExist == true &amp;&amp; isDirectory.boolValue == true{
-	print(&quot;File exist and it is a direcotry&quot;)
+    print(&quot;File exist and it is a direcotry&quot;)
 }
 else if isExist == true &amp;&amp; isDirectory.boolValue == false{
-	print(&quot;File exist but it is not a direcotry&quot;)
+    print(&quot;File exist but it is not a direcotry&quot;)
 }
 else{
-	print(&quot;File isn't exist&quot;)
+    print(&quot;File isn't exist&quot;)
 }
 </code></pre>
 
@@ -5271,9 +5311,9 @@ FileManager.default.removeItem(atPath: path)
 <pre><code class="language-swift">let text = &quot;Hello World&quot;
 let filePath = NSTemporaryDirectory() + &quot;Text.txt&quot;
 do{
-	try text.write(toFile: filePath, atomically: true, encoding: .utf8)
+    try text.write(toFile: filePath, atomically: true, encoding: .utf8)
 }catch{
-	print(&quot;Not save correctly&quot;)
+    print(&quot;Not save correctly&quot;)
 }
 </code></pre>
 
@@ -5284,7 +5324,7 @@ do{
   let loading = try NSString(contentsOfFile: filePath, encoding: String.Encoding.utf8.rawValue)
   print(loading)
 }catch{
-	print(&quot;No save file&quot;)
+    print(&quot;No save file&quot;)
 }
 </code></pre>
 
@@ -5302,7 +5342,7 @@ arrayToSave.write(toFile: filePath, atomically: true)
 
 <pre><code class="language-swift">let filePath = NSTemporaryDirectory() + &quot;saveArray.txt&quot;
 if let loadArray = NSArray(contentsOfFile: filePath) as? [String]{
-	print(loadArray)
+    print(loadArray)
 }
 </code></pre>
 
@@ -5345,14 +5385,14 @@ guard let image = UIImage(named: &quot;Tails&quot;) else {
 }
 
 if let dataToSave = UIImagePNGRepresentation(image){
-	// 產生路徑
+    // 產生路徑
   let filePath = NSTemporaryDirectory() + &quot;savedImage.png&quot;
   let fileURL = URL(fileURLWithPath: filePath)
   // 寫入
   do{
-  	try dataToSave.write(to: fileURL)
+    try dataToSave.write(to: fileURL)
   }catch{
-  	print(&quot;Can not save Image&quot;)
+    print(&quot;Can not save Image&quot;)
   }
 }
 </code></pre>
@@ -5419,10 +5459,10 @@ let url = docUrl.appendingPathComponent(&quot;myfile.txt&quot;)
 let data = try? Data(contentsOf: url)
 
 if let data = data {
-	let item = NSKeyedUnarchiver.unarchiveObject(with: data) as! Item
-	print(&quot;=== Read ===&quot;)
-	print(item.name)
-	print(item.detail)
+    let item = NSKeyedUnarchiver.unarchiveObject(with: data) as! Item
+    print(&quot;=== Read ===&quot;)
+    print(item.name)
+    print(item.detail)
 }
 </code></pre>
 
@@ -5479,13 +5519,13 @@ AudioServicesPlaySystemSound(1000)
 
 <pre><code class="language-swift">// AVAudioPlayer初始化
 func myPlayerInit()-&gt;AVAudioPlayer?{
-	guard let path = Bundle.main.path(forResource: &quot;Right&quot;, ofType:&quot;mp3&quot;) else{
-		return nil
-	}
+    guard let path = Bundle.main.path(forResource: &quot;Right&quot;, ofType:&quot;mp3&quot;) else{
+        return nil
+    }
 
   let audioURL = URL(fileURLWithPath: path)
   do{
-  	return try AVAudioPlayer(contentsOf: audioURL)
+    return try AVAudioPlayer(contentsOf: audioURL)
   }
   catch{
     print(&quot;AVAudio Player Init failed&quot;)
@@ -5542,7 +5582,7 @@ myPlayer?.rate = 0.5
 
 <pre><code class="language-swift">// 取消不動作直接消除視窗
 func mediaPickerDidCancel(_ mediaPicker: MPMediaPickerController) {
-	dismiss(animated: true, completion: nil)
+    dismiss(animated: true, completion: nil)
 }
 
 // 選取到音樂則播放
@@ -5578,7 +5618,7 @@ func mediaPicker(_ mediaPicker: MPMediaPickerController, didPickMediaItems media
 <h2 id="步驟2-3-4-5">步驟2 3 4 5</h2>
 
 <pre><code class="language-swift">func audioRecorderInit()-&gt;AVAudioRecorder?{
-	// 步驟2 設定路徑
+    // 步驟2 設定路徑
   let path = NSHomeDirectory() + &quot;/Documents/user.wav&quot;
   let url = URL(fileURLWithPath: path)
   // 步驟3 設定錄音數據(dict)
@@ -5589,14 +5629,14 @@ func mediaPicker(_ mediaPicker: MPMediaPickerController, didPickMediaItems media
     AVSampleRateKey: 44100.0
   ]
   do {
-  	// 步驟4 5 產生實體並指定delegate
-  	let audioRecorder = try AVAudioRecorder(url: url, settings:recordSettings)
+    // 步驟4 5 產生實體並指定delegate
+    let audioRecorder = try AVAudioRecorder(url: url, settings:recordSettings)
     audioRecorder.delegate = self
     return audioRecorder
   }
   catch{
-  	print(&quot;something is worng&quot;)
-  	return nil
+    print(&quot;something is worng&quot;)
+    return nil
   }
 }
 </code></pre>
@@ -5608,10 +5648,10 @@ func mediaPicker(_ mediaPicker: MPMediaPickerController, didPickMediaItems media
 <pre><code class="language-swift">func audioRecorderDidFinishRecording(_ recorder: AVAudioRecorder, successfully flag: Bool) {
   if flag == true{
     do {
-    	try audioPlayer = AVAudioPlayer(contentsOf: recorder.url)
-  	}
+        try audioPlayer = AVAudioPlayer(contentsOf: recorder.url)
+    }
     catch{
-    	print(&quot;something is Wrong...&quot;)
+        print(&quot;something is Wrong...&quot;)
     }
   }
 }
@@ -5622,10 +5662,10 @@ func mediaPicker(_ mediaPicker: MPMediaPickerController, didPickMediaItems media
 <p>將AVAudioSession調成AVAudioSessionCatetoryPlayAndRecord，可有效增大錄音音量。若不調整則會很小聲。</p>
 
 <pre><code class="language-swift">do {
-	try AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategoryPlayAndRecord)
+    try AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategoryPlayAndRecord)
 }
 catch{
-	print(&quot;can't set audio session&quot;)
+    print(&quot;can't set audio session&quot;)
 }
 audioRecorder?.prepareToRecord()
 audioRecorder?.record()
@@ -5637,11 +5677,11 @@ audioRecorder?.record()
 
 <pre><code class="language-swift">self.audioRecorder?.stop()
 do{
-	try AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategoryPlayback)
-	try AVAudioSession.sharedInstance().setActive(false)
+    try AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategoryPlayback)
+    try AVAudioSession.sharedInstance().setActive(false)
 }
 catch{
-	print(&quot;can't set audio session&quot;)
+    print(&quot;can't set audio session&quot;)
 }
 </code></pre>
 
@@ -5772,14 +5812,14 @@ plus(AAA:1, BBB:3)
 <p>before</p>
 
 <pre><code class="language-swift">func add(x:Int, y:Int)-&gt;Int{
-	return x + y
+    return x + y
 }
 </code></pre>
 
 <p>after</p>
 
 <pre><code class="language-swift">{
-	(x:Int, y:Int)-&gt;Int in
+    (x:Int, y:Int)-&gt;Int in
   return x + y
 }
 </code></pre>
@@ -5793,11 +5833,11 @@ plus(AAA:1, BBB:3)
   numberArray.map( {(number) in return number+10} ) // 省略型別
 </code></pre></li>
 
-<li><p>如果Closure有回傳值，而且程式碼是一行的話，可以省略return，
-	<code>swift
-	let numberArray=[1,3,6,8,10,45]
-	  numberArray.map( {(number) in number+10} ) // 回傳number+10
-</code></p></li>
+<li><p>如果Closure有回傳值，而且程式碼是一行的話，可以省略return，</p>
+
+<pre><code class="language-swift">let numberArray=[1,3,6,8,10,45]
+  numberArray.map( {(number) in number+10} ) // 回傳number+10
+</code></pre></li>
 
 <li><p>可以用$0, $1 &hellip; 代表參數。</p>
 
@@ -5805,11 +5845,11 @@ plus(AAA:1, BBB:3)
   numberArray.map( {$0 + 10} ) // 省略參數，利用$0代表參數
 </code></pre></li>
 
-<li><p>如果Closure是最後一個參數的話，可以把clousure寫在小括號的外面。
-	<code>swift
-	  let numberArray=[1,3,6,8,10,45]
-	  numberArray.map(){$0 + 10} // 寫在小括號的外面
-</code></p></li>
+<li><p>如果Closure是最後一個參數的話，可以把clousure寫在小括號的外面。</p>
+
+<pre><code class="language-swift">  let numberArray=[1,3,6,8,10,45]
+  numberArray.map(){$0 + 10} // 寫在小括號的外面
+</code></pre></li>
 
 <li><p>如果Closure是唯一的參數的話，可以省略小括號</p>
 
@@ -5824,7 +5864,7 @@ plus(AAA:1, BBB:3)
 
 <pre><code class="language-swift">var text:String? = &quot;abc&quot;
 if let apple = text{
-	print(apple)
+    print(apple)
 }
 // 在這邊用會失敗
 // print(apple)
@@ -5832,7 +5872,7 @@ if let apple = text{
 
 <pre><code class="language-swift">var text:String? = &quot;abc&quot;
 guard let apple = text else{
-	print(apple)
+    print(apple)
 }
 // 照用
 print(apple)
@@ -5855,12 +5895,12 @@ print(apple)
 參看下面的code</p>
 
 <pre><code class="language-swift">class Baby{
-	var age:Int
-	init?(age:Int){
-  	if age &lt; 0{
-    	return nil
+    var age:Int
+    init?(age:Int){
+    if age &lt; 0{
+        return nil
     }
-  	self.age = age
+    self.age = age
   }
 }
 </code></pre>
@@ -5917,7 +5957,7 @@ print(apple)
 <pre><code class="language-swift">class SuperBaby: Baby{
     var magic:Int
     init(age:Int, magic:Int){
-    		super.init(age: age)
+            super.init(age: age)
         self.magic = magic
     }
 }
@@ -5953,7 +5993,7 @@ print(apple)
     }
     
     convenience init(name:String){
-    		self.init(age:1, name:name)
+            self.init(age:1, name:name)
     }
 }
 </code></pre>
@@ -5990,325 +6030,6 @@ print(apple)
     
     
     <span class="comments"><a href="/post/2016-10-04/#disqus_thread">Comments</a></span>
-    
-    
-</div>
-</article>
-
-  <article class="post">
-    <h2 class="title"> 
-        <a href="/post/2016-10-03/">Swift 不同Controller互動 與 Navigation Bar</a>
-    </h2>
-    <div class="entry-content">
-    <div class="meta">
-        <div class="date">Published on: <time datetime='2016-10-03T00:00:00.000&#43;00:00' itemprop="datePublished">2016-10-03</time>
-</div>
-        <div class="tags">Tags: 
-
-<a href="https://cdfq152313.github.io//tags/ios">ios</a>
-
-<a href="https://cdfq152313.github.io//tags/swift">swift</a>
-
-
-</div>
-    </div>
-        
-
-<h1 id="controller之間的呼叫">Controller之間的呼叫</h1>
-
-<h2 id="present-與-dismiss">present 與 dismiss</h2>
-
-<p>想要跳轉頁面，我們可以靠storyBoard拉出present的線，也可以靠程式碼。
-在StoryBoard中只要按住ctrl，將button拉到另一個controller後再選present即可。
-在程式碼的話</p>
-
-<pre><code class="language-swift">// 因為此ViewController什麼都沒設定，所以會是一片黑
-present(ViewController(), animated: true, completion: nil)
-</code></pre>
-
-<p>有跳過去，就有返回，想返回時使用dismiss function。</p>
-
-<pre><code class="language-swift">dismiss(animated: true, completion: nil)
-</code></pre>
-
-<p>dismiss的原理是，直接呼叫時，請求presentingViewController把你關掉。
-間接呼叫時，把後面的presentedViewController們關掉。
-至於這兩個是什麼意思請參看下節。</p>
-
-<h2 id="presentingviewcontroller-與-presentedviewcontroller">presentingViewController 與 presentedViewController</h2>
-
-<p>每個controller皆有兩個重要的屬性，可以分辨這個controller是被誰present，或是present了誰。
-- presentingViewController：present Controller的Controller
-- presentedViewController：被present的Controller</p>
-
-<p>假設ABC皆為Controller，A present B，B present C，那對於B來說。
-- A為B之presentingViewController
-- C為B之presentedViewController</p>
-
-<h1 id="navigation-bar">Navigation bar</h1>
-
-<h2 id="push-與-pop">push 與 pop</h2>
-
-<p>與present / dismiss相似，進到navigation controller後要使用 navigation屬性的push/pop方法，不然會跳出navigation controller的頁，失去Navigation Bar的效果。</p>
-
-<p>程式碼的形式如下</p>
-
-<pre><code class="language-swift">// 推上下一個頁面
-self.navigationController?.pushViewController(ViewController(), animated: true)
-// 回到上一頁
-self.navigationController?.popViewController(animated: true)
-// 直接回到navigation最開頭
-self.navigationController?.popToRootViewController(animated: true)
-</code></pre>
-
-<h2 id="前後的controller">前後的controller</h2>
-
-<p>如同present / dismiss可以拿到前後關係一樣，navigation controller也是可以拿到前後關係的。
-所有經過的controller都放在self.navigationController?.viewControllers這個array裡可以拿取。</p>
-
-<pre><code class="language-swift">self.navigationController?.viewControllers[0]
-self.navigationController?.viewControllers[1]
-...
-</code></pre>
-
-<h2 id="navigation-controller的建立">Navigation Controller的建立</h2>
-
-<p>Navigation Contrller本身並不帶有頁面資訊，而是在Navigation Controller的下一個Controller才會開始顯示。
-那兩者之間要建立連線，必須要指定Navigation Controller當中的Root View Controller才行。</p>
-
-<ul>
-<li>方法1: Navigation綁定Root Controller，有兩種做法
-
-<ul>
-<li>按住Ctrl並將Navigation Controller拉到想要顯示的第一個Controller，鬆開後選擇Root view Controller</li>
-<li>在Navigation Controller的Triggered Segue中，指定Root view Controller</li>
-</ul></li>
-<li>方法2: 在StoryBoard中，點擊已經存在的Controller。並從上方選單Editor =&gt; Embed in =&gt; NavigatioController即可</li>
-</ul>
-
-<h2 id="上面的title和向右鈕">上面的title和向右鈕</h2>
-
-<p>預設只有Navigation Controller後第一個Bar可以編輯Title，若要加入新title則要從StoryBoard中拉入<strong>Navigation item</strong>
-預設上方並無向右鍵，只有返回鍵，若要加入則拉入<strong>Bar Button Item</strong></p>
-
-<h1 id="tab-bar-controller">Tab Bar Controller</h1>
-
-<p>與Navigation View許多做法類似
-想加上新的tab可以
-- 方法1: TabViewController綁定View Controllers，有兩種做法
- - 按住Ctrl並將TabViewController拉到想要加上的Controller，鬆開後選擇View Controllers
- - 在TabViewController的Triggered Segue中，指定新的View Controllers
-- 方法2: 在StoryBoard中，點擊已經存在的Controller。並從上方選單Editor =&gt; Embed in =&gt; TabViewController即可</p>
-
-<h2 id="tab-bar-controller下的controller們">tab bar controller下的controller們</h2>
-
-<pre><code class="language-swift">self.tabBarController?.viewControllers[0]
-self.tabBarController?.viewControllers[1]
-...
-</code></pre>
-
-<p>要注意的是，如果是tab bar controller下包著navigation controller，在存取時要先轉型成navigation controller，再取用navigation controller裡面的controller，才不會錯誤。</p>
-
-<h2 id="切換tab">切換tab</h2>
-
-<pre><code class="language-swift">self.tabBarController?.selectedIndex = 0
-</code></pre>
-
-<h2 id="隱藏tab">隱藏tab</h2>
-
-<pre><code class="language-swift">self.tabBarController?.tabBar.isHidden = true
-</code></pre>
-
-<h1 id="在不同的controller之間跳轉">在不同的Controller之間跳轉</h1>
-
-<h2 id="方法1-直接拖拉">方法1 直接拖拉</h2>
-
-<p>在storyboard上
-按住ctrl點下來源Controller之button拉到要呈現的Controller後鬆開，選擇show或present即可。
-show會在啟用navigation bar的時候自動使用navigation.push，若無navigation bar則是使用present。</p>
-
-<h2 id="方法2-利用segue">方法2 利用segue</h2>
-
-<p>在storyboard上
-按住ctrl點下來源Controller，拉到要呈現的Controller，會多一條segue連線，幫此條連線取名字(identifer)
-接下來在想切換的情況下使用performSegue即可(參數為剛剛取的identifer)</p>
-
-<pre><code class="language-swift">performSegue(withIdentifier: &quot;goToView2&quot;, sender: nil)
-</code></pre>
-
-<h2 id="方法3-指定storyboard以及controller-通常用在更換story-board的時候">方法3 指定StoryBoard以及Controller (通常用在更換Story Board的時候)</h2>
-
-<p>將要呈現的Controller取名字(StoryBoardID)
-並在程式碼中指定
-1. 位於哪個StoryBoard
-2. Controller的StoryBoardID
-最後present或push即可</p>
-
-<pre><code class="language-swift">let myStoryBoard = UIStoryboard(name: &quot;Main&quot;, bundle: nil)
-let whiteViewController = myStoryBoard.instantiateViewController(withIdentifier: &quot;whiteView&quot;)
-present(whiteViewController, animated:true, completion:nil)
-</code></pre>
-
-<p>如果是位於同一個storyboard，也可以拿到自己的storyboard</p>
-
-<pre><code class="language-swift">let myStoryBoard = self.storyboard!
-let whiteViewController = myStoryBoard.instantiateInitialViewController(withIdentifier: &quot;whiteView&quot;)
-present(whiteViewController, animated:true, completion:nil)
-</code></pre>
-
-<h2 id="方法4-storyboard-reference-通常用在更換story-board的時候">方法4 StoryBoard Reference (通常用在更換Story Board的時候)</h2>
-
-<p>在StoryBoard中，將StoryBoard Reference
-拖到畫面上，指定StoryBoard Reference上的StoryBoard和ControllerID
-接下來利用方法1或2拖拉即可成功</p>
-
-<h2 id="方法5-逃生門-通常用在要返回前一個controller的時候">方法5 逃生門 (通常用在要返回前一個Controller的時候)</h2>
-
-<h3 id="情況">情況</h3>
-
-<p>假設最初的controller取名叫parent controller
-parent controller可以連到許多child controller
-當child controller想返回parent controller的時候</p>
-
-<h3 id="作法">作法</h3>
-
-<p>先寫在parent controller</p>
-
-<pre><code class="language-swift">@IBAction func backToMain(_ segue:UIStoryboardSegue){
-	print(&quot;back to main&quot;)
-}
-</code></pre>
-
-<p>再用StoryBoard選擇child controller
-按鈕按住ctrl往該controller的逃生門拉 (上方最右邊的圖示)
-即會出現backToMain的方法
-如果parent controller在child controller返回後想執行什麼動作也可在此function中填入</p>
-
-<h1 id="controller之間傳遞訊息">Controller之間傳遞訊息</h1>
-
-<h2 id="方法1-利用destination-controller的property-呼叫下一個controller時">方法1. 利用destination controller的property (呼叫下一個Controller時)</h2>
-
-<ol>
-<li>複寫Source Controller的prepare Function</li>
-<li>參數segue之屬性destionation即為destination controller</li>
-<li>強制轉型為destination controller</li>
-<li>將其塞入數值</li>
-</ol>
-
-<p>這裡要注意的是，不能把值塞進destination controller的UI元件內(Ex: Label)，因為這個時候畫面元件還沒生成。</p>
-
-<pre><code class="language-swift">// Source Controller
-override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-	if segue.destination is SecondViewController{
-    let des = segue.destination as! SecondViewController
-  	des.textFromFirstView = &quot;Hello World&quot;
-	}
-}
-</code></pre>
-
-<h2 id="方法2-利用前後階層關係-僅適用於返回controller時">方法2. 利用前後階層關係(僅適用於返回controller時)</h2>
-
-<p>前面有說過present可以靠
-- presentingViewController
-- presentedViewController</p>
-
-<p>navigation bar可以靠
-- self.navigationController?.viewControllers[0]
-- self.navigationController?.viewControllers[1]
-- &hellip;</p>
-
-<p>來獲得前面的controller元件
-取得controller後再參考方法1塞入值</p>
-
-<h2 id="方法3-protocol-返回前一個controller時">方法3. protocol (返回前一個controller時)</h2>
-
-<p>將前一個controller名為FirstViewController
-現在這個controller名為SecondViewController
-令一個protocol叫做SecondViewControllerDelegate</p>
-
-<ol>
-<li>將SecondViewControllerDelegate當作SecondViewController的屬性</li>
-<li>在FirstViewController跳轉到SecondViewController前，通過方法1塞進自己實作的SecondViewControllerDelegate</li>
-<li>SecondViewController消失前，執行該protocol的method (透過複寫viewWillDisapear來達成)</li>
-</ol>
-
-<p>```swift SecondController
-var delegate:SecondViewControllerDelegate?
-@IBAction func goBack(_ sender: UIButton) {
-    let _ = navigationController?.popViewController(animated: true)
-}</p>
-
-<p>override func viewWillDisappear(_ animated: Bool) {
-  super.viewWillDisappear(animated)
-  if self.isMovingFromParentViewController{
-        delegate?.setColor(colorType: &ldquo;red&rdquo;)
-    }
-}</p>
-
-<pre><code>`hint: 可以靠 self.isMovingFromParentViewController來測試是否為返回到前一個Controller`
-
-```swift SecondViewControllerDelegate
-protocol SecondViewControllerDelegate{
-	func setColor(colorType:String)
-}
-</code></pre>
-
-<p>```swift FirstViewController (實作SecondViewControllerDelegate)
-override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-  if let des = segue.destination as? SecondViewController{
-    des.delegate = self
-  }
-}</p>
-
-<pre><code>
-## 方法4. notification (返回前一個controller時)
-1. parent controller先監聽事件
-	- 撰寫接收到監聽後要執行的function
-  - 註冊監聽事件
-2. child controller發送notification
-
-```swift ParentController
-// 接收到事件後要執行的任務
-func getUpdateNoti(noti:Notification) {
-	let data = noti.userInfo![&quot;data&quot;] as! String
-	print(data)
-}
-
-override func viewDidLoad() {
-  super.viewDidLoad()
-	
-  // 註冊事件
-  let notificationName = Notification.Name(&quot;GetUpdateNoti&quot;)
-  NotificationCenter.default.addObserver(self, selector: #selector(ViewController.getUpdateNoti(noti:)), name: notificationName, object: nil)
-}
-</code></pre>
-
-<p>```swift ChildController
-// 發送事件
-let notificationName = Notification.Name(&ldquo;GetUpdateNoti&rdquo;)
-NotificationCenter.default().post(name: notificationName,object: nil, userInfo: [&ldquo;data&rdquo;:&ldquo;Hello World&rdquo;])</p>
-
-<pre><code>
-## 方法5. 全域變數
-在AppDelegate增加property
-並在想要使用的class裡面，將UIApplication.shared.delegate轉型為AppDelegate
-即可使用裡面的property
-```swift
-if let appDelegate = UIApplication.shared.delegate as? AppDelegate{
-	if let colorName = appDelegate.color{
-    setColor(colorType: colorName)
-  }
-}
-</code></pre>
-
-<p>全域變數還有很多做法，像是singleton或是寫在class之外，有機會再開一篇講。</p>
-
-    </div>
-
-<div class="meta">
-    
-    
-    <span class="comments"><a href="/post/2016-10-03/#disqus_thread">Comments</a></span>
     
     
 </div>

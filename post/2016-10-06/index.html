@@ -4241,13 +4241,13 @@ AudioServicesPlaySystemSound(1000)
 
 <pre><code class="language-swift">// AVAudioPlayer初始化
 func myPlayerInit()-&gt;AVAudioPlayer?{
-	guard let path = Bundle.main.path(forResource: &quot;Right&quot;, ofType:&quot;mp3&quot;) else{
-		return nil
-	}
+    guard let path = Bundle.main.path(forResource: &quot;Right&quot;, ofType:&quot;mp3&quot;) else{
+        return nil
+    }
 
   let audioURL = URL(fileURLWithPath: path)
   do{
-  	return try AVAudioPlayer(contentsOf: audioURL)
+    return try AVAudioPlayer(contentsOf: audioURL)
   }
   catch{
     print(&quot;AVAudio Player Init failed&quot;)
@@ -4304,7 +4304,7 @@ myPlayer?.rate = 0.5
 
 <pre><code class="language-swift">// 取消不動作直接消除視窗
 func mediaPickerDidCancel(_ mediaPicker: MPMediaPickerController) {
-	dismiss(animated: true, completion: nil)
+    dismiss(animated: true, completion: nil)
 }
 
 // 選取到音樂則播放
@@ -4340,7 +4340,7 @@ func mediaPicker(_ mediaPicker: MPMediaPickerController, didPickMediaItems media
 <h2 id="步驟2-3-4-5">步驟2 3 4 5</h2>
 
 <pre><code class="language-swift">func audioRecorderInit()-&gt;AVAudioRecorder?{
-	// 步驟2 設定路徑
+    // 步驟2 設定路徑
   let path = NSHomeDirectory() + &quot;/Documents/user.wav&quot;
   let url = URL(fileURLWithPath: path)
   // 步驟3 設定錄音數據(dict)
@@ -4351,14 +4351,14 @@ func mediaPicker(_ mediaPicker: MPMediaPickerController, didPickMediaItems media
     AVSampleRateKey: 44100.0
   ]
   do {
-  	// 步驟4 5 產生實體並指定delegate
-  	let audioRecorder = try AVAudioRecorder(url: url, settings:recordSettings)
+    // 步驟4 5 產生實體並指定delegate
+    let audioRecorder = try AVAudioRecorder(url: url, settings:recordSettings)
     audioRecorder.delegate = self
     return audioRecorder
   }
   catch{
-  	print(&quot;something is worng&quot;)
-  	return nil
+    print(&quot;something is worng&quot;)
+    return nil
   }
 }
 </code></pre>
@@ -4370,10 +4370,10 @@ func mediaPicker(_ mediaPicker: MPMediaPickerController, didPickMediaItems media
 <pre><code class="language-swift">func audioRecorderDidFinishRecording(_ recorder: AVAudioRecorder, successfully flag: Bool) {
   if flag == true{
     do {
-    	try audioPlayer = AVAudioPlayer(contentsOf: recorder.url)
-  	}
+        try audioPlayer = AVAudioPlayer(contentsOf: recorder.url)
+    }
     catch{
-    	print(&quot;something is Wrong...&quot;)
+        print(&quot;something is Wrong...&quot;)
     }
   }
 }
@@ -4384,10 +4384,10 @@ func mediaPicker(_ mediaPicker: MPMediaPickerController, didPickMediaItems media
 <p>將AVAudioSession調成AVAudioSessionCatetoryPlayAndRecord，可有效增大錄音音量。若不調整則會很小聲。</p>
 
 <pre><code class="language-swift">do {
-	try AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategoryPlayAndRecord)
+    try AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategoryPlayAndRecord)
 }
 catch{
-	print(&quot;can't set audio session&quot;)
+    print(&quot;can't set audio session&quot;)
 }
 audioRecorder?.prepareToRecord()
 audioRecorder?.record()
@@ -4399,11 +4399,11 @@ audioRecorder?.record()
 
 <pre><code class="language-swift">self.audioRecorder?.stop()
 do{
-	try AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategoryPlayback)
-	try AVAudioSession.sharedInstance().setActive(false)
+    try AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategoryPlayback)
+    try AVAudioSession.sharedInstance().setActive(false)
 }
 catch{
-	print(&quot;can't set audio session&quot;)
+    print(&quot;can't set audio session&quot;)
 }
 </code></pre>
 </div>

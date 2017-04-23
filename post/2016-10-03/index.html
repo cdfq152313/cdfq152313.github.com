@@ -4379,7 +4379,7 @@ parent controller可以連到許多child controller
 <p>先寫在parent controller</p>
 
 <pre><code class="language-swift">@IBAction func backToMain(_ segue:UIStoryboardSegue){
-	print(&quot;back to main&quot;)
+    print(&quot;back to main&quot;)
 }
 </code></pre>
 
@@ -4403,10 +4403,10 @@ parent controller可以連到許多child controller
 
 <pre><code class="language-swift">// Source Controller
 override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-	if segue.destination is SecondViewController{
+    if segue.destination is SecondViewController{
     let des = segue.destination as! SecondViewController
-  	des.textFromFirstView = &quot;Hello World&quot;
-	}
+    des.textFromFirstView = &quot;Hello World&quot;
+    }
 }
 </code></pre>
 
@@ -4453,7 +4453,7 @@ var delegate:SecondViewControllerDelegate?
 
 ```swift SecondViewControllerDelegate
 protocol SecondViewControllerDelegate{
-	func setColor(colorType:String)
+    func setColor(colorType:String)
 }
 </code></pre>
 
@@ -4467,20 +4467,20 @@ override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
 <pre><code>
 ## 方法4. notification (返回前一個controller時)
 1. parent controller先監聽事件
-	- 撰寫接收到監聽後要執行的function
+    - 撰寫接收到監聽後要執行的function
   - 註冊監聽事件
 2. child controller發送notification
 
 ```swift ParentController
 // 接收到事件後要執行的任務
 func getUpdateNoti(noti:Notification) {
-	let data = noti.userInfo![&quot;data&quot;] as! String
-	print(data)
+    let data = noti.userInfo![&quot;data&quot;] as! String
+    print(data)
 }
 
 override func viewDidLoad() {
   super.viewDidLoad()
-	
+    
   // 註冊事件
   let notificationName = Notification.Name(&quot;GetUpdateNoti&quot;)
   NotificationCenter.default.addObserver(self, selector: #selector(ViewController.getUpdateNoti(noti:)), name: notificationName, object: nil)
@@ -4499,7 +4499,7 @@ NotificationCenter.default().post(name: notificationName,object: nil, userInfo: 
 即可使用裡面的property
 ```swift
 if let appDelegate = UIApplication.shared.delegate as? AppDelegate{
-	if let colorName = appDelegate.color{
+    if let colorName = appDelegate.color{
     setColor(colorType: colorName)
   }
 }

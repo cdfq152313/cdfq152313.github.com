@@ -4225,9 +4225,9 @@ Main Queue / Concurrent Queue
 <h1 id="主執行緒語法">主執行緒語法</h1>
 
 <pre><code class="language-swift">let task1 = {
-	for i in 1...5{
-		print (&quot;Task1: (\i)&quot;)
-	}
+    for i in 1...5{
+        print (&quot;Task1: (\i)&quot;)
+    }
 }
 
 // DispatchQueue.main.sync(execute: task1)
@@ -4278,7 +4278,7 @@ DispatchQueue.global(qos: .background).async(execute:task1)
 }
 
 DispatchQueue.global().async {
-	self.download()
+    self.download()
 }
 </code></pre>
 

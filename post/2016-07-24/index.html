@@ -4216,19 +4216,18 @@ body {
     </div>
     <div class="entry-content">
 
-<p>在<a href="https://www.renpy.org/doc/html/screen_actions.html">官網</a>可以看到有很多可使的Action。
-萬一想要的功能並不在裡面呢? 其實也有<a href="https://www.renpy.org/doc/html/screen_actions.html#Function">Function</a>此一Action的存在，可自己撰寫Function傳進去使用。</p>
+<p>在<a href="https://www.renpy.org/doc/html/screen_actions.html">官網</a>可以看到有很多可使用的Action。<br />
+萬一想要的功能並不在裡面呢? 其實也有<a href="https://www.renpy.org/doc/html/screen_actions.html#Function">Function</a>此一Action的存在，可自己撰寫Function傳進去使用。
+這裡只是提點一些Function使用上的誤區。</p>
 
-<p>這裡只是提點一些Function使用上的誤區。</p>
-
-<h1 id="絕對要使用function此action">絕對要使用Function此Action</h1>
+<h2 id="絕對要使用function此action">絕對要使用Function此Action</h2>
 
 <ul>
 <li>絕對要使用Function此Action</li>
 <li>絕對不要直接把自己寫的function當Action</li>
 </ul>
 
-<h2 id="錯誤範例">錯誤範例</h2>
+<h3 id="錯誤範例">錯誤範例</h3>
 
 <pre><code class="language-python">python:
     def test():
@@ -4237,10 +4236,10 @@ textbutton &quot;Click Me!!&quot;:
     action test()
 </code></pre>
 
-<p>在renpy眼中，這是一個正常行為，他不會報錯。
+<p>在renpy眼中，這是一個正常行為，他不會報錯。<br />
 但是這會導致此button並非在點擊才觸發Action，而是在載入、textbutton出來的那瞬間，就執行了action。</p>
 
-<h2 id="正確寫法">正確寫法</h2>
+<h3 id="正確寫法">正確寫法</h3>
 
 <pre><code class="language-python">python:
     def test():
@@ -4249,7 +4248,7 @@ textbutton &quot;Click Me!!&quot;:
     action Function(test)
 </code></pre>
 
-<h1 id="傳入參數">傳入參數</h1>
+<h2 id="傳入參數">傳入參數</h2>
 
 <p>如果這個function需要支援參數傳遞呢? 一樣可以用Function達到</p>
 
@@ -4260,7 +4259,7 @@ textbutton &quot;Click Me!!&quot;:
     action Function(test, text = &quot;apple&quot;)
 </code></pre>
 
-<p>Function在官方的文件上說支援args和kwargs的參數傳遞。
+<p>Function在官方的文件上說支援args和kwargs的參數傳遞。<br />
 但實際測試後發現，<strong>args的參數傳遞是壞的</strong>，並不能使用。所以請都用kwargs的參數傳遞法。</p>
 </div>
 

@@ -1,17 +1,18 @@
 <!DOCTYPE HTML>
 <html>
 <head>
-	<meta name="generator" content="Hugo 0.20.2" />
 	<meta charset="utf-8">
     
     
-    <title>Denny&#39;s Blog</title>
+    
+    
+    <title>renpy (6) 讀檔 - Denny&#39;s Blog</title>
     <meta name="author" content="">
     <meta name="description" content="">
     <meta name="keywords" content="">
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
-    <link href="https://cdfq152313.github.io/index.xml" rel="alternate" title="Denny&#39;s Blog" type="application/atom+xml">
+    <link href="" rel="alternate" title="Denny&#39;s Blog" type="application/atom+xml">
     <link href="https://cdfq152313.github.io//images/fav.ico" rel="shortcut icon">
     <style>
     @charset "UTF-8";
@@ -4201,1103 +4202,113 @@ body {
 
     <div id="content" class="inner">
         
-
-
-
-
-    
-    <script id="dsq-count-scr" src="//blog-vygy2ifrxm.disqus.com/count.js" async></script>
-    
-
-
-
-
-  <article class="post">
-    <h2 class="title"> 
-        <a href="/post/2016-03-04/">在AOSP中增加預設app (3) : 利用Android Studio來進行編輯</a>
-    </h2>
-    <div class="entry-content">
+<article class="post">
+    <h2 class="title">renpy (6) 讀檔</h2>
     <div class="meta">
-        <div class="date">Published on: <time datetime='2016-03-04T00:00:00.000&#43;00:00' itemprop="datePublished">2016-03-04</time>
+        <div class="date">Published on: <time datetime='2017-04-13T04:25:31.000&#43;00:00' itemprop="datePublished">2017-04-13</time>
 </div>
         <div class="tags">Tags: 
 
-<a href="https://cdfq152313.github.io//tags/android">android</a>
+<a href="https://cdfq152313.github.io//tags/python">python</a>
 
-<a href="https://cdfq152313.github.io//tags/aosp">aosp</a>
+<a href="https://cdfq152313.github.io//tags/renpy">renpy</a>
 
 
 </div>
     </div>
-        
-
-<h1 id="平台及環境設置">平台及環境設置</h1>
-
-<p>##平台
-實驗平台：Nexus 5
-Android版本：android-4.4_r1
-前置知識： [Howto Build Android KitKat (4.4) for the Google Nexus 5][6]</p>
-
-<p>##環境設置
-在AOSP資料夾中</p>
-
-<pre><code class="language-bash">source build/envsetup.sh
-lunch aosp_hammerhead-userdebug
-</code></pre>
-
-<h1 id="目標-利用android-studio來新增app-命名為world">目標：利用Android Studio來新增APP (命名為World)</h1>
-
-<p>在上一篇文章中，說明了如何copy一份已有的project來改寫。但是寫Android App有許多煩雜的地方，有時候還是需要IDE來幫助比較快，這裡找了一個比較tricky的方法來使用IDE。</p>
-
-<h2 id="新增android-studio-project">新增Android Studio Project</h2>
-
-<p>我們直接從Android Studio中產生一個空的project，命名為<code>World</code>。
-新增project時記得選empty Activity，之後比較好做。
-<img src="http://i.imgur.com/LTorwRZ.png" alt="Alt Text" /></p>
-
-<h2 id="建立soft-link">建立soft link</h2>
-
-<p>在剛剛產生出來的Android Project路徑底下，<code>World/app/src/main</code>應該有<strong>java、res</strong>資料夾，以及<strong>AndroidManifest.xml</strong>。
-在<code>AOSP/packages/apps</code>建立新目錄<code>World</code>，並在其底下建立起上述3個檔案之<a href="http://linux.vbird.org/linux_basic/0230filesystem.php#ln" title="鳥哥 - ln解說">軟連結(soft link)</a>。</p>
-
-<pre><code class="language-bash">mkdir $ANDROID_BUILD_TOP/packages/apps/World &amp;&amp; cd $_
-ln -s AndroidProject目錄/World/app/src/main/java  java
-ln -s AndroidProject目錄/World/app/src/main/res  res
-ln -s AndroidProject目錄/World/app/src/main/AndroidManifest.xml  AndroidManifest.xml
-</code></pre>
-
-<h2 id="撰寫android-mk">撰寫Android.mk</h2>
-
-<p>參考<a href="http://android.mk/" title="Secrets of Android.mk">Secrets of Android.mk</a>此份文件當中的<strong>Building a simple APK</strong>目錄。將其加到<code>AOSP/packages/apps/World</code>資料夾下。</p>
-
-<p>```makefile Android.mk
-  LOCAL_PATH := $(call my-dir)
-  include $(CLEAR_VARS)</p>
-
-<p># Build all java files in the java subdirectory
-  LOCAL_SRC_FILES := $(call all-subdir-java-files)</p>
-
-<p># Name of the APK to build
-  LOCAL_PACKAGE_NAME := LocalPackage</p>
-
-<p># Tell it to build an APK
-  include $(BUILD_PACKAGE)</p>
-
-<pre><code>
-## 修改掉所有appcompat的部份
-再來使用`mm`在`AOSP/packages/apps/World`進行編譯，運氣不好的話，編譯會出現找不到某些命名的錯誤。這是因為Google為了讓各種app看起來更有一致性，將Android Studio的新Project皆使用Appcompat此library來協調視覺效果。可是此library並不存在於預設的編譯環境當中。為了為了節省麻煩，將其去掉。
-
-```xml style.xml
-&lt;resources&gt;
-
-    &lt;!-- Base application theme. --&gt;
-    &lt;style name=&quot;AppTheme&quot; parent=&quot;android:Theme.Holo.Light.DarkActionBar&quot;&gt;
-        &lt;!-- Customize your theme here. --&gt;
-    &lt;/style&gt;
-
-&lt;/resources&gt;
-</code></pre>
-
-<p>並把MainActivity中可能會用<strong>ActionBarActivity</strong>或是<strong>AppCompatActivity</strong>來替代Activity，請一律換成Activity來使用。
-```java MainActivity.java
-package com.android.world;</p>
-
-<p>import android.app.Activity;
-import android.os.Bundle;</p>
-
-<p>public class MainActivity extends Activity{</p>
-
-<pre><code>@Override
-protected void onCreate(Bundle savedInstanceState) {
-    super.onCreate(savedInstanceState);
-    setContentView(R.layout.activity_main);
-}
-</code></pre>
-
-<p>}</p>
-
-<pre><code>
-最後，我在編譯途中還遇到標籤問題。預設的編譯環境似乎不允許著無命名的字串存在。也就是說，如果你有任何的**text**標籤是直接給予字串值的，可能會編譯失敗。
-```xml 修改前
-&lt;TextView
-        android:layout_width=&quot;wrap_content&quot;
-        android:layout_height=&quot;wrap_content&quot;
-        android:text=&quot;Hello World&quot; /&gt;
-</code></pre>
-
-<p>可能要改將字串引用自string.xml才能編譯成功。
-```xml 修改後
-<TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/app_name" /></p>
-
-<pre><code>```xml res/values/string.xml
-&lt;resources&gt;
-    &lt;string name=&quot;app_name&quot;&gt;World&lt;/string&gt;
-&lt;/resources&gt;
-</code></pre>
-
-<h2 id="編譯">編譯</h2>
-
-<p>使用<code>mm</code>進行編譯，此次應該可以順利通過了。
-之後直接在Android Studio裡對Application進行編輯，由於建立了軟連結，AOSP內部的內容也會同步更改。
-這樣就可以用Android Studio來撰寫APP囉。</p>
-
-<h1 id="reference">Reference</h1>
-
-<ul>
-<li><a href="http://android.mk/" title="Secrets of Android.mk">Android.mk</a></li>
-<li><a href="http://linux.vbird.org/linux_basic/0230filesystem.php#ln" title="鳥哥 - ln解說">鳥哥 - ln解說</a></li>
-</ul>
-
-    </div>
-
-<div class="meta">
-    
-    
-    <span class="comments"><a href="/post/2016-03-04/#disqus_thread">Comments</a></span>
-    
-    
-</div>
-</article>
-
-  <article class="post">
-    <h2 class="title"> 
-        <a href="/post/2016-02-28/">在AOSP中增加預設app (2) : 自行編譯</a>
-    </h2>
     <div class="entry-content">
-    <div class="meta">
-        <div class="date">Published on: <time datetime='2016-02-28T00:00:00.000&#43;00:00' itemprop="datePublished">2016-02-28</time>
+
+<h2 id="前言">前言</h2>
+
+<p>renpy加入對話很簡單，不過想要加入文本就不是那麼容易了。有的時候想要在遊戲中閱讀長文本，還需要插入\n來作為換行，頗不方便。這個時候讀檔功能就派上用場了。<br />
+在這裡要注意，不能使用python原生的開檔函式，否則程式有一定可能出錯(詳情看最後一段)。</p>
+
+<h2 id="renpy讀檔函式">Renpy讀檔函式</h2>
+
+<p><a href="https://www.renpy.org/doc/html/file_python.html">官方讀檔文件</a>在這裡。<br />
+不過在讀unicode檔案的時候，還需要做一些特別處理才行，否則讀出來的檔案都是亂碼。以下為範例程式碼，為python語法。</p>
+
+<pre><code class="language-python">
+def read_file(filepath):
+    import codecs
+
+    # 開檔
+    f = renpy.file(filepath)
+    # 讀入檔案
+    data = f.read()
+    # 轉換為unicode
+    data = codecs.decode(data, 'utf-8')
+    return data
+</code></pre>
+
+<p>如此一來，最後產生的data就會是unicode格式囉。</p>
+
+<p>另外，原本想使用官網上所提供的renpy.fsdecode(s)來做編碼轉換，但是失敗了，可能是沒搞懂用法。後來就使用python原生的codec來做轉換。運作得還算不錯。</p>
+
+<h2 id="renpy路徑問題">Renpy路徑問題</h2>
+
+<p>renpy的path一律是以game資料夾作為根目錄，往下一層目錄是使用&rsquo;/&lsquo;作為識別。所以不用自作聰明使用python原生地os.path.join函式來合成路徑。在windows合成出來的路徑反而會出錯，因為windows是用反斜線&rsquo;\&lsquo;來分割目錄的。<br />
+以下為組合路徑的方法。</p>
+
+<pre><code class="language-python"># 假設路徑為game目錄底下的info資料夾裡面的info01.txt檔案
+filepath = 'info/info01.txt'
+</code></pre>
+
+<h2 id="最後碎碎念">最後碎碎念</h2>
+
+<p>其實也並不是不能使用原生地python函式來做開檔，但是要記得一件事，如果你有在renpy的設定中封裝檔案，像下列程式碼。</p>
+
+<pre><code class="language-python"># 在options.rpy中
+build.classify('game/info/*.txt', 'data')
+</code></pre>
+
+<p>那麼在製作釋出版時，這些資料會很自然地被封裝到data.rpa的檔案中。如此一來。python原生函式所取得的路徑，自然就會抓不到任何東西。<br />
+反過來說，只要你不封裝任何檔案，那你想使用任何python的函式都沒問題(ex: os.path.join / open / &hellip;)</p>
 </div>
-        <div class="tags">Tags: 
-
-<a href="https://cdfq152313.github.io//tags/android">android</a>
-
-<a href="https://cdfq152313.github.io//tags/aosp">aosp</a>
-
-
-</div>
-    </div>
-        
-
-<h1 id="平台及環境設置">平台及環境設置</h1>
-
-<p>##平台
-實驗平台：Nexus 5
-Android版本：android-4.4_r1
-前置知識： [Howto Build Android KitKat (4.4) for the Google Nexus 5][6]</p>
-
-<p>##環境設置
-在AOSP資料夾中</p>
-
-<pre><code class="language-bash">source build/envsetup.sh
-lunch aosp_hammerhead-userdebug
-</code></pre>
-
-<p>#目標：加入一個需編譯的預設App到AOSP裡</p>
-
-<p>在<code>AOSP/development/samples</code>裏面有許多可以借鑒的對象。
-這次學習的目錄為<code>AOSP/development/samples/HelloActivity/</code></p>
-
-<h2 id="複製資料夾">複製資料夾</h2>
-
-<p>首先我們先把這個資料夾複製到<code>packages/app/</code>裏面</p>
-
-<pre><code class="language-bash">cp $ANDROID_BUILD_TOP/development/samples/HelloActivity   $ANDROID_BUILD_TOP/packages/apps/
-</code></pre>
-
-<h2 id="使用mm進行編譯">使用mm進行編譯</h2>
-
-<p>在<code>packages/apps/HelloActivity</code>內進行<code>mm</code>編譯。</p>
-
-<pre><code class="language-bash">cd $ANDROID_BUILD_TOP/packages/apps/HelloActivity
-mm
-</code></pre>
-
-<h2 id="解析">解析</h2>
-
-<p>原本想長篇大論，但是好像有人寫的比我好XD
-只好直接給<a href="http://kezeodsnx.pixnet.net/blog/post/26377152-%5B%E8%BD%89%E8%B2%BC%5Dandroid%E7%9A%84%E5%BA%94%E7%94%A8%E7%A8%8B%E5%BA%8F%E7%BB%93%E6%9E%84%E5%88%86%E6%9E%90%EF%BC%9Ahelloactivity" title="Android的應用程序結構分析">連結</a>，有空再來寫自己的版本吧。
-懂的HelloAcitivity的結構之後，就可以對其進行修改，以符合自己的需求。
-對於Android.mk若有什麼不懂的也可參考上次<a href="http://android.mk/" title="Secrets of Android.mk">這篇</a>。</p>
-
-<h1 id="reference">Reference</h1>
-
-<ul>
-<li><a href="http://kezeodsnx.pixnet.net/blog/post/26377152-%5B%E8%BD%89%E8%B2%BC%5Dandroid%E7%9A%84%E5%BA%94%E7%94%A8%E7%A8%8B%E5%BA%8F%E7%BB%93%E6%9E%84%E5%88%86%E6%9E%90%EF%BC%9Ahelloactivity" title="Android的應用程序結構分析">Android的應用程序結構分析</a></li>
-<li><a href="http://android.mk/" title="Secrets of Android.mk">Secrets of Android.mk</a></li>
-</ul>
-
-    </div>
 
 <div class="meta">
-    
-    
-    <span class="comments"><a href="/post/2016-02-28/#disqus_thread">Comments</a></span>
-    
-    
-</div>
-</article>
-
-  <article class="post">
-    <h2 class="title"> 
-        <a href="/post/2016-02-24/">在AOSP中增加預設app (1) : prebuilt apk</a>
-    </h2>
-    <div class="entry-content">
-    <div class="meta">
-        <div class="date">Published on: <time datetime='2016-02-24T00:00:00.000&#43;00:00' itemprop="datePublished">2016-02-24</time>
-</div>
-        <div class="tags">Tags: 
-
-<a href="https://cdfq152313.github.io//tags/android">android</a>
-
-<a href="https://cdfq152313.github.io//tags/aosp">aosp</a>
-
-
-</div>
-    </div>
-        
-
-<h1 id="平台及環境設置">平台及環境設置</h1>
-
-<p>##平台
-實驗平台：Nexus 5
-Android版本：android-4.4_r1
-前置知識： <a href="https://nosemaj.org/howto-build-android-kitkat-nexus-5" title="Howto Build Android KitKat (4.4) for the Google Nexus 5">Howto Build Android KitKat (4.4) for the Google Nexus 5</a></p>
-
-<p>##環境設置
-在AOSP資料夾中</p>
-
-<pre><code class="language-bash">source build/envsetup.sh
-lunch aosp_hammerhead-userdebug
-</code></pre>
-
-<h1 id="目標-在aosp當中加入一個已經編譯好的apk檔-hello-apk">目標：在AOSP當中加入一個已經編譯好的apk檔，Hello.apk</h1>
-
-<h2 id="手動編譯設置">手動編譯設置</h2>
-
-<p>預設的app放在 <code>AOSP/packages/apps</code>下，任意觀看此目錄下的資料夾，會發現皆有<strong>Android.mk</strong>此檔案，此為AOSP編譯規則。
-參看 <a href="http://android.mk/" title="Secrets of Android.mk">Secrets of Android.mk</a>此份文件中的<a href="http://android.mk/#prebuiltAPK">Adding a prebuilt APK</a>章節。</p>
-
-<p>依樣畫葫蘆，在<code>AOSP/packages/apps</code>目錄中手動創造Hello資料夾，放入Android.mk。
-``` makefile Android.mk
-LOCAL_PATH := $(call my-dir)
-include $(CLEAR_VARS)</p>
-
-<h1 id="module-name-should-match-apk-name-to-be-installed">Module name should match apk name to be installed.</h1>
-
-<p>LOCAL_MODULE := Hello
-LOCAL_SRC_FILES := $(LOCAL_MODULE).apk
-LOCAL_MODULE_CLASS := APPS
-LOCAL_MODULE_SUFFIX := $(COMMON_ANDROID_PACKAGE_SUFFIX)
-LOCAL_CERTIFICATE := PRESIGNED</p>
-
-<p>include $(BUILD_PREBUILT)</p>
-
-<pre><code>
-並使用Android Studio(或eclipse)隨便製造出一個Hello.apk，同樣將其放置在`AOSP/packages/apps`目錄下。
-在[設置好環境][3]後，使用指令`mm`在Hello資料夾底下進行編譯，即可將檔案複製到`AOSP/out/target/product/板子名/system/app/`裏面去。
-最後執行`make snod`即可將此apk包入system.img之中。
-
-&gt; 註：若放置的apk沒簽名，可能會出現
-`build/core/prebuilt.mk:122: *** No LOCAL_CERTIFICATE specified for prebuilt &quot;packages/apps/Hello/Hello .apk&quot;.  Stop.`
-此錯誤訊息。
-關於如何產生簽名過後的apk，可參看[Android官網][5]。
-眼尖的人應該注意到，在上述的Android.mk當中多了一行`LOCAL_CERTIFICATE := PRESIGNED`，若沒有此行，則即使在Android Studio中已經編譯出簽名過後的apk，依然會出現錯誤訊息。要小心。
-
-## 自動編譯設置
-上述的手動編譯可總結為三步驟
-1. 在AOSP/packages/apps裡新增Hello資料夾，並放入Android.mk與Hello.apk
-2. 在Hello資料夾使用指令`mm`，檔案會複製到`AOSP/out/target/product/板子名/system/app/`
-3. 使用指令`make snod`將檔案打包進system.img之中
-
-想像每次修改檔案，皆需重複執行2,3步驟，不太方便。若有不只一個的pre-built apk，則進入每個資料夾使用mm更是麻煩。所以我們要修改make規則，讓AOSP在執行make時，也能偵測到這些新增資料夾。
-修改的地方位在`AOSP/build/target/product/generic_no_telephony.mk`，可以發現這個檔案中有不少的原生app名稱。
-將`Hello`加入`PRODUCT_PACKAGES`之下。如
-```makefile generic_no_telephony.mk
-(...省略...)
- PRODUCT_PACKAGES := \
-      Hello
-(...省略...)
-</code></pre>
-
-<p>如此一來就可以在一般make時偵測到<code>AOSP/packages/apps</code>所新增的Hello資料夾。</p>
-
-<h1 id="reference">Reference</h1>
-
-<ul>
-<li><a href="https://nosemaj.org/howto-build-android-kitkat-nexus-5" title="Howto Build Android KitKat (4.4) for the Google Nexus 5">Howto Build Android KitKat (4.4) for the Google Nexus 5</a></li>
-<li><a href="http://android.mk/" title="Secrets of Android.mk">Secrets of Android.mk</a></li>
-<li><a href="http://stackoverflow.com/questions/10579827/add-apk-files-in-aosp" title="Add .apk files in aosp">Add .apk files in aosp</a></li>
-<li><a href="https://source.android.com/source/building.html#initialize" title="Set up environment">Building the System</a></li>
-<li><a href="http://mrslowblog.blogspot.tw/2013/01/sign-apk-android-app.html" title=" [教學]簽署應用程式 sign APK 發佈 Android App "> [教學]簽署應用程式 sign APK 發佈 Android App </a></li>
-<li><a href="http://developer.android.com/intl/zh-tw/tools/publishing/app-signing.html" title="Signing Your Applications">Signing Your Applications</a></li>
-</ul>
-
-    </div>
-
-<div class="meta">
-    
-    
-    <span class="comments"><a href="/post/2016-02-24/#disqus_thread">Comments</a></span>
-    
-    
-</div>
-</article>
-
-  <article class="post">
-    <h2 class="title"> 
-        <a href="/post/2015-08-12/">在mutt設定gmail</a>
-    </h2>
-    <div class="entry-content">
-    <div class="meta">
-        <div class="date">Published on: <time datetime='2015-08-12T00:00:00.000&#43;00:00' itemprop="datePublished">2015-08-12</time>
-</div>
-        <div class="tags">Tags: 
-
-<a href="https://cdfq152313.github.io//tags/mutt">mutt</a>
-
-
-</div>
-    </div>
-        
-
-<h1 id="總設定">總設定</h1>
-
-<pre><code>set editor = &quot;vim&quot;
-set send_charset=&quot;us-ascii:utf-8&quot;
-set from = &quot;你的帳號@gmail.com&quot;  
-set realname = &quot;你的名字 可隨便打&quot;
-set imap_user = &quot;你的帳號@gmail.com&quot;  
-set imap_pass = &quot;你的密碼&quot;  
-set folder = &quot;imaps://imap.gmail.com:993&quot;  
-set spoolfile = &quot;+INBOX&quot;  
-set postponed =&quot;+[Gmail]/Drafts&quot;  
-set header_cache =~/.mutt/cache/headers  
-set message_cachedir =~/.mutt/cache/bodies  
-set certificate_file =~/.mutt/certificates  
-set smtp_url = &quot;smtp://你的帳號@smtp.gmail.com:587/&quot;  
-set smtp_pass = &quot;你的密碼&quot;  
-set move = no
-set imap_keepalive = 900  
-
-bind pager &lt;up&gt; previous-line #scroll inside the message rather than the index
-bind pager &lt;down&gt; next-line
-bind index &lt;left&gt; last-entry
-bind pager &lt;left&gt; exit
-bind index &lt;right&gt; display-message
-bind pager &lt;right&gt; next-page
-bind browser &lt;right&gt; select-entry 
-</code></pre>
-
-<h1 id="細部設定">細部設定</h1>
-
-<h2 id="編碼與編輯器">編碼與編輯器</h2>
-
-<p>通常在Ubuntu底下的預設編輯器是nano而不是vim，所以需要調整。
-utf-8則是<a href="http://lxr.free-electrons.com/source/Documentation/email-clients.txt">Linux Cross Reference</a>中建議的。</p>
-
-<pre><code>set editor = &quot;vim&quot;
-set send_charset=&quot;us-ascii:utf-8&quot;
-</code></pre>
-
-<h2 id="imap">imap</h2>
-
-<p>imap的服務可以讓你同步本機端與雲端上的信件，當你在mutt刪除/標記信件，gmail的內容也會隨之改變。
-使用這項服務前請記得到gmail中，設定-&gt;轉寄和POP/IMAP-&gt;IMAP存取-&gt;啟用IMAP
-需要設定的項目有imap_user,imap_pass,folder。
-- imap_user無須贅言，你的gmail帳號。
-- imap_pass此處輸入密碼，但有兩種情況。
-  - 無二階段驗證：使用你平常的密碼即可。
-  - 有二階段驗證：必須申請應用程式密碼，請參閱<a href="https://support.google.com/accounts/answer/185833?hl=zh-Hant">使用應用程式密碼登入</a>。
-- folder統一使用imaps://imap.gmail.com:993即可，可參閱<a href="https://support.google.com/mail/troubleshooter/1668960?hl=zh-Hant#ts=1665018,1665144">開始使用 IMAP 和 POP3</a>。</p>
-
-<pre><code>set imap_user = &quot;你的帳號@gmail.com&quot;  
-set imap_pass = &quot;你的密碼&quot;  
-set folder = &quot;imaps://imap.gmail.com:993&quot;  
-</code></pre>
-
-<h2 id="smtp">smtp</h2>
-
-<p>設定smtp可以讓你的mutt可以透過gmail傳送信件，可參考<a href="https://support.google.com/mail/answer/78775?hl=zh-Hant">使用 POP 或 IMAP 發送郵件時遇到問題</a>
-smtp_pass同imap密碼。</p>
-
-<pre><code>set smtp_url = &quot;smtp://你的帳號@smtp.gmail.com:587/&quot;  
-set smtp_pass = &quot;你的密碼&quot;  
-</code></pre>
-
-<h2 id="其他設定">其他設定</h2>
-
-<p>下面是由 <a href="http://go2linux.garron.me/linux/2010/10/how-send-email-command-line-gmail-mutt-789/">How to send email from the command line - Gmail Mutt -</a> 照抄來的設定</p>
-
-<pre><code>set spoolfile = &quot;+INBOX&quot;  
-set postponed =&quot;+[Gmail]/Drafts&quot;  
-set header_cache =~/.mutt/cache/headers  
-set message_cachedir =~/.mutt/cache/bodies
-set certificate_file =~/.mutt/certificates
-
-set move = no
-set imap_keepalive = 900  
-</code></pre>
-
-<h2 id="快捷鍵">快捷鍵</h2>
-
-<p>原始的鍵盤設定有點彆扭，如果你在讀email時按&rdquo;下&rdquo;，則會跳至下一封信，而非下一行。
-透過更改快捷鍵把他改成類似bbs的設定。
-上：讀信件時向上一行
-下：讀信件時向下一行
-左：讀信件時離開信件，在信件目錄時跳到最底部的信件
-右：讀信件時向下一頁，在信件目錄時進入信件，在信箱時進入信箱</p>
-
-<pre><code>bind pager &lt;up&gt; previous-line #scroll inside the message rather than the index
-bind pager &lt;down&gt; next-line
-bind index &lt;left&gt; last-entry
-bind pager &lt;left&gt; exit
-bind index &lt;right&gt; display-message
-bind pager &lt;right&gt; next-page
-bind browser &lt;right&gt; select-entry 
-</code></pre>
-
-<h1 id="reference">Reference</h1>
-
-<ul>
-<li><a href="http://lxr.free-electrons.com/source/Documentation/email-clients.txt">Linux Cross Reference</a></li>
-<li><a href="https://support.google.com/accounts/answer/185833?hl=zh-Hant">使用應用程式密碼登入</a></li>
-<li><a href="https://support.google.com/mail/troubleshooter/1668960?hl=zh-Hant#ts=1665018,1665144">開始使用 IMAP 和 POP3</a></li>
-<li><a href="https://support.google.com/mail/answer/78775?hl=zh-Hant">使用 POP 或 IMAP 發送郵件時遇到問題</a></li>
-<li><a href="http://go2linux.garron.me/linux/2010/10/how-send-email-command-line-gmail-mutt-789/">How to send email from the command line - Gmail Mutt -</a></li>
-</ul>
-
-    </div>
-
-<div class="meta">
-    
-    
-    <span class="comments"><a href="/post/2015-08-12/#disqus_thread">Comments</a></span>
-    
-    
-</div>
-</article>
-
-  <article class="post">
-    <h2 class="title"> 
-        <a href="/post/2015-06-10/">llvm - helloworld</a>
-    </h2>
-    <div class="entry-content">
-    <div class="meta">
-        <div class="date">Published on: <time datetime='2015-06-10T00:00:00.000&#43;00:00' itemprop="datePublished">2015-06-10</time>
-</div>
-        <div class="tags">Tags: 
-
-<a href="https://cdfq152313.github.io//tags/llvm">llvm</a>
-
-<a href="https://cdfq152313.github.io//tags/compiler">compiler</a>
-
-
-</div>
-    </div>
-        
-
-<h1 id="環境設置">環境設置</h1>
-
-<ul>
-<li>ubuntu體系：sudo apt-get install llvm</li>
-<li>MAC: brew install llvm</li>
-</ul>
-
-<h1 id="makefile-mac">makefile (MAC)</h1>
-
-<pre><code>BIN_PATH=/usr/local/Cellar/llvm/3.6.1/bin/
-export PATH:=$(PATH):$(BIN_PATH)
-LLVM_CONFIG=llvm-config 
-FLAGS= --cxxflags --ldflags --system-libs --libs core
-
-toy: toy.cpp
-    clang++ -g -O3 toy.cpp `$(LLVM_CONFIG) $(FLAGS)` -o toy
-clean:
-    rm -f toy
-</code></pre>
-
-<h1 id="top-module">top module</h1>
-
-<pre><code>#include &quot;llvm/LLVMContext.h&quot;
-#include &quot;llvm/Module.h&quot;
-#include &quot;llvm/Support/IRBuilder.h&quot;
-
-int main()
-{
-  llvm::LLVMContext&amp; context = llvm::getGlobalContext();
-  llvm::Module* module = new llvm::Module(&quot;top&quot;, context);
-  llvm::IRBuilder&lt;&gt; builder(context); 
-
-  module-&gt;dump( );
-}
-</code></pre>
-
-<h1 id="function">function</h1>
-
-<h2 id="宣告function">宣告function</h2>
-
-<ul>
-<li>無參數</li>
-</ul>
-
-<pre><code>  llvm::FunctionType *funcType = 
-      llvm::FunctionType::get(builder.getInt32Ty(), false);
-  llvm::Function *mainFunc = llvm::Function::Create(funcType, llvm::Function::ExternalLinkage, &quot;main&quot;, module);
-</code></pre>
-
-<ul>
-<li>有參數</li>
-</ul>
-
-<pre><code>  std::vector&lt; llvm::Type* &gt; putsArgs;
-  putsArgs.push_back(builder.getInt8Ty()-&gt;getPointerTo());
-  llvm::ArrayRef&lt; llvm::Type* &gt;  argsRef(putsArgs);
-
-  llvm::FunctionType *putsType = 
-    llvm::FunctionType::get(builder.getInt32Ty(), argsRef, false);
-</code></pre>
-
-<h2 id="定義function">定義function</h2>
-
-<ul>
-<li>引用已有的function</li>
-</ul>
-
-<pre><code>  llvm::Constant *putsFunc = module-&gt;getOrInsertFunction(&quot;puts&quot;, putsType);
-</code></pre>
-
-<ul>
-<li>創造新的function</li>
-</ul>
-
-<pre><code>  llvm::BasicBlock *entry = llvm::BasicBlock::Create(context, &quot;entrypoint&quot;, mainFunc);
-  builder.SetInsertPoint(entry);
-</code></pre>
-
-<p>增添function內容</p>
-
-<h1 id="新增變數">新增變數</h1>
-
-<ul>
-<li>global variable</li>
-</ul>
-
-<pre><code>  llvm::Value *helloWorld = builder.CreateGlobalStringPtr(&quot;hello world!\n&quot;);
-</code></pre>
-
-<ul>
-<li>local variable</li>
-</ul>
-
-<h1 id="reference">Reference</h1>
-
-<p><a href="http://www.ibm.com/developerworks/library/os-createcompilerllvm1/">Create a working compiler with the LLVM framework</a></p>
-
-    </div>
-
-<div class="meta">
-    
-    
-    <span class="comments"><a href="/post/2015-06-10/#disqus_thread">Comments</a></span>
-    
-    
-</div>
-</article>
-
-  <article class="post">
-    <h2 class="title"> 
-        <a href="/post/2015-06-07/">在linux上跑git server</a>
-    </h2>
-    <div class="entry-content">
-    <div class="meta">
-        <div class="date">Published on: <time datetime='2015-06-07T00:00:00.000&#43;00:00' itemprop="datePublished">2015-06-07</time>
-</div>
-        <div class="tags">Tags: 
-
-<a href="https://cdfq152313.github.io//tags/git">git</a>
-
-
-</div>
-    </div>
-        
-
-<h1 id="環境設定">環境設定</h1>
-
-<p>系統: linux mint
-套件: <code>sudo apt-get install openssh-server git</code></p>
-
-<h1 id="基本操作">基本操作</h1>
-
-<p>安裝完openssh-server和git後，即可開始嘗試創建remote repository。
-為了之後的安全性議題，創建一個新的帳號來管理git server</p>
-
-<pre><code>sudo adduser git
-</code></pre>
-
-<p>下方指令新增project.git目錄做為remote repository
-(我新增在此帳號的家目錄下，而git官方文件則是放在 /opt/git/ 裡)</p>
-
-<pre><code>su git
-mkdir /home/git/project.git
-cd /home/git/project.git
-git --bare init
-</code></pre>
-
-<p>remote repository已經建立，可以開始使用。
-<strong>git@gitserver</strong> 代表 <strong>登入帳號@serverIP位置</strong>
-試著用ssh連線抓下git repository吧。</p>
-
-<pre><code>git clone git@gitserver:/home/git/project.git
-git remote -v
-origin git@gitserver:/home/git/project.git (fetch)
-origin git@gitserver:/home/git/project.git (push)
-</code></pre>
-
-<p>當然push pull指令也沒問題囉~ 只要有該帳戶密碼即可。</p>
-
-<pre><code>git push origin master
-git pull origin master
-</code></pre>
-
-<h1 id="安全性議題-ssh-public-key-authentication">安全性議題 - SSH Public Key Authentication</h1>
-
-<p>上述推送git repository的流程中，只需要有帳號密碼即可登入。
-我們可以改以更安全的SSH Public Key Authentication來登入</p>
-
-<h2 id="client">client</h2>
-
-<p>在terminal上輸入<code>ssh-keygen</code>
-全部使用預設值後，成對的公私鑰會出現在~/.ssh裡
-- 公鑰:id_rsa.pub
-- 私鑰:id_rsa</p>
-
-<p>公鑰長起來像這樣</p>
-
-<pre><code>ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCB007n/ww+ouN4gSLKssMxXnBOvf9LGt4LojG6rs6hPB09j9R/T17/x4lhJA0F3FR1rP6kYBRsWj2aThGw6HXLm9/5zytK6Ztg3RPKK+4kYjh6541NYsnEAZuXz0jTTyAUfrtU3Z5E003C4oxOj6H0rfIF1kKI9MAQLMdpGW1GYEIgS9EzSdfd8AcCIicTDWbqLAcU4UpkaX8KyGlLwsNuuGztobF8m72ALC/nLF6JLtPofwFBlgc+myivO7TCUSBdLQlgMVOFq1I2uPWQOkOWQAHukEOmfjy2jctxSDBQ220ymjaNsHT4kgtZg2AYYgPqdAv8JggJICUvax2T9va5 gsg-keypair
-</code></pre>
-
-<h2 id="server">server</h2>
-
-<p>登入管理git server的帳戶</p>
-
-<pre><code>su git
-</code></pre>
-
-<p>把允許連到這個server的用戶公鑰，複製貼上到~/.ssh/authorized_keys文件中。</p>
-
-<pre><code>mkdir ~/.ssh
-vi ~/.ssh/authorized_keys
-</code></pre>
-
-<p>authorized_keys中，有幾個公鑰就放幾行。</p>
-
-<pre><code>公鑰1
-公鑰2
-公鑰3
-...
-</code></pre>
-
-<h1 id="安全性議題-限制shell功能">安全性議題 - 限制shell功能</h1>
-
-<p>如果有人遠端登入伺服器後，使用vi、rm、touch等指令隨便更改repository內容，豈不是很危險。
-因此要限制此帳戶只能拿來做為唯一用途──推送版本庫。
-將原本的bash-shell改為git-shell，使此帳戶只剩下git相關功能吧。
-編輯權限檔</p>
-
-<pre><code>sudo vim /etc/passwd
-</code></pre>
-
-<p>passwd檔案底會出現剛剛的帳戶，這行可能長這樣。</p>
-
-<pre><code>git:x :1001:1001:/home/git:/bin/sh
-</code></pre>
-
-<p>由左到右分別代表
-<strong>帳戶:密碼(以x代替):UID(使用者識別碼):GID(群組識別碼):家目錄位置:使用的shell</strong>
-將shell替代成git-shell，使此帳戶只剩下git相關功能。</p>
-
-<pre><code>git:x :1001:1001::/home/git:/usr/bin/git-shell
-</code></pre>
-
-<p>git-shell的位置可以用下列指令找到</p>
-
-<pre><code>which git-shell
-</code></pre>
-
-<p>調整完權限後，再想以ssh登入此帳戶就會出現</p>
-
-<pre><code>$ ssh git@gitserver
-Welcome to Linux Mint 17.1 Rebecca (GNU/Linux 3.13.0-37-generic x86_64)
-Welcome to Linux Mint
- * Documentation:  http://www.linuxmint.com
-Last login: Sat Jun  6 19:55:30 2015 from localhost
-fatal: Interactive git shell is not enabled.
-hint: ~/git-shell-commands should exist and have read and execute access.
-Connection to gitserver closed.
-</code></pre>
-
-<p>此帳號無法再使用shell囉~</p>
-
-<h1 id="reference">reference</h1>
-
-<ul>
-<li><a href="https://git-scm.com/book/zh-tw/v1/%E4%BC%BA%E6%9C%8D%E5%99%A8%E4%B8%8A%E7%9A%84-Git">git server官方文件</a></li>
-<li><a href="http://linux.vbird.org/linux_basic/0410accountmanager.php#passwd_file">/etc/passwd文件含意</a></li>
-<li><a href="http://blogger.gtwang.org/2014/05/linux-ssh-public-key-authentication.html">ssh產生金鑰</a></li>
-<li><a href="http://blog.udn.com/nigerchen/2262865">ssh安全性設定</a></li>
-</ul>
-
-    </div>
-
-<div class="meta">
-    
-    
-    <span class="comments"><a href="/post/2015-06-07/#disqus_thread">Comments</a></span>
-    
-    
-</div>
-</article>
-
-  <article class="post">
-    <h2 class="title"> 
-        <a href="/post/2015-06-06/">llvm study</a>
-    </h2>
-    <div class="entry-content">
-    <div class="meta">
-        <div class="date">Published on: <time datetime='2015-06-06T00:00:00.000&#43;00:00' itemprop="datePublished">2015-06-06</time>
-</div>
-        <div class="tags">Tags: 
-
-<a href="https://cdfq152313.github.io//tags/compiler">compiler</a>
-
-<a href="https://cdfq152313.github.io//tags/llvm">llvm</a>
-
-
-</div>
-    </div>
-        
-
-<h1 id="overview">Overview</h1>
-
-<p>llvm 示意圖
-<img src="http://www.aosabook.org/images/llvm/SimpleCompiler.png" alt="" />
-<img src="http://i.imgur.com/YWNh2wy.png" alt="" />
-通過front end後程式碼會被轉為中間碼( LLVM Intermediate Representation (IR) )
-紅色部分為llvm提供的功能。
-出作業應該不會用到1 (要自己寫)，但可能會用到
-2. IR interpreter (指令lli)
-3. IR compiler (指令 llc)</p>
-
-<h1 id="llvm-指令">llvm 指令</h1>
-
-<pre><code>v    =  operation   type      op1,       op2 ,     opn
-%sum =     add             i32      %op1,      %op2  
-運算結果   運算元      型態      運算子們
-</code></pre>
-
-<h1 id="llvm-function">llvm function</h1>
-
-<p>宣告</p>
-
-<pre><code>define i32            @add1       (   i32 %a,   i32 %b )
-define 回傳型態 @函數名稱(  參數列          ) 
-</code></pre>
-
-<p>回傳</p>
-
-<pre><code>ret i32 5                       ; 回傳integer ，值為5
-ret void                        ; 回傳void
-ret { i32, i8 } { i32 4, i8 2 } ; 回傳結構 {int 32, int 8} ,  值為 4 , 2
-</code></pre>
-
-<p>範例</p>
-
-<pre><code>define i32 @add1(i32 %a, i32 %b) {
-entry:
-  %tmp1 = add i32 %a, %b
-  ret i32 %tmp1
-}
-</code></pre>
-
-<h1 id="identifiers">Identifiers</h1>
-
-<ul>
-<li>regular expression: &lsquo;[%@][a-zA-Z$._][a-zA-Z$._0-9]*&lsquo;.<br /></li>
-<li>@全域變數</li>
-<li>%區域變數</li>
-<li>雙引號為字串，可用跳脫字元 \， 後面接ASCII code (ex: 換行為\0A, 而非\n)</li>
-<li>@1 $2這些應該是暫存變數(不確定)</li>
-<li>全部皆為SSA(single static assigment)
-
-<ul>
-<li>將變數編上編號</li>
-<li>每個變數只會賦值一次
-<br /></li>
-</ul></li>
-</ul>
-
-<h1 id="利用clang-front-end-做測試">利用clang front end 做測試</h1>
-
-<p>安裝</p>
-
-<pre><code>sudo apt-get install clang llvm
-</code></pre>
-
-<p>把C code 變成 llvm IR (以test.c為例)</p>
-
-<pre><code>clang test.c -emit-llvm -S
-</code></pre>
-
-<p>C code</p>
-
-<pre><code>#include&lt;stdio.h&gt;
-int main()
-{
-    int a, b;
-    a = 1;
-    b = a + 1;
-    printf(&quot;%d\n&quot;, b);
-}
-</code></pre>
-
-<p>llvm IR (test.ll)</p>
-
-<pre><code>; Function Attrs: nounwind uwtable
-define i32 @main() #0 {
-  %a = alloca i32, align 4
-  %b = alloca i32, align 4
-  store i32 1, i32* %a, align 4
-  %1 = load i32* %a, align 4
-  %2 = add nsw i32 %1, 1
-  store i32 %2, i32* %b, align 4
-  %3 = load i32* %b, align 4
-  %4 = call i32 (i8*, ...)* @printf(i8* getelementptr inbounds ([4 x i8]* @.str, i32 0, i32 0), i32 %3)
-  ret i32 0
-}
-
-declare i32 @printf(i8*, ...) #1
-</code></pre>
-
-<h2 id="1-用interpreter執行llvm-ir">1. 用interpreter執行llvm IR</h2>
-
-<pre><code>lli test.ll
-</code></pre>
-
-<h2 id="2-把llvm-ir-編譯成assembly-code">2. 把llvm IR 編譯成assembly code</h2>
-
-<pre><code>llc test.ll
-</code></pre>
-
-<p>產生出 test.s
-利用clang把assembly轉成machine code</p>
-
-<pre><code>clang test.ll
-</code></pre>
-
-<p>執行</p>
-
-<pre><code>./test.ll
-</code></pre>
-
-<h1 id="結論">結論</h1>
-
-<p>用llvm學習compiler，不需考慮暫存器分配(assembly code geneate)，但需要考慮SSA。</p>
-
-<h1 id="參考資料">參考資料</h1>
-
-<p><a href="http://www.slideshare.net/kitocheng/ss-42438227">神人投影片</a>
-<a href="http://llvm.org/docs/LangRef.html">llvm reference</a></p>
-
-    </div>
-
-<div class="meta">
-    
-    
-    <span class="comments"><a href="/post/2015-06-06/#disqus_thread">Comments</a></span>
-    
-    
-</div>
-</article>
-
-  <article class="post">
-    <h2 class="title"> 
-        <a href="/post/2015-06-05/">git 基本指令</a>
-    </h2>
-    <div class="entry-content">
-    <div class="meta">
-        <div class="date">Published on: <time datetime='2015-06-05T00:00:00.000&#43;00:00' itemprop="datePublished">2015-06-05</time>
-</div>
-        <div class="tags">Tags: 
-
-<a href="https://cdfq152313.github.io//tags/git">git</a>
-
-
-</div>
-    </div>
-        <p>初始化</p>
-
-<pre><code>git init
-git config --global user.name &quot;你的ID&quot;
-git config --global user.email &quot;你的信箱&quot;
-</code></pre>
-
-<p>狀態
-    git status</p>
-
-<p>新增</p>
-
-<pre><code>git add 檔名
-git add -A
-git add -u
-</code></pre>
-
-<p>提交</p>
-
-<pre><code>git commit -m &quot;改動訊息&quot;
-</code></pre>
-
-<p>歷史訊息</p>
-
-<pre><code>git log
-</code></pre>
-
-<p>忽略</p>
-
-<pre><code>.gitignore
-</code></pre>
-
-<p>比較不同</p>
-
-<pre><code>git diff (工作和暫存)
-git diff 分支名稱 (工作和分支)
-</code></pre>
-
-<p>分支(版本)名稱
-HEAD(目前頭分支) : HEAD HEAD^ HEAD^^ HEAD^^^
-master(branch名)
-695606fc5e31&hellip;.. (commit hash名)</p>
-
-<p>重置</p>
-
-<pre><code>git reset --hard 分支名稱(分支覆蓋暫存區和工作區，後悔藥，危險不可逆)
-git reset 分支名稱 (分支覆蓋暫存區，通常拿來撤銷git add操作)
-
-git checkout 分支名稱 (看以前的版本)
-
-git tag -m &quot;wahaha version 1000&quot; v_1000
-</code></pre>
-
-<p>在git中，為了吃後悔藥，完成一個小功能立刻commit
-在git中，為了找尋方便，完成大改版記得tag</p>
-
-<pre><code>git describe (方便產生版本號)
-</code></pre>
-
-<p>老闆叫你交東西給客戶 但是你程式改到一半</p>
-
-<pre><code>git stash
-git stash pop
-</code></pre>
-
-<p>交成品囉 []裡面為可加可不加的內容</p>
-
-<pre><code>git archive -o 輸出.zip 分支名稱 [想要複製的資料夾/檔案，可多個]
-git archive -o output.zip HEAD src obj
-</code></pre>
-
-    </div>
-
-<div class="meta">
-    
-    
-    <span class="comments"><a href="/post/2015-06-05/#disqus_thread">Comments</a></span>
-    
-    
-</div>
-</article>
-
-  <article class="post">
-    <h2 class="title"> 
-        <a href="/about/">About</a>
-    </h2>
-    <div class="entry-content">
-    <div class="meta">
-        <div class="date">Published on: <time datetime='0001-01-01T00:00:00.000&#43;00:00' itemprop="datePublished">0001-01-01</time>
-</div>
-        <div class="tags">Tags: 
-</div>
-    </div>
-        <p><img src="/image/icon.jpg" alt="icon" /></p>
-
-<p>Denny Cheng / 月月冬瓜<br />
-獸控兼工程師，目前寫Android、IOS和UWP。<br />
-家有大貓程式。<br />
-我的噗浪：<a href="https://www.plurk.com/cdfq152313">https://www.plurk.com/cdfq152313</a><br />
-我的信箱：cdfq152313@gmail.com</p>
-
-    </div>
-
-<div class="meta">
-    
-    
-    <span class="comments"><a href="/about/#disqus_thread">Comments</a></span>
-    
-    
-</div>
-</article>
-
-  <article class="post">
-    <h2 class="title"> 
-        <a href="/mytags/">標籤列表</a>
-    </h2>
-    <div class="entry-content">
-    <div class="meta">
-        <div class="date">Published on: <time datetime='0001-01-01T00:00:00.000&#43;00:00' itemprop="datePublished">0001-01-01</time>
-</div>
-        <div class="tags">Tags: 
-</div>
-    </div>
-        <ul>
-<li><a href="/tags/general">general</a></li>
-<li><a href="/tags/android">android</a></li>
-<li><a href="/tags/java">java</a></li>
-<li><a href="/tags/jni">jni</a></li>
-<li><a href="/tags/aosp">AOSP</a></li>
-<li><a href="/tags/ios">iOS</a></li>
-<li><a href="/tags/swift">Swift</a></li>
-<li><a href="/tags/uwp">UWP</a></li>
-<li><a href="/tags/compiler">compiler</a></li>
-<li><a href="/tags/llvm">LLVM</a></li>
-<li><a href="/tags/git">git</a></li>
-<li><a href="/tags/python">python</a></li>
-<li><a href="/tags/renpy">renpy</a></li>
-<li><a href="/tags/cryptography">Cryptography</a></li>
-<li><a href="/tags/mutt">mutt</a></li>
-</ul>
-
-    </div>
-
-<div class="meta">
-    
-    
-    <span class="comments"><a href="/mytags/#disqus_thread">Comments</a></span>
-    
     
 </div>
 </article>
 
 
+<div class="share">
+	<div class="addthis_toolbox addthis_default_style ">
+	
+	
+	
+	<a class="addthis_counter addthis_pill_style"></a>
+	</div>
+  <script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js#pubid="></script>
+</div>
 
-  <nav id="pagenavi">
+
+
     
-        <a href="/page/3/" class="prev">Prev</a>
+     <script type="text/javascript">
+        var disqus_config = function () {
+            this.page.url = 'https:\/\/cdfq152313.github.io\/post\/2017-04-24\/';
+            this.page.identifier = 'https:\/\/cdfq152313.github.io\/post\/2017-04-24\/';
+        };
+
+        (function() {
+          var d = document, s = d.createElement('script');
+          s.src = '//blog-vygy2ifrxm.disqus.com/embed.js';
+          s.setAttribute('data-timestamp', +new Date());
+          (d.head || d.body).appendChild(s);
+        })();
+     </script>
     
-    
-    <div class="center"><a href="https://cdfq152313.github.io//archives/index.html">Blog Archives</a></div>
-  </nav>
+
+
+
+
+<section id="comment">
+    <h2 class="title">Comments</h2>
+    <div id="disqus_thread" aria-live="polite">
+        <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    </div>
+</section>
 
 
     </div>

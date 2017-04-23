@@ -2,11 +2,13 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Miscs on Denny&#39;s Blog</title>
-    <link>https://cdfq152313.github.io/misc/index.xml</link>
+    <link>https://cdfq152313.github.io/misc/</link>
     <description>Recent content in Miscs on Denny&#39;s Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <lastBuildDate>Sun, 15 Jan 2017 00:00:00 +0000</lastBuildDate>
-    <atom:link href="https://cdfq152313.github.io/misc/index.xml" rel="self" type="application/rss+xml" />
+    
+	<atom:link href="https://cdfq152313.github.io/misc/index.xml" rel="self" type="application/rss+xml" />
+    
     
     <item>
       <title>寫給朋友看的function與class</title>
@@ -14,79 +16,14 @@
       <pubDate>Sun, 15 Jan 2017 00:00:00 +0000</pubDate>
       
       <guid>https://cdfq152313.github.io/misc/2017-01-15/</guid>
-      <description>
-
-&lt;h1 id=&#34;今天有個簡易的app功能如下&#34;&gt;今天有個簡易的app功能如下&lt;/h1&gt;
-
-&lt;ol&gt;
-&lt;li&gt;只有一個ViewController&lt;/li&gt;
-&lt;li&gt;這個ViewController上只有兩個UITextView&lt;/li&gt;
-&lt;li&gt;Input: &amp;ldquo;01/15&amp;rdquo; 代表1月15日&lt;/li&gt;
-&lt;li&gt;想要結果: 在第一個UITextView上呈現 &amp;ldquo;1 月&amp;rdquo;，在第二個UITextView上呈現&amp;rdquo;15日&amp;rdquo;&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;這時候可能會寫一個function在Controller裡頭，叫做split，input為字串，output為陣列。
-input為&amp;rdquo;01/15&amp;rdquo;的話，會出現output [&amp;ldquo;01&amp;rdquo;, &amp;ldquo;15&amp;rdquo;]
-然後call一下這個function，分別把兩個UITextView給賦值陣列0和陣列1，就可以運作得很完美了。&lt;/p&gt;
-
-&lt;h1 id=&#34;接下來追加規格&#34;&gt;接下來追加規格&lt;/h1&gt;
-
-&lt;ol&gt;
-&lt;li&gt;多了兩三個ViewController，同樣需要展示日期。&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;這時候笨方法是把剛剛的function複製到四個不同的ViewController，然後再一一呼叫。
-聰明一點的方法是放到全域變數，這樣不用重寫function，但是每一個Controller都能呼叫。&lt;/p&gt;
-
-&lt;h1 id=&#34;再度追加規格&#34;&gt;再度追加規格&lt;/h1&gt;
-
-&lt;ol&gt;
-&lt;li&gt;除了顯示月日的function，我還想要展示年分。&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;這次可能會依樣畫葫蘆，寫個叫做splityearmonthday的function，放在全域變數裡面，讓所有Controller都能使用。&lt;/p&gt;
-
-&lt;h1 id=&#34;再再度追加規格&#34;&gt;再再度追加規格&lt;/h1&gt;
-
-&lt;ol&gt;
-&lt;li&gt;這個APP多了付款功能所以需要展示金額。&lt;/li&gt;
-&lt;li&gt;這個展示金額靠著另外兩個UITextView，第一個UITextView展現整數，第二個UITextView展現小數。&lt;/li&gt;
-&lt;li&gt;假設input &amp;ldquo;23.7&amp;rdquo;，那會在第一個UITextView出現23 第二個UITextView出現.7&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;於是又寫了一個splitmoney的funcion，放在全域變數裡。&lt;/p&gt;
-
-&lt;h1 id=&#34;反思&#34;&gt;反思&lt;/h1&gt;
-
-&lt;p&gt;到了這裡可以開始反思這是不是一個良好的設計了，起初APP的功能的確很簡單，但是隨著需求的擴張，分割日期的function就出現了兩種。後期更出現了分割金額的function。我們假設需求繼續擴張下去，接下來有&lt;/p&gt;
-
-&lt;ol&gt;
-&lt;li&gt;10個分割日期的function&lt;/li&gt;
-&lt;li&gt;5個分割金額的function&lt;/li&gt;
-&lt;li&gt;8個分割OOXX的function&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;你光看全域變數上的function頭就要昏了，而且還得注意名稱不得重複，每個名稱都取的又臭又長，即使這都是一些小小的function，依然會對開發人員帶來負擔。&lt;/p&gt;
-
-&lt;p&gt;此時，如果你用class將分割日期、分割金額、分割OOXX的職責區分開來，程式碼或許會變得清晰? 舉例來說
-func splityearmonthday()
-func splitmonthday()
-改為
-=&amp;gt;
-class DateSplit{
-    func yearmonth()
-    func monthday()
-}&lt;/p&gt;
-
-&lt;h1 id=&#34;總結&#34;&gt;總結&lt;/h1&gt;
-
-&lt;p&gt;簡單總結：
-class的作用在於區分職責，不同功能的function盡可能的放在不同的class，這是為了可讀性。
-程式規模小的時候，可以不必花太多心力把每個功能都丟一個class，但是當程式開始漸漸擴張，就要開始思考，我這些function之間是否有類似的職責，能夠被包成一個class來執行?
-再來就是，其實並不是每件事情都可以靠function的input output就解決，有時候你可能會想記錄狀態。
-舉例來說，如果你寫了一個計算機的程式，那你會希望計算機記得你上次按了什麼按鈕，這時候如果你再使用全域變數和全域function來解決問題，等老闆要求你&amp;rdquo;我今天要兩個計算機，不要一個&amp;rdquo;，的時候就尷尬了，因為你的狀態是靠全域變數來記，兩個計算機參考到同一個全域變數，就G_G惹。
-希望有幫助到你。&lt;/p&gt;
-</description>
+      <description>今天有個簡易的app功能如下  只有一個ViewController 這個ViewController上只有兩個UITextView Input: &amp;ldquo;01/15&amp;rdquo; 代表1月15日 想要結果: 在第一個UITextView上呈現 &amp;ldquo;1 月&amp;rdquo;，在第二個UITextView上呈現&amp;rdquo;15日&amp;rdquo;  這時候可能會寫一個function在Controller裡頭，叫做split，input為字串，output為陣列。 input為&amp;rdquo;01/15&amp;rdquo;的話，會出現output [&amp;ldquo;01&amp;rdquo;, &amp;ldquo;15&amp;rdquo;] 然後call一下這個function，分別把兩個UITextView給賦值陣列0和陣列1，就可以運作得很完美了。
+接下來追加規格  多了兩三個ViewController，同樣需要展示日期。  這時候笨方法是把剛剛的function複製到四個不同的ViewController，然後再一一呼叫。 聰明一點的方法是放到全域變數，這樣不用重寫function，但是每一個Controller都能呼叫。
+再度追加規格  除了顯示月日的function，我還想要展示年分。  這次可能會依樣畫葫蘆，寫個叫做splityearmonthday的function，放在全域變數裡面，讓所有Controller都能使用。
+再再度追加規格  這個APP多了付款功能所以需要展示金額。 這個展示金額靠著另外兩個UITextView，第一個UITextView展現整數，第二個UITextView展現小數。 假設input &amp;ldquo;23.7&amp;rdquo;，那會在第一個UITextView出現23 第二個UITextView出現.7  於是又寫了一個splitmoney的funcion，放在全域變數裡。
+反思 到了這裡可以開始反思這是不是一個良好的設計了，起初APP的功能的確很簡單，但是隨著需求的擴張，分割日期的function就出現了兩種。後期更出現了分割金額的function。我們假設需求繼續擴張下去，接下來有
+ 10個分割日期的function 5個分割金額的function 8個分割OOXX的function  你光看全域變數上的function頭就要昏了，而且還得注意名稱不得重複，每個名稱都取的又臭又長，即使這都是一些小小的function，依然會對開發人員帶來負擔。
+此時，如果你用class將分割日期、分割金額、分割OOXX的職責區分開來，程式碼或許會變得清晰? 舉例來說 func splityearmonthday() func splitmonthday() 改為 =&amp;gt; class DateSplit{ func yearmonth() func monthday() }
+總結 簡單總結： class的作用在於區分職責，不同功能的function盡可能的放在不同的class，這是為了可讀性。 程式規模小的時候，可以不必花太多心力把每個功能都丟一個class，但是當程式開始漸漸擴張，就要開始思考，我這些function之間是否有類似的職責，能夠被包成一個class來執行? 再來就是，其實並不是每件事情都可以靠function的input output就解決，有時候你可能會想記錄狀態。 舉例來說，如果你寫了一個計算機的程式，那你會希望計算機記得你上次按了什麼按鈕，這時候如果你再使用全域變數和全域function來解決問題，等老闆要求你&amp;rdquo;我今天要兩個計算機，不要一個&amp;rdquo;，的時候就尷尬了，因為你的狀態是靠全域變數來記，兩個計算機參考到同一個全域變數，就G_G惹。 希望有幫助到你。</description>
     </item>
     
     <item>
@@ -95,14 +32,10 @@ class的作用在於區分職責，不同功能的function盡可能的放在不�
       <pubDate>Tue, 27 Dec 2016 00:00:00 +0000</pubDate>
       
       <guid>https://cdfq152313.github.io/misc/2016-12-27/</guid>
-      <description>&lt;p&gt;&lt;a href=&#34;https://www.tenlong.com.tw/items/9864761935?item_id=1025404&#34;&gt;圖解密碼學與比特幣原理&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;花了很久才斷斷續續的看完這本，覺得是一本很不錯的科普書，沒有太艱深的數學。&lt;/p&gt;
-
-&lt;p&gt;書中有系統的把目前密碼學的發展介紹了一遍，非常著重在oo密碼技術可以解決xx難題，或是oo技術無法解決xx難題。以及oo技術中的yy演算法目前無人破解，或是oo技術的yy演算法已經被破解。&lt;/p&gt;
-
-&lt;p&gt;書中最後也提到了不少混合型密碼系統在現今世界上的應用，讓這本書不會只流於技術介紹的紙上談兵。對我這個密碼學大外行幫助很大，好書，極推。&lt;/p&gt;
-</description>
+      <description>圖解密碼學與比特幣原理
+花了很久才斷斷續續的看完這本，覺得是一本很不錯的科普書，沒有太艱深的數學。
+書中有系統的把目前密碼學的發展介紹了一遍，非常著重在oo密碼技術可以解決xx難題，或是oo技術無法解決xx難題。以及oo技術中的yy演算法目前無人破解，或是oo技術的yy演算法已經被破解。
+書中最後也提到了不少混合型密碼系統在現今世界上的應用，讓這本書不會只流於技術介紹的紙上談兵。對我這個密碼學大外行幫助很大，好書，極推。</description>
     </item>
     
     <item>
@@ -111,85 +44,7 @@ class的作用在於區分職責，不同功能的function盡可能的放在不�
       <pubDate>Tue, 06 Sep 2016 00:00:00 +0000</pubDate>
       
       <guid>https://cdfq152313.github.io/misc/2016-09-06/</guid>
-      <description>
-
-&lt;h1 id=&#34;brain-storming要想出的東西&#34;&gt;Brain Storming要想出的東西&lt;/h1&gt;
-
-&lt;ul&gt;
-&lt;li&gt;服務對象(Target User)&lt;/li&gt;
-&lt;li&gt;想解決的問題&lt;/li&gt;
-&lt;li&gt;使用情境(User Scenario)&lt;/li&gt;
-&lt;li&gt;使用行為(User Story)
-
-&lt;ul&gt;
-&lt;li&gt;主詞動詞受詞，描述一個功能
-&lt;br /&gt;&lt;/li&gt;
-&lt;/ul&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h1 id=&#34;工程師眼中的mvp&#34;&gt;工程師眼中的MVP&lt;/h1&gt;
-
-&lt;ul&gt;
-&lt;li&gt;花最少時間(最多三個月，最好定在一個月)能&amp;rdquo;上架&amp;rdquo;的產品&lt;/li&gt;
-&lt;li&gt;精準服務ＴＡ&lt;/li&gt;
-&lt;li&gt;大部份是從工具類產品開始(反例：平台)
-
-&lt;ul&gt;
-&lt;li&gt;使用者相對單一，不必顧慮到太多外人&lt;/li&gt;
-&lt;/ul&gt;&lt;/li&gt;
-&lt;li&gt;可用功能約略只有三到五個
-
-&lt;ul&gt;
-&lt;li&gt;讓行為單一&lt;/li&gt;
-&lt;/ul&gt;&lt;/li&gt;
-&lt;li&gt;請用wireframe storyboard進行描述
-
-&lt;ul&gt;
-&lt;li&gt;手畫也可以&lt;/li&gt;
-&lt;li&gt;讓所有人在同一概念下做事&lt;/li&gt;
-&lt;li&gt;&lt;a href=&#34;https://prottapp.com&#34;&gt;prott&lt;/a&gt;好用，UI跳轉還可以幫你畫流程圖&lt;/li&gt;
-&lt;/ul&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h1 id=&#34;工程師最重要的工作&#34;&gt;工程師最重要的工作&lt;/h1&gt;
-
-&lt;ul&gt;
-&lt;li&gt;提出所有User Story中最花時間，最不可能達成的功能。&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h1 id=&#34;卡片評分&#34;&gt;卡片評分&lt;/h1&gt;
-
-&lt;ul&gt;
-&lt;li&gt;就每個User Story對難易度與實用性進行評分&lt;/li&gt;
-&lt;li&gt;所有人評分，不只有工程師&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h1 id=&#34;wireframe要表達的重點&#34;&gt;Wireframe要表達的重點&lt;/h1&gt;
-
-&lt;ul&gt;
-&lt;li&gt;流程問題&lt;/li&gt;
-&lt;li&gt;幫助他人了解你的東西&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h1 id=&#34;工程師和設計師的合作&#34;&gt;工程師和設計師的合作&lt;/h1&gt;
-
-&lt;ul&gt;
-&lt;li&gt;大部份的專案，不該由工程師跟設計師直接溝通，要有中間人比較好
-
-&lt;ul&gt;
-&lt;li&gt;會吵架！！！&lt;/li&gt;
-&lt;/ul&gt;&lt;/li&gt;
-&lt;li&gt;工程師要評估介面和過場動畫有沒有非常困難或不合理的點&lt;/li&gt;
-&lt;li&gt;切圖的命名規則應該優先訂定
-
-&lt;ul&gt;
-&lt;li&gt;檔名須以小寫英文字母開頭&lt;/li&gt;
-&lt;li&gt;不能有空白鍵&lt;/li&gt;
-&lt;li&gt;etc
-&lt;br /&gt;&lt;/li&gt;
-&lt;/ul&gt;&lt;/li&gt;
-&lt;/ul&gt;
-</description>
+      <description> Brain Storming要想出的東西  服務對象(Target User) 想解決的問題 使用情境(User Scenario) 使用行為(User Story)  主詞動詞受詞，描述一個功能    工程師眼中的MVP  花最少時間(最多三個月，最好定在一個月)能&amp;rdquo;上架&amp;rdquo;的產品 精準服務ＴＡ 大部份是從工具類產品開始(反例：平台)  使用者相對單一，不必顧慮到太多外人  可用功能約略只有三到五個  讓行為單一  請用wireframe storyboard進行描述  手畫也可以 讓所有人在同一概念下做事 prott好用，UI跳轉還可以幫你畫流程圖   工程師最重要的工作  提出所有User Story中最花時間，最不可能達成的功能。  卡片評分  就每個User Story對難易度與實用性進行評分 所有人評分，不只有工程師  Wireframe要表達的重點  流程問題 幫助他人了解你的東西  工程師和設計師的合作  大部份的專案，不該由工程師跟設計師直接溝通，要有中間人比較好  會吵架！！！  工程師要評估介面和過場動畫有沒有非常困難或不合理的點 切圖的命名規則應該優先訂定  檔名須以小寫英文字母開頭 不能有空白鍵 etc    </description>
     </item>
     
     <item>
@@ -198,69 +53,7 @@ class的作用在於區分職責，不同功能的function盡可能的放在不�
       <pubDate>Mon, 05 Sep 2016 00:00:00 +0000</pubDate>
       
       <guid>https://cdfq152313.github.io/misc/2016-09-05/</guid>
-      <description>
-
-&lt;h1 id=&#34;標題與內文不符&#34;&gt;標題與內文不符～～&lt;/h1&gt;
-
-&lt;h1 id=&#34;小步快跑&#34;&gt;小步快跑&lt;/h1&gt;
-
-&lt;ul&gt;
-&lt;li&gt;最小的成本去除錯，最快的速度達成目標。&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h1 id=&#34;單週迭代&#34;&gt;單週迭代&lt;/h1&gt;
-
-&lt;h2 id=&#34;種類&#34;&gt;種類&lt;/h2&gt;
-
-&lt;ul&gt;
-&lt;li&gt;Idea&lt;/li&gt;
-&lt;li&gt;Code&lt;/li&gt;
-&lt;li&gt;Data&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h2 id=&#34;build-idea-build&#34;&gt;Build：IDEA =&amp;gt; Build&lt;/h2&gt;
-
-&lt;ul&gt;
-&lt;li&gt;需求撰寫&lt;/li&gt;
-&lt;li&gt;交互 視覺設計&lt;/li&gt;
-&lt;li&gt;研發&lt;/li&gt;
-&lt;li&gt;測試&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h2 id=&#34;production-code-data&#34;&gt;Production：Code =&amp;gt; Data&lt;/h2&gt;
-
-&lt;ul&gt;
-&lt;li&gt;Data&lt;/li&gt;
-&lt;li&gt;GP(概率發布)&lt;/li&gt;
-&lt;li&gt;數據蒐集&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h1 id=&#34;訪談&#34;&gt;訪談&lt;/h1&gt;
-
-&lt;ul&gt;
-&lt;li&gt;訪談不是為了驗證數據上的結果&lt;/li&gt;
-&lt;li&gt;也不是用來證明個人的假設，去說服別人同意自己的觀點&lt;/li&gt;
-&lt;li&gt;不該預設目標，倒果為因&lt;/li&gt;
-&lt;li&gt;不要陷入&amp;rdquo;確認偏誤&amp;rdquo;的立場&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h2 id=&#34;目的&#34;&gt;目的&lt;/h2&gt;
-
-&lt;ul&gt;
-&lt;li&gt;為了瞭解用戶這麼做，或不這麼做的原因是什麼？&lt;/li&gt;
-&lt;li&gt;了解用戶過去的經驗，當場景發生當時的想法，以及當下認為最重要的事情是什麼？&lt;/li&gt;
-&lt;li&gt;不要問假設性問題，還原用戶發生問題時的心情。&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h2 id=&#34;要點&#34;&gt;要點&lt;/h2&gt;
-
-&lt;ul&gt;
-&lt;li&gt;SAY：說了什麼&lt;/li&gt;
-&lt;li&gt;DO：做了什麼&lt;/li&gt;
-&lt;li&gt;FEEL：當下感受&lt;/li&gt;
-&lt;li&gt;THINK：預期反應&lt;/li&gt;
-&lt;/ul&gt;
-</description>
+      <description> 標題與內文不符～～ 小步快跑  最小的成本去除錯，最快的速度達成目標。  單週迭代 種類  Idea Code Data  Build：IDEA =&amp;gt; Build  需求撰寫 交互 視覺設計 研發 測試  Production：Code =&amp;gt; Data  Data GP(概率發布) 數據蒐集  訪談  訪談不是為了驗證數據上的結果 也不是用來證明個人的假設，去說服別人同意自己的觀點 不該預設目標，倒果為因 不要陷入&amp;rdquo;確認偏誤&amp;rdquo;的立場  目的  為了瞭解用戶這麼做，或不這麼做的原因是什麼？ 了解用戶過去的經驗，當場景發生當時的想法，以及當下認為最重要的事情是什麼？ 不要問假設性問題，還原用戶發生問題時的心情。  要點  SAY：說了什麼 DO：做了什麼 FEEL：當下感受 THINK：預期反應  </description>
     </item>
     
   </channel>

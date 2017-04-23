@@ -4216,32 +4216,35 @@ body {
     </div>
     <div class="entry-content">
 
-<h1 id="緣起">緣起</h1>
+<h2 id="緣起">緣起</h2>
 
-<p>其實很多內容在 <strong>雪凡與好朋友們的 Ren&rsquo;Py 遊戲引擎初學心得提示</strong> 就有了，大概寫一些製作時的心得而已。
-- <a href="http://www.openfoundry.org/foss-programs/8811">第一回</a>
-- <a href="http://www.openfoundry.org/foss-programs/8836">第二回</a>
-- <a href="http://www.openfoundry.org/foss-programs/8848">第三回</a>
-- <a href="http://www.openfoundry.org/foss-programs/8859">第四回</a>
-- <a href="http://www.openfoundry.org/foss-programs/8874">第五回</a>
--   <a href="http://www.openfoundry.org/foss-programs/8901">第六回</a>
-- <a href="http://www.openfoundry.org/foss-programs/8919">第七回</a>
-- <a href="http://www.openfoundry.org/foss-programs/8972">第八回</a>
-- <a href="http://www.openfoundry.org/foss-programs/9045">第九回</a></p>
+<p>其實很多內容在 <strong>雪凡與好朋友們的 Ren&rsquo;Py 遊戲引擎初學心得提示</strong> 就有了，大概寫一些製作時的心得而已。</p>
+
+<ul>
+<li><a href="http://www.openfoundry.org/foss-programs/8811">第一回</a></li>
+<li><a href="http://www.openfoundry.org/foss-programs/8836">第二回</a></li>
+<li><a href="http://www.openfoundry.org/foss-programs/8848">第三回</a></li>
+<li><a href="http://www.openfoundry.org/foss-programs/8859">第四回</a></li>
+<li><a href="http://www.openfoundry.org/foss-programs/8874">第五回</a></li>
+<li><a href="http://www.openfoundry.org/foss-programs/8901">第六回</a></li>
+<li><a href="http://www.openfoundry.org/foss-programs/8919">第七回</a></li>
+<li><a href="http://www.openfoundry.org/foss-programs/8972">第八回</a></li>
+<li><a href="http://www.openfoundry.org/foss-programs/9045">第九回</a></li>
+</ul>
 
 <p>搭配<a href="https://www.renpy.org/doc/html/index.html">renpy官網</a>服用，妙不可言。</p>
 
-<h1 id="檔案目錄">檔案目錄</h1>
+<h2 id="檔案目錄">檔案目錄</h2>
 
-<p>初學要知道的在renpy中有三個區段。我稱之為init區段，label區段以及python區段。這三個區段的語法都略有不同。
+<p>初學要知道的在renpy中有三個區段。我稱之為init區段，label區段以及python區段。這三個區段的語法都略有不同。<br />
 而撰寫語法的檔案，只要在game目錄下新增.rpy檔即可，不管命名為何，renpy會預設載入game目錄下所有的.rpy檔作為renpy的語法輸入。</p>
 
 <p>接下來就分別說明三個區段的差異之處。</p>
 
-<h2 id="init區段">init區段</h2>
+<h3 id="init區段">init區段</h3>
 
-<p>新增一個.rpy檔，若無明確指定為label或python區段，那就可以視為 init 0區段了。
-init區段通常做為定義變數、圖片、screen之用，會在遊戲啟動的瞬間先行載入。
+<p>新增一個.rpy檔，若無明確指定為label或python區段，那就可以視為init區段了。<br />
+init區段通常做為定義變數、圖片、screen之用，會在遊戲啟動的瞬間先行載入。<br />
 init區段可以透過下列語法來新增</p>
 
 <pre><code class="language-python">init -1:
@@ -4262,10 +4265,10 @@ init 3:
 <p>雖然撰寫順序為由上往下，但由於數字大的先載入，所以renpy會先讀取image c，接下來是b，最後才為a。
 如果有載入順序的要求的話(雖然我還沒遇過)，可以嘗試看看這招。</p>
 
-<h2 id="label區段">label區段</h2>
+<h3 id="label區段">label區段</h3>
 
-<p>此處為遊戲運行之腳本，對於玩過avg遊戲的人應該很熟悉，就是讓你可以點一點繼續向下看對話的地方。
-可以運用show , call, with dissolve之類的語句來展現對話效果。
+<p>此處為遊戲運行之腳本，對於玩過avg遊戲的人應該很熟悉，就是讓你可以點一點繼續向下看對話的地方。<br />
+可以運用show , call, with dissolve之類的語句來展現對話效果。<br />
 這裡列出兩個極為重要的保留(reserved) label</p>
 
 <pre><code class="language-python">label start:
@@ -4276,19 +4279,19 @@ label splashscreen:
     &quot;hello moto&quot;
 </code></pre>
 
-<p>現在市面上遊戲開始的流程大致如下
+<p>現在市面上遊戲開始的流程大致如下<br />
 (開啟遊戲) 遊戲廠商logo(或片頭動畫) =&gt; 遊戲主選單 =&gt; 進入遊戲主題</p>
 
-<p>label start為預設的遊戲主題進入點，當你使用Start()這個函式時即會自動跳轉到start label所在的位置。
+<p>label start為預設的遊戲主題進入點，當你使用Start()這個函式時即會自動跳轉到start label所在的位置。<br />
 label splashscreen則可以作為遊戲廠商logo或片頭動畫之用，是進入遊戲主選單前要執行之語句。</p>
 
-<p>其他重要的label可參照<a href="https://www.renpy.org/doc/html/label.html#special-labels">官網</a></p>
+<p>其他重要的label可參照<a href="https://www.renpy.org/doc/html/label.html##special-labels">官網</a></p>
 
 <p>另外，若無指定<strong>main_menu</strong>此label，則<strong>screen main_menu</strong>是預設的遊戲主選單畫面。</p>
 
-<h2 id="python區段">python區段</h2>
+<h3 id="python區段">python區段</h3>
 
-<p>在撰寫renpy的時候應該多數人都會覺得自己是在寫renpy而非寫python，雖然語法相似，很多地方還是有不同XD
+<p>在撰寫renpy的時候應該多數人都會覺得自己是在寫renpy而非寫python，雖然語法相似，很多地方還是有不同XD<br />
 另外，renpy語法雖然已經夠強大，但有些時候還是得靠python才能做到一些renpy不支援的特效。於是renpy也支援在renpy中插入python語法。</p>
 
 <p>最基本的插入法可看下列程式碼</p>
@@ -4301,9 +4304,8 @@ python:
     y = &quot;def&quot;
 </code></pre>
 
-<p>這兩種寫法都是同義的，如果你只想寫一行python，可以考慮使用 $ 符號，如果你想一次撰寫多行(例如function)可以用python:的方式來撰寫。</p>
-
-<p>在label區段中，插入python code應該沒任何問題，不過在init區段的screen language當中，插入python的位置就要小心。</p>
+<p>這兩種寫法都是同義的，如果你只想寫一行python，可以考慮使用 $ 符號，如果你想一次撰寫多行(例如function)可以用python:的方式來撰寫。<br />
+在label區段中，插入python code應該沒任何問題，不過在init區段的screen language當中，插入python的位置就要小心。</p>
 
 <pre><code class="language-python">screen test:
     python:
@@ -4323,14 +4325,14 @@ python:
             action Function(func)
 </code></pre>
 
-<p>這兩個寫法只是將python code稍微移動一下而已，但是下面那個版本在renpy 6.98的版本會找不到func。可能跟renpy的載入順序有關。
-所以我個人是建議使用若要在screen中使用python，最好在使用前的上一層結構就先行定義。
+<p>這兩個寫法只是將python code稍微移動一下而已，但是下面那個版本在renpy 6.98的版本會找不到func。可能跟renpy的載入順序有關。<br />
+所以我個人是建議使用若要在screen中使用python，最好在使用前的上一層結構就先行定義。<br />
 但，如果是使用 $ 符號，好像就沒有這個問題。</p>
 
 <p>python區段也可以為init，在最初的時候就先行載入，而非等到程式執行到了才動態載入。語法如下</p>
 
 <pre><code class="language-python">init 2 python:
-	x = &quot;abc&quot;
+    x = &quot;abc&quot;
 </code></pre>
 
 <p>同樣的init後面的數字為載入之優先權，若無指定則為0。</p>

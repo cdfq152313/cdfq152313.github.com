@@ -1,7 +1,7 @@
 <!DOCTYPE HTML>
 <html>
 <head>
-	<meta name="generator" content="Hugo 0.19" />
+	<meta name="generator" content="Hugo 0.20.2" />
 	<meta charset="utf-8">
     
     
@@ -4214,6 +4214,325 @@ body {
 
   <article class="post">
     <h2 class="title"> 
+        <a href="/post/2016-10-03/">Swift 不同Controller互動 與 Navigation Bar</a>
+    </h2>
+    <div class="entry-content">
+    <div class="meta">
+        <div class="date">Published on: <time datetime='2016-10-03T00:00:00.000&#43;00:00' itemprop="datePublished">2016-10-03</time>
+</div>
+        <div class="tags">Tags: 
+
+<a href="https://cdfq152313.github.io//tags/ios">ios</a>
+
+<a href="https://cdfq152313.github.io//tags/swift">swift</a>
+
+
+</div>
+    </div>
+        
+
+<h1 id="controller之間的呼叫">Controller之間的呼叫</h1>
+
+<h2 id="present-與-dismiss">present 與 dismiss</h2>
+
+<p>想要跳轉頁面，我們可以靠storyBoard拉出present的線，也可以靠程式碼。
+在StoryBoard中只要按住ctrl，將button拉到另一個controller後再選present即可。
+在程式碼的話</p>
+
+<pre><code class="language-swift">// 因為此ViewController什麼都沒設定，所以會是一片黑
+present(ViewController(), animated: true, completion: nil)
+</code></pre>
+
+<p>有跳過去，就有返回，想返回時使用dismiss function。</p>
+
+<pre><code class="language-swift">dismiss(animated: true, completion: nil)
+</code></pre>
+
+<p>dismiss的原理是，直接呼叫時，請求presentingViewController把你關掉。
+間接呼叫時，把後面的presentedViewController們關掉。
+至於這兩個是什麼意思請參看下節。</p>
+
+<h2 id="presentingviewcontroller-與-presentedviewcontroller">presentingViewController 與 presentedViewController</h2>
+
+<p>每個controller皆有兩個重要的屬性，可以分辨這個controller是被誰present，或是present了誰。
+- presentingViewController：present Controller的Controller
+- presentedViewController：被present的Controller</p>
+
+<p>假設ABC皆為Controller，A present B，B present C，那對於B來說。
+- A為B之presentingViewController
+- C為B之presentedViewController</p>
+
+<h1 id="navigation-bar">Navigation bar</h1>
+
+<h2 id="push-與-pop">push 與 pop</h2>
+
+<p>與present / dismiss相似，進到navigation controller後要使用 navigation屬性的push/pop方法，不然會跳出navigation controller的頁，失去Navigation Bar的效果。</p>
+
+<p>程式碼的形式如下</p>
+
+<pre><code class="language-swift">// 推上下一個頁面
+self.navigationController?.pushViewController(ViewController(), animated: true)
+// 回到上一頁
+self.navigationController?.popViewController(animated: true)
+// 直接回到navigation最開頭
+self.navigationController?.popToRootViewController(animated: true)
+</code></pre>
+
+<h2 id="前後的controller">前後的controller</h2>
+
+<p>如同present / dismiss可以拿到前後關係一樣，navigation controller也是可以拿到前後關係的。
+所有經過的controller都放在self.navigationController?.viewControllers這個array裡可以拿取。</p>
+
+<pre><code class="language-swift">self.navigationController?.viewControllers[0]
+self.navigationController?.viewControllers[1]
+...
+</code></pre>
+
+<h2 id="navigation-controller的建立">Navigation Controller的建立</h2>
+
+<p>Navigation Contrller本身並不帶有頁面資訊，而是在Navigation Controller的下一個Controller才會開始顯示。
+那兩者之間要建立連線，必須要指定Navigation Controller當中的Root View Controller才行。</p>
+
+<ul>
+<li>方法1: Navigation綁定Root Controller，有兩種做法
+
+<ul>
+<li>按住Ctrl並將Navigation Controller拉到想要顯示的第一個Controller，鬆開後選擇Root view Controller</li>
+<li>在Navigation Controller的Triggered Segue中，指定Root view Controller</li>
+</ul></li>
+<li>方法2: 在StoryBoard中，點擊已經存在的Controller。並從上方選單Editor =&gt; Embed in =&gt; NavigatioController即可</li>
+</ul>
+
+<h2 id="上面的title和向右鈕">上面的title和向右鈕</h2>
+
+<p>預設只有Navigation Controller後第一個Bar可以編輯Title，若要加入新title則要從StoryBoard中拉入<strong>Navigation item</strong>
+預設上方並無向右鍵，只有返回鍵，若要加入則拉入<strong>Bar Button Item</strong></p>
+
+<h1 id="tab-bar-controller">Tab Bar Controller</h1>
+
+<p>與Navigation View許多做法類似
+想加上新的tab可以
+- 方法1: TabViewController綁定View Controllers，有兩種做法
+ - 按住Ctrl並將TabViewController拉到想要加上的Controller，鬆開後選擇View Controllers
+ - 在TabViewController的Triggered Segue中，指定新的View Controllers
+- 方法2: 在StoryBoard中，點擊已經存在的Controller。並從上方選單Editor =&gt; Embed in =&gt; TabViewController即可</p>
+
+<h2 id="tab-bar-controller下的controller們">tab bar controller下的controller們</h2>
+
+<pre><code class="language-swift">self.tabBarController?.viewControllers[0]
+self.tabBarController?.viewControllers[1]
+...
+</code></pre>
+
+<p>要注意的是，如果是tab bar controller下包著navigation controller，在存取時要先轉型成navigation controller，再取用navigation controller裡面的controller，才不會錯誤。</p>
+
+<h2 id="切換tab">切換tab</h2>
+
+<pre><code class="language-swift">self.tabBarController?.selectedIndex = 0
+</code></pre>
+
+<h2 id="隱藏tab">隱藏tab</h2>
+
+<pre><code class="language-swift">self.tabBarController?.tabBar.isHidden = true
+</code></pre>
+
+<h1 id="在不同的controller之間跳轉">在不同的Controller之間跳轉</h1>
+
+<h2 id="方法1-直接拖拉">方法1 直接拖拉</h2>
+
+<p>在storyboard上
+按住ctrl點下來源Controller之button拉到要呈現的Controller後鬆開，選擇show或present即可。
+show會在啟用navigation bar的時候自動使用navigation.push，若無navigation bar則是使用present。</p>
+
+<h2 id="方法2-利用segue">方法2 利用segue</h2>
+
+<p>在storyboard上
+按住ctrl點下來源Controller，拉到要呈現的Controller，會多一條segue連線，幫此條連線取名字(identifer)
+接下來在想切換的情況下使用performSegue即可(參數為剛剛取的identifer)</p>
+
+<pre><code class="language-swift">performSegue(withIdentifier: &quot;goToView2&quot;, sender: nil)
+</code></pre>
+
+<h2 id="方法3-指定storyboard以及controller-通常用在更換story-board的時候">方法3 指定StoryBoard以及Controller (通常用在更換Story Board的時候)</h2>
+
+<p>將要呈現的Controller取名字(StoryBoardID)
+並在程式碼中指定
+1. 位於哪個StoryBoard
+2. Controller的StoryBoardID
+最後present或push即可</p>
+
+<pre><code class="language-swift">let myStoryBoard = UIStoryboard(name: &quot;Main&quot;, bundle: nil)
+let whiteViewController = myStoryBoard.instantiateViewController(withIdentifier: &quot;whiteView&quot;)
+present(whiteViewController, animated:true, completion:nil)
+</code></pre>
+
+<p>如果是位於同一個storyboard，也可以拿到自己的storyboard</p>
+
+<pre><code class="language-swift">let myStoryBoard = self.storyboard!
+let whiteViewController = myStoryBoard.instantiateInitialViewController(withIdentifier: &quot;whiteView&quot;)
+present(whiteViewController, animated:true, completion:nil)
+</code></pre>
+
+<h2 id="方法4-storyboard-reference-通常用在更換story-board的時候">方法4 StoryBoard Reference (通常用在更換Story Board的時候)</h2>
+
+<p>在StoryBoard中，將StoryBoard Reference
+拖到畫面上，指定StoryBoard Reference上的StoryBoard和ControllerID
+接下來利用方法1或2拖拉即可成功</p>
+
+<h2 id="方法5-逃生門-通常用在要返回前一個controller的時候">方法5 逃生門 (通常用在要返回前一個Controller的時候)</h2>
+
+<h3 id="情況">情況</h3>
+
+<p>假設最初的controller取名叫parent controller
+parent controller可以連到許多child controller
+當child controller想返回parent controller的時候</p>
+
+<h3 id="作法">作法</h3>
+
+<p>先寫在parent controller</p>
+
+<pre><code class="language-swift">@IBAction func backToMain(_ segue:UIStoryboardSegue){
+    print(&quot;back to main&quot;)
+}
+</code></pre>
+
+<p>再用StoryBoard選擇child controller
+按鈕按住ctrl往該controller的逃生門拉 (上方最右邊的圖示)
+即會出現backToMain的方法
+如果parent controller在child controller返回後想執行什麼動作也可在此function中填入</p>
+
+<h1 id="controller之間傳遞訊息">Controller之間傳遞訊息</h1>
+
+<h2 id="方法1-利用destination-controller的property-呼叫下一個controller時">方法1. 利用destination controller的property (呼叫下一個Controller時)</h2>
+
+<ol>
+<li>複寫Source Controller的prepare Function</li>
+<li>參數segue之屬性destionation即為destination controller</li>
+<li>強制轉型為destination controller</li>
+<li>將其塞入數值</li>
+</ol>
+
+<p>這裡要注意的是，不能把值塞進destination controller的UI元件內(Ex: Label)，因為這個時候畫面元件還沒生成。</p>
+
+<pre><code class="language-swift">// Source Controller
+override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+    if segue.destination is SecondViewController{
+    let des = segue.destination as! SecondViewController
+    des.textFromFirstView = &quot;Hello World&quot;
+    }
+}
+</code></pre>
+
+<h2 id="方法2-利用前後階層關係-僅適用於返回controller時">方法2. 利用前後階層關係(僅適用於返回controller時)</h2>
+
+<p>前面有說過present可以靠
+- presentingViewController
+- presentedViewController</p>
+
+<p>navigation bar可以靠
+- self.navigationController?.viewControllers[0]
+- self.navigationController?.viewControllers[1]
+- &hellip;</p>
+
+<p>來獲得前面的controller元件
+取得controller後再參考方法1塞入值</p>
+
+<h2 id="方法3-protocol-返回前一個controller時">方法3. protocol (返回前一個controller時)</h2>
+
+<p>將前一個controller名為FirstViewController
+現在這個controller名為SecondViewController
+令一個protocol叫做SecondViewControllerDelegate</p>
+
+<ol>
+<li>將SecondViewControllerDelegate當作SecondViewController的屬性</li>
+<li>在FirstViewController跳轉到SecondViewController前，通過方法1塞進自己實作的SecondViewControllerDelegate</li>
+<li>SecondViewController消失前，執行該protocol的method (透過複寫viewWillDisapear來達成)</li>
+</ol>
+
+<p>```swift SecondController
+var delegate:SecondViewControllerDelegate?
+@IBAction func goBack(_ sender: UIButton) {
+    let _ = navigationController?.popViewController(animated: true)
+}</p>
+
+<p>override func viewWillDisappear(_ animated: Bool) {
+  super.viewWillDisappear(animated)
+  if self.isMovingFromParentViewController{
+        delegate?.setColor(colorType: &ldquo;red&rdquo;)
+    }
+}</p>
+
+<pre><code>`hint: 可以靠 self.isMovingFromParentViewController來測試是否為返回到前一個Controller`
+
+```swift SecondViewControllerDelegate
+protocol SecondViewControllerDelegate{
+    func setColor(colorType:String)
+}
+</code></pre>
+
+<p>```swift FirstViewController (實作SecondViewControllerDelegate)
+override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+  if let des = segue.destination as? SecondViewController{
+    des.delegate = self
+  }
+}</p>
+
+<pre><code>
+## 方法4. notification (返回前一個controller時)
+1. parent controller先監聽事件
+    - 撰寫接收到監聽後要執行的function
+  - 註冊監聽事件
+2. child controller發送notification
+
+```swift ParentController
+// 接收到事件後要執行的任務
+func getUpdateNoti(noti:Notification) {
+    let data = noti.userInfo![&quot;data&quot;] as! String
+    print(data)
+}
+
+override func viewDidLoad() {
+  super.viewDidLoad()
+    
+  // 註冊事件
+  let notificationName = Notification.Name(&quot;GetUpdateNoti&quot;)
+  NotificationCenter.default.addObserver(self, selector: #selector(ViewController.getUpdateNoti(noti:)), name: notificationName, object: nil)
+}
+</code></pre>
+
+<p>```swift ChildController
+// 發送事件
+let notificationName = Notification.Name(&ldquo;GetUpdateNoti&rdquo;)
+NotificationCenter.default().post(name: notificationName,object: nil, userInfo: [&ldquo;data&rdquo;:&ldquo;Hello World&rdquo;])</p>
+
+<pre><code>
+## 方法5. 全域變數
+在AppDelegate增加property
+並在想要使用的class裡面，將UIApplication.shared.delegate轉型為AppDelegate
+即可使用裡面的property
+```swift
+if let appDelegate = UIApplication.shared.delegate as? AppDelegate{
+    if let colorName = appDelegate.color{
+    setColor(colorType: colorName)
+  }
+}
+</code></pre>
+
+<p>全域變數還有很多做法，像是singleton或是寫在class之外，有機會再開一篇講。</p>
+
+    </div>
+
+<div class="meta">
+    
+    
+    <span class="comments"><a href="/post/2016-10-03/#disqus_thread">Comments</a></span>
+    
+    
+</div>
+</article>
+
+  <article class="post">
+    <h2 class="title"> 
         <a href="/post/2016-09-13/">Swift 快速筆記</a>
     </h2>
     <div class="entry-content">
@@ -4271,7 +4590,7 @@ myAlert.addTextField {
 <p>嘗試對加入的UIAction執行一些動作</p>
 
 <pre><code class="language-swift">let ok = UIAlertAction(title: &quot;OK&quot;, style: .default){
-	(action) in
+    (action) in
   // action是UIAlertAction
   // 在下面填入想要執行的動作
   ...
@@ -4290,7 +4609,7 @@ myAlert.addTextField {
 <p>複寫</p>
 
 <pre><code class="language-swift">func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
-	chooseColor = colorArray[row]
+    chooseColor = colorArray[row]
 }
 </code></pre>
 
@@ -4324,7 +4643,7 @@ DatePickerView的樣式可以從storyBoard中選擇。</p>
 </ol>
 
 <pre><code class="language-swift">guard let path = Bundle.main.url(forResource: &quot;HipHop&quot;, withExtension: &quot;mp4&quot;) else {
-	return
+    return
 }
 
 let videoPlayer = AVPlayer(url: path)
@@ -4527,13 +4846,13 @@ end
 
 <pre><code class="language-swift">func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -&gt; Bool {
   if check != 1 {
-  	let controller = UIStoryboard(name: &quot;LogIn&quot;, bundle: nil).instantiateViewController(withIdentifier: &quot;logIn&quot;)
-  	self.window?.rootViewController = controller
+    let controller = UIStoryboard(name: &quot;LogIn&quot;, bundle: nil).instantiateViewController(withIdentifier: &quot;logIn&quot;)
+    self.window?.rootViewController = controller
   } else {
-  	let controller = UIStoryboard(name: &quot;Main&quot;, bundle: nil).instantiateViewController(withIdentifier: &quot;tab&quot;)
-  	self.window?.rootViewController = controller
+    let controller = UIStoryboard(name: &quot;Main&quot;, bundle: nil).instantiateViewController(withIdentifier: &quot;tab&quot;)
+    self.window?.rootViewController = controller
   }
-	return true
+    return true
 }
 </code></pre>
 
@@ -4990,19 +5309,18 @@ ldLibs &ldquo;log&rdquo;可以讓cpp檔include log功能的時候不會出錯。
     </div>
         
 
-<p>在<a href="https://www.renpy.org/doc/html/screen_actions.html">官網</a>可以看到有很多可使的Action。
-萬一想要的功能並不在裡面呢? 其實也有<a href="https://www.renpy.org/doc/html/screen_actions.html#Function">Function</a>此一Action的存在，可自己撰寫Function傳進去使用。</p>
+<p>在<a href="https://www.renpy.org/doc/html/screen_actions.html">官網</a>可以看到有很多可使用的Action。<br />
+萬一想要的功能並不在裡面呢? 其實也有<a href="https://www.renpy.org/doc/html/screen_actions.html#Function">Function</a>此一Action的存在，可自己撰寫Function傳進去使用。
+這裡只是提點一些Function使用上的誤區。</p>
 
-<p>這裡只是提點一些Function使用上的誤區。</p>
-
-<h1 id="絕對要使用function此action">絕對要使用Function此Action</h1>
+<h2 id="絕對要使用function此action">絕對要使用Function此Action</h2>
 
 <ul>
 <li>絕對要使用Function此Action</li>
 <li>絕對不要直接把自己寫的function當Action</li>
 </ul>
 
-<h2 id="錯誤範例">錯誤範例</h2>
+<h3 id="錯誤範例">錯誤範例</h3>
 
 <pre><code class="language-python">python:
     def test():
@@ -5011,10 +5329,10 @@ textbutton &quot;Click Me!!&quot;:
     action test()
 </code></pre>
 
-<p>在renpy眼中，這是一個正常行為，他不會報錯。
+<p>在renpy眼中，這是一個正常行為，他不會報錯。<br />
 但是這會導致此button並非在點擊才觸發Action，而是在載入、textbutton出來的那瞬間，就執行了action。</p>
 
-<h2 id="正確寫法">正確寫法</h2>
+<h3 id="正確寫法">正確寫法</h3>
 
 <pre><code class="language-python">python:
     def test():
@@ -5023,7 +5341,7 @@ textbutton &quot;Click Me!!&quot;:
     action Function(test)
 </code></pre>
 
-<h1 id="傳入參數">傳入參數</h1>
+<h2 id="傳入參數">傳入參數</h2>
 
 <p>如果這個function需要支援參數傳遞呢? 一樣可以用Function達到</p>
 
@@ -5034,7 +5352,7 @@ textbutton &quot;Click Me!!&quot;:
     action Function(test, text = &quot;apple&quot;)
 </code></pre>
 
-<p>Function在官方的文件上說支援args和kwargs的參數傳遞。
+<p>Function在官方的文件上說支援args和kwargs的參數傳遞。<br />
 但實際測試後發現，<strong>args的參數傳遞是壞的</strong>，並不能使用。所以請都用kwargs的參數傳遞法。</p>
 
     </div>
@@ -5065,11 +5383,11 @@ textbutton &quot;Click Me!!&quot;:
     </div>
         
 
-<p>當滑鼠移上按鈕，咻，按鈕變色了。當滑鼠離開按鈕，咻，按鈕又變回來了。
-藉由這樣的效果，可以讓玩家清楚感受到這是一個可點選的按鈕。
+<p>當滑鼠移上按鈕，咻，按鈕變色了。當滑鼠離開按鈕，咻，按鈕又變回來了。<br />
+藉由這樣的效果，可以讓玩家清楚感受到這是一個可點選的按鈕。<br />
 要如何製作這樣的效果呢?</p>
 
-<h1 id="imagebutton">imagebutton</h1>
+<h2 id="imagebutton">imagebutton</h2>
 
 <p>難度：簡單</p>
 
@@ -5079,11 +5397,10 @@ textbutton &quot;Click Me!!&quot;:
     action NullAction()
 </code></pre>
 
-<p>參閱<a href="https://www.renpy.org/doc/html/screens.html#imagebutton">官網</a>
-只要設定屬性idle及hover即可，要注意的一點是，必須要有任意Action，變色效果才會顯現出來。
+<p>參閱<a href="https://www.renpy.org/doc/html/screens.html#imagebutton">官網</a>只要設定屬性idle及hover即可，要注意的一點是，必須要有任意Action，變色效果才會顯現出來。<br />
 如果不打算有任何Action，則使用NullAction吧，此方法就是為了變色而設立的。</p>
 
-<h1 id="textbutton">textbutton</h1>
+<h2 id="textbutton">textbutton</h2>
 
 <p>難度：中等
 參閱<a href="https://www.renpy.org/doc/html/thequestion.html#options-rpy">官網</a>在<strong>options.rpy</strong>當中，有欄位為</p>
@@ -5092,14 +5409,17 @@ textbutton &quot;Click Me!!&quot;:
 widget_selected = &quot;滑鼠移上時顏色&quot;,
 </code></pre>
 
-<p>設定好後，textbutton的變色就會依照此設定來做調整囉。
-缺點是不能在任意的textbutton指定變數顏色，如果今天有兩個textbutton，想指定為
-1. textbutton1 滑鼠移上紅色 滑鼠離開白色
-2. textbutton2 滑鼠移上藍色 滑鼠離開白色</p>
+<p>設定好後，textbutton的變色就會依照此設定來做調整囉。<br />
+缺點是不能在任意的textbutton指定變數顏色，如果今天有兩個textbutton，想指定為</p>
+
+<ol>
+<li>textbutton1 滑鼠移上紅色 滑鼠離開白色</li>
+<li>textbutton2 滑鼠移上藍色 滑鼠離開白色</li>
+</ol>
 
 <p>在此方法中是無能為力的。</p>
 
-<h1 id="button">button</h1>
+<h2 id="button">button</h2>
 
 <p>難度：困難，但textbutton或imagebutton也可用此方法來變色，最萬用。</p>
 
@@ -5117,8 +5437,8 @@ widget_selected = &quot;滑鼠移上時顏色&quot;,
           text (&quot;YA&quot;) color &quot;滑鼠離開時顏色&quot;
 </code></pre>
 
-<p>在Screen Language當中，可以使用defalut這個字眼來定義專屬於某個Screen的變數，並且可使用<a href="https://www.renpy.org/doc/html/screen_actions.html#SetScreenVariable">SetScreenVariable</a>此Action來指定變數值。
-所以只要指定，在滑鼠移上時，變數值為True，滑鼠離開時，變數值為False。
+<p>在Screen Language當中，可以使用defalut這個字眼來定義專屬於某個Screen的變數，並且可使用<a href="https://www.renpy.org/doc/html/screen_actions.html#SetScreenVariable">SetScreenVariable</a>此Action來指定變數值。<br />
+所以只要指定，在滑鼠移上時，變數值為True，滑鼠離開時，變數值為False。<br />
 最後再根據True/False之值，來決定畫面上要顯示什麼即可。</p>
 
 <p>另外，除了if else寫法以外，單純圖片變色也可以使用ConditionSwitch這個函式</p>
@@ -5155,9 +5475,9 @@ widget_selected = &quot;滑鼠移上時顏色&quot;,
     </div>
         
 
-<h1 id="tooltip">tooltip</h1>
+<h2 id="tooltip">tooltip</h2>
 
-<p>所謂的tooltip，就是當你滑鼠移到一個button上後，可以顯示一些說明，讓使用者更了解這個button的功能。
+<p>所謂的tooltip，就是當你滑鼠移到一個button上後，可以顯示一些說明，讓使用者更了解這個button的功能。<br />
 可以用以下的程式碼簡單的實作tootip</p>
 
 <pre><code class="language-python">screen tooltip(tip, positon):
@@ -5165,13 +5485,16 @@ widget_selected = &quot;滑鼠移上時顏色&quot;,
         text tip pos position
 </code></pre>
 
-<p>然後在button上的hovered和unhovered加上action即可
-- hovered : Show(tooltip, tip=&ldquo;說明文字&rdquo;, position = (10,20) )
-- unhovered : Hide(tooltip)</p>
+<p>然後在button上的hovered和unhovered加上action即可</p>
 
-<h1 id="出現在滑鼠的位置">出現在滑鼠的位置</h1>
+<pre><code class="language-python">button:
+    hovered Show(tooltip, tip=&quot;說明文字&quot;, position = (10,20) )
+    unhovered Hide(tooltip)
+</code></pre>
 
-<p>目前這個簡陋的tooltip，它的位置是被固定死的。也就是說，每次有新的tooltip，都得自己先行想好tooltip的位置。
+<h2 id="出現在滑鼠的位置">出現在滑鼠的位置</h2>
+
+<p>目前這個簡陋的tooltip，它的位置是被固定死的。也就是說，每次有新的tooltip，都得自己先行想好tooltip的位置。<br />
 能不能要tooltip直接顯示在滑鼠旁邊呢? 可行的，renpy有提供滑鼠位置的函式。</p>
 
 <pre><code class="language-python">screen tooltip(tip=None):
@@ -5180,15 +5503,15 @@ widget_selected = &quot;滑鼠移上時顏色&quot;,
         text tip pos position
 </code></pre>
 
-<p>ok，如此一來，不用輸入position也可以直接顯示在滑鼠上了，使用者想要自己加減pixel，讓tooltip出現在滑鼠的上下左右方也是非常輕而易舉。</p>
+<p>如此一來，不用輸入position也可以直接顯示在滑鼠上了，使用者想要自己加減pixel，讓tooltip出現在滑鼠的上下左右方也是非常輕而易舉。</p>
 
-<h1 id="隨著滑鼠而移動">隨著滑鼠而移動</h1>
+<h2 id="隨著滑鼠而移動">隨著滑鼠而移動</h2>
 
-<p>如果想要tooltip不僅僅只是閃現的那刻出現在滑鼠旁，而是無時無刻的跟著滑鼠移動呢?
-查閱<a href="https://www.renpy.org/doc/html/screens.html">官網</a>，影響位置的參數有兩個。大部分的Screen物件都有兩種可調的位置屬性，第一個是Common Properties中的at，第二個是Position Style Properties。
-據我所知，Position Style Properties是無法動態調整的，所以我們只能依靠關鍵字at後面所接續的<a href="https://www.renpy.org/doc/html/atl.h">trnasform statement</a>來解決這個問題了。</p>
+<p>如果想要tooltip不僅僅只是閃現的那刻出現在滑鼠旁，而是無時無刻的跟著滑鼠移動呢?<br />
+查閱<a href="https://www.renpy.org/doc/html/screens.html">官網</a>，影響位置的參數有兩個。大部分的Screen物件都有兩種可調的位置屬性，第一個是Common Properties中的at，第二個是Position Style Properties。<br />
+據我所知，Position Style Properties是無法動態調整的，所以我們只能依靠關鍵字at後面所接續的<a href="https://www.renpy.org/doc/html/atl.html">trnasform statement</a>來解決這個問題了。</p>
 
-<h2 id="具體步驟">具體步驟</h2>
+<h3 id="具體步驟">具體步驟</h3>
 
 <ol>
 <li>新增一個transform執行function</li>
@@ -5196,7 +5519,7 @@ widget_selected = &quot;滑鼠移上時顏色&quot;,
 <li>在tooltip當中對frame加上at 步驟1的transform</li>
 </ol>
 
-<h2 id="範例">範例</h2>
+<h3 id="範例">範例</h3>
 
 <pre><code class="language-python">transform follow_mouse:
     function follow_mouse_func
@@ -5214,11 +5537,14 @@ screen tooltip(tip=None):
 </code></pre>
 
 <p>function的撰寫可以參考<a href="https://www.renpy.org/doc/html/atl.html#function-statement">官網</a>
-簡略的說一下內容：
-1. 必須有3個參數
-2. 第一個參數為transfrom物件，物件的資訊一樣看<a href="https://www.renpy.org/doc/html/atl.html#list-of-transform-properties">官網</a>
-3. 第二、三個參數跟執行時間相關，較不重要。
-4. 回傳值為<strong>希望多久後再呼叫一次此function</strong>，0秒代表立刻，None代表不再call function，可以繼續向下執行其他transition內容。</p>
+簡略的說一下內容：</p>
+
+<ol>
+<li>必須有3個參數</li>
+<li>第一個參數為transfrom物件，物件的資訊一樣看<a href="https://www.renpy.org/doc/html/atl.html#list-of-transform-properties">官網</a></li>
+<li>第二、三個參數跟執行時間相關，較不重要。</li>
+<li>回傳值為<strong>希望多久後再呼叫一次此function</strong>，0秒代表立刻，None代表不再call function，可以繼續向下執行其他transition內容。</li>
+</ol>
 
     </div>
 
@@ -5248,13 +5574,16 @@ screen tooltip(tip=None):
     </div>
         
 
-<h1 id="問題">問題</h1>
+<h2 id="問題">問題</h2>
 
-<p>在寫AVG遊戲的時候，常常遇到立繪需要變更的狀況。考量以下場景
-1. 人物A平常表情
-2. 人物A笑
-3. 人物A平常表情
-4. 人物A立繪從場上消失</p>
+<p>在寫AVG遊戲的時候，常常遇到立繪需要變更的狀況。考量以下場景</p>
+
+<ol>
+<li>人物A平常表情</li>
+<li>人物A笑</li>
+<li>人物A平常表情</li>
+<li>人物A立繪從場上消失</li>
+</ol>
 
 <p>程式碼可能會長這樣</p>
 
@@ -5281,15 +5610,17 @@ label start:
 
 <p>如果要人物A換動作，就得先記得他上次是哪個圖片，隱藏之後再show新的，想想就累。</p>
 
-<h1 id="解法">解法</h1>
+<h2 id="解法">解法</h2>
 
-<p>renpy提供了一個方便的解法。在取變數名稱的時候可以用兩個識別字來描述。
-例如可以把立繪取叫
-image a normal = &ldquo;a_normal.png&rdquo;
-image a laugh = &ldquo;a_laugh.png&rdquo;</p>
+<p>renpy提供了一個方便的解法。在取變數名稱的時候可以用兩個識別字來描述。<br />
+例如可以把立繪取叫</p>
 
-<p>如此一來，renpy就會知道a normal和 a laugh為同一人的不同種表情，因為前識別字a都一樣。
-這樣show a normal時如果a laugh在場上就會自動隱藏了。
+<pre><code class="language-python">image a normal = &quot;a_normal.png&quot;  
+image a laugh = &quot;a_laugh.png&quot;  
+</code></pre>
+
+<p>如此一來，renpy就會知道a normal和 a laugh為同一人的不同種表情，因為前識別字a都一樣。<br />
+這樣show a normal時如果a laugh在場上就會自動隱藏了。<br />
 最後若要將a隱藏起來的時候只需要hide前識別字即可。</p>
 
 <pre><code class="language-python">image a normal = &quot;a_normal.png&quot;
@@ -5341,32 +5672,35 @@ label start:
     </div>
         
 
-<h1 id="緣起">緣起</h1>
+<h2 id="緣起">緣起</h2>
 
-<p>其實很多內容在 <strong>雪凡與好朋友們的 Ren&rsquo;Py 遊戲引擎初學心得提示</strong> 就有了，大概寫一些製作時的心得而已。
-- <a href="http://www.openfoundry.org/foss-programs/8811">第一回</a>
-- <a href="http://www.openfoundry.org/foss-programs/8836">第二回</a>
-- <a href="http://www.openfoundry.org/foss-programs/8848">第三回</a>
-- <a href="http://www.openfoundry.org/foss-programs/8859">第四回</a>
-- <a href="http://www.openfoundry.org/foss-programs/8874">第五回</a>
--   <a href="http://www.openfoundry.org/foss-programs/8901">第六回</a>
-- <a href="http://www.openfoundry.org/foss-programs/8919">第七回</a>
-- <a href="http://www.openfoundry.org/foss-programs/8972">第八回</a>
-- <a href="http://www.openfoundry.org/foss-programs/9045">第九回</a></p>
+<p>其實很多內容在 <strong>雪凡與好朋友們的 Ren&rsquo;Py 遊戲引擎初學心得提示</strong> 就有了，大概寫一些製作時的心得而已。</p>
+
+<ul>
+<li><a href="http://www.openfoundry.org/foss-programs/8811">第一回</a></li>
+<li><a href="http://www.openfoundry.org/foss-programs/8836">第二回</a></li>
+<li><a href="http://www.openfoundry.org/foss-programs/8848">第三回</a></li>
+<li><a href="http://www.openfoundry.org/foss-programs/8859">第四回</a></li>
+<li><a href="http://www.openfoundry.org/foss-programs/8874">第五回</a></li>
+<li><a href="http://www.openfoundry.org/foss-programs/8901">第六回</a></li>
+<li><a href="http://www.openfoundry.org/foss-programs/8919">第七回</a></li>
+<li><a href="http://www.openfoundry.org/foss-programs/8972">第八回</a></li>
+<li><a href="http://www.openfoundry.org/foss-programs/9045">第九回</a></li>
+</ul>
 
 <p>搭配<a href="https://www.renpy.org/doc/html/index.html">renpy官網</a>服用，妙不可言。</p>
 
-<h1 id="檔案目錄">檔案目錄</h1>
+<h2 id="檔案目錄">檔案目錄</h2>
 
-<p>初學要知道的在renpy中有三個區段。我稱之為init區段，label區段以及python區段。這三個區段的語法都略有不同。
+<p>初學要知道的在renpy中有三個區段。我稱之為init區段，label區段以及python區段。這三個區段的語法都略有不同。<br />
 而撰寫語法的檔案，只要在game目錄下新增.rpy檔即可，不管命名為何，renpy會預設載入game目錄下所有的.rpy檔作為renpy的語法輸入。</p>
 
 <p>接下來就分別說明三個區段的差異之處。</p>
 
-<h2 id="init區段">init區段</h2>
+<h3 id="init區段">init區段</h3>
 
-<p>新增一個.rpy檔，若無明確指定為label或python區段，那就可以視為 init 0區段了。
-init區段通常做為定義變數、圖片、screen之用，會在遊戲啟動的瞬間先行載入。
+<p>新增一個.rpy檔，若無明確指定為label或python區段，那就可以視為init區段了。<br />
+init區段通常做為定義變數、圖片、screen之用，會在遊戲啟動的瞬間先行載入。<br />
 init區段可以透過下列語法來新增</p>
 
 <pre><code class="language-python">init -1:
@@ -5387,10 +5721,10 @@ init 3:
 <p>雖然撰寫順序為由上往下，但由於數字大的先載入，所以renpy會先讀取image c，接下來是b，最後才為a。
 如果有載入順序的要求的話(雖然我還沒遇過)，可以嘗試看看這招。</p>
 
-<h2 id="label區段">label區段</h2>
+<h3 id="label區段">label區段</h3>
 
-<p>此處為遊戲運行之腳本，對於玩過avg遊戲的人應該很熟悉，就是讓你可以點一點繼續向下看對話的地方。
-可以運用show , call, with dissolve之類的語句來展現對話效果。
+<p>此處為遊戲運行之腳本，對於玩過avg遊戲的人應該很熟悉，就是讓你可以點一點繼續向下看對話的地方。<br />
+可以運用show , call, with dissolve之類的語句來展現對話效果。<br />
 這裡列出兩個極為重要的保留(reserved) label</p>
 
 <pre><code class="language-python">label start:
@@ -5401,19 +5735,19 @@ label splashscreen:
     &quot;hello moto&quot;
 </code></pre>
 
-<p>現在市面上遊戲開始的流程大致如下
+<p>現在市面上遊戲開始的流程大致如下<br />
 (開啟遊戲) 遊戲廠商logo(或片頭動畫) =&gt; 遊戲主選單 =&gt; 進入遊戲主題</p>
 
-<p>label start為預設的遊戲主題進入點，當你使用Start()這個函式時即會自動跳轉到start label所在的位置。
+<p>label start為預設的遊戲主題進入點，當你使用Start()這個函式時即會自動跳轉到start label所在的位置。<br />
 label splashscreen則可以作為遊戲廠商logo或片頭動畫之用，是進入遊戲主選單前要執行之語句。</p>
 
-<p>其他重要的label可參照<a href="https://www.renpy.org/doc/html/label.html#special-labels">官網</a></p>
+<p>其他重要的label可參照<a href="https://www.renpy.org/doc/html/label.html##special-labels">官網</a></p>
 
 <p>另外，若無指定<strong>main_menu</strong>此label，則<strong>screen main_menu</strong>是預設的遊戲主選單畫面。</p>
 
-<h2 id="python區段">python區段</h2>
+<h3 id="python區段">python區段</h3>
 
-<p>在撰寫renpy的時候應該多數人都會覺得自己是在寫renpy而非寫python，雖然語法相似，很多地方還是有不同XD
+<p>在撰寫renpy的時候應該多數人都會覺得自己是在寫renpy而非寫python，雖然語法相似，很多地方還是有不同XD<br />
 另外，renpy語法雖然已經夠強大，但有些時候還是得靠python才能做到一些renpy不支援的特效。於是renpy也支援在renpy中插入python語法。</p>
 
 <p>最基本的插入法可看下列程式碼</p>
@@ -5426,9 +5760,8 @@ python:
     y = &quot;def&quot;
 </code></pre>
 
-<p>這兩種寫法都是同義的，如果你只想寫一行python，可以考慮使用 $ 符號，如果你想一次撰寫多行(例如function)可以用python:的方式來撰寫。</p>
-
-<p>在label區段中，插入python code應該沒任何問題，不過在init區段的screen language當中，插入python的位置就要小心。</p>
+<p>這兩種寫法都是同義的，如果你只想寫一行python，可以考慮使用 $ 符號，如果你想一次撰寫多行(例如function)可以用python:的方式來撰寫。<br />
+在label區段中，插入python code應該沒任何問題，不過在init區段的screen language當中，插入python的位置就要小心。</p>
 
 <pre><code class="language-python">screen test:
     python:
@@ -5448,14 +5781,14 @@ python:
             action Function(func)
 </code></pre>
 
-<p>這兩個寫法只是將python code稍微移動一下而已，但是下面那個版本在renpy 6.98的版本會找不到func。可能跟renpy的載入順序有關。
-所以我個人是建議使用若要在screen中使用python，最好在使用前的上一層結構就先行定義。
+<p>這兩個寫法只是將python code稍微移動一下而已，但是下面那個版本在renpy 6.98的版本會找不到func。可能跟renpy的載入順序有關。<br />
+所以我個人是建議使用若要在screen中使用python，最好在使用前的上一層結構就先行定義。<br />
 但，如果是使用 $ 符號，好像就沒有這個問題。</p>
 
 <p>python區段也可以為init，在最初的時候就先行載入，而非等到程式執行到了才動態載入。語法如下</p>
 
 <pre><code class="language-python">init 2 python:
-	x = &quot;abc&quot;
+    x = &quot;abc&quot;
 </code></pre>
 
 <p>同樣的init後面的數字為載入之優先權，若無指定則為0。</p>
@@ -5466,156 +5799,6 @@ python:
     
     
     <span class="comments"><a href="/post/2016-07-06/#disqus_thread">Comments</a></span>
-    
-    
-</div>
-</article>
-
-  <article class="post">
-    <h2 class="title"> 
-        <a href="/post/2016-03-04/">在AOSP中增加預設app (3) : 利用Android Studio來進行編輯</a>
-    </h2>
-    <div class="entry-content">
-    <div class="meta">
-        <div class="date">Published on: <time datetime='2016-03-04T00:00:00.000&#43;00:00' itemprop="datePublished">2016-03-04</time>
-</div>
-        <div class="tags">Tags: 
-
-<a href="https://cdfq152313.github.io//tags/android">android</a>
-
-<a href="https://cdfq152313.github.io//tags/aosp">aosp</a>
-
-
-</div>
-    </div>
-        
-
-<h1 id="平台及環境設置">平台及環境設置</h1>
-
-<p>##平台
-實驗平台：Nexus 5
-Android版本：android-4.4_r1
-前置知識： [Howto Build Android KitKat (4.4) for the Google Nexus 5][6]</p>
-
-<p>##環境設置
-在AOSP資料夾中</p>
-
-<pre><code class="language-bash">source build/envsetup.sh
-lunch aosp_hammerhead-userdebug
-</code></pre>
-
-<h1 id="目標-利用android-studio來新增app-命名為world">目標：利用Android Studio來新增APP (命名為World)</h1>
-
-<p>在上一篇文章中，說明了如何copy一份已有的project來改寫。但是寫Android App有許多煩雜的地方，有時候還是需要IDE來幫助比較快，這裡找了一個比較tricky的方法來使用IDE。</p>
-
-<h2 id="新增android-studio-project">新增Android Studio Project</h2>
-
-<p>我們直接從Android Studio中產生一個空的project，命名為<code>World</code>。
-新增project時記得選empty Activity，之後比較好做。
-<img src="http://i.imgur.com/LTorwRZ.png" alt="Alt Text" /></p>
-
-<h2 id="建立soft-link">建立soft link</h2>
-
-<p>在剛剛產生出來的Android Project路徑底下，<code>World/app/src/main</code>應該有<strong>java、res</strong>資料夾，以及<strong>AndroidManifest.xml</strong>。
-在<code>AOSP/packages/apps</code>建立新目錄<code>World</code>，並在其底下建立起上述3個檔案之<a href="http://linux.vbird.org/linux_basic/0230filesystem.php#ln" title="鳥哥 - ln解說">軟連結(soft link)</a>。</p>
-
-<pre><code class="language-bash">mkdir $ANDROID_BUILD_TOP/packages/apps/World &amp;&amp; cd $_
-ln -s AndroidProject目錄/World/app/src/main/java  java
-ln -s AndroidProject目錄/World/app/src/main/res  res
-ln -s AndroidProject目錄/World/app/src/main/AndroidManifest.xml  AndroidManifest.xml
-</code></pre>
-
-<h2 id="撰寫android-mk">撰寫Android.mk</h2>
-
-<p>參考<a href="http://android.mk/" title="Secrets of Android.mk">Secrets of Android.mk</a>此份文件當中的<strong>Building a simple APK</strong>目錄。將其加到<code>AOSP/packages/apps/World</code>資料夾下。</p>
-
-<p>```makefile Android.mk
-  LOCAL_PATH := $(call my-dir)
-  include $(CLEAR_VARS)</p>
-
-<p># Build all java files in the java subdirectory
-  LOCAL_SRC_FILES := $(call all-subdir-java-files)</p>
-
-<p># Name of the APK to build
-  LOCAL_PACKAGE_NAME := LocalPackage</p>
-
-<p># Tell it to build an APK
-  include $(BUILD_PACKAGE)</p>
-
-<pre><code>
-## 修改掉所有appcompat的部份
-再來使用`mm`在`AOSP/packages/apps/World`進行編譯，運氣不好的話，編譯會出現找不到某些命名的錯誤。這是因為Google為了讓各種app看起來更有一致性，將Android Studio的新Project皆使用Appcompat此library來協調視覺效果。可是此library並不存在於預設的編譯環境當中。為了為了節省麻煩，將其去掉。
-
-```xml style.xml
-&lt;resources&gt;
-
-    &lt;!-- Base application theme. --&gt;
-    &lt;style name=&quot;AppTheme&quot; parent=&quot;android:Theme.Holo.Light.DarkActionBar&quot;&gt;
-        &lt;!-- Customize your theme here. --&gt;
-    &lt;/style&gt;
-
-&lt;/resources&gt;
-</code></pre>
-
-<p>並把MainActivity中可能會用<strong>ActionBarActivity</strong>或是<strong>AppCompatActivity</strong>來替代Activity，請一律換成Activity來使用。
-```java MainActivity.java
-package com.android.world;</p>
-
-<p>import android.app.Activity;
-import android.os.Bundle;</p>
-
-<p>public class MainActivity extends Activity{</p>
-
-<pre><code>@Override
-protected void onCreate(Bundle savedInstanceState) {
-    super.onCreate(savedInstanceState);
-    setContentView(R.layout.activity_main);
-}
-</code></pre>
-
-<p>}</p>
-
-<pre><code>
-最後，我在編譯途中還遇到標籤問題。預設的編譯環境似乎不允許著無命名的字串存在。也就是說，如果你有任何的**text**標籤是直接給予字串值的，可能會編譯失敗。
-```xml 修改前
-&lt;TextView
-        android:layout_width=&quot;wrap_content&quot;
-        android:layout_height=&quot;wrap_content&quot;
-		android:text=&quot;Hello World&quot; /&gt;
-</code></pre>
-
-<p>可能要改將字串引用自string.xml才能編譯成功。
-```xml 修改後
-<TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/app_name" /></p>
-
-<pre><code>```xml res/values/string.xml
-&lt;resources&gt;
-    &lt;string name=&quot;app_name&quot;&gt;World&lt;/string&gt;
-&lt;/resources&gt;
-</code></pre>
-
-<h2 id="編譯">編譯</h2>
-
-<p>使用<code>mm</code>進行編譯，此次應該可以順利通過了。
-之後直接在Android Studio裡對Application進行編輯，由於建立了軟連結，AOSP內部的內容也會同步更改。
-這樣就可以用Android Studio來撰寫APP囉。</p>
-
-<h1 id="reference">Reference</h1>
-
-<ul>
-<li><a href="http://android.mk/" title="Secrets of Android.mk">Android.mk</a></li>
-<li><a href="http://linux.vbird.org/linux_basic/0230filesystem.php#ln" title="鳥哥 - ln解說">鳥哥 - ln解說</a></li>
-</ul>
-
-    </div>
-
-<div class="meta">
-    
-    
-    <span class="comments"><a href="/post/2016-03-04/#disqus_thread">Comments</a></span>
     
     
 </div>

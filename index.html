@@ -1,7 +1,7 @@
 <!DOCTYPE HTML>
 <html>
 <head>
-	<meta name="generator" content="Hugo 0.19" />
+	<meta name="generator" content="Hugo 0.20.2" />
 	<meta charset="utf-8">
     
     
@@ -4214,6 +4214,83 @@ body {
 
   <article class="post">
     <h2 class="title"> 
+        <a href="/post/2017-04-24/">renpy (6) 讀檔</a>
+    </h2>
+    <div class="entry-content">
+    <div class="meta">
+        <div class="date">Published on: <time datetime='2017-04-13T04:25:31.000&#43;00:00' itemprop="datePublished">2017-04-13</time>
+</div>
+        <div class="tags">Tags: 
+
+<a href="https://cdfq152313.github.io//tags/python">python</a>
+
+<a href="https://cdfq152313.github.io//tags/renpy">renpy</a>
+
+
+</div>
+    </div>
+        
+
+<h2 id="前言">前言</h2>
+
+<p>renpy加入對話很簡單，不過想要加入文本就不是那麼容易了。有的時候想要在遊戲中閱讀長文本，還需要插入\n來作為換行，頗不方便。這個時候讀檔功能就派上用場了。<br />
+在這裡要注意，不能使用python原生的開檔函式，否則程式有一定可能出錯(詳情看最後一段)。</p>
+
+<h2 id="renpy讀檔函式">Renpy讀檔函式</h2>
+
+<p><a href="https://www.renpy.org/doc/html/file_python.html">官方讀檔文件</a>在這裡。<br />
+不過在讀unicode檔案的時候，還需要做一些特別處理才行，否則讀出來的檔案都是亂碼。以下為範例程式碼，為python語法。</p>
+
+<pre><code class="language-python">
+def read_file(filepath):
+    import codecs
+
+    # 開檔
+    f = renpy.file(filepath)
+    # 讀入檔案
+    data = f.read()
+    # 轉換為unicode
+    data = codecs.decode(data, 'utf-8')
+    return data
+</code></pre>
+
+<p>如此一來，最後產生的data就會是unicode格式囉。</p>
+
+<p>另外，原本想使用官網上所提供的renpy.fsdecode(s)來做編碼轉換，但是失敗了，可能是沒搞懂用法。後來就使用python原生的codec來做轉換。運作得還算不錯。</p>
+
+<h2 id="renpy路徑問題">Renpy路徑問題</h2>
+
+<p>renpy的path一律是以game資料夾作為根目錄，往下一層目錄是使用&rsquo;/&lsquo;作為識別。所以不用自作聰明使用python原生地os.path.join函式來合成路徑。在windows合成出來的路徑反而會出錯，因為windows是用反斜線&rsquo;\&lsquo;來分割目錄的。<br />
+以下為組合路徑的方法。</p>
+
+<pre><code class="language-python"># 假設路徑為game目錄底下的info資料夾裡面的info01.txt檔案
+filepath = 'info/info01.txt'
+</code></pre>
+
+<h2 id="最後碎碎念">最後碎碎念</h2>
+
+<p>其實也並不是不能使用原生地python函式來做開檔，但是要記得一件事，如果你有在renpy的設定中封裝檔案，像下列程式碼。</p>
+
+<pre><code class="language-python"># 在options.rpy中
+build.classify('game/info/*.txt', 'data')
+</code></pre>
+
+<p>那麼在製作釋出版時，這些資料會很自然地被封裝到data.rpa的檔案中。如此一來。python原生函式所取得的路徑，自然就會抓不到任何東西。<br />
+反過來說，只要你不封裝任何檔案，那你想使用任何python的函式都沒問題(ex: os.path.join / open / &hellip;)</p>
+
+    </div>
+
+<div class="meta">
+    
+    
+    <span class="comments"><a href="/post/2017-04-24/#disqus_thread">Comments</a></span>
+    
+    
+</div>
+</article>
+
+  <article class="post">
+    <h2 class="title"> 
         <a href="/post/2017-04-01/">Android 利用gson解析json</a>
     </h2>
     <div class="entry-content">
@@ -4537,9 +4614,9 @@ AlgorithmParameterSpec mAlgorithmParameterSpec; // 之後要放置初始化向�
 初始化模式為 ENCRYPT_MODE</p>
 
 <pre><code class="language-java">private String encrypt(String content) throws Exception {
-	cipher = Cipher.getInstance(&quot;AES/CBC/PKCS5Padding&quot;);
-	cipher.init(Cipher.ENCRYPT_MODE, secretKey, mAlgorithmParameterSpec);
-	byte [] encrypt = cipher.doFinal(contentB64);
+    cipher = Cipher.getInstance(&quot;AES/CBC/PKCS5Padding&quot;);
+    cipher.init(Cipher.ENCRYPT_MODE, secretKey, mAlgorithmParameterSpec);
+    byte [] encrypt = cipher.doFinal(contentB64);
   return Base64.encodeToString(encrypt, Base64.DEFAULT);
 }
 </code></pre>
@@ -4853,46 +4930,6 @@ class的作用在於區分職責，不同功能的function盡可能的放在不�
     
     
     <span class="comments"><a href="/misc/2016-12-27/#disqus_thread">Comments</a></span>
-    
-    
-</div>
-</article>
-
-  <article class="post">
-    <h2 class="title"> 
-        <a href="/post/2016-12-01/">Java RSA</a>
-    </h2>
-    <div class="entry-content">
-    <div class="meta">
-        <div class="date">Published on: <time datetime='2016-12-01T00:00:00.000&#43;00:00' itemprop="datePublished">2016-12-01</time>
-</div>
-        <div class="tags">Tags: 
-
-<a href="https://cdfq152313.github.io//tags/java">java</a>
-
-<a href="https://cdfq152313.github.io//tags/cryptography">cryptography</a>
-
-
-</div>
-    </div>
-        
-
-<h1 id="讀金鑰">讀金鑰</h1>
-
-<p>感謝大大無私分享，大大一生平安
-<a href="http://stackoverflow.com/questions/11410770/load-rsa-public-key-from-file">http://stackoverflow.com/questions/11410770/load-rsa-public-key-from-file</a></p>
-
-<h1 id="加密">加密</h1>
-
-<p>感謝大大無私分享，大大一生平安
-<a href="http://jimwayne.blogspot.tw/2012/06/java_25.html">http://jimwayne.blogspot.tw/2012/06/java_25.html</a></p>
-
-    </div>
-
-<div class="meta">
-    
-    
-    <span class="comments"><a href="/post/2016-12-01/#disqus_thread">Comments</a></span>
     
     
 </div>

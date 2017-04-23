@@ -4216,11 +4216,11 @@ body {
     </div>
     <div class="entry-content">
 
-<p>當滑鼠移上按鈕，咻，按鈕變色了。當滑鼠離開按鈕，咻，按鈕又變回來了。
-藉由這樣的效果，可以讓玩家清楚感受到這是一個可點選的按鈕。
+<p>當滑鼠移上按鈕，咻，按鈕變色了。當滑鼠離開按鈕，咻，按鈕又變回來了。<br />
+藉由這樣的效果，可以讓玩家清楚感受到這是一個可點選的按鈕。<br />
 要如何製作這樣的效果呢?</p>
 
-<h1 id="imagebutton">imagebutton</h1>
+<h2 id="imagebutton">imagebutton</h2>
 
 <p>難度：簡單</p>
 
@@ -4230,11 +4230,10 @@ body {
     action NullAction()
 </code></pre>
 
-<p>參閱<a href="https://www.renpy.org/doc/html/screens.html#imagebutton">官網</a>
-只要設定屬性idle及hover即可，要注意的一點是，必須要有任意Action，變色效果才會顯現出來。
+<p>參閱<a href="https://www.renpy.org/doc/html/screens.html#imagebutton">官網</a>只要設定屬性idle及hover即可，要注意的一點是，必須要有任意Action，變色效果才會顯現出來。<br />
 如果不打算有任何Action，則使用NullAction吧，此方法就是為了變色而設立的。</p>
 
-<h1 id="textbutton">textbutton</h1>
+<h2 id="textbutton">textbutton</h2>
 
 <p>難度：中等
 參閱<a href="https://www.renpy.org/doc/html/thequestion.html#options-rpy">官網</a>在<strong>options.rpy</strong>當中，有欄位為</p>
@@ -4243,14 +4242,17 @@ body {
 widget_selected = &quot;滑鼠移上時顏色&quot;,
 </code></pre>
 
-<p>設定好後，textbutton的變色就會依照此設定來做調整囉。
-缺點是不能在任意的textbutton指定變數顏色，如果今天有兩個textbutton，想指定為
-1. textbutton1 滑鼠移上紅色 滑鼠離開白色
-2. textbutton2 滑鼠移上藍色 滑鼠離開白色</p>
+<p>設定好後，textbutton的變色就會依照此設定來做調整囉。<br />
+缺點是不能在任意的textbutton指定變數顏色，如果今天有兩個textbutton，想指定為</p>
+
+<ol>
+<li>textbutton1 滑鼠移上紅色 滑鼠離開白色</li>
+<li>textbutton2 滑鼠移上藍色 滑鼠離開白色</li>
+</ol>
 
 <p>在此方法中是無能為力的。</p>
 
-<h1 id="button">button</h1>
+<h2 id="button">button</h2>
 
 <p>難度：困難，但textbutton或imagebutton也可用此方法來變色，最萬用。</p>
 
@@ -4268,8 +4270,8 @@ widget_selected = &quot;滑鼠移上時顏色&quot;,
           text (&quot;YA&quot;) color &quot;滑鼠離開時顏色&quot;
 </code></pre>
 
-<p>在Screen Language當中，可以使用defalut這個字眼來定義專屬於某個Screen的變數，並且可使用<a href="https://www.renpy.org/doc/html/screen_actions.html#SetScreenVariable">SetScreenVariable</a>此Action來指定變數值。
-所以只要指定，在滑鼠移上時，變數值為True，滑鼠離開時，變數值為False。
+<p>在Screen Language當中，可以使用defalut這個字眼來定義專屬於某個Screen的變數，並且可使用<a href="https://www.renpy.org/doc/html/screen_actions.html#SetScreenVariable">SetScreenVariable</a>此Action來指定變數值。<br />
+所以只要指定，在滑鼠移上時，變數值為True，滑鼠離開時，變數值為False。<br />
 最後再根據True/False之值，來決定畫面上要顯示什麼即可。</p>
 
 <p>另外，除了if else寫法以外，單純圖片變色也可以使用ConditionSwitch這個函式</p>
