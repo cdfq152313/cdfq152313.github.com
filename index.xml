@@ -5,24 +5,15 @@
     <link>https://cdfq152313.github.io/</link>
     <description>Recent content on Denny&#39;s Blog</description>
     <generator>Hugo -- gohugo.io</generator>
-    <lastBuildDate>Mon, 17 Apr 2017 23:33:53 +0800</lastBuildDate>
+    <lastBuildDate>Mon, 24 Apr 2017 04:25:31 +0000</lastBuildDate>
     
 	<atom:link href="https://cdfq152313.github.io/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
-      <title>archives</title>
-      <link>https://cdfq152313.github.io/archives/</link>
-      <pubDate>Mon, 17 Apr 2017 23:33:53 +0800</pubDate>
-      
-      <guid>https://cdfq152313.github.io/archives/</guid>
-      <description></description>
-    </item>
-    
-    <item>
       <title>renpy (6) 讀檔</title>
       <link>https://cdfq152313.github.io/post/2017-04-24/</link>
-      <pubDate>Thu, 13 Apr 2017 04:25:31 +0000</pubDate>
+      <pubDate>Mon, 24 Apr 2017 04:25:31 +0000</pubDate>
       
       <guid>https://cdfq152313.github.io/post/2017-04-24/</guid>
       <description>前言 renpy加入對話很簡單，不過想要加入文本就不是那麼容易了。有的時候想要在遊戲中閱讀長文本，還需要插入\n來作為換行，頗不方便。這個時候讀檔功能就派上用場了。
@@ -36,6 +27,15 @@ Renpy路徑問題 renpy的path一律是以game資料夾作為根目錄，往下�
 # 假設路徑為game目錄底下的info資料夾裡面的info01.txt檔案 filepath = &#39;info/info01.txt&#39;  最後碎碎念 其實也並不是不能使用原生地python函式來做開檔，但是要記得一件事，如果你有在renpy的設定中封裝檔案，像下列程式碼。
 # 在options.rpy中 build.classify(&#39;game/info/*.txt&#39;, &#39;data&#39;)  那麼在製作釋出版時，這些資料會很自然地被封裝到data.rpa的檔案中。如此一來。python原生函式所取得的路徑，自然就會抓不到任何東西。
 反過來說，只要你不封裝任何檔案，那你想使用任何python的函式都沒問題(ex: os.path.join / open / &amp;hellip;)</description>
+    </item>
+    
+    <item>
+      <title>archives</title>
+      <link>https://cdfq152313.github.io/archives/</link>
+      <pubDate>Mon, 17 Apr 2017 23:33:53 +0800</pubDate>
+      
+      <guid>https://cdfq152313.github.io/archives/</guid>
+      <description></description>
     </item>
     
     <item>
