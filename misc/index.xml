@@ -16,14 +16,29 @@
       <pubDate>Sun, 15 Jan 2017 00:00:00 +0000</pubDate>
       
       <guid>https://cdfq152313.github.io/misc/2017-01-15/</guid>
-      <description>今天有個簡易的app功能如下  只有一個ViewController 這個ViewController上只有兩個UITextView Input: &amp;ldquo;01/15&amp;rdquo; 代表1月15日 想要結果: 在第一個UITextView上呈現 &amp;ldquo;1 月&amp;rdquo;，在第二個UITextView上呈現&amp;rdquo;15日&amp;rdquo;  這時候可能會寫一個function在Controller裡頭，叫做split，input為字串，output為陣列。 input為&amp;rdquo;01/15&amp;rdquo;的話，會出現output [&amp;ldquo;01&amp;rdquo;, &amp;ldquo;15&amp;rdquo;] 然後call一下這個function，分別把兩個UITextView給賦值陣列0和陣列1，就可以運作得很完美了。
-接下來追加規格  多了兩三個ViewController，同樣需要展示日期。  這時候笨方法是把剛剛的function複製到四個不同的ViewController，然後再一一呼叫。 聰明一點的方法是放到全域變數，這樣不用重寫function，但是每一個Controller都能呼叫。
+      <description>今天有個簡易的app功能如下  只有一個ViewController 這個ViewController上只有兩個UITextView Input: &amp;ldquo;01/15&amp;rdquo; 代表1月15日 想要結果: 在第一個UITextView上呈現 &amp;ldquo;1 月&amp;rdquo;，在第二個UITextView上呈現&amp;rdquo;15日&amp;rdquo;  這時候可能會寫一個function在Controller裡頭，叫做split，input為字串，output為陣列。
+input為&amp;rdquo;01/15&amp;rdquo;的話，會出現output [&amp;ldquo;01&amp;rdquo;, &amp;ldquo;15&amp;rdquo;]
+然後call一下這個function，分別把兩個UITextView給賦值陣列0和陣列1，就可以運作得很完美了。
+接下來追加規格  多了兩三個ViewController，同樣需要展示日期。  這時候笨方法是把剛剛的function複製到四個不同的ViewController，然後再一一呼叫。
+聰明一點的方法是放到全域變數，這樣不用重寫function，但是每一個Controller都能呼叫。
 再度追加規格  除了顯示月日的function，我還想要展示年分。  這次可能會依樣畫葫蘆，寫個叫做splityearmonthday的function，放在全域變數裡面，讓所有Controller都能使用。
 再再度追加規格  這個APP多了付款功能所以需要展示金額。 這個展示金額靠著另外兩個UITextView，第一個UITextView展現整數，第二個UITextView展現小數。 假設input &amp;ldquo;23.7&amp;rdquo;，那會在第一個UITextView出現23 第二個UITextView出現.7  於是又寫了一個splitmoney的funcion，放在全域變數裡。
 反思 到了這裡可以開始反思這是不是一個良好的設計了，起初APP的功能的確很簡單，但是隨著需求的擴張，分割日期的function就出現了兩種。後期更出現了分割金額的function。我們假設需求繼續擴張下去，接下來有
  10個分割日期的function 5個分割金額的function 8個分割OOXX的function  你光看全域變數上的function頭就要昏了，而且還得注意名稱不得重複，每個名稱都取的又臭又長，即使這都是一些小小的function，依然會對開發人員帶來負擔。
-此時，如果你用class將分割日期、分割金額、分割OOXX的職責區分開來，程式碼或許會變得清晰? 舉例來說 func splityearmonthday() func splitmonthday() 改為 =&amp;gt; class DateSplit{ func yearmonth() func monthday() }
-總結 簡單總結： class的作用在於區分職責，不同功能的function盡可能的放在不同的class，這是為了可讀性。 程式規模小的時候，可以不必花太多心力把每個功能都丟一個class，但是當程式開始漸漸擴張，就要開始思考，我這些function之間是否有類似的職責，能夠被包成一個class來執行? 再來就是，其實並不是每件事情都可以靠function的input output就解決，有時候你可能會想記錄狀態。 舉例來說，如果你寫了一個計算機的程式，那你會希望計算機記得你上次按了什麼按鈕，這時候如果你再使用全域變數和全域function來解決問題，等老闆要求你&amp;rdquo;我今天要兩個計算機，不要一個&amp;rdquo;，的時候就尷尬了，因為你的狀態是靠全域變數來記，兩個計算機參考到同一個全域變數，就G_G惹。 希望有幫助到你。</description>
+此時，如果你用class將分割日期、分割金額、分割OOXX的職責區分開來，程式碼或許會變得清晰? 舉例來說
+func splityearmonthday()
+func splitmonthday()
+改為
+class DateSplit{
+func yearmonth()
+func monthday()
+}
+總結 簡單總結：
+class的作用在於區分職責，不同功能的function盡可能的放在不同的class，這是為了可讀性。
+程式規模小的時候，可以不必花太多心力把每個功能都丟一個class，但是當程式開始漸漸擴張，就要開始思考，我這些function之間是否有類似的職責，能夠被包成一個class來執行?
+再來就是，其實並不是每件事情都可以靠function的input output就解決，有時候你可能會想記錄狀態。
+舉例來說，如果你寫了一個計算機的程式，那你會希望計算機記得你上次按了什麼按鈕，這時候如果你再使用全域變數和全域function來解決問題，等老闆要求你&amp;rdquo;我今天要兩個計算機，不要一個&amp;rdquo;，的時候就尷尬了，因為你的狀態是靠全域變數來記，兩個計算機參考到同一個全域變數，就G_G惹。
+希望有幫助到你。</description>
     </item>
     
     <item>
