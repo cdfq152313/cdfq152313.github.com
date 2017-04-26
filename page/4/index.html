@@ -4214,156 +4214,6 @@ body {
 
   <article class="post">
     <h2 class="title"> 
-        <a href="/post/2016-03-04/">在AOSP中增加預設app (3) : 利用Android Studio來進行編輯</a>
-    </h2>
-    <div class="entry-content">
-    <div class="meta">
-        <div class="date">Published on: <time datetime='2016-03-04T00:00:00.000&#43;00:00' itemprop="datePublished">2016-03-04</time>
-</div>
-        <div class="tags">Tags: 
-
-<a href="https://cdfq152313.github.io//tags/android">android</a>
-
-<a href="https://cdfq152313.github.io//tags/aosp">aosp</a>
-
-
-</div>
-    </div>
-        
-
-<h1 id="平台及環境設置">平台及環境設置</h1>
-
-<p>##平台
-實驗平台：Nexus 5
-Android版本：android-4.4_r1
-前置知識： [Howto Build Android KitKat (4.4) for the Google Nexus 5][6]</p>
-
-<p>##環境設置
-在AOSP資料夾中</p>
-
-<pre><code class="language-bash">source build/envsetup.sh
-lunch aosp_hammerhead-userdebug
-</code></pre>
-
-<h1 id="目標-利用android-studio來新增app-命名為world">目標：利用Android Studio來新增APP (命名為World)</h1>
-
-<p>在上一篇文章中，說明了如何copy一份已有的project來改寫。但是寫Android App有許多煩雜的地方，有時候還是需要IDE來幫助比較快，這裡找了一個比較tricky的方法來使用IDE。</p>
-
-<h2 id="新增android-studio-project">新增Android Studio Project</h2>
-
-<p>我們直接從Android Studio中產生一個空的project，命名為<code>World</code>。
-新增project時記得選empty Activity，之後比較好做。
-<img src="http://i.imgur.com/LTorwRZ.png" alt="Alt Text" /></p>
-
-<h2 id="建立soft-link">建立soft link</h2>
-
-<p>在剛剛產生出來的Android Project路徑底下，<code>World/app/src/main</code>應該有<strong>java、res</strong>資料夾，以及<strong>AndroidManifest.xml</strong>。
-在<code>AOSP/packages/apps</code>建立新目錄<code>World</code>，並在其底下建立起上述3個檔案之<a href="http://linux.vbird.org/linux_basic/0230filesystem.php#ln" title="鳥哥 - ln解說">軟連結(soft link)</a>。</p>
-
-<pre><code class="language-bash">mkdir $ANDROID_BUILD_TOP/packages/apps/World &amp;&amp; cd $_
-ln -s AndroidProject目錄/World/app/src/main/java  java
-ln -s AndroidProject目錄/World/app/src/main/res  res
-ln -s AndroidProject目錄/World/app/src/main/AndroidManifest.xml  AndroidManifest.xml
-</code></pre>
-
-<h2 id="撰寫android-mk">撰寫Android.mk</h2>
-
-<p>參考<a href="http://android.mk/" title="Secrets of Android.mk">Secrets of Android.mk</a>此份文件當中的<strong>Building a simple APK</strong>目錄。將其加到<code>AOSP/packages/apps/World</code>資料夾下。</p>
-
-<p>```makefile Android.mk
-  LOCAL_PATH := $(call my-dir)
-  include $(CLEAR_VARS)</p>
-
-<p># Build all java files in the java subdirectory
-  LOCAL_SRC_FILES := $(call all-subdir-java-files)</p>
-
-<p># Name of the APK to build
-  LOCAL_PACKAGE_NAME := LocalPackage</p>
-
-<p># Tell it to build an APK
-  include $(BUILD_PACKAGE)</p>
-
-<pre><code>
-## 修改掉所有appcompat的部份
-再來使用`mm`在`AOSP/packages/apps/World`進行編譯，運氣不好的話，編譯會出現找不到某些命名的錯誤。這是因為Google為了讓各種app看起來更有一致性，將Android Studio的新Project皆使用Appcompat此library來協調視覺效果。可是此library並不存在於預設的編譯環境當中。為了為了節省麻煩，將其去掉。
-
-```xml style.xml
-&lt;resources&gt;
-
-    &lt;!-- Base application theme. --&gt;
-    &lt;style name=&quot;AppTheme&quot; parent=&quot;android:Theme.Holo.Light.DarkActionBar&quot;&gt;
-        &lt;!-- Customize your theme here. --&gt;
-    &lt;/style&gt;
-
-&lt;/resources&gt;
-</code></pre>
-
-<p>並把MainActivity中可能會用<strong>ActionBarActivity</strong>或是<strong>AppCompatActivity</strong>來替代Activity，請一律換成Activity來使用。
-```java MainActivity.java
-package com.android.world;</p>
-
-<p>import android.app.Activity;
-import android.os.Bundle;</p>
-
-<p>public class MainActivity extends Activity{</p>
-
-<pre><code>@Override
-protected void onCreate(Bundle savedInstanceState) {
-    super.onCreate(savedInstanceState);
-    setContentView(R.layout.activity_main);
-}
-</code></pre>
-
-<p>}</p>
-
-<pre><code>
-最後，我在編譯途中還遇到標籤問題。預設的編譯環境似乎不允許著無命名的字串存在。也就是說，如果你有任何的**text**標籤是直接給予字串值的，可能會編譯失敗。
-```xml 修改前
-&lt;TextView
-        android:layout_width=&quot;wrap_content&quot;
-        android:layout_height=&quot;wrap_content&quot;
-        android:text=&quot;Hello World&quot; /&gt;
-</code></pre>
-
-<p>可能要改將字串引用自string.xml才能編譯成功。
-```xml 修改後
-<TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/app_name" /></p>
-
-<pre><code>```xml res/values/string.xml
-&lt;resources&gt;
-    &lt;string name=&quot;app_name&quot;&gt;World&lt;/string&gt;
-&lt;/resources&gt;
-</code></pre>
-
-<h2 id="編譯">編譯</h2>
-
-<p>使用<code>mm</code>進行編譯，此次應該可以順利通過了。
-之後直接在Android Studio裡對Application進行編輯，由於建立了軟連結，AOSP內部的內容也會同步更改。
-這樣就可以用Android Studio來撰寫APP囉。</p>
-
-<h1 id="reference">Reference</h1>
-
-<ul>
-<li><a href="http://android.mk/" title="Secrets of Android.mk">Android.mk</a></li>
-<li><a href="http://linux.vbird.org/linux_basic/0230filesystem.php#ln" title="鳥哥 - ln解說">鳥哥 - ln解說</a></li>
-</ul>
-
-    </div>
-
-<div class="meta">
-    
-    
-    <span class="comments"><a href="/post/2016-03-04/#disqus_thread">Comments</a></span>
-    
-    
-</div>
-</article>
-
-  <article class="post">
-    <h2 class="title"> 
         <a href="/post/2016-02-28/">在AOSP中增加預設app (2) : 自行編譯</a>
     </h2>
     <div class="entry-content">
@@ -4381,33 +4231,35 @@ protected void onCreate(Bundle savedInstanceState) {
     </div>
         
 
-<h1 id="平台及環境設置">平台及環境設置</h1>
+<h2 id="平台及環境設置">平台及環境設置</h2>
 
-<p>##平台
-實驗平台：Nexus 5
-Android版本：android-4.4_r1
+<h3 id="平台">平台</h3>
+
+<p>實驗平台：Nexus 5<br />
+Android版本：android-4.4_r1<br />
 前置知識： [Howto Build Android KitKat (4.4) for the Google Nexus 5][6]</p>
 
-<p>##環境設置
-在AOSP資料夾中</p>
+<h3 id="環境設置">環境設置</h3>
+
+<p>在AOSP資料夾中</p>
 
 <pre><code class="language-bash">source build/envsetup.sh
 lunch aosp_hammerhead-userdebug
 </code></pre>
 
-<p>#目標：加入一個需編譯的預設App到AOSP裡</p>
+<h2 id="目標-加入一個需編譯的預設app到aosp裡">目標：加入一個需編譯的預設App到AOSP裡</h2>
 
-<p>在<code>AOSP/development/samples</code>裏面有許多可以借鑒的對象。
+<p>在<code>AOSP/development/samples</code>裏面有許多可以借鑒的對象。<br />
 這次學習的目錄為<code>AOSP/development/samples/HelloActivity/</code></p>
 
-<h2 id="複製資料夾">複製資料夾</h2>
+<h3 id="複製資料夾">複製資料夾</h3>
 
 <p>首先我們先把這個資料夾複製到<code>packages/app/</code>裏面</p>
 
 <pre><code class="language-bash">cp $ANDROID_BUILD_TOP/development/samples/HelloActivity   $ANDROID_BUILD_TOP/packages/apps/
 </code></pre>
 
-<h2 id="使用mm進行編譯">使用mm進行編譯</h2>
+<h3 id="使用mm進行編譯">使用mm進行編譯</h3>
 
 <p>在<code>packages/apps/HelloActivity</code>內進行<code>mm</code>編譯。</p>
 
@@ -4415,14 +4267,14 @@ lunch aosp_hammerhead-userdebug
 mm
 </code></pre>
 
-<h2 id="解析">解析</h2>
+<h3 id="解析">解析</h3>
 
-<p>原本想長篇大論，但是好像有人寫的比我好XD
-只好直接給<a href="http://kezeodsnx.pixnet.net/blog/post/26377152-%5B%E8%BD%89%E8%B2%BC%5Dandroid%E7%9A%84%E5%BA%94%E7%94%A8%E7%A8%8B%E5%BA%8F%E7%BB%93%E6%9E%84%E5%88%86%E6%9E%90%EF%BC%9Ahelloactivity" title="Android的應用程序結構分析">連結</a>，有空再來寫自己的版本吧。
-懂的HelloAcitivity的結構之後，就可以對其進行修改，以符合自己的需求。
+<p>原本想長篇大論，但是好像有人寫的比我好XD<br />
+只好直接給<a href="http://kezeodsnx.pixnet.net/blog/post/26377152-%5B%E8%BD%89%E8%B2%BC%5Dandroid%E7%9A%84%E5%BA%94%E7%94%A8%E7%A8%8B%E5%BA%8F%E7%BB%93%E6%9E%84%E5%88%86%E6%9E%90%EF%BC%9Ahelloactivity" title="Android的應用程序結構分析">連結</a>，有空再來寫自己的版本吧。<br />
+懂的HelloAcitivity的結構之後，就可以對其進行修改，以符合自己的需求。<br />
 對於Android.mk若有什麼不懂的也可參考上次<a href="http://android.mk/" title="Secrets of Android.mk">這篇</a>。</p>
 
-<h1 id="reference">Reference</h1>
+<h2 id="reference">Reference</h2>
 
 <ul>
 <li><a href="http://kezeodsnx.pixnet.net/blog/post/26377152-%5B%E8%BD%89%E8%B2%BC%5Dandroid%E7%9A%84%E5%BA%94%E7%94%A8%E7%A8%8B%E5%BA%8F%E7%BB%93%E6%9E%84%E5%88%86%E6%9E%90%EF%BC%9Ahelloactivity" title="Android的應用程序結構分析">Android的應用程序結構分析</a></li>
@@ -4459,64 +4311,78 @@ mm
     </div>
         
 
-<h1 id="平台及環境設置">平台及環境設置</h1>
+<h2 id="平台及環境設置">平台及環境設置</h2>
 
-<p>##平台
-實驗平台：Nexus 5
-Android版本：android-4.4_r1
+<h3 id="平台">平台</h3>
+
+<p>實驗平台：Nexus 5<br />
+Android版本：android-4.4_r1<br />
 前置知識： <a href="https://nosemaj.org/howto-build-android-kitkat-nexus-5" title="Howto Build Android KitKat (4.4) for the Google Nexus 5">Howto Build Android KitKat (4.4) for the Google Nexus 5</a></p>
 
-<p>##環境設置
-在AOSP資料夾中</p>
+<h3 id="環境設置">環境設置</h3>
+
+<p>在AOSP資料夾中</p>
 
 <pre><code class="language-bash">source build/envsetup.sh
 lunch aosp_hammerhead-userdebug
 </code></pre>
 
-<h1 id="目標-在aosp當中加入一個已經編譯好的apk檔-hello-apk">目標：在AOSP當中加入一個已經編譯好的apk檔，Hello.apk</h1>
+<h2 id="目標-在aosp當中加入一個已經編譯好的apk檔-hello-apk">目標：在AOSP當中加入一個已經編譯好的apk檔，Hello.apk</h2>
 
-<h2 id="手動編譯設置">手動編譯設置</h2>
+<h3 id="手動編譯設置">手動編譯設置</h3>
 
-<p>預設的app放在 <code>AOSP/packages/apps</code>下，任意觀看此目錄下的資料夾，會發現皆有<strong>Android.mk</strong>此檔案，此為AOSP編譯規則。
+<p>預設的app放在 <code>AOSP/packages/apps</code>下，任意觀看此目錄下的資料夾，會發現皆有<strong>Android.mk</strong>此檔案，此為AOSP編譯規則。<br />
 參看 <a href="http://android.mk/" title="Secrets of Android.mk">Secrets of Android.mk</a>此份文件中的<a href="http://android.mk/#prebuiltAPK">Adding a prebuilt APK</a>章節。</p>
 
-<p>依樣畫葫蘆，在<code>AOSP/packages/apps</code>目錄中手動創造Hello資料夾，放入Android.mk。
-``` makefile Android.mk
-LOCAL_PATH := $(call my-dir)
-include $(CLEAR_VARS)</p>
+<p>依樣畫葫蘆，在<code>AOSP/packages/apps</code>目錄中手動創造Hello資料夾，放入Android.mk。</p>
 
-<h1 id="module-name-should-match-apk-name-to-be-installed">Module name should match apk name to be installed.</h1>
+<p>Android.mk</p>
 
-<p>LOCAL_MODULE := Hello
+<pre><code class="language-makefile">LOCAL_PATH := $(call my-dir)
+include $(CLEAR_VARS)
+
+# Module name should match apk name to be installed.
+LOCAL_MODULE := Hello
 LOCAL_SRC_FILES := $(LOCAL_MODULE).apk
 LOCAL_MODULE_CLASS := APPS
 LOCAL_MODULE_SUFFIX := $(COMMON_ANDROID_PACKAGE_SUFFIX)
-LOCAL_CERTIFICATE := PRESIGNED</p>
+LOCAL_CERTIFICATE := PRESIGNED
 
-<p>include $(BUILD_PREBUILT)</p>
+include $(BUILD_PREBUILT)
+</code></pre>
 
-<pre><code>
-並使用Android Studio(或eclipse)隨便製造出一個Hello.apk，同樣將其放置在`AOSP/packages/apps`目錄下。
-在[設置好環境][3]後，使用指令`mm`在Hello資料夾底下進行編譯，即可將檔案複製到`AOSP/out/target/product/板子名/system/app/`裏面去。
-最後執行`make snod`即可將此apk包入system.img之中。
+<p>並使用Android Studio(或eclipse)隨便製造出一個Hello.apk，同樣將其放置在<code>AOSP/packages/apps</code>目錄下。<br />
+在<a href="https://source.android.com/source/building.html#initialize" title="Set up environment">設置好環境</a>後，使用指令<code>mm</code>在Hello資料夾底下進行編譯，即可將檔案複製到<code>AOSP/out/target/product/板子名/system/app/</code>裏面去。<br />
+最後執行<code>make snod</code>即可將此apk包入system.img之中。</p>
 
-&gt; 註：若放置的apk沒簽名，可能會出現
-`build/core/prebuilt.mk:122: *** No LOCAL_CERTIFICATE specified for prebuilt &quot;packages/apps/Hello/Hello .apk&quot;.  Stop.`
-此錯誤訊息。
-關於如何產生簽名過後的apk，可參看[Android官網][5]。
-眼尖的人應該注意到，在上述的Android.mk當中多了一行`LOCAL_CERTIFICATE := PRESIGNED`，若沒有此行，則即使在Android Studio中已經編譯出簽名過後的apk，依然會出現錯誤訊息。要小心。
+<blockquote>
+<p>註：若放置的apk沒簽名，可能會出現</p>
+</blockquote>
 
-## 自動編譯設置
-上述的手動編譯可總結為三步驟
-1. 在AOSP/packages/apps裡新增Hello資料夾，並放入Android.mk與Hello.apk
-2. 在Hello資料夾使用指令`mm`，檔案會複製到`AOSP/out/target/product/板子名/system/app/`
-3. 使用指令`make snod`將檔案打包進system.img之中
+<pre><code class="language-bash">build/core/prebuilt.mk:122: *** No LOCAL_CERTIFICATE specified for prebuilt &quot;packages/apps/Hello/Hello .apk&quot;.  Stop.
+</code></pre>
 
-想像每次修改檔案，皆需重複執行2,3步驟，不太方便。若有不只一個的pre-built apk，則進入每個資料夾使用mm更是麻煩。所以我們要修改make規則，讓AOSP在執行make時，也能偵測到這些新增資料夾。
-修改的地方位在`AOSP/build/target/product/generic_no_telephony.mk`，可以發現這個檔案中有不少的原生app名稱。
-將`Hello`加入`PRODUCT_PACKAGES`之下。如
-```makefile generic_no_telephony.mk
-(...省略...)
+<p>此錯誤訊息。
+關於如何產生簽名過後的apk，可參看<a href="http://developer.android.com/intl/zh-tw/tools/publishing/app-signing.html" title="Signing Your Applications">Android官網</a>。<br />
+眼尖的人應該注意到，在上述的Android.mk當中多了一行<code>LOCAL_CERTIFICATE := PRESIGNED</code>，若沒有此行，則即使在Android Studio中已經編譯出簽名過後的apk，依然會出現錯誤訊息。要小心。</p>
+
+<h3 id="自動編譯設置">自動編譯設置</h3>
+
+<p>上述的手動編譯可總結為三步驟</p>
+
+<ol>
+<li>在AOSP/packages/apps裡新增Hello資料夾，並放入Android.mk與Hello.apk</li>
+<li>在Hello資料夾使用指令<code>mm</code>，檔案會複製到<code>AOSP/out/target/product/板子名/system/app/</code></li>
+<li>使用指令<code>make snod</code>將檔案打包進system.img之中</li>
+</ol>
+
+<p>想像每次修改檔案，皆需重複執行2,3步驟，不太方便。若有不只一個的pre-built apk，則進入每個資料夾使用mm更是麻煩。所以我們要修改make規則，讓AOSP在執行make時，也能偵測到這些新增資料夾。<br />
+修改的地方位在<code>AOSP/build/target/product/generic_no_telephony.mk</code>，可以發現這個檔案中有不少的原生app名稱。<br />
+將<code>Hello</code>加入<code>PRODUCT_PACKAGES</code>之下。如</p>
+
+<p>generic_no_telephony.mk</p>
+
+<pre><code class="language-makefile">(...省略...)
  PRODUCT_PACKAGES := \
       Hello
 (...省略...)
@@ -4524,7 +4390,7 @@ LOCAL_CERTIFICATE := PRESIGNED</p>
 
 <p>如此一來就可以在一般make時偵測到<code>AOSP/packages/apps</code>所新增的Hello資料夾。</p>
 
-<h1 id="reference">Reference</h1>
+<h2 id="reference">Reference</h2>
 
 <ul>
 <li><a href="https://nosemaj.org/howto-build-android-kitkat-nexus-5" title="Howto Build Android KitKat (4.4) for the Google Nexus 5">Howto Build Android KitKat (4.4) for the Google Nexus 5</a></li>
@@ -4563,9 +4429,9 @@ LOCAL_CERTIFICATE := PRESIGNED</p>
     </div>
         
 
-<h1 id="總設定">總設定</h1>
+<h2 id="總設定">總設定</h2>
 
-<pre><code>set editor = &quot;vim&quot;
+<pre><code class="language-bash">set editor = &quot;vim&quot;
 set send_charset=&quot;us-ascii:utf-8&quot;
 set from = &quot;你的帳號@gmail.com&quot;  
 set realname = &quot;你的名字 可隨便打&quot;
@@ -4588,46 +4454,52 @@ bind index &lt;left&gt; last-entry
 bind pager &lt;left&gt; exit
 bind index &lt;right&gt; display-message
 bind pager &lt;right&gt; next-page
-bind browser &lt;right&gt; select-entry 
+bind browser &lt;right&gt; select-entry
 </code></pre>
 
-<h1 id="細部設定">細部設定</h1>
+<h2 id="細部設定">細部設定</h2>
 
-<h2 id="編碼與編輯器">編碼與編輯器</h2>
+<h3 id="編碼與編輯器">編碼與編輯器</h3>
 
-<p>通常在Ubuntu底下的預設編輯器是nano而不是vim，所以需要調整。
+<p>通常在Ubuntu底下的預設編輯器是nano而不是vim，所以需要調整。<br />
 utf-8則是<a href="http://lxr.free-electrons.com/source/Documentation/email-clients.txt">Linux Cross Reference</a>中建議的。</p>
 
-<pre><code>set editor = &quot;vim&quot;
+<pre><code class="language-bash">set editor = &quot;vim&quot;
 set send_charset=&quot;us-ascii:utf-8&quot;
 </code></pre>
 
-<h2 id="imap">imap</h2>
+<h3 id="imap">imap</h3>
 
-<p>imap的服務可以讓你同步本機端與雲端上的信件，當你在mutt刪除/標記信件，gmail的內容也會隨之改變。
-使用這項服務前請記得到gmail中，設定-&gt;轉寄和POP/IMAP-&gt;IMAP存取-&gt;啟用IMAP
-需要設定的項目有imap_user,imap_pass,folder。
-- imap_user無須贅言，你的gmail帳號。
-- imap_pass此處輸入密碼，但有兩種情況。
-  - 無二階段驗證：使用你平常的密碼即可。
-  - 有二階段驗證：必須申請應用程式密碼，請參閱<a href="https://support.google.com/accounts/answer/185833?hl=zh-Hant">使用應用程式密碼登入</a>。
-- folder統一使用imaps://imap.gmail.com:993即可，可參閱<a href="https://support.google.com/mail/troubleshooter/1668960?hl=zh-Hant#ts=1665018,1665144">開始使用 IMAP 和 POP3</a>。</p>
+<p>imap的服務可以讓你同步本機端與雲端上的信件，當你在mutt刪除/標記信件，gmail的內容也會隨之改變。<br />
+使用這項服務前請記得到gmail中，設定-&gt;轉寄和POP/IMAP-&gt;IMAP存取-&gt;啟用IMAP<br />
+需要設定的項目有imap_user,imap_pass,folder。</p>
 
-<pre><code>set imap_user = &quot;你的帳號@gmail.com&quot;  
+<ul>
+<li>imap_user無須贅言，你的gmail帳號。</li>
+<li>imap_pass此處輸入密碼，但有兩種情況。
+
+<ul>
+<li>無二階段驗證：使用你平常的密碼即可。</li>
+<li>有二階段驗證：必須申請應用程式密碼，請參閱<a href="https://support.google.com/accounts/answer/185833?hl=zh-Hant">使用應用程式密碼登入</a>。</li>
+</ul></li>
+<li>folder統一使用imaps://imap.gmail.com:993即可，可參閱<a href="https://support.google.com/mail/troubleshooter/1668960?hl=zh-Hant#ts=1665018,1665144">開始使用 IMAP 和 POP3</a>。</li>
+</ul>
+
+<pre><code class="language-bash">set imap_user = &quot;你的帳號@gmail.com&quot;  
 set imap_pass = &quot;你的密碼&quot;  
 set folder = &quot;imaps://imap.gmail.com:993&quot;  
 </code></pre>
 
 <h2 id="smtp">smtp</h2>
 
-<p>設定smtp可以讓你的mutt可以透過gmail傳送信件，可參考<a href="https://support.google.com/mail/answer/78775?hl=zh-Hant">使用 POP 或 IMAP 發送郵件時遇到問題</a>
+<p>設定smtp可以讓你的mutt可以透過gmail傳送信件，可參考<a href="https://support.google.com/mail/answer/78775?hl=zh-Hant">使用 POP 或 IMAP 發送郵件時遇到問題</a><br />
 smtp_pass同imap密碼。</p>
 
-<pre><code>set smtp_url = &quot;smtp://你的帳號@smtp.gmail.com:587/&quot;  
+<pre><code class="language-bash">set smtp_url = &quot;smtp://你的帳號@smtp.gmail.com:587/&quot;  
 set smtp_pass = &quot;你的密碼&quot;  
 </code></pre>
 
-<h2 id="其他設定">其他設定</h2>
+<h3 id="其他設定">其他設定</h3>
 
 <p>下面是由 <a href="http://go2linux.garron.me/linux/2010/10/how-send-email-command-line-gmail-mutt-789/">How to send email from the command line - Gmail Mutt -</a> 照抄來的設定</p>
 
@@ -4641,13 +4513,13 @@ set move = no
 set imap_keepalive = 900  
 </code></pre>
 
-<h2 id="快捷鍵">快捷鍵</h2>
+<h3 id="快捷鍵">快捷鍵</h3>
 
-<p>原始的鍵盤設定有點彆扭，如果你在讀email時按&rdquo;下&rdquo;，則會跳至下一封信，而非下一行。
-透過更改快捷鍵把他改成類似bbs的設定。
-上：讀信件時向上一行
-下：讀信件時向下一行
-左：讀信件時離開信件，在信件目錄時跳到最底部的信件
+<p>原始的鍵盤設定有點彆扭，如果你在讀email時按&rdquo;下&rdquo;，則會跳至下一封信，而非下一行。<br />
+透過更改快捷鍵把他改成類似bbs的設定。<br />
+上：讀信件時向上一行<br />
+下：讀信件時向下一行<br />
+左：讀信件時離開信件，在信件目錄時跳到最底部的信件<br />
 右：讀信件時向下一頁，在信件目錄時進入信件，在信箱時進入信箱</p>
 
 <pre><code>bind pager &lt;up&gt; previous-line #scroll inside the message rather than the index
@@ -4656,10 +4528,10 @@ bind index &lt;left&gt; last-entry
 bind pager &lt;left&gt; exit
 bind index &lt;right&gt; display-message
 bind pager &lt;right&gt; next-page
-bind browser &lt;right&gt; select-entry 
+bind browser &lt;right&gt; select-entry
 </code></pre>
 
-<h1 id="reference">Reference</h1>
+<h2 id="reference">Reference</h2>
 
 <ul>
 <li><a href="http://lxr.free-electrons.com/source/Documentation/email-clients.txt">Linux Cross Reference</a></li>
@@ -4699,18 +4571,18 @@ bind browser &lt;right&gt; select-entry
     </div>
         
 
-<h1 id="環境設置">環境設置</h1>
+<h2 id="環境設置">環境設置</h2>
 
 <ul>
 <li>ubuntu體系：sudo apt-get install llvm</li>
 <li>MAC: brew install llvm</li>
 </ul>
 
-<h1 id="makefile-mac">makefile (MAC)</h1>
+<h2 id="makefile-mac">makefile (MAC)</h2>
 
-<pre><code>BIN_PATH=/usr/local/Cellar/llvm/3.6.1/bin/
+<pre><code class="language-makefile">BIN_PATH=/usr/local/Cellar/llvm/3.6.1/bin/
 export PATH:=$(PATH):$(BIN_PATH)
-LLVM_CONFIG=llvm-config 
+LLVM_CONFIG=llvm-config
 FLAGS= --cxxflags --ldflags --system-libs --libs core
 
 toy: toy.cpp
@@ -4719,9 +4591,9 @@ clean:
     rm -f toy
 </code></pre>
 
-<h1 id="top-module">top module</h1>
+<h2 id="top-module">top module</h2>
 
-<pre><code>#include &quot;llvm/LLVMContext.h&quot;
+<pre><code class="language-c++">#include &quot;llvm/LLVMContext.h&quot;
 #include &quot;llvm/Module.h&quot;
 #include &quot;llvm/Support/IRBuilder.h&quot;
 
@@ -4729,57 +4601,49 @@ int main()
 {
   llvm::LLVMContext&amp; context = llvm::getGlobalContext();
   llvm::Module* module = new llvm::Module(&quot;top&quot;, context);
-  llvm::IRBuilder&lt;&gt; builder(context); 
+  llvm::IRBuilder&lt;&gt; builder(context);
 
   module-&gt;dump( );
 }
 </code></pre>
 
-<h1 id="function">function</h1>
+<h2 id="function">function</h2>
 
-<h2 id="宣告function">宣告function</h2>
+<h3 id="宣告function">宣告function</h3>
 
-<ul>
-<li>無參數</li>
-</ul>
+<h4 id="無參數">無參數</h4>
 
-<pre><code>  llvm::FunctionType *funcType = 
+<pre><code class="language-c++">  llvm::FunctionType *funcType =
       llvm::FunctionType::get(builder.getInt32Ty(), false);
   llvm::Function *mainFunc = llvm::Function::Create(funcType, llvm::Function::ExternalLinkage, &quot;main&quot;, module);
 </code></pre>
 
-<ul>
-<li>有參數</li>
-</ul>
+<h4 id="有參數">有參數</h4>
 
-<pre><code>  std::vector&lt; llvm::Type* &gt; putsArgs;
+<pre><code class="language-c++">  std::vector&lt; llvm::Type* &gt; putsArgs;
   putsArgs.push_back(builder.getInt8Ty()-&gt;getPointerTo());
   llvm::ArrayRef&lt; llvm::Type* &gt;  argsRef(putsArgs);
 
-  llvm::FunctionType *putsType = 
+  llvm::FunctionType *putsType =
     llvm::FunctionType::get(builder.getInt32Ty(), argsRef, false);
 </code></pre>
 
-<h2 id="定義function">定義function</h2>
+<h3 id="定義function">定義function</h3>
 
-<ul>
-<li>引用已有的function</li>
-</ul>
+<h4 id="引用已有的function">引用已有的function</h4>
 
-<pre><code>  llvm::Constant *putsFunc = module-&gt;getOrInsertFunction(&quot;puts&quot;, putsType);
+<pre><code class="language-c++">  llvm::Constant *putsFunc = module-&gt;getOrInsertFunction(&quot;puts&quot;, putsType);
 </code></pre>
 
-<ul>
-<li>創造新的function</li>
-</ul>
+<h4 id="創造新的function">創造新的function</h4>
 
-<pre><code>  llvm::BasicBlock *entry = llvm::BasicBlock::Create(context, &quot;entrypoint&quot;, mainFunc);
+<pre><code class="language-c++">  llvm::BasicBlock *entry = llvm::BasicBlock::Create(context, &quot;entrypoint&quot;, mainFunc);
   builder.SetInsertPoint(entry);
 </code></pre>
 
 <p>增添function內容</p>
 
-<h1 id="新增變數">新增變數</h1>
+<h2 id="新增變數">新增變數</h2>
 
 <ul>
 <li>global variable</li>
@@ -4792,7 +4656,7 @@ int main()
 <li>local variable</li>
 </ul>
 
-<h1 id="reference">Reference</h1>
+<h2 id="reference">Reference</h2>
 
 <p><a href="http://www.ibm.com/developerworks/library/os-createcompilerllvm1/">Create a working compiler with the LLVM framework</a></p>
 
@@ -4824,33 +4688,33 @@ int main()
     </div>
         
 
-<h1 id="環境設定">環境設定</h1>
+<h2 id="環境設定">環境設定</h2>
 
-<p>系統: linux mint
+<p>系統: linux mint<br />
 套件: <code>sudo apt-get install openssh-server git</code></p>
 
-<h1 id="基本操作">基本操作</h1>
+<h2 id="基本操作">基本操作</h2>
 
-<p>安裝完openssh-server和git後，即可開始嘗試創建remote repository。
+<p>安裝完openssh-server和git後，即可開始嘗試創建remote repository。<br />
 為了之後的安全性議題，創建一個新的帳號來管理git server</p>
 
-<pre><code>sudo adduser git
+<pre><code class="language-bash">    sudo adduser git
 </code></pre>
 
-<p>下方指令新增project.git目錄做為remote repository
+<p>下方指令新增project.git目錄做為remote repository<br />
 (我新增在此帳號的家目錄下，而git官方文件則是放在 /opt/git/ 裡)</p>
 
-<pre><code>su git
+<pre><code class="language-bash">su git
 mkdir /home/git/project.git
 cd /home/git/project.git
 git --bare init
 </code></pre>
 
 <p>remote repository已經建立，可以開始使用。
-<strong>git@gitserver</strong> 代表 <strong>登入帳號@serverIP位置</strong>
+<strong>git@gitserver</strong> 代表 <strong>登入帳號@serverIP位置</strong><br />
 試著用ssh連線抓下git repository吧。</p>
 
-<pre><code>git clone git@gitserver:/home/git/project.git
+<pre><code class="language-bash">git clone git@gitserver:/home/git/project.git
 git remote -v
 origin git@gitserver:/home/git/project.git (fetch)
 origin git@gitserver:/home/git/project.git (push)
@@ -4858,90 +4722,93 @@ origin git@gitserver:/home/git/project.git (push)
 
 <p>當然push pull指令也沒問題囉~ 只要有該帳戶密碼即可。</p>
 
-<pre><code>git push origin master
+<pre><code class="language-bash">git push origin master
 git pull origin master
 </code></pre>
 
-<h1 id="安全性議題-ssh-public-key-authentication">安全性議題 - SSH Public Key Authentication</h1>
+<h2 id="安全性議題-ssh-public-key-authentication">安全性議題 - SSH Public Key Authentication</h2>
 
-<p>上述推送git repository的流程中，只需要有帳號密碼即可登入。
+<p>上述推送git repository的流程中，只需要有帳號密碼即可登入。<br />
 我們可以改以更安全的SSH Public Key Authentication來登入</p>
 
-<h2 id="client">client</h2>
+<h3 id="client">client</h3>
 
-<p>在terminal上輸入<code>ssh-keygen</code>
-全部使用預設值後，成對的公私鑰會出現在~/.ssh裡
-- 公鑰:id_rsa.pub
-- 私鑰:id_rsa</p>
+<p>在terminal上輸入<code>ssh-keygen</code><br />
+全部使用預設值後，成對的公私鑰會出現在~/.ssh裡</p>
+
+<ul>
+<li>公鑰:id_rsa.pub</li>
+<li>私鑰:id_rsa</li>
+</ul>
 
 <p>公鑰長起來像這樣</p>
 
 <pre><code>ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCB007n/ww+ouN4gSLKssMxXnBOvf9LGt4LojG6rs6hPB09j9R/T17/x4lhJA0F3FR1rP6kYBRsWj2aThGw6HXLm9/5zytK6Ztg3RPKK+4kYjh6541NYsnEAZuXz0jTTyAUfrtU3Z5E003C4oxOj6H0rfIF1kKI9MAQLMdpGW1GYEIgS9EzSdfd8AcCIicTDWbqLAcU4UpkaX8KyGlLwsNuuGztobF8m72ALC/nLF6JLtPofwFBlgc+myivO7TCUSBdLQlgMVOFq1I2uPWQOkOWQAHukEOmfjy2jctxSDBQ220ymjaNsHT4kgtZg2AYYgPqdAv8JggJICUvax2T9va5 gsg-keypair
 </code></pre>
 
-<h2 id="server">server</h2>
+<h3 id="server">server</h3>
 
 <p>登入管理git server的帳戶</p>
 
-<pre><code>su git
+<pre><code class="language-bash">    su git
 </code></pre>
 
 <p>把允許連到這個server的用戶公鑰，複製貼上到~/.ssh/authorized_keys文件中。</p>
 
-<pre><code>mkdir ~/.ssh
-vi ~/.ssh/authorized_keys
+<pre><code class="language-bash">    mkdir ~/.ssh
+    vi ~/.ssh/authorized_keys
 </code></pre>
 
 <p>authorized_keys中，有幾個公鑰就放幾行。</p>
 
-<pre><code>公鑰1
-公鑰2
-公鑰3
-...
+<pre><code class="language-bash">    公鑰1
+    公鑰2
+    公鑰3
+    ...
 </code></pre>
 
-<h1 id="安全性議題-限制shell功能">安全性議題 - 限制shell功能</h1>
+<h2 id="安全性議題-限制shell功能">安全性議題 - 限制shell功能</h2>
 
-<p>如果有人遠端登入伺服器後，使用vi、rm、touch等指令隨便更改repository內容，豈不是很危險。
-因此要限制此帳戶只能拿來做為唯一用途──推送版本庫。
-將原本的bash-shell改為git-shell，使此帳戶只剩下git相關功能吧。
+<p>如果有人遠端登入伺服器後，使用vi、rm、touch等指令隨便更改repository內容，豈不是很危險。<br />
+因此要限制此帳戶只能拿來做為唯一用途──推送版本庫。<br />
+將原本的bash-shell改為git-shell，使此帳戶只剩下git相關功能吧。<br />
 編輯權限檔</p>
 
-<pre><code>sudo vim /etc/passwd
+<pre><code class="language-bash">    sudo vim /etc/passwd
 </code></pre>
 
 <p>passwd檔案底會出現剛剛的帳戶，這行可能長這樣。</p>
 
-<pre><code>git:x :1001:1001:/home/git:/bin/sh
+<pre><code class="language-bash">    git:x :1001:1001:/home/git:/bin/sh
 </code></pre>
 
-<p>由左到右分別代表
-<strong>帳戶:密碼(以x代替):UID(使用者識別碼):GID(群組識別碼):家目錄位置:使用的shell</strong>
+<p>由左到右分別代表<br />
+<strong>帳戶:密碼(以x代替):UID(使用者識別碼):GID(群組識別碼):家目錄位置:使用的shell</strong><br />
 將shell替代成git-shell，使此帳戶只剩下git相關功能。</p>
 
-<pre><code>git:x :1001:1001::/home/git:/usr/bin/git-shell
+<pre><code class="language-bash">    git:x :1001:1001::/home/git:/usr/bin/git-shell
 </code></pre>
 
 <p>git-shell的位置可以用下列指令找到</p>
 
-<pre><code>which git-shell
+<pre><code class="language-bash">    which git-shell
 </code></pre>
 
 <p>調整完權限後，再想以ssh登入此帳戶就會出現</p>
 
-<pre><code>$ ssh git@gitserver
-Welcome to Linux Mint 17.1 Rebecca (GNU/Linux 3.13.0-37-generic x86_64)
-Welcome to Linux Mint
- * Documentation:  http://www.linuxmint.com
-Last login: Sat Jun  6 19:55:30 2015 from localhost
-fatal: Interactive git shell is not enabled.
-hint: ~/git-shell-commands should exist and have read and execute access.
-Connection to gitserver closed.
+<pre><code class="language-bash">    $ ssh git@gitserver
+    Welcome to Linux Mint 17.1 Rebecca (GNU/Linux 3.13.0-37-generic x86_64)
+    Welcome to Linux Mint
+     * Documentation:  http://www.linuxmint.com
+    Last login: Sat Jun  6 19:55:30 2015 from localhost
+    fatal: Interactive git shell is not enabled.
+    hint: ~/git-shell-commands should exist and have read and execute access.
+    Connection to gitserver closed.
 </code></pre>
 
 <p>此帳號無法再使用shell囉~</p>
 
-<h1 id="reference">reference</h1>
+<h2 id="reference">reference</h2>
 
 <ul>
 <li><a href="https://git-scm.com/book/zh-tw/v1/%E4%BC%BA%E6%9C%8D%E5%99%A8%E4%B8%8A%E7%9A%84-Git">git server官方文件</a></li>
@@ -4980,7 +4847,7 @@ Connection to gitserver closed.
     </div>
         
 
-<h1 id="overview">Overview</h1>
+<h2 id="overview">Overview</h2>
 
 <p>llvm 示意圖
 <img src="http://www.aosabook.org/images/llvm/SimpleCompiler.png" alt="" />
@@ -4991,19 +4858,19 @@ Connection to gitserver closed.
 2. IR interpreter (指令lli)
 3. IR compiler (指令 llc)</p>
 
-<h1 id="llvm-指令">llvm 指令</h1>
+<h2 id="llvm-指令">llvm 指令</h2>
 
 <pre><code>v    =  operation   type      op1,       op2 ,     opn
 %sum =     add             i32      %op1,      %op2  
 運算結果   運算元      型態      運算子們
 </code></pre>
 
-<h1 id="llvm-function">llvm function</h1>
+<h2 id="llvm-function">llvm function</h2>
 
 <p>宣告</p>
 
 <pre><code>define i32            @add1       (   i32 %a,   i32 %b )
-define 回傳型態 @函數名稱(  參數列          ) 
+define 回傳型態 @函數名稱(  參數列          )
 </code></pre>
 
 <p>回傳</p>
@@ -5022,7 +4889,7 @@ entry:
 }
 </code></pre>
 
-<h1 id="identifiers">Identifiers</h1>
+<h2 id="identifiers">Identifiers</h2>
 
 <ul>
 <li>regular expression: &lsquo;[%@][a-zA-Z$._][a-zA-Z$._0-9]*&lsquo;.<br /></li>
@@ -5034,79 +4901,78 @@ entry:
 
 <ul>
 <li>將變數編上編號</li>
-<li>每個變數只會賦值一次
-<br /></li>
+<li>每個變數只會賦值一次</li>
 </ul></li>
 </ul>
 
-<h1 id="利用clang-front-end-做測試">利用clang front end 做測試</h1>
+<h2 id="利用clang-front-end-做測試">利用clang front end 做測試</h2>
 
 <p>安裝</p>
 
-<pre><code>sudo apt-get install clang llvm
+<pre><code class="language-bash">    sudo apt-get install clang llvm
 </code></pre>
 
 <p>把C code 變成 llvm IR (以test.c為例)</p>
 
-<pre><code>clang test.c -emit-llvm -S
+<pre><code class="language-bash">    clang test.c -emit-llvm -S
 </code></pre>
 
 <p>C code</p>
 
-<pre><code>#include&lt;stdio.h&gt;
-int main()
-{
-    int a, b;
-    a = 1;
-    b = a + 1;
-    printf(&quot;%d\n&quot;, b);
-}
+<pre><code class="language-c">    #include&lt;stdio.h&gt;
+    int main()
+    {
+        int a, b;
+        a = 1;
+        b = a + 1;
+        printf(&quot;%d\n&quot;, b);
+    }
 </code></pre>
 
 <p>llvm IR (test.ll)</p>
 
-<pre><code>; Function Attrs: nounwind uwtable
-define i32 @main() #0 {
-  %a = alloca i32, align 4
-  %b = alloca i32, align 4
-  store i32 1, i32* %a, align 4
-  %1 = load i32* %a, align 4
-  %2 = add nsw i32 %1, 1
-  store i32 %2, i32* %b, align 4
-  %3 = load i32* %b, align 4
-  %4 = call i32 (i8*, ...)* @printf(i8* getelementptr inbounds ([4 x i8]* @.str, i32 0, i32 0), i32 %3)
-  ret i32 0
-}
+<pre><code class="language-llvm">    ; Function Attrs: nounwind uwtable
+    define i32 @main() #0 {
+      %a = alloca i32, align 4
+      %b = alloca i32, align 4
+      store i32 1, i32* %a, align 4
+      %1 = load i32* %a, align 4
+      %2 = add nsw i32 %1, 1
+      store i32 %2, i32* %b, align 4
+      %3 = load i32* %b, align 4
+      %4 = call i32 (i8*, ...)* @printf(i8* getelementptr inbounds ([4 x i8]* @.str, i32 0, i32 0), i32 %3)
+      ret i32 0
+    }
 
-declare i32 @printf(i8*, ...) #1
+    declare i32 @printf(i8*, ...) #1
 </code></pre>
 
 <h2 id="1-用interpreter執行llvm-ir">1. 用interpreter執行llvm IR</h2>
 
-<pre><code>lli test.ll
+<pre><code class="language-bash">    lli test.ll
 </code></pre>
 
 <h2 id="2-把llvm-ir-編譯成assembly-code">2. 把llvm IR 編譯成assembly code</h2>
 
-<pre><code>llc test.ll
+<pre><code class="language-bash">    llc test.ll
 </code></pre>
 
 <p>產生出 test.s
 利用clang把assembly轉成machine code</p>
 
-<pre><code>clang test.ll
+<pre><code class="language-bash">    clang test.ll
 </code></pre>
 
 <p>執行</p>
 
-<pre><code>./test.ll
+<pre><code class="language-bash">    ./test.ll
 </code></pre>
 
-<h1 id="結論">結論</h1>
+<h2 id="結論">結論</h2>
 
 <p>用llvm學習compiler，不需考慮暫存器分配(assembly code geneate)，但需要考慮SSA。</p>
 
-<h1 id="參考資料">參考資料</h1>
+<h2 id="參考資料">參考資料</h2>
 
 <p><a href="http://www.slideshare.net/kitocheng/ss-42438227">神人投影片</a>
 <a href="http://llvm.org/docs/LangRef.html">llvm reference</a></p>

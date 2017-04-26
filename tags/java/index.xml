@@ -17,17 +17,7 @@
       
       <guid>https://cdfq152313.github.io/post/2017-02-22/</guid>
       <description>平台 Android Studio - compileSdkVersion 25 - buildToolsVersion &amp;ldquo;25.0.1&amp;rdquo;
-全域變數 SecretKey secretKey; // 金鑰 AlgorithmParameterSpec mAlgorithmParameterSpec; // 之後要放置初始化向量的參數  初始化 金鑰初始化 private void genAESKey() throws Exception { KeyGenerator keyGen = KeyGenerator.getInstance(&amp;quot;AES&amp;quot;); // 指定AES演算法 keyGen.init(256, new SecureRandom()); // 指定256位元，並使用SecureRandom secretKey = keyGen.generateKey(); // 產生AES金鑰 }  初始向量初始化 private void genInitializationVector() throws NoSuchPaddingException, NoSuchAlgorithmException { cipher = Cipher.getInstance(&amp;ldquo;AES/CBC/PKCS5Padding&amp;rdquo;); // 指定AES演算法 byte [] iVAES = new byte[ cipher.getBlockSize() ]; // new AES演算法所需的block size SecureRandom random = new SecureRandom(); random.</description>
-    </item>
-    
-    <item>
-      <title>Java RSA</title>
-      <link>https://cdfq152313.github.io/post/2016-12-01/</link>
-      <pubDate>Thu, 01 Dec 2016 00:00:00 +0000</pubDate>
-      
-      <guid>https://cdfq152313.github.io/post/2016-12-01/</guid>
-      <description>讀金鑰 感謝大大無私分享，大大一生平安 http://stackoverflow.com/questions/11410770/load-rsa-public-key-from-file
-加密 感謝大大無私分享，大大一生平安 http://jimwayne.blogspot.tw/2012/06/java_25.html</description>
+全域變數 SecretKey secretKey; // 金鑰 AlgorithmParameterSpec mAlgorithmParameterSpec; // 之後要放置初始化向量的參數  初始化 金鑰初始化 private void genAESKey() throws Exception { KeyGenerator keyGen = KeyGenerator.getInstance(&amp;quot;AES&amp;quot;); // 指定AES演算法 keyGen.init(256, new SecureRandom()); // 指定256位元，並使用SecureRandom secretKey = keyGen.generateKey(); // 產生AES金鑰 }  初始向量初始化 private void genInitializationVector() throws NoSuchPaddingException, NoSuchAlgorithmException { cipher = Cipher.getInstance(&amp;quot;AES/CBC/PKCS5Padding&amp;quot;); // 指定AES演算法 byte [] iVAES = new byte[ cipher.getBlockSize() ]; // new AES演算法所需的block size SecureRandom random = new SecureRandom(); random.</description>
     </item>
     
   </channel>

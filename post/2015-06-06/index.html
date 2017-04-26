@@ -4218,7 +4218,7 @@ body {
     </div>
     <div class="entry-content">
 
-<h1 id="overview">Overview</h1>
+<h2 id="overview">Overview</h2>
 
 <p>llvm 示意圖
 <img src="http://www.aosabook.org/images/llvm/SimpleCompiler.png" alt="" />
@@ -4229,19 +4229,19 @@ body {
 2. IR interpreter (指令lli)
 3. IR compiler (指令 llc)</p>
 
-<h1 id="llvm-指令">llvm 指令</h1>
+<h2 id="llvm-指令">llvm 指令</h2>
 
 <pre><code>v    =  operation   type      op1,       op2 ,     opn
 %sum =     add             i32      %op1,      %op2  
 運算結果   運算元      型態      運算子們
 </code></pre>
 
-<h1 id="llvm-function">llvm function</h1>
+<h2 id="llvm-function">llvm function</h2>
 
 <p>宣告</p>
 
 <pre><code>define i32            @add1       (   i32 %a,   i32 %b )
-define 回傳型態 @函數名稱(  參數列          ) 
+define 回傳型態 @函數名稱(  參數列          )
 </code></pre>
 
 <p>回傳</p>
@@ -4260,7 +4260,7 @@ entry:
 }
 </code></pre>
 
-<h1 id="identifiers">Identifiers</h1>
+<h2 id="identifiers">Identifiers</h2>
 
 <ul>
 <li>regular expression: &lsquo;[%@][a-zA-Z$._][a-zA-Z$._0-9]*&lsquo;.<br /></li>
@@ -4272,79 +4272,78 @@ entry:
 
 <ul>
 <li>將變數編上編號</li>
-<li>每個變數只會賦值一次
-<br /></li>
+<li>每個變數只會賦值一次</li>
 </ul></li>
 </ul>
 
-<h1 id="利用clang-front-end-做測試">利用clang front end 做測試</h1>
+<h2 id="利用clang-front-end-做測試">利用clang front end 做測試</h2>
 
 <p>安裝</p>
 
-<pre><code>sudo apt-get install clang llvm
+<pre><code class="language-bash">    sudo apt-get install clang llvm
 </code></pre>
 
 <p>把C code 變成 llvm IR (以test.c為例)</p>
 
-<pre><code>clang test.c -emit-llvm -S
+<pre><code class="language-bash">    clang test.c -emit-llvm -S
 </code></pre>
 
 <p>C code</p>
 
-<pre><code>#include&lt;stdio.h&gt;
-int main()
-{
-    int a, b;
-    a = 1;
-    b = a + 1;
-    printf(&quot;%d\n&quot;, b);
-}
+<pre><code class="language-c">    #include&lt;stdio.h&gt;
+    int main()
+    {
+        int a, b;
+        a = 1;
+        b = a + 1;
+        printf(&quot;%d\n&quot;, b);
+    }
 </code></pre>
 
 <p>llvm IR (test.ll)</p>
 
-<pre><code>; Function Attrs: nounwind uwtable
-define i32 @main() #0 {
-  %a = alloca i32, align 4
-  %b = alloca i32, align 4
-  store i32 1, i32* %a, align 4
-  %1 = load i32* %a, align 4
-  %2 = add nsw i32 %1, 1
-  store i32 %2, i32* %b, align 4
-  %3 = load i32* %b, align 4
-  %4 = call i32 (i8*, ...)* @printf(i8* getelementptr inbounds ([4 x i8]* @.str, i32 0, i32 0), i32 %3)
-  ret i32 0
-}
+<pre><code class="language-llvm">    ; Function Attrs: nounwind uwtable
+    define i32 @main() #0 {
+      %a = alloca i32, align 4
+      %b = alloca i32, align 4
+      store i32 1, i32* %a, align 4
+      %1 = load i32* %a, align 4
+      %2 = add nsw i32 %1, 1
+      store i32 %2, i32* %b, align 4
+      %3 = load i32* %b, align 4
+      %4 = call i32 (i8*, ...)* @printf(i8* getelementptr inbounds ([4 x i8]* @.str, i32 0, i32 0), i32 %3)
+      ret i32 0
+    }
 
-declare i32 @printf(i8*, ...) #1
+    declare i32 @printf(i8*, ...) #1
 </code></pre>
 
 <h2 id="1-用interpreter執行llvm-ir">1. 用interpreter執行llvm IR</h2>
 
-<pre><code>lli test.ll
+<pre><code class="language-bash">    lli test.ll
 </code></pre>
 
 <h2 id="2-把llvm-ir-編譯成assembly-code">2. 把llvm IR 編譯成assembly code</h2>
 
-<pre><code>llc test.ll
+<pre><code class="language-bash">    llc test.ll
 </code></pre>
 
 <p>產生出 test.s
 利用clang把assembly轉成machine code</p>
 
-<pre><code>clang test.ll
+<pre><code class="language-bash">    clang test.ll
 </code></pre>
 
 <p>執行</p>
 
-<pre><code>./test.ll
+<pre><code class="language-bash">    ./test.ll
 </code></pre>
 
-<h1 id="結論">結論</h1>
+<h2 id="結論">結論</h2>
 
 <p>用llvm學習compiler，不需考慮暫存器分配(assembly code geneate)，但需要考慮SSA。</p>
 
-<h1 id="參考資料">參考資料</h1>
+<h2 id="參考資料">參考資料</h2>
 
 <p><a href="http://www.slideshare.net/kitocheng/ss-42438227">神人投影片</a>
 <a href="http://llvm.org/docs/LangRef.html">llvm reference</a></p>

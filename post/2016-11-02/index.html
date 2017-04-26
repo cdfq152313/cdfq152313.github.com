@@ -4218,11 +4218,11 @@ body {
     </div>
     <div class="entry-content">
 
-<h1 id="mail">Mail</h1>
+<h2 id="mail">Mail</h2>
 
 <p>不能在模擬器上跑，會crash。</p>
 
-<h2 id="簡單流程">簡單流程</h2>
+<h3 id="簡單流程">簡單流程</h3>
 
 <ol>
 <li>初始化MFMailComposeViewController</li>
@@ -4240,7 +4240,7 @@ func sendMail(){
 }
 </code></pre>
 
-<h2 id="測試能不能使用mail功能">測試能不能使用Mail功能</h2>
+<h3 id="測試能不能使用mail功能">測試能不能使用Mail功能</h3>
 
 <p>像是在模擬器上就不能使用。</p>
 
@@ -4252,7 +4252,7 @@ else{
 }
 </code></pre>
 
-<h2 id="mailcomposedelegate">mailComposeDelegate</h2>
+<h3 id="mailcomposedelegate">mailComposeDelegate</h3>
 
 <p>設定mailComposeDelegate可以讓寄信完後，dismiss到原來畫面，這邊要注意的是不要設成一般delegate了。</p>
 
@@ -4274,7 +4274,7 @@ func mailComposeController(_ controller: MFMailComposeViewController, didFinishW
 }
 </code></pre>
 
-<h2 id="夾帶圖片">夾帶圖片</h2>
+<h3 id="夾帶圖片">夾帶圖片</h3>
 
 <pre><code class="language-swift">// 夾一張圖片
 func mailCo
@@ -4288,23 +4288,25 @@ data = UIImageJPEGRepresentation(image!, 0.9)
 mailController.addAttachmentData(data!, mimeType: &quot;image/jpg&quot;, fileName: &quot;book2.jpg&quot;)
 </code></pre>
 
-<h2 id="放置html檔">放置HTML檔</h2>
+<h3 id="放置html檔">放置HTML檔</h3>
 
 <pre><code class="language-swift">let body = &quot;&lt;h1&gt;HelloWorld&lt;/h1&gt;&quot;
 mailController.setMessageBody(body, isHTML:true)
 </code></pre>
 
-<h1 id="message">Message</h1>
+<h2 id="message">Message</h2>
 
 <p>同樣不能在模擬器上跑，會crash。</p>
 
-<h2 id="簡單流程-1">簡單流程</h2>
+<h3 id="簡單流程-1">簡單流程</h3>
 
-<p>由於是訊息，只要填body即可。
-收件者可以是
-- 人名
-- 手機號碼
-- 郵件信箱</p>
+<p>由於是訊息，只要填body即可。收件者可以是</p>
+
+<ul>
+<li>人名</li>
+<li>手機號碼</li>
+<li>郵件信箱</li>
+</ul>
 
 <pre><code class="language-swift">func sendMessage(){
   let controller = MFMessageComposeViewController()

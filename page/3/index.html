@@ -4214,325 +4214,6 @@ body {
 
   <article class="post">
     <h2 class="title"> 
-        <a href="/post/2016-10-03/">Swift 不同Controller互動 與 Navigation Bar</a>
-    </h2>
-    <div class="entry-content">
-    <div class="meta">
-        <div class="date">Published on: <time datetime='2016-10-03T00:00:00.000&#43;00:00' itemprop="datePublished">2016-10-03</time>
-</div>
-        <div class="tags">Tags: 
-
-<a href="https://cdfq152313.github.io//tags/ios">ios</a>
-
-<a href="https://cdfq152313.github.io//tags/swift">swift</a>
-
-
-</div>
-    </div>
-        
-
-<h1 id="controller之間的呼叫">Controller之間的呼叫</h1>
-
-<h2 id="present-與-dismiss">present 與 dismiss</h2>
-
-<p>想要跳轉頁面，我們可以靠storyBoard拉出present的線，也可以靠程式碼。
-在StoryBoard中只要按住ctrl，將button拉到另一個controller後再選present即可。
-在程式碼的話</p>
-
-<pre><code class="language-swift">// 因為此ViewController什麼都沒設定，所以會是一片黑
-present(ViewController(), animated: true, completion: nil)
-</code></pre>
-
-<p>有跳過去，就有返回，想返回時使用dismiss function。</p>
-
-<pre><code class="language-swift">dismiss(animated: true, completion: nil)
-</code></pre>
-
-<p>dismiss的原理是，直接呼叫時，請求presentingViewController把你關掉。
-間接呼叫時，把後面的presentedViewController們關掉。
-至於這兩個是什麼意思請參看下節。</p>
-
-<h2 id="presentingviewcontroller-與-presentedviewcontroller">presentingViewController 與 presentedViewController</h2>
-
-<p>每個controller皆有兩個重要的屬性，可以分辨這個controller是被誰present，或是present了誰。
-- presentingViewController：present Controller的Controller
-- presentedViewController：被present的Controller</p>
-
-<p>假設ABC皆為Controller，A present B，B present C，那對於B來說。
-- A為B之presentingViewController
-- C為B之presentedViewController</p>
-
-<h1 id="navigation-bar">Navigation bar</h1>
-
-<h2 id="push-與-pop">push 與 pop</h2>
-
-<p>與present / dismiss相似，進到navigation controller後要使用 navigation屬性的push/pop方法，不然會跳出navigation controller的頁，失去Navigation Bar的效果。</p>
-
-<p>程式碼的形式如下</p>
-
-<pre><code class="language-swift">// 推上下一個頁面
-self.navigationController?.pushViewController(ViewController(), animated: true)
-// 回到上一頁
-self.navigationController?.popViewController(animated: true)
-// 直接回到navigation最開頭
-self.navigationController?.popToRootViewController(animated: true)
-</code></pre>
-
-<h2 id="前後的controller">前後的controller</h2>
-
-<p>如同present / dismiss可以拿到前後關係一樣，navigation controller也是可以拿到前後關係的。
-所有經過的controller都放在self.navigationController?.viewControllers這個array裡可以拿取。</p>
-
-<pre><code class="language-swift">self.navigationController?.viewControllers[0]
-self.navigationController?.viewControllers[1]
-...
-</code></pre>
-
-<h2 id="navigation-controller的建立">Navigation Controller的建立</h2>
-
-<p>Navigation Contrller本身並不帶有頁面資訊，而是在Navigation Controller的下一個Controller才會開始顯示。
-那兩者之間要建立連線，必須要指定Navigation Controller當中的Root View Controller才行。</p>
-
-<ul>
-<li>方法1: Navigation綁定Root Controller，有兩種做法
-
-<ul>
-<li>按住Ctrl並將Navigation Controller拉到想要顯示的第一個Controller，鬆開後選擇Root view Controller</li>
-<li>在Navigation Controller的Triggered Segue中，指定Root view Controller</li>
-</ul></li>
-<li>方法2: 在StoryBoard中，點擊已經存在的Controller。並從上方選單Editor =&gt; Embed in =&gt; NavigatioController即可</li>
-</ul>
-
-<h2 id="上面的title和向右鈕">上面的title和向右鈕</h2>
-
-<p>預設只有Navigation Controller後第一個Bar可以編輯Title，若要加入新title則要從StoryBoard中拉入<strong>Navigation item</strong>
-預設上方並無向右鍵，只有返回鍵，若要加入則拉入<strong>Bar Button Item</strong></p>
-
-<h1 id="tab-bar-controller">Tab Bar Controller</h1>
-
-<p>與Navigation View許多做法類似
-想加上新的tab可以
-- 方法1: TabViewController綁定View Controllers，有兩種做法
- - 按住Ctrl並將TabViewController拉到想要加上的Controller，鬆開後選擇View Controllers
- - 在TabViewController的Triggered Segue中，指定新的View Controllers
-- 方法2: 在StoryBoard中，點擊已經存在的Controller。並從上方選單Editor =&gt; Embed in =&gt; TabViewController即可</p>
-
-<h2 id="tab-bar-controller下的controller們">tab bar controller下的controller們</h2>
-
-<pre><code class="language-swift">self.tabBarController?.viewControllers[0]
-self.tabBarController?.viewControllers[1]
-...
-</code></pre>
-
-<p>要注意的是，如果是tab bar controller下包著navigation controller，在存取時要先轉型成navigation controller，再取用navigation controller裡面的controller，才不會錯誤。</p>
-
-<h2 id="切換tab">切換tab</h2>
-
-<pre><code class="language-swift">self.tabBarController?.selectedIndex = 0
-</code></pre>
-
-<h2 id="隱藏tab">隱藏tab</h2>
-
-<pre><code class="language-swift">self.tabBarController?.tabBar.isHidden = true
-</code></pre>
-
-<h1 id="在不同的controller之間跳轉">在不同的Controller之間跳轉</h1>
-
-<h2 id="方法1-直接拖拉">方法1 直接拖拉</h2>
-
-<p>在storyboard上
-按住ctrl點下來源Controller之button拉到要呈現的Controller後鬆開，選擇show或present即可。
-show會在啟用navigation bar的時候自動使用navigation.push，若無navigation bar則是使用present。</p>
-
-<h2 id="方法2-利用segue">方法2 利用segue</h2>
-
-<p>在storyboard上
-按住ctrl點下來源Controller，拉到要呈現的Controller，會多一條segue連線，幫此條連線取名字(identifer)
-接下來在想切換的情況下使用performSegue即可(參數為剛剛取的identifer)</p>
-
-<pre><code class="language-swift">performSegue(withIdentifier: &quot;goToView2&quot;, sender: nil)
-</code></pre>
-
-<h2 id="方法3-指定storyboard以及controller-通常用在更換story-board的時候">方法3 指定StoryBoard以及Controller (通常用在更換Story Board的時候)</h2>
-
-<p>將要呈現的Controller取名字(StoryBoardID)
-並在程式碼中指定
-1. 位於哪個StoryBoard
-2. Controller的StoryBoardID
-最後present或push即可</p>
-
-<pre><code class="language-swift">let myStoryBoard = UIStoryboard(name: &quot;Main&quot;, bundle: nil)
-let whiteViewController = myStoryBoard.instantiateViewController(withIdentifier: &quot;whiteView&quot;)
-present(whiteViewController, animated:true, completion:nil)
-</code></pre>
-
-<p>如果是位於同一個storyboard，也可以拿到自己的storyboard</p>
-
-<pre><code class="language-swift">let myStoryBoard = self.storyboard!
-let whiteViewController = myStoryBoard.instantiateInitialViewController(withIdentifier: &quot;whiteView&quot;)
-present(whiteViewController, animated:true, completion:nil)
-</code></pre>
-
-<h2 id="方法4-storyboard-reference-通常用在更換story-board的時候">方法4 StoryBoard Reference (通常用在更換Story Board的時候)</h2>
-
-<p>在StoryBoard中，將StoryBoard Reference
-拖到畫面上，指定StoryBoard Reference上的StoryBoard和ControllerID
-接下來利用方法1或2拖拉即可成功</p>
-
-<h2 id="方法5-逃生門-通常用在要返回前一個controller的時候">方法5 逃生門 (通常用在要返回前一個Controller的時候)</h2>
-
-<h3 id="情況">情況</h3>
-
-<p>假設最初的controller取名叫parent controller
-parent controller可以連到許多child controller
-當child controller想返回parent controller的時候</p>
-
-<h3 id="作法">作法</h3>
-
-<p>先寫在parent controller</p>
-
-<pre><code class="language-swift">@IBAction func backToMain(_ segue:UIStoryboardSegue){
-    print(&quot;back to main&quot;)
-}
-</code></pre>
-
-<p>再用StoryBoard選擇child controller
-按鈕按住ctrl往該controller的逃生門拉 (上方最右邊的圖示)
-即會出現backToMain的方法
-如果parent controller在child controller返回後想執行什麼動作也可在此function中填入</p>
-
-<h1 id="controller之間傳遞訊息">Controller之間傳遞訊息</h1>
-
-<h2 id="方法1-利用destination-controller的property-呼叫下一個controller時">方法1. 利用destination controller的property (呼叫下一個Controller時)</h2>
-
-<ol>
-<li>複寫Source Controller的prepare Function</li>
-<li>參數segue之屬性destionation即為destination controller</li>
-<li>強制轉型為destination controller</li>
-<li>將其塞入數值</li>
-</ol>
-
-<p>這裡要注意的是，不能把值塞進destination controller的UI元件內(Ex: Label)，因為這個時候畫面元件還沒生成。</p>
-
-<pre><code class="language-swift">// Source Controller
-override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-    if segue.destination is SecondViewController{
-    let des = segue.destination as! SecondViewController
-    des.textFromFirstView = &quot;Hello World&quot;
-    }
-}
-</code></pre>
-
-<h2 id="方法2-利用前後階層關係-僅適用於返回controller時">方法2. 利用前後階層關係(僅適用於返回controller時)</h2>
-
-<p>前面有說過present可以靠
-- presentingViewController
-- presentedViewController</p>
-
-<p>navigation bar可以靠
-- self.navigationController?.viewControllers[0]
-- self.navigationController?.viewControllers[1]
-- &hellip;</p>
-
-<p>來獲得前面的controller元件
-取得controller後再參考方法1塞入值</p>
-
-<h2 id="方法3-protocol-返回前一個controller時">方法3. protocol (返回前一個controller時)</h2>
-
-<p>將前一個controller名為FirstViewController
-現在這個controller名為SecondViewController
-令一個protocol叫做SecondViewControllerDelegate</p>
-
-<ol>
-<li>將SecondViewControllerDelegate當作SecondViewController的屬性</li>
-<li>在FirstViewController跳轉到SecondViewController前，通過方法1塞進自己實作的SecondViewControllerDelegate</li>
-<li>SecondViewController消失前，執行該protocol的method (透過複寫viewWillDisapear來達成)</li>
-</ol>
-
-<p>```swift SecondController
-var delegate:SecondViewControllerDelegate?
-@IBAction func goBack(_ sender: UIButton) {
-    let _ = navigationController?.popViewController(animated: true)
-}</p>
-
-<p>override func viewWillDisappear(_ animated: Bool) {
-  super.viewWillDisappear(animated)
-  if self.isMovingFromParentViewController{
-        delegate?.setColor(colorType: &ldquo;red&rdquo;)
-    }
-}</p>
-
-<pre><code>`hint: 可以靠 self.isMovingFromParentViewController來測試是否為返回到前一個Controller`
-
-```swift SecondViewControllerDelegate
-protocol SecondViewControllerDelegate{
-    func setColor(colorType:String)
-}
-</code></pre>
-
-<p>```swift FirstViewController (實作SecondViewControllerDelegate)
-override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-  if let des = segue.destination as? SecondViewController{
-    des.delegate = self
-  }
-}</p>
-
-<pre><code>
-## 方法4. notification (返回前一個controller時)
-1. parent controller先監聽事件
-    - 撰寫接收到監聽後要執行的function
-  - 註冊監聽事件
-2. child controller發送notification
-
-```swift ParentController
-// 接收到事件後要執行的任務
-func getUpdateNoti(noti:Notification) {
-    let data = noti.userInfo![&quot;data&quot;] as! String
-    print(data)
-}
-
-override func viewDidLoad() {
-  super.viewDidLoad()
-    
-  // 註冊事件
-  let notificationName = Notification.Name(&quot;GetUpdateNoti&quot;)
-  NotificationCenter.default.addObserver(self, selector: #selector(ViewController.getUpdateNoti(noti:)), name: notificationName, object: nil)
-}
-</code></pre>
-
-<p>```swift ChildController
-// 發送事件
-let notificationName = Notification.Name(&ldquo;GetUpdateNoti&rdquo;)
-NotificationCenter.default().post(name: notificationName,object: nil, userInfo: [&ldquo;data&rdquo;:&ldquo;Hello World&rdquo;])</p>
-
-<pre><code>
-## 方法5. 全域變數
-在AppDelegate增加property
-並在想要使用的class裡面，將UIApplication.shared.delegate轉型為AppDelegate
-即可使用裡面的property
-```swift
-if let appDelegate = UIApplication.shared.delegate as? AppDelegate{
-    if let colorName = appDelegate.color{
-    setColor(colorType: colorName)
-  }
-}
-</code></pre>
-
-<p>全域變數還有很多做法，像是singleton或是寫在class之外，有機會再開一篇講。</p>
-
-    </div>
-
-<div class="meta">
-    
-    
-    <span class="comments"><a href="/post/2016-10-03/#disqus_thread">Comments</a></span>
-    
-    
-</div>
-</article>
-
-  <article class="post">
-    <h2 class="title"> 
         <a href="/post/2016-09-13/">Swift 快速筆記</a>
     </h2>
     <div class="entry-content">
@@ -4550,15 +4231,18 @@ if let appDelegate = UIApplication.shared.delegate as? AppDelegate{
     </div>
         
 
-<h1 id="autolayout">AutoLayout</h1>
+<h2 id="autolayout">AutoLayout</h2>
 
-<p>只要確定好下面的參數，autoLayout就不會跑警告
-1. x
-2. y
-3. width
-4. height</p>
+<p>只要確定好下面的參數，autoLayout就不會跑警告</p>
 
-<h1 id="alertcontroller">AlertController</h1>
+<ol>
+<li>x</li>
+<li>y</li>
+<li>width</li>
+<li>height</li>
+</ol>
+
+<h2 id="alertcontroller">AlertController</h2>
 
 <ol>
 <li>新增AlertController
@@ -4598,13 +4282,13 @@ myAlert.addTextField {
 }
 </code></pre>
 
-<h1 id="讓鍵盤自動彈出">讓鍵盤自動彈出</h1>
+<h2 id="讓鍵盤自動彈出">讓鍵盤自動彈出</h2>
 
 <p>在可輸入的View中(Ex: textfield)，會有<code>becomeFirstResponder()</code>方法</p>
 
-<h1 id="pickerview">PickerView</h1>
+<h2 id="pickerview">PickerView</h2>
 
-<h2 id="選中某一列後立刻執行某動作">選中某一列後立刻執行某動作</h2>
+<h3 id="選中某一列後立刻執行某動作">選中某一列後立刻執行某動作</h3>
 
 <p>複寫</p>
 
@@ -4613,26 +4297,26 @@ myAlert.addTextField {
 }
 </code></pre>
 
-<h2 id="得知目前是選中哪一列">得知目前是選中哪一列</h2>
+<h3 id="得知目前是選中哪一列">得知目前是選中哪一列</h3>
 
 <p>call function，並指定是哪個Component</p>
 
 <pre><code class="language-swift">myPickerView.selectedRow(inComponent: 0)
 </code></pre>
 
-<h2 id="更為簡單的datepickerview">更為簡單的DatePickerView</h2>
+<h3 id="更為簡單的datepickerview">更為簡單的DatePickerView</h3>
 
 <p>若想得知DatePickerView所擷取到的日期或時間只要使用</p>
 
 <pre><code class="language-swift">let date = myDatePicker.date
 </code></pre>
 
-<p>一行即可，其他的都是date格式的問題。
+<p>一行即可，其他的都是date格式的問題。<br />
 DatePickerView的樣式可以從storyBoard中選擇。</p>
 
-<h1 id="播放影片">播放影片</h1>
+<h2 id="播放影片">播放影片</h2>
 
-<h2 id="流程">流程</h2>
+<h3 id="流程">流程</h3>
 
 <ol>
 <li>找到播放影片URL</li>
@@ -4653,7 +4337,7 @@ present(videoPlayerController, animated: true, completion: nil)
 videoPlayer.play()
 </code></pre>
 
-<h2 id="重複播放">重複播放</h2>
+<h3 id="重複播放">重複播放</h3>
 
 <p>不同於播放音樂可以簡單設置loop，重複播放影片是要傾聽影片播完後所發送的notification。</p>
 
@@ -4668,21 +4352,23 @@ func playerDidReachEnd(notification:Notification){
 }
 </code></pre>
 
-<h1 id="錄影">錄影</h1>
+<h2 id="錄影">錄影</h2>
 
-<h1 id="照相">照相</h1>
+<h2 id="照相">照相</h2>
 
 <ol>
 <li>在info.plist設定照相權限</li>
 <li>產生image picker Controller</li>
 <li>設定 sourceType</li>
 <li>設定delegate屬性，決定照相完畢後要做什麼</li>
-<li>推出image Picker
-這邊要特別注意，模擬器是沒有camera的，所以若要用模擬器最好先檢查。</li>
+<li>推出image Picker</li>
 </ol>
 
-<p>照相權限
-<img src="http://i.imgur.com/Yf8lCmd.png" alt="照相權限" /></p>
+<p>這邊要特別注意，模擬器是沒有camera的，所以若要用模擬器最好先檢查。</p>
+
+<p>照相權限</p>
+
+<p><img src="http://i.imgur.com/Yf8lCmd.png" alt="照相權限" /></p>
 
 <pre><code class="language-swift">let imagePicker = UIImagePickerController()
 imagePicker.sourceType = .camera
@@ -4702,7 +4388,7 @@ present(imagePicker, animated:true, completion:nil)
 }
 </code></pre>
 
-<h2 id="其他實用方法">其他實用方法</h2>
+<h3 id="其他實用方法">其他實用方法</h3>
 
 <p>若想存檔可使用下方程式碼</p>
 
@@ -4714,26 +4400,31 @@ present(imagePicker, animated:true, completion:nil)
 <pre><code>imagePicker.sourceType = .photoLibrary
 </code></pre>
 
-<h1 id="使用資源">使用資源</h1>
+<h2 id="使用資源">使用資源</h2>
 
 <ul>
-<li><p>先找路徑再找URL</p>
+<li>先找路徑再找URL</li>
+</ul>
 
 <pre><code class="language-swift">let path = Bundle.main.path(forResource: &quot;Right&quot;, ofType:&quot;mp3&quot;)
 let audioURL = URL(fileURLWithPath: path)
-</code></pre></li>
+</code></pre>
 
-<li><p>直接找URL</p>
-
-<pre><code class="language-swift">let path = Bundle.main.url(forResource: &quot;HipHop&quot;, withExtension: &quot;mp4&quot;)
-</code></pre></li>
+<ul>
+<li>直接找URL</li>
 </ul>
 
-<h1 id="存資料-物件">存資料(物件)</h1>
+<pre><code class="language-swift">let path = Bundle.main.url(forResource: &quot;HipHop&quot;, withExtension: &quot;mp4&quot;)
+</code></pre>
 
-<p>使用UserDefaults.standard.set和UserDefaults.standard.synchronize
-1. 用set並給一個key
-2. synchronize</p>
+<h2 id="存資料-物件">存資料(物件)</h2>
+
+<p>使用UserDefaults.standard.set和UserDefaults.standard.synchronize</p>
+
+<ol>
+<li>用set並給一個key</li>
+<li>synchronize</li>
+</ol>
 
 <pre><code class="language-swift">var toDo = [&quot;Buy milk&quot;, &quot;iOS exam&quot;, &quot;Sleep&quot;, &quot;Make money&quot;]
 UserDefaults.standard.set(toDo, forKey:&quot;todo&quot;)
@@ -4758,15 +4449,18 @@ print(loaded)
 print(loaded)
 </code></pre>
 
-<h1 id="property-list-plist">Property List (Plist)</h1>
+<h2 id="property-list-plist">Property List (Plist)</h2>
 
-<p>Info.plist就是一種Property List的檔案。
-plist可以很方便地幫你用Array或dictionary的形式存取資訊(String, Int &hellip;)，個人覺得跟json沒兩樣。
-使用的步驟如下
-1. 新增一個Property List檔案
-2. 在上面加上一些資訊(假設是一串Array)
-3. 使用Bundle.main.path拿到資源(檔案型態是plist)
-4. 利用NSArray將檔案轉成Array，或是NSDictionary檔案轉成dict</p>
+<p>Info.plist就是一種Property List的檔案。<br />
+plist可以很方便地幫你用Array或dictionary的形式存取資訊(String, Int &hellip;)，個人覺得跟json沒兩樣。<br />
+使用的步驟如下</p>
+
+<ol>
+<li>新增一個Property List檔案</li>
+<li>在上面加上一些資訊(假設是一串Array)</li>
+<li>使用Bundle.main.path拿到資源(檔案型態是plist)</li>
+<li>利用NSArray將檔案轉成Array，或是NSDictionary檔案轉成dict</li>
+</ol>
 
 <pre><code class="language-swift">guard let scorePlist = Bundle.main.path(forResource: &quot;Score&quot;, ofType: &quot;plist&quot;),
   let scoreArray = NSArray(contentsOfFile: scorePlist) else{
@@ -4776,7 +4470,7 @@ plist可以很方便地幫你用Array或dictionary的形式存取資訊(String, 
 print(scoreArray)
 </code></pre>
 
-<h1 id="activity-indicator">Activity Indicator</h1>
+<h2 id="activity-indicator">Activity Indicator</h2>
 
 <ul>
 <li>用StoryBoard直接拉</li>
@@ -4785,17 +4479,16 @@ print(scoreArray)
 <li>stopAnimationg()停止轉</li>
 </ul>
 
-<h1 id="cocoapods">COCOAPODS</h1>
+<h2 id="cocoapods">COCOAPODS</h2>
 
-<p>先安裝
-<a href="https://cocoapods.org/">https://cocoapods.org/</a></p>
+<p>先安裝 <a href="https://cocoapods.org/">https://cocoapods.org/</a></p>
 
 <p>在Xcode專案底下</p>
 
 <pre><code class="language-bash">pod init
 </code></pre>
 
-<p>編輯生出來podfile
+<p>編輯生出來podfile<br />
 加入需要的pod 專案</p>
 
 <pre><code class="language-Podfile"># Uncomment the next line to define a global platform for your project
@@ -4816,7 +4509,7 @@ end
 <pre><code class="language-bash">pod install
 </code></pre>
 
-<h1 id="reachability-測試有無連網">Reachability 測試有無連網</h1>
+<h2 id="reachability-測試有無連網">Reachability 測試有無連網</h2>
 
 <ol>
 <li>下載<a href="https://developer.apple.com/library/content/samplecode/Reachability/Introduction/Intro.html">reachability</a></li>
@@ -4832,15 +4525,15 @@ end
 <li>接收notification</li>
 </ol>
 
-<h1 id="xml">XML</h1>
+<h2 id="xml">XML</h2>
 
 <p>解析XML XML delegate</p>
 
-<h1 id="值得用的app">值得用的APP</h1>
+<h2 id="值得用的app">值得用的APP</h2>
 
 <p>figure</p>
 
-<h1 id="登入與非登入狀態用不同的controller">登入與非登入狀態用不同的Controller</h1>
+<h2 id="登入與非登入狀態用不同的controller">登入與非登入狀態用不同的Controller</h2>
 
 <p>在Appdelegate裡面</p>
 
@@ -5082,23 +4775,25 @@ end
     </div>
         
 
-<h1 id="介紹">介紹</h1>
+<h2 id="介紹">介紹</h2>
 
-<p>主要參考這篇：
-<a href="http://blog.xuite.net/lwchafter30/blog/373974237-Android+studio+1.5.1+NDK+JNI%E7%92%B0%E5%A2%83%E5%AE%89%E8A3%9D%E8%88%87%E5%9F%B7%E8%A1%8C%E5%8E%9F%E7%90%86" title="Android studio 1.5.1 NDK JNI環境安裝與執行原理">Android studio 1.5.1 NDK JNI環境安裝與執行原理</a>
-不過Android 2.1.2上步驟稍有簡化，還是可以達到同樣效果。
-1. 載NDK
-2. 設定external tool (僅javah)
-3. 在java中增加native code，並利用javah產生JNI header
-4. 實作JNI
-5. 設定gradle (僅ndk區塊)</p>
+<p>主要參考這篇：<a href="http://blog.xuite.net/lwchafter30/blog/373974237-Android+studio+1.5.1+NDK+JNI%E7%92%B0%E5%A2%83%E5%AE%89%E8A3%9D%E8%88%87%E5%9F%B7%E8%A1%8C%E5%8E%9F%E7%90%86" title="Android studio 1.5.1 NDK JNI環境安裝與執行原理">Android studio 1.5.1 NDK JNI環境安裝與執行原理</a><br />
+不過Android 2.1.2上步驟稍有簡化，還是可以達到同樣效果。</p>
 
-<h1 id="載ndk">載NDK</h1>
+<ol>
+<li>載NDK</li>
+<li>設定external tool (僅javah)</li>
+<li>在java中增加native code，並利用javah產生JNI header</li>
+<li>實作JNI</li>
+<li>設定gradle (僅ndk區塊)</li>
+</ol>
 
-<p>開啟SDK Manager，選擇SDK Tools，將NDK之選項給打勾。
+<h2 id="載ndk">載NDK</h2>
+
+<p>開啟SDK Manager，選擇SDK Tools，將NDK之選項給打勾。<br />
 <img src="http://i.imgur.com/nsDiPAi.png" alt="SDK Manager" /></p>
 
-<h1 id="設定external-tool">設定external tool</h1>
+<h2 id="設定external-tool">設定external tool</h2>
 
 <p>與連結相同，不過只要設定javah即可，其他不需要。</p>
 
@@ -5119,7 +4814,7 @@ $SourcepathEntry$
 <pre><code>$JDKPath$/bin/javah.exe
 </code></pre>
 
-<h1 id="jni-header">JNI header</h1>
+<h2 id="jni-header">JNI header</h2>
 
 <p>在想要使用JNI的class加入如下的程式碼。</p>
 
@@ -5130,13 +4825,13 @@ $SourcepathEntry$
     public native void testLog();
 </code></pre>
 
-<p>static區塊中的myJNI會變成將來再build gradle當中的moduleName
+<p>static區塊中的myJNI會變成將來再build gradle當中的moduleName<br />
 method加上native關鍵詞後，程式就會知道這是需要依靠JNI實作之程式碼。</p>
 
-<p>再來在該java檔上按右鍵，使用剛剛建置好的external library javah，自動的產生JNI header。
+<p>再來在該java檔上按右鍵，使用剛剛建置好的external library javah，自動的產生JNI header。<br />
 <img src="http://i.imgur.com/ag5rJ6c.png" alt="使用javah" /></p>
 
-<p>此時在java目錄下，應該會多出一個jni的資料夾，裡頭放置著 OOXX.h
+<p>此時在java目錄下，應該會多出一個jni的資料夾，裡頭放置著 OOXX.h<br />
 打開.h檔，建置出來的code應該會如下形式</p>
 
 <pre><code class="language-c++">/* DO NOT EDIT THIS FILE - it is machine generated */
@@ -5171,24 +4866,27 @@ JNIEXPORT void JNICALL Java_com_example_isa_myapplication_MainActivity_testLog
 
 </code></pre>
 
-<h1 id="實作jni">實作JNI</h1>
+<h2 id="實作jni">實作JNI</h2>
 
-<p>步驟如下
-1. 在jni資料夾中，新增一個myJNI.cpp
-2. include剛剛自動產生的header
-3. 實作剛剛只宣告未實作的程式碼
-4. (細節注意)</p>
+<p>步驟如下</p>
 
-<h2 id="新增myjni-cpp">新增myJNI.cpp</h2>
+<ol>
+<li>在jni資料夾中，新增一個myJNI.cpp</li>
+<li>include剛剛自動產生的header</li>
+<li>實作剛剛只宣告未實作的程式碼</li>
+<li>(細節注意)</li>
+</ol>
+
+<h3 id="新增myjni-cpp">新增myJNI.cpp</h3>
 
 <p>在jni資料夾中，新增一個myJNI.cpp</p>
 
-<h2 id="include剛剛自動產生的header">include剛剛自動產生的header</h2>
+<h3 id="include剛剛自動產生的header">include剛剛自動產生的header</h3>
 
 <pre><code class="language-c++">#include &quot;com_example_isa_myapplication_MainActivity.h&quot;
 </code></pre>
 
-<h2 id="實作剛剛只宣告未實作的程式碼">實作剛剛只宣告未實作的程式碼</h2>
+<h3 id="實作剛剛只宣告未實作的程式碼">實作剛剛只宣告未實作的程式碼</h3>
 
 <p>由於Log功能要使用到android/log.h library，所以也要include進來。</p>
 
@@ -5206,7 +4904,7 @@ JNIEXPORT void JNICALL Java_com_example_isa_myapplication_MainActivity_testLog
   }
 </code></pre>
 
-<h2 id="細節注意">細節注意</h2>
+<h3 id="細節注意">細節注意</h3>
 
 <p>當然僅僅如此還不夠，觀看.h檔可以發現有extern &ldquo;C&rdquo;包圍著宣告的函式，所以也要一併複製。</p>
 
@@ -5233,10 +4931,10 @@ JNIEXPORT jstring JNICALL Java_com_example_isa_myapplication_MainActivity_getMyc
 #endif
 </code></pre>
 
-<p>切記不要連 #ifndef _Included_com_example_isa_myapplication_MainActivity 的相關句子也複製進來。
+<p>切記不要連 #ifndef _Included_com_example_isa_myapplication_MainActivity 的相關句子也複製進來。<br />
 在.h檔已經定義過，若在.cpp重複定義，則中間的所有內容都會被忽略掉。</p>
 
-<h1 id="設定gradle">設定gradle</h1>
+<h2 id="設定gradle">設定gradle</h2>
 
 <p>在defaultConfig這個區塊內加入</p>
 
@@ -5246,7 +4944,7 @@ JNIEXPORT jstring JNICALL Java_com_example_isa_myapplication_MainActivity_getMyc
 }
 </code></pre>
 
-<p>moduleName為你剛剛在System.loadLibrary裡面設定的名字。
+<p>moduleName為你剛剛在System.loadLibrary裡面設定的名字。<br />
 ldLibs &ldquo;log&rdquo;可以讓cpp檔include log功能的時候不會出錯。</p>
 
 <p>整體看起來是這樣</p>
@@ -5277,7 +4975,7 @@ ldLibs &ldquo;log&rdquo;可以讓cpp檔include log功能的時候不會出錯。
 
 <p>最後編譯就完成了。</p>
 
-<h1 id="參考資料">參考資料</h1>
+<h2 id="參考資料">參考資料</h2>
 
 <p><a href="http://blog.xuite.net/lwchafter30/blog/373974237-Android+studio+1.5.1+NDK+JNI%E7%92%B0%E5%A2%83%E5%AE%89%E8A3%9D%E8%88%87%E5%9F%B7%E8%A1%8C%E5%8E%9F%E7%90%86" title="Android studio 1.5.1 NDK JNI環境安裝與執行原理">Android studio 1.5.1 NDK JNI環境安裝與執行原理</a></p>
 
@@ -5799,6 +5497,167 @@ python:
     
     
     <span class="comments"><a href="/post/2016-07-06/#disqus_thread">Comments</a></span>
+    
+    
+</div>
+</article>
+
+  <article class="post">
+    <h2 class="title"> 
+        <a href="/post/2016-03-04/">在AOSP中增加預設app (3) : 利用Android Studio來進行編輯</a>
+    </h2>
+    <div class="entry-content">
+    <div class="meta">
+        <div class="date">Published on: <time datetime='2016-03-04T00:00:00.000&#43;00:00' itemprop="datePublished">2016-03-04</time>
+</div>
+        <div class="tags">Tags: 
+
+<a href="https://cdfq152313.github.io//tags/android">android</a>
+
+<a href="https://cdfq152313.github.io//tags/aosp">aosp</a>
+
+
+</div>
+    </div>
+        
+
+<h2 id="平台及環境設置">平台及環境設置</h2>
+
+<h3 id="平台">平台</h3>
+
+<p>實驗平台：Nexus 5<br />
+Android版本：android-4.4_r1<br />
+前置知識： [Howto Build Android KitKat (4.4) for the Google Nexus 5][6]</p>
+
+<h3 id="環境設置">環境設置</h3>
+
+<p>在AOSP資料夾中</p>
+
+<pre><code class="language-bash">source build/envsetup.sh
+lunch aosp_hammerhead-userdebug
+</code></pre>
+
+<h2 id="目標-利用android-studio來新增app-命名為world">目標：利用Android Studio來新增APP (命名為World)</h2>
+
+<p>在上一篇文章中，說明了如何copy一份已有的project來改寫。但是寫Android App有許多煩雜的地方，有時候還是需要IDE來幫助比較快，這裡找了一個比較tricky的方法來使用IDE。</p>
+
+<h3 id="新增android-studio-project">新增Android Studio Project</h3>
+
+<p>我們直接從Android Studio中產生一個空的project，命名為<code>World</code>。<br />
+新增project時記得選empty Activity，之後比較好做。<br />
+<img src="http://i.imgur.com/LTorwRZ.png" alt="Alt Text" /></p>
+
+<h3 id="建立soft-link">建立soft link</h3>
+
+<p>在剛剛產生出來的Android Project路徑底下，<code>World/app/src/main</code>應該有<strong>java、res</strong>資料夾，以及<strong>AndroidManifest.xml</strong>。<br />
+在<code>AOSP/packages/apps</code>建立新目錄<code>World</code>，並在其底下建立起上述3個檔案之<a href="http://linux.vbird.org/linux_basic/0230filesystem.php#ln" title="鳥哥 - ln解說">軟連結(soft link)</a>。</p>
+
+<pre><code class="language-bash">mkdir $ANDROID_BUILD_TOP/packages/apps/World &amp;&amp; cd $_
+ln -s AndroidProject目錄/World/app/src/main/java  java
+ln -s AndroidProject目錄/World/app/src/main/res  res
+ln -s AndroidProject目錄/World/app/src/main/AndroidManifest.xml  AndroidManifest.xml
+</code></pre>
+
+<h3 id="撰寫android-mk">撰寫Android.mk</h3>
+
+<p>參考<a href="http://android.mk/" title="Secrets of Android.mk">Secrets of Android.mk</a>此份文件當中的<strong>Building a simple APK</strong>目錄。將其加到<code>AOSP/packages/apps/World</code>資料夾下。</p>
+
+<p>Android.mk</p>
+
+<pre><code class="language-makefile">  LOCAL_PATH := $(call my-dir)
+  include $(CLEAR_VARS)
+   
+  # Build all java files in the java subdirectory
+  LOCAL_SRC_FILES := $(call all-subdir-java-files)
+   
+  # Name of the APK to build
+  LOCAL_PACKAGE_NAME := LocalPackage
+   
+  # Tell it to build an APK
+  include $(BUILD_PACKAGE)
+</code></pre>
+
+<h3 id="修改掉所有appcompat的部份">修改掉所有appcompat的部份</h3>
+
+<p>再來使用<code>mm</code>在<code>AOSP/packages/apps/World</code>進行編譯，運氣不好的話，編譯會出現找不到某些命名的錯誤。這是因為Google為了讓各種app看起來更有一致性，將Android Studio的新Project皆使用Appcompat此library來協調視覺效果。可是此library並不存在於預設的編譯環境當中。為了為了節省麻煩，將其去掉。</p>
+
+<p>style.xml</p>
+
+<pre><code class="language-xml">&lt;resources&gt;
+
+    &lt;!-- Base application theme. --&gt;
+    &lt;style name=&quot;AppTheme&quot; parent=&quot;android:Theme.Holo.Light.DarkActionBar&quot;&gt;
+        &lt;!-- Customize your theme here. --&gt;
+    &lt;/style&gt;
+
+&lt;/resources&gt;
+</code></pre>
+
+<p>並把MainActivity中可能會用<strong>ActionBarActivity</strong>或是<strong>AppCompatActivity</strong>來替代Activity，請一律換成Activity來使用。</p>
+
+<p>MainActivity.java</p>
+
+<pre><code class="language-java">package com.android.world;
+
+import android.app.Activity;
+import android.os.Bundle;
+
+public class MainActivity extends Activity{
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+    }
+}
+</code></pre>
+
+<p>最後，我在編譯途中還遇到標籤問題。預設的編譯環境似乎不允許著無命名的字串存在。也就是說，如果你有任何的<strong>text</strong>標籤是直接給予字串值的，可能會編譯失敗。</p>
+
+<p>修改前</p>
+
+<pre><code class="language-xml">&lt;TextView
+        android:layout_width=&quot;wrap_content&quot;
+        android:layout_height=&quot;wrap_content&quot;
+        android:text=&quot;Hello World&quot; /&gt;
+</code></pre>
+
+<p>可能要改將字串引用自string.xml才能編譯成功。</p>
+
+<p>修改後</p>
+
+<pre><code class="language-xml">&lt;TextView
+        android:layout_width=&quot;wrap_content&quot;
+        android:layout_height=&quot;wrap_content&quot;
+        android:text=&quot;@string/app_name&quot; /&gt;
+</code></pre>
+
+<p>res/values/string.xml</p>
+
+<pre><code class="language-xml">&lt;resources&gt;
+    &lt;string name=&quot;app_name&quot;&gt;World&lt;/string&gt;
+&lt;/resources&gt;
+</code></pre>
+
+<h3 id="編譯">編譯</h3>
+
+<p>使用<code>mm</code>進行編譯，此次應該可以順利通過了。<br />
+之後直接在Android Studio裡對Application進行編輯，由於建立了軟連結，AOSP內部的內容也會同步更改。<br />
+這樣就可以用Android Studio來撰寫APP囉。</p>
+
+<h2 id="reference">Reference</h2>
+
+<ul>
+<li><a href="http://android.mk/" title="Secrets of Android.mk">Android.mk</a></li>
+<li><a href="http://linux.vbird.org/linux_basic/0230filesystem.php#ln" title="鳥哥 - ln解說">鳥哥 - ln解說</a></li>
+</ul>
+
+    </div>
+
+<div class="meta">
+    
+    
+    <span class="comments"><a href="/post/2016-03-04/#disqus_thread">Comments</a></span>
     
     
 </div>

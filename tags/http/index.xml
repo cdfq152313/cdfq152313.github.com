@@ -16,9 +16,10 @@
       <pubDate>Thu, 24 Nov 2016 00:00:00 +0000</pubDate>
       
       <guid>https://cdfq152313.github.io/post/2016-11-24/</guid>
-      <description>來源網址：https://read01.com/J8P4L.html 要注意最後一段說get比較不安全是錯的，你他媽的不轉成https通通都是不安全。
-Client端 分三區塊 - Request line - Request header - Body
-Request line  有著方法描述，資源位置，協議版本 例如：GET http://www.cnblogs.com/ HTTP/1.1  Request header  Accept：client告知server可以接受的媒體類型(json, xml, html &amp;hellip;)，大部分使用*/*代表全部都接受。 Referer：告訴伺服器端我是從哪裡連過來 Accept-Language：瀏覽器端接受的語言  EX: 中文、英文&amp;hellip;  Accept-Charset：瀏覽器端接受的字符集  EX: BIG5, UTF-8, GBK &amp;hellip;  Content-Type  Body的檔案類型 補充資料，與Accept的差別 簡單的說，當client傳送檔案給server，content-type可以描述這個檔案的類型。當server吐response回給client，content-type一樣可以描述這個檔案的類型。 accept是請求對方返回的類型，content-type是實際一個request或response中夾帶的類型。  Accept-Encoding：client端的編碼(壓縮)方法 User-Agent：client端的作業系統，瀏覽器名稱 Connection  是否在接收完檔案後立刻斷開TCP [補充資料])(https://www.byvoid.com/zht/blog/http-keep-alive-header)  Content-length: 訊息長度 Host：該資源的domain Name 剩下一些懶得看  Pragma Cookie   Body 就是個Body
+      <description>來源網址：https://read01.com/J8P4L.html
+要注意最後一段說get比較不安全是錯的，你他媽的不轉成https通通都是不安全。
+Client端 分三區塊
+ Request line Request header Body  Request line  有著方法描述，資源位置，協議版本 例如：GET http://www.cnblogs.com/ HTTP/1.1  Request header  Accept：client告知server可以接受的媒體類型(json, xml, html &amp;hellip;)，大部分使用*/*代表全部都接受。 Referer：告訴伺服器端我是從哪裡連過來 Accept-Language：瀏覽器端接受的語言  EX: 中文、英文&amp;hellip;  Accept-Charset：瀏覽器端接受的字符集  EX: BIG5, UTF-8, GBK &amp;hellip;  Content-Type  Body的檔案類型 補充資料，與Accept的差別 簡單的說，當client傳送檔案給server，content-type可以描述這個檔案的類型。當server吐response回給client，content-type一樣可以描述這個檔案的類型。 accept是請求對方返回的類型，content-type是實際一個request或response中夾帶的類型。  Accept-Encoding：client端的編碼(壓縮)方法 User-Agent：client端的作業系統，瀏覽器名稱 Connection  是否在接收完檔案後立刻斷開TCP [補充資料])(https://www.byvoid.com/zht/blog/http-keep-alive-header)  Content-length: 訊息長度 Host：該資源的domain Name 剩下一些懶得看  Pragma Cookie   Body 就是個Body
 Server端 一樣分三區塊 - Response line - Response header - Body</description>
     </item>
     

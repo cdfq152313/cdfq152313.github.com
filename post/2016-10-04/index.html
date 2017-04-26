@@ -4218,13 +4218,13 @@ body {
     </div>
     <div class="entry-content">
 
-<h1 id="參考資料">參考資料</h1>
+<h2 id="參考資料">參考資料</h2>
 
-<p>感謝大大～～
-<a href="https://itisjoe.gitbooks.io/swiftgo/content/">https://itisjoe.gitbooks.io/swiftgo/content/</a>
+<p>感謝大大～～<br />
+<a href="https://itisjoe.gitbooks.io/swiftgo/content/">https://itisjoe.gitbooks.io/swiftgo/content/</a><br />
 因應swift3，筆記內容與gitbook上略有不同</p>
 
-<h1 id="struct和enum是value-type-class是reference-type">struct和enum是value type, class是reference type</h1>
+<h2 id="struct和enum是value-type-class是reference-type">struct和enum是value type, class是reference type</h2>
 
 <ul>
 <li>struct宣告為常數，就無法更改內部的值，但class可以。</li>
@@ -4256,7 +4256,7 @@ print(x.x)
 }
 </code></pre>
 
-<h1 id="function注意事項">function注意事項</h1>
+<h2 id="function注意事項">function注意事項</h2>
 
 <p>call function時，參數後要指定參數名稱，不可以省略</p>
 
@@ -4274,9 +4274,9 @@ plus(a:1, b:3)
 plus(1, 3)
 </code></pre>
 
-<h2 id="外部參數名稱-external-parameter-name">外部參數名稱(External parameter Name)</h2>
+<h3 id="外部參數名稱-external-parameter-name">外部參數名稱(External parameter Name)</h3>
 
-<p>事實上a前面的底線是External parameter Name的意思。External parameter Name用於外部呼叫Function時的參數識別名，若不寫則與內部名稱相同。
+<p>事實上a前面的底線是External parameter Name的意思。External parameter Name用於外部呼叫Function時的參數識別名，若不寫則與內部名稱相同。<br />
 而底線代表不在意參數識別名稱，即為可忽略的意思。</p>
 
 <pre><code class="language-swift">func plus(AAA a :Int,BBB b:Int){
@@ -4285,7 +4285,7 @@ plus(1, 3)
 plus(AAA:1, BBB:3)
 </code></pre>
 
-<h1 id="型別方法">型別方法</h1>
+<h2 id="型別方法">型別方法</h2>
 
 <p>在class中要宣告class方法(非object方法)，可以用關鍵字<strong>class</strong>或<strong>static</strong></p>
 
@@ -4297,14 +4297,14 @@ plus(AAA:1, BBB:3)
 }
 </code></pre>
 
-<h1 id="closure">Closure</h1>
+<h2 id="closure">Closure</h2>
 
-<h2 id="函式也是一種型別">函式也是一種型別</h2>
+<h3 id="函式也是一種型別">函式也是一種型別</h3>
 
-<p>型別名稱為
+<p>型別名稱為<br />
 (參數型別)-&gt;回傳型別</p>
 
-<h2 id="化function為clousure">化function為Clousure</h2>
+<h3 id="化function為clousure">化function為Clousure</h3>
 
 <ol>
 <li>刪掉func與函式名</li>
@@ -4327,25 +4327,25 @@ plus(AAA:1, BBB:3)
 }
 </code></pre>
 
-<h2 id="closure簡寫">Closure簡寫</h2>
+<h3 id="closure簡寫">Closure簡寫</h3>
 
 <ol>
 <li><p>如果已經知道參數跟回傳值的型別的話，可以省略Clousure裡的參數與回傳值型別</p>
 
 <pre><code class="language-swift">let numberArray=[1,3,6,8,10,45]
-  numberArray.map( {(number) in return number+10} ) // 省略型別
+numberArray.map( {(number) in return number+10} ) // 省略型別
 </code></pre></li>
 
 <li><p>如果Closure有回傳值，而且程式碼是一行的話，可以省略return，</p>
 
 <pre><code class="language-swift">let numberArray=[1,3,6,8,10,45]
-  numberArray.map( {(number) in number+10} ) // 回傳number+10
+numberArray.map( {(number) in number+10} ) // 回傳number+10
 </code></pre></li>
 
 <li><p>可以用$0, $1 &hellip; 代表參數。</p>
 
 <pre><code class="language-swift">let numberArray=[1,3,6,8,10,45]
-  numberArray.map( {$0 + 10} ) // 省略參數，利用$0代表參數
+numberArray.map( {$0 + 10} ) // 省略參數，利用$0代表參數
 </code></pre></li>
 
 <li><p>如果Closure是最後一個參數的話，可以把clousure寫在小括號的外面。</p>
@@ -4361,7 +4361,7 @@ plus(AAA:1, BBB:3)
 </code></pre></li>
 </ol>
 
-<h1 id="guard的用途">guard的用途</h1>
+<h2 id="guard的用途">guard的用途</h2>
 
 <p>guard比if能更好的實行Defensive Programming，因為在guard中的可選綁定可以在接下來code中使用。</p>
 
@@ -4381,20 +4381,23 @@ guard let apple = text else{
 print(apple)
 </code></pre>
 
-<h1 id="error">Error</h1>
+<h2 id="error">Error</h2>
 
-<p>Swift丟出的異常是一種enum，實作時繼承Error。
-有幾種方法
-1. 最基本的do try catch
-2. 向上拋擲function填throw
-3. try? : 如果出現錯誤則回傳nil(不用再寫do catch)，可搭配optinal binding
-4. try! : 一定成功。(若沒成功會crash)</p>
+<p>Swift丟出的異常是一種enum，實作時繼承Error。<br />
+有幾種方法</p>
 
-<h1 id="init">init</h1>
+<ol>
+<li>最基本的do try catch</li>
+<li>向上拋擲function填throw</li>
+<li>try? : 如果出現錯誤則回傳nil(不用再寫do catch)，可搭配optinal binding</li>
+<li>try! : 一定成功。(若沒成功會crash)</li>
+</ol>
 
-<h2 id="init-1">init?</h2>
+<h2 id="init">init</h2>
 
-<p>init?代表可以回傳nil，也就是可能init失敗。
+<h3 id="init-1">init?</h3>
+
+<p>init?代表可以回傳nil，也就是可能init失敗。<br />
 參看下面的code</p>
 
 <pre><code class="language-swift">class Baby{
@@ -4410,7 +4413,7 @@ print(apple)
 
 <p>一個寶寶生出來小於一歲是不合理的，所以init失敗回傳nil</p>
 
-<h2 id="init的順序">init的順序</h2>
+<h3 id="init的順序">init的順序</h3>
 
 <ul>
 <li>原則1：屬性的初始,必須在當初宣告屬性的類別裡進⾏。</li>
@@ -4478,13 +4481,16 @@ print(apple)
 }
 </code></pre>
 
-<h2 id="convenience-init">convenience init</h2>
+<h3 id="convenience-init">convenience init</h3>
 
-<p>有兩種類型的init
-- designated initializer : 一般的init
-- convenience initializer : 加了關鍵字convenience的init</p>
+<p>有兩種類型的init</p>
 
-<p>擁有convenience關鍵字的init才可以call其他init function，來減少重複工作，非常<strong>方便</strong>。
+<ul>
+<li>designated initializer : 一般的init</li>
+<li>convenience initializer : 加了關鍵字convenience的init</li>
+</ul>
+
+<p>擁有convenience關鍵字的init才可以call其他init function，來減少重複工作，非常<strong>方便</strong>。<br />
 舉例來說：</p>
 
 <pre><code class="language-swift">class Baby{
@@ -4501,7 +4507,7 @@ print(apple)
 }
 </code></pre>
 
-<h2 id="init的繼承">init的繼承</h2>
+<h3 id="init的繼承">init的繼承</h3>
 
 <ul>
 <li>designated initializer的繼承
@@ -4525,7 +4531,7 @@ print(apple)
 <pre><code class="language-swift">
 </code></pre>
 
-<h2 id="使用required防止init失傳">使用required防止init失傳</h2>
+<h3 id="使用required防止init失傳">使用required防止init失傳</h3>
 </div>
 
 <div class="meta">

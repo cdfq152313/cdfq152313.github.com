@@ -4218,18 +4218,18 @@ body {
     </div>
     <div class="entry-content">
 
-<h1 id="環境設置">環境設置</h1>
+<h2 id="環境設置">環境設置</h2>
 
 <ul>
 <li>ubuntu體系：sudo apt-get install llvm</li>
 <li>MAC: brew install llvm</li>
 </ul>
 
-<h1 id="makefile-mac">makefile (MAC)</h1>
+<h2 id="makefile-mac">makefile (MAC)</h2>
 
-<pre><code>BIN_PATH=/usr/local/Cellar/llvm/3.6.1/bin/
+<pre><code class="language-makefile">BIN_PATH=/usr/local/Cellar/llvm/3.6.1/bin/
 export PATH:=$(PATH):$(BIN_PATH)
-LLVM_CONFIG=llvm-config 
+LLVM_CONFIG=llvm-config
 FLAGS= --cxxflags --ldflags --system-libs --libs core
 
 toy: toy.cpp
@@ -4238,9 +4238,9 @@ clean:
     rm -f toy
 </code></pre>
 
-<h1 id="top-module">top module</h1>
+<h2 id="top-module">top module</h2>
 
-<pre><code>#include &quot;llvm/LLVMContext.h&quot;
+<pre><code class="language-c++">#include &quot;llvm/LLVMContext.h&quot;
 #include &quot;llvm/Module.h&quot;
 #include &quot;llvm/Support/IRBuilder.h&quot;
 
@@ -4248,57 +4248,49 @@ int main()
 {
   llvm::LLVMContext&amp; context = llvm::getGlobalContext();
   llvm::Module* module = new llvm::Module(&quot;top&quot;, context);
-  llvm::IRBuilder&lt;&gt; builder(context); 
+  llvm::IRBuilder&lt;&gt; builder(context);
 
   module-&gt;dump( );
 }
 </code></pre>
 
-<h1 id="function">function</h1>
+<h2 id="function">function</h2>
 
-<h2 id="宣告function">宣告function</h2>
+<h3 id="宣告function">宣告function</h3>
 
-<ul>
-<li>無參數</li>
-</ul>
+<h4 id="無參數">無參數</h4>
 
-<pre><code>  llvm::FunctionType *funcType = 
+<pre><code class="language-c++">  llvm::FunctionType *funcType =
       llvm::FunctionType::get(builder.getInt32Ty(), false);
   llvm::Function *mainFunc = llvm::Function::Create(funcType, llvm::Function::ExternalLinkage, &quot;main&quot;, module);
 </code></pre>
 
-<ul>
-<li>有參數</li>
-</ul>
+<h4 id="有參數">有參數</h4>
 
-<pre><code>  std::vector&lt; llvm::Type* &gt; putsArgs;
+<pre><code class="language-c++">  std::vector&lt; llvm::Type* &gt; putsArgs;
   putsArgs.push_back(builder.getInt8Ty()-&gt;getPointerTo());
   llvm::ArrayRef&lt; llvm::Type* &gt;  argsRef(putsArgs);
 
-  llvm::FunctionType *putsType = 
+  llvm::FunctionType *putsType =
     llvm::FunctionType::get(builder.getInt32Ty(), argsRef, false);
 </code></pre>
 
-<h2 id="定義function">定義function</h2>
+<h3 id="定義function">定義function</h3>
 
-<ul>
-<li>引用已有的function</li>
-</ul>
+<h4 id="引用已有的function">引用已有的function</h4>
 
-<pre><code>  llvm::Constant *putsFunc = module-&gt;getOrInsertFunction(&quot;puts&quot;, putsType);
+<pre><code class="language-c++">  llvm::Constant *putsFunc = module-&gt;getOrInsertFunction(&quot;puts&quot;, putsType);
 </code></pre>
 
-<ul>
-<li>創造新的function</li>
-</ul>
+<h4 id="創造新的function">創造新的function</h4>
 
-<pre><code>  llvm::BasicBlock *entry = llvm::BasicBlock::Create(context, &quot;entrypoint&quot;, mainFunc);
+<pre><code class="language-c++">  llvm::BasicBlock *entry = llvm::BasicBlock::Create(context, &quot;entrypoint&quot;, mainFunc);
   builder.SetInsertPoint(entry);
 </code></pre>
 
 <p>增添function內容</p>
 
-<h1 id="新增變數">新增變數</h1>
+<h2 id="新增變數">新增變數</h2>
 
 <ul>
 <li>global variable</li>
@@ -4311,7 +4303,7 @@ int main()
 <li>local variable</li>
 </ul>
 
-<h1 id="reference">Reference</h1>
+<h2 id="reference">Reference</h2>
 
 <p><a href="http://www.ibm.com/developerworks/library/os-createcompilerllvm1/">Create a working compiler with the LLVM framework</a></p>
 </div>

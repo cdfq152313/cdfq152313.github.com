@@ -4216,13 +4216,13 @@ body {
     </div>
     <div class="entry-content">
 
-<h1 id="android-利用gson解析json">Android 利用gson解析json</h1>
+<h2 id="android-利用gson解析json">Android 利用gson解析json</h2>
 
 <p><a href="http://www.cnblogs.com/shaosks/p/5201837.html">反射和序列化</a><br />
 在開始前先貼篇文章暖暖身，讓大家了解Reflection(反射)和Serialization(序列化)的不同</p>
 
-<p>常常在串接API時，伺服器端傳過來的是json格式。
-我個人是很不相信自己的眼睛，所以直接用string get field的動作我是盡量不寫的。
+<p>常常在串接API時，伺服器端傳過來的是json格式。<br />
+我個人是很不相信自己的眼睛，所以直接用string get field的動作我是盡量不寫的。<br />
 取而代之的是用Gson提供的Deserializatione(反序列化)工具來達成這個目標，反序列化底層的實作是依賴Reflection(反射)機制而達成，不過不是這篇的重點。</p>
 
 <p>如果有json data如下</p>
@@ -4250,7 +4250,7 @@ body {
 }
 </code></pre>
 
-<p>將檔案給解析出來，如果實際的json物件屬性跟class資料屬性對不上的話，就會拋擲異常。
+<p>將檔案給解析出來，如果實際的json物件屬性跟class資料屬性對不上的話，就會拋擲異常。<br />
 fromJson這個函式就是Gson的反序列化工具。</p>
 </div>
 

@@ -4218,7 +4218,7 @@ body {
     </div>
     <div class="entry-content">
 
-<h1 id="播放系統音效">播放系統音效</h1>
+<h2 id="播放系統音效">播放系統音效</h2>
 
 <p>超簡單只需要兩行</p>
 
@@ -4226,12 +4226,12 @@ body {
 AudioServicesPlaySystemSound(1000)
 </code></pre>
 
-<h1 id="播放自己放在app的音樂">播放自己放在app的音樂</h1>
+<h2 id="播放自己放在app的音樂">播放自己放在app的音樂</h2>
 
-<p>先把自己的音效拖進Xcode，記得選擇&rdquo;copy items if needed&rdquo;，否則只會放入reference。
+<p>先把自己的音效拖進Xcode，記得選擇&rdquo;copy items if needed&rdquo;，否則只會放入reference。<br />
 可以開一個新的Group(資料夾圖示)來專門放置音檔。</p>
 
-<h2 id="步驟">步驟</h2>
+<h3 id="步驟">步驟</h3>
 
 <ol>
 <li>找到檔案在哪(用Bundle)</li>
@@ -4261,7 +4261,7 @@ let myPlayer = myPlayerInit()
 myPlayer?.play()
 </code></pre>
 
-<h2 id="其他好用的方法">其他好用的方法</h2>
+<h3 id="其他好用的方法">其他好用的方法</h3>
 
 <pre><code class="language-swift">myPlayer?.stop() // 停止
 myPlayer?.currentTime = 0 // 把音檔時間歸零
@@ -4273,11 +4273,11 @@ myPlayer?.enableRate = true
 myPlayer?.rate = 0.5
 </code></pre>
 
-<h1 id="播放手機內部的音樂">播放手機內部的音樂</h1>
+<h2 id="播放手機內部的音樂">播放手機內部的音樂</h2>
 
 <p>利用MPMediaPickerController，此一Controller會讓你選擇音樂。我們只需要指定選完音樂(或沒選到)要做什麼動作即可。</p>
 
-<h2 id="步驟-1">步驟</h2>
+<h3 id="步驟-1">步驟</h3>
 
 <ol>
 <li>在Xcode調整權限
@@ -4318,7 +4318,7 @@ func mediaPicker(_ mediaPicker: MPMediaPickerController, didPickMediaItems media
 
 <p>若要停止MPmusicPlayerController一樣可以使用.stop函數</p>
 
-<h1 id="錄音">錄音</h1>
+<h2 id="錄音">錄音</h2>
 
 <ol>
 <li>在info.plist增加麥克風權限</li>
@@ -4333,11 +4333,11 @@ func mediaPicker(_ mediaPicker: MPMediaPickerController, didPickMediaItems media
 <li>開始錄音</li>
 </ol>
 
-<h2 id="權限設定-1">權限設定</h2>
+<h3 id="權限設定-1">權限設定</h3>
 
 <p><img src="http://i.imgur.com/WwJpAMB.png" alt="麥克風權限" /></p>
 
-<h2 id="步驟2-3-4-5">步驟2 3 4 5</h2>
+<h3 id="步驟2-3-4-5">步驟2 3 4 5</h3>
 
 <pre><code class="language-swift">func audioRecorderInit()-&gt;AVAudioRecorder?{
     // 步驟2 設定路徑
@@ -4363,7 +4363,7 @@ func mediaPicker(_ mediaPicker: MPMediaPickerController, didPickMediaItems media
 }
 </code></pre>
 
-<h2 id="avaudiorecorderdelegate的實作">AVAudioRecorderDelegate的實作</h2>
+<h3 id="avaudiorecorderdelegate的實作">AVAudioRecorderDelegate的實作</h3>
 
 <p>參數recorder的屬性url可以拿到錄製好的檔案路徑</p>
 
@@ -4379,7 +4379,7 @@ func mediaPicker(_ mediaPicker: MPMediaPickerController, didPickMediaItems media
 }
 </code></pre>
 
-<h2 id="開始錄音">開始錄音</h2>
+<h3 id="開始錄音">開始錄音</h3>
 
 <p>將AVAudioSession調成AVAudioSessionCatetoryPlayAndRecord，可有效增大錄音音量。若不調整則會很小聲。</p>
 
@@ -4393,7 +4393,7 @@ audioRecorder?.prepareToRecord()
 audioRecorder?.record()
 </code></pre>
 
-<h2 id="停止錄音">停止錄音</h2>
+<h3 id="停止錄音">停止錄音</h3>
 
 <p>記得把剛剛的AVAudioSession.sharedInstance()調回原樣</p>
 

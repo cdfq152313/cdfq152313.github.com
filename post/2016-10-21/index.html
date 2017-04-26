@@ -4218,38 +4218,47 @@ body {
     </div>
     <div class="entry-content">
 
-<h1 id="環境設定">環境設定</h1>
+<h2 id="環境設定">環境設定</h2>
 
-<h2 id="權限">權限</h2>
+<h3 id="權限">權限</h3>
 
-<p>開啟地圖本身不需要權限，如果若需要GPS位置，請在info.plist中開啟
+<p>開啟地圖本身不需要權限，如果若需要GPS位置，請在info.plist中開啟<br />
 <img src="http://i.imgur.com/sHeMOKN.png" alt="Alt Text" /></p>
 
-<h2 id="storyboard-iboutlet">StoryBoard &amp; IBOutlet</h2>
+<h3 id="storyboard-iboutlet">StoryBoard &amp; IBOutlet</h3>
 
-<p>在StoryBoard上地圖套件名稱叫做<strong>Map Kit View</strong>
-如果想要拉IBOutlet到自己的class中，會發現出現Error，這是因為Map class並不包含在UIKit當中。
+<p>在StoryBoard上地圖套件名稱叫做<strong>Map Kit View</strong><br />
+如果想要拉IBOutlet到自己的class中，會發現出現Error，這是因為Map class並不包含在UIKit當中。<br />
 所以請import Mapkit</p>
 
 <pre><code class="language-swift">import Mapkit
 </code></pre>
 
-<h2 id="mkmapviewdelegate">MKMapViewDelegate</h2>
+<h3 id="mkmapviewdelegate">MKMapViewDelegate</h3>
 
-<p>最後就是記得設定mapView的delegate
+<p>最後就是記得設定mapView的delegate<br />
 如果需要特殊效果的時候非常有用，例如：開始讀取map位置的時候要做什麼，結束讀取位置的時候要做什麼&hellip;</p>
 
-<h1 id="將地址解析為gps">將地址解析為GPS</h1>
+<h3 id="將地址解析為gps">將地址解析為GPS</h3>
 
-<p>可以利用CLGeocoder這個class來達成，以下是一個簡單的範例
-1. 初始化CLGeocoder
-2. 使用geocodeAddressString此方法，傳入兩個參數
-    - 需解析之address (字串)
-  - 解析完後的動作(closure)，參數如下
-    - [CLPlacemark]?: 一個地址有多個可能符合之GPS位置，所以是一個Array。
-    - Error?: 若無則為nil
-3. 在closure當中，把經緯度印出來
-    - 我們可以從CLPlacemark的location屬性當中，找到經度和緯度。</p>
+<p>可以利用CLGeocoder這個class來達成，以下是一個簡單的範例</p>
+
+<ol>
+<li>初始化CLGeocoder</li>
+<li>使用geocodeAddressString此方法，傳入兩個參數
+
+<ul>
+<li>需解析之address (字串)</li>
+<li>解析完後的動作(closure)，參數如下</li>
+<li>[CLPlacemark]?: 一個地址有多個可能符合之GPS位置，所以是一個Array。</li>
+<li>Error?: 若無則為nil</li>
+</ul></li>
+<li>在closure當中，把經緯度印出來
+
+<ul>
+<li>我們可以從CLPlacemark的location屬性當中，找到經度和緯度。</li>
+</ul></li>
+</ol>
 
 <pre><code class="language-swift">// 初始化
 let geoCoder = CLGeocoder()
@@ -4272,13 +4281,16 @@ geoCoder.geocodeAddressString(address) {
 }
 </code></pre>
 
-<h1 id="標註位置">標註位置</h1>
+<h2 id="標註位置">標註位置</h2>
 
-<p>先拿到要標註的GPS位置，再開始進行標註。
-1. 初始化MKPointAnnotation
-2. 設定title / subtitle / image等等欄位
-3. 設定GPS位置
-4. 使用方法addAnnotation方法將大頭針插在地圖上</p>
+<p>先拿到要標註的GPS位置，再開始進行標註。</p>
+
+<ol>
+<li>初始化MKPointAnnotation</li>
+<li>設定title / subtitle / image等等欄位</li>
+<li>設定GPS位置</li>
+<li>使用方法addAnnotation方法將大頭針插在地圖上</li>
+</ol>
 
 <pre><code class="language-swift">func setAnnotation(placeMark:CLPlacemark){
     // 開始進行標註
@@ -4290,13 +4302,16 @@ geoCoder.geocodeAddressString(address) {
 }
 </code></pre>
 
-<h1 id="將畫面拉到特定位置">將畫面拉到特定位置</h1>
+<h2 id="將畫面拉到特定位置">將畫面拉到特定位置</h2>
 
-<p>標註畫面只是將大頭針插上位置，地圖並沒有移動。如果想要將地圖zoom in到某個地點附近，就必須使用這個功能。
-1. 初始化座標，需要使用到經緯度。
-2. 初始化想顯示範圍，MKCoordinateSpanMake的兩個參數分別代表經緯度長度。
-3. 用上述兩個參數初始化MKCoordinateRegion
-4. 使用setRegion方法</p>
+<p>標註畫面只是將大頭針插上位置，地圖並沒有移動。如果想要將地圖zoom in到某個地點附近，就必須使用這個功能。</p>
+
+<ol>
+<li>初始化座標，需要使用到經緯度。</li>
+<li>初始化想顯示範圍，MKCoordinateSpanMake的兩個參數分別代表經緯度長度。</li>
+<li>用上述兩個參數初始化MKCoordinateRegion</li>
+<li>使用setRegion方法</li>
+</ol>
 
 <pre><code class="language-swift">func zoomInMap(placeMark:CLPlacemark){
         // set region
@@ -4307,9 +4322,9 @@ geoCoder.geocodeAddressString(address) {
 }
 </code></pre>
 
-<h1 id="以下難產中">以下難產中</h1>
+<h2 id="以下難產中">以下難產中</h2>
 
-<h1 id="mapkit-位置改變時定位">MapKit 位置改變時定位</h1>
+<h2 id="mapkit-位置改變時定位">MapKit 位置改變時定位</h2>
 </div>
 
 <div class="meta">

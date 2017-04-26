@@ -4218,15 +4218,18 @@ body {
     </div>
     <div class="entry-content">
 
-<h1 id="autolayout">AutoLayout</h1>
+<h2 id="autolayout">AutoLayout</h2>
 
-<p>只要確定好下面的參數，autoLayout就不會跑警告
-1. x
-2. y
-3. width
-4. height</p>
+<p>只要確定好下面的參數，autoLayout就不會跑警告</p>
 
-<h1 id="alertcontroller">AlertController</h1>
+<ol>
+<li>x</li>
+<li>y</li>
+<li>width</li>
+<li>height</li>
+</ol>
+
+<h2 id="alertcontroller">AlertController</h2>
 
 <ol>
 <li>新增AlertController
@@ -4266,13 +4269,13 @@ myAlert.addTextField {
 }
 </code></pre>
 
-<h1 id="讓鍵盤自動彈出">讓鍵盤自動彈出</h1>
+<h2 id="讓鍵盤自動彈出">讓鍵盤自動彈出</h2>
 
 <p>在可輸入的View中(Ex: textfield)，會有<code>becomeFirstResponder()</code>方法</p>
 
-<h1 id="pickerview">PickerView</h1>
+<h2 id="pickerview">PickerView</h2>
 
-<h2 id="選中某一列後立刻執行某動作">選中某一列後立刻執行某動作</h2>
+<h3 id="選中某一列後立刻執行某動作">選中某一列後立刻執行某動作</h3>
 
 <p>複寫</p>
 
@@ -4281,26 +4284,26 @@ myAlert.addTextField {
 }
 </code></pre>
 
-<h2 id="得知目前是選中哪一列">得知目前是選中哪一列</h2>
+<h3 id="得知目前是選中哪一列">得知目前是選中哪一列</h3>
 
 <p>call function，並指定是哪個Component</p>
 
 <pre><code class="language-swift">myPickerView.selectedRow(inComponent: 0)
 </code></pre>
 
-<h2 id="更為簡單的datepickerview">更為簡單的DatePickerView</h2>
+<h3 id="更為簡單的datepickerview">更為簡單的DatePickerView</h3>
 
 <p>若想得知DatePickerView所擷取到的日期或時間只要使用</p>
 
 <pre><code class="language-swift">let date = myDatePicker.date
 </code></pre>
 
-<p>一行即可，其他的都是date格式的問題。
+<p>一行即可，其他的都是date格式的問題。<br />
 DatePickerView的樣式可以從storyBoard中選擇。</p>
 
-<h1 id="播放影片">播放影片</h1>
+<h2 id="播放影片">播放影片</h2>
 
-<h2 id="流程">流程</h2>
+<h3 id="流程">流程</h3>
 
 <ol>
 <li>找到播放影片URL</li>
@@ -4321,7 +4324,7 @@ present(videoPlayerController, animated: true, completion: nil)
 videoPlayer.play()
 </code></pre>
 
-<h2 id="重複播放">重複播放</h2>
+<h3 id="重複播放">重複播放</h3>
 
 <p>不同於播放音樂可以簡單設置loop，重複播放影片是要傾聽影片播完後所發送的notification。</p>
 
@@ -4336,21 +4339,23 @@ func playerDidReachEnd(notification:Notification){
 }
 </code></pre>
 
-<h1 id="錄影">錄影</h1>
+<h2 id="錄影">錄影</h2>
 
-<h1 id="照相">照相</h1>
+<h2 id="照相">照相</h2>
 
 <ol>
 <li>在info.plist設定照相權限</li>
 <li>產生image picker Controller</li>
 <li>設定 sourceType</li>
 <li>設定delegate屬性，決定照相完畢後要做什麼</li>
-<li>推出image Picker
-這邊要特別注意，模擬器是沒有camera的，所以若要用模擬器最好先檢查。</li>
+<li>推出image Picker</li>
 </ol>
 
-<p>照相權限
-<img src="http://i.imgur.com/Yf8lCmd.png" alt="照相權限" /></p>
+<p>這邊要特別注意，模擬器是沒有camera的，所以若要用模擬器最好先檢查。</p>
+
+<p>照相權限</p>
+
+<p><img src="http://i.imgur.com/Yf8lCmd.png" alt="照相權限" /></p>
 
 <pre><code class="language-swift">let imagePicker = UIImagePickerController()
 imagePicker.sourceType = .camera
@@ -4370,7 +4375,7 @@ present(imagePicker, animated:true, completion:nil)
 }
 </code></pre>
 
-<h2 id="其他實用方法">其他實用方法</h2>
+<h3 id="其他實用方法">其他實用方法</h3>
 
 <p>若想存檔可使用下方程式碼</p>
 
@@ -4382,26 +4387,31 @@ present(imagePicker, animated:true, completion:nil)
 <pre><code>imagePicker.sourceType = .photoLibrary
 </code></pre>
 
-<h1 id="使用資源">使用資源</h1>
+<h2 id="使用資源">使用資源</h2>
 
 <ul>
-<li><p>先找路徑再找URL</p>
+<li>先找路徑再找URL</li>
+</ul>
 
 <pre><code class="language-swift">let path = Bundle.main.path(forResource: &quot;Right&quot;, ofType:&quot;mp3&quot;)
 let audioURL = URL(fileURLWithPath: path)
-</code></pre></li>
+</code></pre>
 
-<li><p>直接找URL</p>
-
-<pre><code class="language-swift">let path = Bundle.main.url(forResource: &quot;HipHop&quot;, withExtension: &quot;mp4&quot;)
-</code></pre></li>
+<ul>
+<li>直接找URL</li>
 </ul>
 
-<h1 id="存資料-物件">存資料(物件)</h1>
+<pre><code class="language-swift">let path = Bundle.main.url(forResource: &quot;HipHop&quot;, withExtension: &quot;mp4&quot;)
+</code></pre>
 
-<p>使用UserDefaults.standard.set和UserDefaults.standard.synchronize
-1. 用set並給一個key
-2. synchronize</p>
+<h2 id="存資料-物件">存資料(物件)</h2>
+
+<p>使用UserDefaults.standard.set和UserDefaults.standard.synchronize</p>
+
+<ol>
+<li>用set並給一個key</li>
+<li>synchronize</li>
+</ol>
 
 <pre><code class="language-swift">var toDo = [&quot;Buy milk&quot;, &quot;iOS exam&quot;, &quot;Sleep&quot;, &quot;Make money&quot;]
 UserDefaults.standard.set(toDo, forKey:&quot;todo&quot;)
@@ -4426,15 +4436,18 @@ print(loaded)
 print(loaded)
 </code></pre>
 
-<h1 id="property-list-plist">Property List (Plist)</h1>
+<h2 id="property-list-plist">Property List (Plist)</h2>
 
-<p>Info.plist就是一種Property List的檔案。
-plist可以很方便地幫你用Array或dictionary的形式存取資訊(String, Int &hellip;)，個人覺得跟json沒兩樣。
-使用的步驟如下
-1. 新增一個Property List檔案
-2. 在上面加上一些資訊(假設是一串Array)
-3. 使用Bundle.main.path拿到資源(檔案型態是plist)
-4. 利用NSArray將檔案轉成Array，或是NSDictionary檔案轉成dict</p>
+<p>Info.plist就是一種Property List的檔案。<br />
+plist可以很方便地幫你用Array或dictionary的形式存取資訊(String, Int &hellip;)，個人覺得跟json沒兩樣。<br />
+使用的步驟如下</p>
+
+<ol>
+<li>新增一個Property List檔案</li>
+<li>在上面加上一些資訊(假設是一串Array)</li>
+<li>使用Bundle.main.path拿到資源(檔案型態是plist)</li>
+<li>利用NSArray將檔案轉成Array，或是NSDictionary檔案轉成dict</li>
+</ol>
 
 <pre><code class="language-swift">guard let scorePlist = Bundle.main.path(forResource: &quot;Score&quot;, ofType: &quot;plist&quot;),
   let scoreArray = NSArray(contentsOfFile: scorePlist) else{
@@ -4444,7 +4457,7 @@ plist可以很方便地幫你用Array或dictionary的形式存取資訊(String, 
 print(scoreArray)
 </code></pre>
 
-<h1 id="activity-indicator">Activity Indicator</h1>
+<h2 id="activity-indicator">Activity Indicator</h2>
 
 <ul>
 <li>用StoryBoard直接拉</li>
@@ -4453,17 +4466,16 @@ print(scoreArray)
 <li>stopAnimationg()停止轉</li>
 </ul>
 
-<h1 id="cocoapods">COCOAPODS</h1>
+<h2 id="cocoapods">COCOAPODS</h2>
 
-<p>先安裝
-<a href="https://cocoapods.org/">https://cocoapods.org/</a></p>
+<p>先安裝 <a href="https://cocoapods.org/">https://cocoapods.org/</a></p>
 
 <p>在Xcode專案底下</p>
 
 <pre><code class="language-bash">pod init
 </code></pre>
 
-<p>編輯生出來podfile
+<p>編輯生出來podfile<br />
 加入需要的pod 專案</p>
 
 <pre><code class="language-Podfile"># Uncomment the next line to define a global platform for your project
@@ -4484,7 +4496,7 @@ end
 <pre><code class="language-bash">pod install
 </code></pre>
 
-<h1 id="reachability-測試有無連網">Reachability 測試有無連網</h1>
+<h2 id="reachability-測試有無連網">Reachability 測試有無連網</h2>
 
 <ol>
 <li>下載<a href="https://developer.apple.com/library/content/samplecode/Reachability/Introduction/Intro.html">reachability</a></li>
@@ -4500,15 +4512,15 @@ end
 <li>接收notification</li>
 </ol>
 
-<h1 id="xml">XML</h1>
+<h2 id="xml">XML</h2>
 
 <p>解析XML XML delegate</p>
 
-<h1 id="值得用的app">值得用的APP</h1>
+<h2 id="值得用的app">值得用的APP</h2>
 
 <p>figure</p>
 
-<h1 id="登入與非登入狀態用不同的controller">登入與非登入狀態用不同的Controller</h1>
+<h2 id="登入與非登入狀態用不同的controller">登入與非登入狀態用不同的Controller</h2>
 
 <p>在Appdelegate裡面</p>
 

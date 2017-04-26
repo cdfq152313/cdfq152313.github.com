@@ -4218,12 +4218,12 @@ body {
     </div>
     <div class="entry-content">
 
-<h1 id="controller之間的呼叫">Controller之間的呼叫</h1>
+<h2 id="controller之間的呼叫">Controller之間的呼叫</h2>
 
-<h2 id="present-與-dismiss">present 與 dismiss</h2>
+<h3 id="present-與-dismiss">present 與 dismiss</h3>
 
-<p>想要跳轉頁面，我們可以靠storyBoard拉出present的線，也可以靠程式碼。
-在StoryBoard中只要按住ctrl，將button拉到另一個controller後再選present即可。
+<p>想要跳轉頁面，我們可以靠storyBoard拉出present的線，也可以靠程式碼。<br />
+在StoryBoard中只要按住ctrl，將button拉到另一個controller後再選present即可。<br />
 在程式碼的話</p>
 
 <pre><code class="language-swift">// 因為此ViewController什麼都沒設定，所以會是一片黑
@@ -4235,23 +4235,29 @@ present(ViewController(), animated: true, completion: nil)
 <pre><code class="language-swift">dismiss(animated: true, completion: nil)
 </code></pre>
 
-<p>dismiss的原理是，直接呼叫時，請求presentingViewController把你關掉。
-間接呼叫時，把後面的presentedViewController們關掉。
+<p>dismiss的原理是，直接呼叫時，請求presentingViewController把你關掉。<br />
+間接呼叫時，把後面的presentedViewController們關掉。<br />
 至於這兩個是什麼意思請參看下節。</p>
 
-<h2 id="presentingviewcontroller-與-presentedviewcontroller">presentingViewController 與 presentedViewController</h2>
+<h3 id="presentingviewcontroller-與-presentedviewcontroller">presentingViewController 與 presentedViewController</h3>
 
-<p>每個controller皆有兩個重要的屬性，可以分辨這個controller是被誰present，或是present了誰。
-- presentingViewController：present Controller的Controller
-- presentedViewController：被present的Controller</p>
+<p>每個controller皆有兩個重要的屬性，可以分辨這個controller是被誰present，或是present了誰。</p>
 
-<p>假設ABC皆為Controller，A present B，B present C，那對於B來說。
-- A為B之presentingViewController
-- C為B之presentedViewController</p>
+<ul>
+<li>presentingViewController：present Controller的Controller</li>
+<li>presentedViewController：被present的Controller</li>
+</ul>
 
-<h1 id="navigation-bar">Navigation bar</h1>
+<p>假設ABC皆為Controller，A present B，B present C，那對於B來說。</p>
 
-<h2 id="push-與-pop">push 與 pop</h2>
+<ul>
+<li>A為B之presentingViewController</li>
+<li>C為B之presentedViewController</li>
+</ul>
+
+<h2 id="navigation-bar">Navigation bar</h2>
+
+<h3 id="push-與-pop">push 與 pop</h3>
 
 <p>與present / dismiss相似，進到navigation controller後要使用 navigation屬性的push/pop方法，不然會跳出navigation controller的頁，失去Navigation Bar的效果。</p>
 
@@ -4265,9 +4271,9 @@ self.navigationController?.popViewController(animated: true)
 self.navigationController?.popToRootViewController(animated: true)
 </code></pre>
 
-<h2 id="前後的controller">前後的controller</h2>
+<h3 id="前後的controller">前後的controller</h3>
 
-<p>如同present / dismiss可以拿到前後關係一樣，navigation controller也是可以拿到前後關係的。
+<p>如同present / dismiss可以拿到前後關係一樣，navigation controller也是可以拿到前後關係的。<br />
 所有經過的controller都放在self.navigationController?.viewControllers這個array裡可以拿取。</p>
 
 <pre><code class="language-swift">self.navigationController?.viewControllers[0]
@@ -4275,9 +4281,9 @@ self.navigationController?.viewControllers[1]
 ...
 </code></pre>
 
-<h2 id="navigation-controller的建立">Navigation Controller的建立</h2>
+<h3 id="navigation-controller的建立">Navigation Controller的建立</h3>
 
-<p>Navigation Contrller本身並不帶有頁面資訊，而是在Navigation Controller的下一個Controller才會開始顯示。
+<p>Navigation Contrller本身並不帶有頁面資訊，而是在Navigation Controller的下一個Controller才會開始顯示。<br />
 那兩者之間要建立連線，必須要指定Navigation Controller當中的Root View Controller才行。</p>
 
 <ul>
@@ -4290,21 +4296,26 @@ self.navigationController?.viewControllers[1]
 <li>方法2: 在StoryBoard中，點擊已經存在的Controller。並從上方選單Editor =&gt; Embed in =&gt; NavigatioController即可</li>
 </ul>
 
-<h2 id="上面的title和向右鈕">上面的title和向右鈕</h2>
+<h3 id="上面的title和向右鈕">上面的title和向右鈕</h3>
 
-<p>預設只有Navigation Controller後第一個Bar可以編輯Title，若要加入新title則要從StoryBoard中拉入<strong>Navigation item</strong>
+<p>預設只有Navigation Controller後第一個Bar可以編輯Title，若要加入新title則要從StoryBoard中拉入<strong>Navigation item</strong><br />
 預設上方並無向右鍵，只有返回鍵，若要加入則拉入<strong>Bar Button Item</strong></p>
 
-<h1 id="tab-bar-controller">Tab Bar Controller</h1>
+<h2 id="tab-bar-controller">Tab Bar Controller</h2>
 
-<p>與Navigation View許多做法類似
-想加上新的tab可以
-- 方法1: TabViewController綁定View Controllers，有兩種做法
- - 按住Ctrl並將TabViewController拉到想要加上的Controller，鬆開後選擇View Controllers
- - 在TabViewController的Triggered Segue中，指定新的View Controllers
-- 方法2: 在StoryBoard中，點擊已經存在的Controller。並從上方選單Editor =&gt; Embed in =&gt; TabViewController即可</p>
+<p>與Navigation View許多做法類似，想加上新的tab可以</p>
 
-<h2 id="tab-bar-controller下的controller們">tab bar controller下的controller們</h2>
+<ul>
+<li>方法1: TabViewController綁定View Controllers，有兩種做法
+
+<ul>
+<li>按住Ctrl並將TabViewController拉到想要加上的Controller，鬆開後選擇View Controllers</li>
+<li>在TabViewController的Triggered Segue中，指定新的View Controllers</li>
+</ul></li>
+<li>方法2: 在StoryBoard中，點擊已經存在的Controller。並從上方選單Editor =&gt; Embed in =&gt; TabViewController即可</li>
+</ul>
+
+<h3 id="tab-bar-controller下的controller們">tab bar controller下的controller們</h3>
 
 <pre><code class="language-swift">self.tabBarController?.viewControllers[0]
 self.tabBarController?.viewControllers[1]
@@ -4313,40 +4324,44 @@ self.tabBarController?.viewControllers[1]
 
 <p>要注意的是，如果是tab bar controller下包著navigation controller，在存取時要先轉型成navigation controller，再取用navigation controller裡面的controller，才不會錯誤。</p>
 
-<h2 id="切換tab">切換tab</h2>
+<h3 id="切換tab">切換tab</h3>
 
 <pre><code class="language-swift">self.tabBarController?.selectedIndex = 0
 </code></pre>
 
-<h2 id="隱藏tab">隱藏tab</h2>
+<h3 id="隱藏tab">隱藏tab</h3>
 
 <pre><code class="language-swift">self.tabBarController?.tabBar.isHidden = true
 </code></pre>
 
-<h1 id="在不同的controller之間跳轉">在不同的Controller之間跳轉</h1>
+<h2 id="在不同的controller之間跳轉">在不同的Controller之間跳轉</h2>
 
-<h2 id="方法1-直接拖拉">方法1 直接拖拉</h2>
+<h3 id="方法1-直接拖拉">方法1 直接拖拉</h3>
 
-<p>在storyboard上
-按住ctrl點下來源Controller之button拉到要呈現的Controller後鬆開，選擇show或present即可。
+<p>在storyboard上<br />
+按住ctrl點下來源Controller之button拉到要呈現的Controller後鬆開，選擇show或present即可。<br />
 show會在啟用navigation bar的時候自動使用navigation.push，若無navigation bar則是使用present。</p>
 
-<h2 id="方法2-利用segue">方法2 利用segue</h2>
+<h3 id="方法2-利用segue">方法2 利用segue</h3>
 
-<p>在storyboard上
-按住ctrl點下來源Controller，拉到要呈現的Controller，會多一條segue連線，幫此條連線取名字(identifer)
+<p>在storyboard上<br />
+按住ctrl點下來源Controller，拉到要呈現的Controller，會多一條segue連線，幫此條連線取名字(identifer)<br />
 接下來在想切換的情況下使用performSegue即可(參數為剛剛取的identifer)</p>
 
 <pre><code class="language-swift">performSegue(withIdentifier: &quot;goToView2&quot;, sender: nil)
 </code></pre>
 
-<h2 id="方法3-指定storyboard以及controller-通常用在更換story-board的時候">方法3 指定StoryBoard以及Controller (通常用在更換Story Board的時候)</h2>
+<h3 id="方法3-指定storyboard以及controller-通常用在更換story-board的時候">方法3 指定StoryBoard以及Controller (通常用在更換Story Board的時候)</h3>
 
-<p>將要呈現的Controller取名字(StoryBoardID)
-並在程式碼中指定
-1. 位於哪個StoryBoard
-2. Controller的StoryBoardID
-最後present或push即可</p>
+<p>將要呈現的Controller取名字(StoryBoardID)<br />
+並在程式碼中指定</p>
+
+<ol>
+<li>位於哪個StoryBoard</li>
+<li>Controller的StoryBoardID</li>
+</ol>
+
+<p>最後present或push即可</p>
 
 <pre><code class="language-swift">let myStoryBoard = UIStoryboard(name: &quot;Main&quot;, bundle: nil)
 let whiteViewController = myStoryBoard.instantiateViewController(withIdentifier: &quot;whiteView&quot;)
@@ -4360,21 +4375,21 @@ let whiteViewController = myStoryBoard.instantiateInitialViewController(withIden
 present(whiteViewController, animated:true, completion:nil)
 </code></pre>
 
-<h2 id="方法4-storyboard-reference-通常用在更換story-board的時候">方法4 StoryBoard Reference (通常用在更換Story Board的時候)</h2>
+<h3 id="方法4-storyboard-reference-通常用在更換story-board的時候">方法4 StoryBoard Reference (通常用在更換Story Board的時候)</h3>
 
-<p>在StoryBoard中，將StoryBoard Reference
-拖到畫面上，指定StoryBoard Reference上的StoryBoard和ControllerID
+<p>在StoryBoard中，將StoryBoard Reference<br />
+拖到畫面上，指定StoryBoard Reference上的StoryBoard和ControllerID<br />
 接下來利用方法1或2拖拉即可成功</p>
 
-<h2 id="方法5-逃生門-通常用在要返回前一個controller的時候">方法5 逃生門 (通常用在要返回前一個Controller的時候)</h2>
+<h3 id="方法5-逃生門-通常用在要返回前一個controller的時候">方法5 逃生門 (通常用在要返回前一個Controller的時候)</h3>
 
-<h3 id="情況">情況</h3>
+<h4 id="情況">情況</h4>
 
-<p>假設最初的controller取名叫parent controller
-parent controller可以連到許多child controller
+<p>假設最初的controller取名叫parent controller<br />
+parent controller可以連到許多child controller<br />
 當child controller想返回parent controller的時候</p>
 
-<h3 id="作法">作法</h3>
+<h4 id="作法">作法</h4>
 
 <p>先寫在parent controller</p>
 
@@ -4383,14 +4398,14 @@ parent controller可以連到許多child controller
 }
 </code></pre>
 
-<p>再用StoryBoard選擇child controller
-按鈕按住ctrl往該controller的逃生門拉 (上方最右邊的圖示)
-即會出現backToMain的方法
+<p>再用StoryBoard選擇child controller<br />
+按鈕按住ctrl往該controller的逃生門拉 (上方最右邊的圖示)<br />
+即會出現backToMain的方法<br />
 如果parent controller在child controller返回後想執行什麼動作也可在此function中填入</p>
 
-<h1 id="controller之間傳遞訊息">Controller之間傳遞訊息</h1>
+<h2 id="controller之間傳遞訊息">Controller之間傳遞訊息</h2>
 
-<h2 id="方法1-利用destination-controller的property-呼叫下一個controller時">方法1. 利用destination controller的property (呼叫下一個Controller時)</h2>
+<h3 id="方法1-利用destination-controller的property-呼叫下一個controller時">方法1. 利用destination controller的property (呼叫下一個Controller時)</h3>
 
 <ol>
 <li>複寫Source Controller的prepare Function</li>
@@ -4410,24 +4425,30 @@ override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
 }
 </code></pre>
 
-<h2 id="方法2-利用前後階層關係-僅適用於返回controller時">方法2. 利用前後階層關係(僅適用於返回controller時)</h2>
+<h3 id="方法2-利用前後階層關係-僅適用於返回controller時">方法2. 利用前後階層關係(僅適用於返回controller時)</h3>
 
-<p>前面有說過present可以靠
-- presentingViewController
-- presentedViewController</p>
+<p>前面有說過present可以靠</p>
 
-<p>navigation bar可以靠
-- self.navigationController?.viewControllers[0]
-- self.navigationController?.viewControllers[1]
-- &hellip;</p>
+<ul>
+<li>presentingViewController</li>
+<li>presentedViewController</li>
+</ul>
+
+<p>navigation bar可以靠</p>
+
+<ul>
+<li>self.navigationController?.viewControllers[0]</li>
+<li>self.navigationController?.viewControllers[1]</li>
+<li>&hellip;</li>
+</ul>
 
 <p>來獲得前面的controller元件
 取得controller後再參考方法1塞入值</p>
 
-<h2 id="方法3-protocol-返回前一個controller時">方法3. protocol (返回前一個controller時)</h2>
+<h3 id="方法3-protocol-返回前一個controller時">方法3. protocol (返回前一個controller時)</h3>
 
-<p>將前一個controller名為FirstViewController
-現在這個controller名為SecondViewController
+<p>將前一個controller名為FirstViewController<br />
+現在這個controller名為SecondViewController<br />
 令一個protocol叫做SecondViewControllerDelegate</p>
 
 <ol>
@@ -4436,43 +4457,54 @@ override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
 <li>SecondViewController消失前，執行該protocol的method (透過複寫viewWillDisapear來達成)</li>
 </ol>
 
-<p>```swift SecondController
-var delegate:SecondViewControllerDelegate?
+<p>SecondController</p>
+
+<pre><code class="language-swift">var delegate:SecondViewControllerDelegate?
 @IBAction func goBack(_ sender: UIButton) {
     let _ = navigationController?.popViewController(animated: true)
-}</p>
+}
 
-<p>override func viewWillDisappear(_ animated: Bool) {
+override func viewWillDisappear(_ animated: Bool) {
   super.viewWillDisappear(animated)
   if self.isMovingFromParentViewController{
-        delegate?.setColor(colorType: &ldquo;red&rdquo;)
+        delegate?.setColor(colorType: &quot;red&quot;)
     }
-}</p>
+}
+</code></pre>
 
-<pre><code>`hint: 可以靠 self.isMovingFromParentViewController來測試是否為返回到前一個Controller`
+<p><code>hint: 可以靠 self.isMovingFromParentViewController來測試是否為返回到前一個Controller</code></p>
 
-```swift SecondViewControllerDelegate
-protocol SecondViewControllerDelegate{
+<p>SecondViewControllerDelegate</p>
+
+<pre><code class="language-swift">protocol SecondViewControllerDelegate{
     func setColor(colorType:String)
 }
 </code></pre>
 
-<p>```swift FirstViewController (實作SecondViewControllerDelegate)
-override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+<p>FirstViewController (實作SecondViewControllerDelegate)</p>
+
+<pre><code class="language-swift">override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
   if let des = segue.destination as? SecondViewController{
     des.delegate = self
   }
-}</p>
+}
+</code></pre>
 
-<pre><code>
-## 方法4. notification (返回前一個controller時)
-1. parent controller先監聽事件
-    - 撰寫接收到監聽後要執行的function
-  - 註冊監聽事件
-2. child controller發送notification
+<h3 id="方法4-notification-返回前一個controller時">方法4. notification (返回前一個controller時)</h3>
 
-```swift ParentController
-// 接收到事件後要執行的任務
+<ol>
+<li>parent controller先監聽事件
+
+<ul>
+<li>撰寫接收到監聽後要執行的function</li>
+<li>註冊監聽事件</li>
+</ul></li>
+<li>child controller發送notification</li>
+</ol>
+
+<p>ParentController</p>
+
+<pre><code class="language-swift">// 接收到事件後要執行的任務
 func getUpdateNoti(noti:Notification) {
     let data = noti.userInfo![&quot;data&quot;] as! String
     print(data)
@@ -4487,18 +4519,20 @@ override func viewDidLoad() {
 }
 </code></pre>
 
-<p>```swift ChildController
-// 發送事件
-let notificationName = Notification.Name(&ldquo;GetUpdateNoti&rdquo;)
-NotificationCenter.default().post(name: notificationName,object: nil, userInfo: [&ldquo;data&rdquo;:&ldquo;Hello World&rdquo;])</p>
+<p>ChildController</p>
 
-<pre><code>
-## 方法5. 全域變數
-在AppDelegate增加property
-並在想要使用的class裡面，將UIApplication.shared.delegate轉型為AppDelegate
-即可使用裡面的property
-```swift
-if let appDelegate = UIApplication.shared.delegate as? AppDelegate{
+<pre><code class="language-swift">// 發送事件
+let notificationName = Notification.Name(&quot;GetUpdateNoti&quot;)
+NotificationCenter.default().post(name: notificationName,object: nil, userInfo: [&quot;data&quot;:&quot;Hello World&quot;])
+</code></pre>
+
+<h3 id="方法5-全域變數">方法5. 全域變數</h3>
+
+<p>在AppDelegate增加property<br />
+並在想要使用的class裡面，將UIApplication.shared.delegate轉型為AppDelegate<br />
+即可使用裡面的property</p>
+
+<pre><code class="language-swift">if let appDelegate = UIApplication.shared.delegate as? AppDelegate{
     if let colorName = appDelegate.color{
     setColor(colorType: colorName)
   }

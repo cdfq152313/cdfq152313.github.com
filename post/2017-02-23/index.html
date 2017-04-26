@@ -4218,7 +4218,7 @@ body {
     </div>
     <div class="entry-content">
 
-<h1 id="程式碼">程式碼</h1>
+<h2 id="程式碼">程式碼</h2>
 
 <p>為了易於保存，所有金鑰、向量、輸出結果都是以Base64編碼。</p>
 
@@ -4283,37 +4283,45 @@ aes_helper = AES_HELPER()
     print ('decrypted: %s' % decrypted )
 </code></pre>
 
-<h1 id="random的使用">Random的使用</h1>
+<h2 id="random的使用">Random的使用</h2>
 
-<p>在使用AES的時候會需要用到兩個隨機生產的東西
-1. 金鑰: 可為128 192 256 bits，金鑰長度越長越不容易被破解。
-2. 初始化向量: 只有128 bits的形式，為了避免同樣的文章在同一金鑰下會被加密為同樣密文，從而增加被破解風險。</p>
+<p>在使用AES的時候會需要用到兩個隨機生產的東西</p>
 
-<p>這邊要特別注意的是必須使用pycrypto所提供的Random，而不能用python原生地random，不然亂數會不夠安全。
+<ol>
+<li>金鑰: 可為128 192 256 bits，金鑰長度越長越不容易被破解。</li>
+<li>初始化向量: 只有128 bits的形式，為了避免同樣的文章在同一金鑰下會被加密為同樣密文，從而增加被破解風險。</li>
+</ol>
+
+<p>這邊要特別注意的是必須使用pycrypto所提供的Random，而不能用python原生地random，不然亂數會不夠安全。<br />
 以下為產生金鑰的程式碼</p>
 
 <pre><code class="language-python">from Crypto import Random
 import base64
 
 def key_generator(bits=256):
-  random = Random.new()
-  key = random.read( bits/8 )
-  return base64.b64encode(key)
+    random = Random.new()
+    key = random.read( bits/8 )
+    return base64.b64encode(key)
 </code></pre>
 
-<p>使用random.read()來產生隨機的金鑰串，裡面的參數決定了金鑰串的長度，<strong>單位是bytes</strong>。
+<p>使用random.read()來產生隨機的金鑰串，裡面的參數決定了金鑰串的長度，<strong>單位是bytes</strong>。<br />
 初始向量也是同樣的作法，只是這次要限制在128 bits(16 bytes)</p>
 
-<h1 id="padding-pkcs5-pkcs7">Padding (PKCS5 / PKCS7)</h1>
+<h2 id="padding-pkcs5-pkcs7">Padding (PKCS5 / PKCS7)</h2>
 
-<p>這邊要特別注意有所謂的padding問題，在網路上找了一些解決的方法，以下是程式碼。
-<a href="http://likang.me/blog/2013/06/05/python-pycrypto-aes-ecb-pkcs-5/">http://likang.me/blog/2013/06/05/python-pycrypto-aes-ecb-pkcs-5/</a>
-<a href="https://gist.github.com/crmccreary/5610068">https://gist.github.com/crmccreary/5610068</a></p>
+<p>這邊要特別注意有所謂的padding問題，在網路上找了一些解決的方法，以下是程式碼。</p>
 
 <pre><code class="language-python">BS = 16
 pad = lambda s: s + (BS - len(s) % BS) * chr(BS - len(s) % BS) 
 unpad = lambda s : s[0:-ord(s[-1])]
 </code></pre>
+
+<p>參考資料</p>
+
+<ul>
+<li><a href="http://likang.me/blog/2013/06/05/python-pycrypto-aes-ecb-pkcs-5/">http://likang.me/blog/2013/06/05/python-pycrypto-aes-ecb-pkcs-5/</a></li>
+<li><a href="https://gist.github.com/crmccreary/5610068">https://gist.github.com/crmccreary/5610068</a></li>
+</ul>
 </div>
 
 <div class="meta">

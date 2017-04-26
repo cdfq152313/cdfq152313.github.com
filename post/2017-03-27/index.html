@@ -4214,8 +4214,8 @@ body {
 
 </div>
     </div>
-    <div class="entry-content"><p>使用AlertDialog時，當點在Dialog的外圍，Android會讓此Dialog消失，並且什麼動作都不執行。
-如果剛好positive和negative的按鈕都是有明確動作的，並不想被取消，可以透過<strong>setCancelable(boolean)</strong>這個函式來強制使用者不得取消。
+    <div class="entry-content"><p>使用AlertDialog時，當點在Dialog的外圍，Android會讓此Dialog消失，並且什麼動作都不執行。<br />
+如果剛好positive和negative的按鈕都是有明確動作的，並不想被取消，可以透過<strong>setCancelable(boolean)</strong>這個函式來強制使用者不得取消。<br />
 不過有時會希望使用者可以透過點擊按鈕或點擊Dialog外圍來執行取消動作(非null空動作)，但在AlertDialog的函式庫中是無能為力的，我查了</p>
 
 <ul>
@@ -4223,7 +4223,7 @@ body {
 <li>setOnDismissListener</li>
 </ul>
 
-<p>這兩個函式都會導致程式異常停止。最後查到應該使用DialogFragment當中的onCancel動作來解決這個問題。
+<p>這兩個函式都會導致程式異常停止。最後查到應該使用DialogFragment當中的onCancel動作來解決這個問題。<br />
 以下範例程式碼</p>
 
 <pre><code class="language-java">public class MyDialogFragment extends DialogFragment {
@@ -4256,11 +4256,17 @@ body {
 }
 </code></pre>
 
-<p>重點如下
-1. 繼承DialogFragment
-2. 複寫onCreateDialog方法，並回傳一個Dialog (跟以往AlertDialog的使用方法一樣)
-3. 複寫onCancel方法，裡面放上<strong>點擊外框使AlertDialog消失</strong>時要觸發的事件。
-    - 注意：如果是點positive Button或negative Button皆不會觸發這個函式。</p>
+<p>重點如下</p>
+
+<ol>
+<li>繼承DialogFragment</li>
+<li>複寫onCreateDialog方法，並回傳一個Dialog (跟以往AlertDialog的使用方法一樣)</li>
+<li>複寫onCancel方法，裡面放上<strong>點擊外框使AlertDialog消失</strong>時要觸發的事件。
+
+<ul>
+<li>注意：如果是點positive Button或negative Button皆不會觸發這個函式。</li>
+</ul></li>
+</ol>
 </div>
 
 <div class="meta">

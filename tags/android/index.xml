@@ -18,11 +18,14 @@
       <guid>https://cdfq152313.github.io/post/2017-04-01/</guid>
       <description>Android 利用gson解析json 反射和序列化
 在開始前先貼篇文章暖暖身，讓大家了解Reflection(反射)和Serialization(序列化)的不同
-常常在串接API時，伺服器端傳過來的是json格式。 我個人是很不相信自己的眼睛，所以直接用string get field的動作我是盡量不寫的。 取而代之的是用Gson提供的Deserializatione(反序列化)工具來達成這個目標，反序列化底層的實作是依賴Reflection(反射)機制而達成，不過不是這篇的重點。
+常常在串接API時，伺服器端傳過來的是json格式。
+我個人是很不相信自己的眼睛，所以直接用string get field的動作我是盡量不寫的。
+取而代之的是用Gson提供的Deserializatione(反序列化)工具來達成這個目標，反序列化底層的實作是依賴Reflection(反射)機制而達成，不過不是這篇的重點。
 如果有json data如下
 { &amp;quot;fruit&amp;quot;: &amp;quot;apple&amp;quot;, &amp;quot;hello&amp;quot;: &amp;quot;world&amp;quot; }  我會用一個class，有著跟json檔一模一樣的field。
 class Data{ public String fruit; public String hello; }  然後利用Gson的fromJson函式
-Data jsonData(String jsonStr){ Gson gson = new Gson(); Data result = gson.fromJson(jsonStr, Data.class); return result; }  將檔案給解析出來，如果實際的json物件屬性跟class資料屬性對不上的話，就會拋擲異常。 fromJson這個函式就是Gson的反序列化工具。</description>
+Data jsonData(String jsonStr){ Gson gson = new Gson(); Data result = gson.fromJson(jsonStr, Data.class); return result; }  將檔案給解析出來，如果實際的json物件屬性跟class資料屬性對不上的話，就會拋擲異常。
+fromJson這個函式就是Gson的反序列化工具。</description>
     </item>
     
     <item>
@@ -31,8 +34,11 @@ Data jsonData(String jsonStr){ Gson gson = new Gson(); Data result = gson.fromJs
       <pubDate>Mon, 27 Mar 2017 00:00:00 +0000</pubDate>
       
       <guid>https://cdfq152313.github.io/post/2017-03-27/</guid>
-      <description>使用AlertDialog時，當點在Dialog的外圍，Android會讓此Dialog消失，並且什麼動作都不執行。 如果剛好positive和negative的按鈕都是有明確動作的，並不想被取消，可以透過setCancelable(boolean)這個函式來強制使用者不得取消。 不過有時會希望使用者可以透過點擊按鈕或點擊Dialog外圍來執行取消動作(非null空動作)，但在AlertDialog的函式庫中是無能為力的，我查了
- setOnCancelListener setOnDismissListener  這兩個函式都會導致程式異常停止。最後查到應該使用DialogFragment當中的onCancel動作來解決這個問題。 以下範例程式碼
+      <description>使用AlertDialog時，當點在Dialog的外圍，Android會讓此Dialog消失，並且什麼動作都不執行。
+如果剛好positive和negative的按鈕都是有明確動作的，並不想被取消，可以透過setCancelable(boolean)這個函式來強制使用者不得取消。
+不過有時會希望使用者可以透過點擊按鈕或點擊Dialog外圍來執行取消動作(非null空動作)，但在AlertDialog的函式庫中是無能為力的，我查了
+ setOnCancelListener setOnDismissListener  這兩個函式都會導致程式異常停止。最後查到應該使用DialogFragment當中的onCancel動作來解決這個問題。
+以下範例程式碼
 public class MyDialogFragment extends DialogFragment { private final static String TAG = &amp;quot;MyDialog&amp;quot;; @Override public Dialog onCreateDialog(Bundle savedInstanceState) { AlertDialog.Builder builder = new AlertDialog.Builder(getActivity()); builder.setTitle(&amp;quot;Hello&amp;quot;) .setPositiveButton(&amp;quot;YA&amp;quot;, new DialogInterface.OnClickListener() { @Override public void onClick(DialogInterface dialog, int which) { Log.i(TAG, &amp;quot;Positive&amp;quot;); } }) .setNegativeButton(&amp;quot;NO&amp;quot;, new DialogInterface.OnClickListener() { @Override public void onClick(DialogInterface dialog, int which) { Log.i(TAG, &amp;quot;Negative&amp;quot;); } }); return builder.create(); } @Override public void onCancel(DialogInterface dialog) { super.</description>
     </item>
     
@@ -43,7 +49,7 @@ public class MyDialogFragment extends DialogFragment { private final static Stri
       
       <guid>https://cdfq152313.github.io/post/2017-02-22/</guid>
       <description>平台 Android Studio - compileSdkVersion 25 - buildToolsVersion &amp;ldquo;25.0.1&amp;rdquo;
-全域變數 SecretKey secretKey; // 金鑰 AlgorithmParameterSpec mAlgorithmParameterSpec; // 之後要放置初始化向量的參數  初始化 金鑰初始化 private void genAESKey() throws Exception { KeyGenerator keyGen = KeyGenerator.getInstance(&amp;quot;AES&amp;quot;); // 指定AES演算法 keyGen.init(256, new SecureRandom()); // 指定256位元，並使用SecureRandom secretKey = keyGen.generateKey(); // 產生AES金鑰 }  初始向量初始化 private void genInitializationVector() throws NoSuchPaddingException, NoSuchAlgorithmException { cipher = Cipher.getInstance(&amp;ldquo;AES/CBC/PKCS5Padding&amp;rdquo;); // 指定AES演算法 byte [] iVAES = new byte[ cipher.getBlockSize() ]; // new AES演算法所需的block size SecureRandom random = new SecureRandom(); random.</description>
+全域變數 SecretKey secretKey; // 金鑰 AlgorithmParameterSpec mAlgorithmParameterSpec; // 之後要放置初始化向量的參數  初始化 金鑰初始化 private void genAESKey() throws Exception { KeyGenerator keyGen = KeyGenerator.getInstance(&amp;quot;AES&amp;quot;); // 指定AES演算法 keyGen.init(256, new SecureRandom()); // 指定256位元，並使用SecureRandom secretKey = keyGen.generateKey(); // 產生AES金鑰 }  初始向量初始化 private void genInitializationVector() throws NoSuchPaddingException, NoSuchAlgorithmException { cipher = Cipher.getInstance(&amp;quot;AES/CBC/PKCS5Padding&amp;quot;); // 指定AES演算法 byte [] iVAES = new byte[ cipher.getBlockSize() ]; // new AES演算法所需的block size SecureRandom random = new SecureRandom(); random.</description>
     </item>
     
     <item>
@@ -61,13 +67,19 @@ public class MyDialogFragment extends DialogFragment { private final static Stri
       <pubDate>Fri, 05 Aug 2016 00:00:00 +0000</pubDate>
       
       <guid>https://cdfq152313.github.io/post/2016-08-05/</guid>
-      <description>介紹 主要參考這篇： Android studio 1.5.1 NDK JNI環境安裝與執行原理 不過Android 2.1.2上步驟稍有簡化，還是可以達到同樣效果。 1. 載NDK 2. 設定external tool (僅javah) 3. 在java中增加native code，並利用javah產生JNI header 4. 實作JNI 5. 設定gradle (僅ndk區塊)
-載NDK 開啟SDK Manager，選擇SDK Tools，將NDK之選項給打勾。 設定external tool 與連結相同，不過只要設定javah即可，其他不需要。
+      <description>介紹 主要參考這篇：Android studio 1.5.1 NDK JNI環境安裝與執行原理
+不過Android 2.1.2上步驟稍有簡化，還是可以達到同樣效果。
+ 載NDK 設定external tool (僅javah) 在java中增加native code，並利用javah產生JNI header 實作JNI 設定gradle (僅ndk區塊)  載NDK 開啟SDK Manager，選擇SDK Tools，將NDK之選項給打勾。
+設定external tool 與連結相同，不過只要設定javah即可，其他不需要。
 快速複製區 來源
 $JDKPath$/bin/javah -v -jni -d $ModuleFileDir$/src/main/jni $FileClass$ $SourcepathEntry$  Windows和Linux在第1行稍有分別，只有在Windows系統中，執行檔的副檔名才是.exe。Mac和Linux皆否。 個人是用linux系統，所以第1行javah後面並不接.exe，若是Windows系統則第1行變為。
 $JDKPath$/bin/javah.exe  JNI header 在想要使用JNI的class加入如下的程式碼。
- static { System.loadLibrary(&amp;quot;myJNI&amp;quot;); } public native String getMycstring(); public native void testLog();  static區塊中的myJNI會變成將來再build gradle當中的moduleName method加上native關鍵詞後，程式就會知道這是需要依靠JNI實作之程式碼。
-再來在該java檔上按右鍵，使用剛剛建置好的external library javah，自動的產生JNI header。 此時在java目錄下，應該會多出一個jni的資料夾，裡頭放置著 OOXX.</description>
+ static { System.loadLibrary(&amp;quot;myJNI&amp;quot;); } public native String getMycstring(); public native void testLog();  static區塊中的myJNI會變成將來再build gradle當中的moduleName
+method加上native關鍵詞後，程式就會知道這是需要依靠JNI實作之程式碼。
+再來在該java檔上按右鍵，使用剛剛建置好的external library javah，自動的產生JNI header。
+此時在java目錄下，應該會多出一個jni的資料夾，裡頭放置著 OOXX.h
+打開.h檔，建置出來的code應該會如下形式
+/* DO NOT EDIT THIS FILE - it is machine generated */ #include &amp;lt;jni.</description>
     </item>
     
     <item>
@@ -76,12 +88,18 @@ $JDKPath$/bin/javah.exe  JNI header 在想要使用JNI的class加入如下的程
       <pubDate>Fri, 04 Mar 2016 00:00:00 +0000</pubDate>
       
       <guid>https://cdfq152313.github.io/post/2016-03-04/</guid>
-      <description>平台及環境設置 ##平台 實驗平台：Nexus 5 Android版本：android-4.4_r1 前置知識： [Howto Build Android KitKat (4.4) for the Google Nexus 5][6]
-##環境設置 在AOSP資料夾中
+      <description>平台及環境設置 平台 實驗平台：Nexus 5
+Android版本：android-4.4_r1
+前置知識： [Howto Build Android KitKat (4.4) for the Google Nexus 5][6]
+環境設置 在AOSP資料夾中
 source build/envsetup.sh lunch aosp_hammerhead-userdebug  目標：利用Android Studio來新增APP (命名為World) 在上一篇文章中，說明了如何copy一份已有的project來改寫。但是寫Android App有許多煩雜的地方，有時候還是需要IDE來幫助比較快，這裡找了一個比較tricky的方法來使用IDE。
-新增Android Studio Project 我們直接從Android Studio中產生一個空的project，命名為World。 新增project時記得選empty Activity，之後比較好做。 建立soft link 在剛剛產生出來的Android Project路徑底下，World/app/src/main應該有java、res資料夾，以及AndroidManifest.xml。 在AOSP/packages/apps建立新目錄World，並在其底下建立起上述3個檔案之軟連結(soft link)。
+新增Android Studio Project 我們直接從Android Studio中產生一個空的project，命名為World。
+新增project時記得選empty Activity，之後比較好做。
+建立soft link 在剛剛產生出來的Android Project路徑底下，World/app/src/main應該有java、res資料夾，以及AndroidManifest.xml。
+在AOSP/packages/apps建立新目錄World，並在其底下建立起上述3個檔案之軟連結(soft link)。
 mkdir $ANDROID_BUILD_TOP/packages/apps/World &amp;amp;&amp;amp; cd $_ ln -s AndroidProject目錄/World/app/src/main/java java ln -s AndroidProject目錄/World/app/src/main/res res ln -s AndroidProject目錄/World/app/src/main/AndroidManifest.xml AndroidManifest.xml  撰寫Android.mk 參考Secrets of Android.mk此份文件當中的Building a simple APK目錄。將其加到AOSP/packages/apps/World資料夾下。
-```makefile Android.mk LOCAL_PATH := $(call my-dir) include $(CLEAR_VARS)</description>
+Android.mk
+LOCAL_PATH := $(call my-dir) include $(CLEAR_VARS) # Build all java files in the java subdirectory LOCAL_SRC_FILES := $(call all-subdir-java-files) # Name of the APK to build LOCAL_PACKAGE_NAME := LocalPackage # Tell it to build an APK include $(BUILD_PACKAGE)  修改掉所有appcompat的部份 再來使用mm在AOSP/packages/apps/World進行編譯，運氣不好的話，編譯會出現找不到某些命名的錯誤。這是因為Google為了讓各種app看起來更有一致性，將Android Studio的新Project皆使用Appcompat此library來協調視覺效果。可是此library並不存在於預設的編譯環境當中。為了為了節省麻煩，將其去掉。</description>
     </item>
     
     <item>
@@ -90,13 +108,18 @@ mkdir $ANDROID_BUILD_TOP/packages/apps/World &amp;amp;&amp;amp; cd $_ ln -s Andr
       <pubDate>Sun, 28 Feb 2016 00:00:00 +0000</pubDate>
       
       <guid>https://cdfq152313.github.io/post/2016-02-28/</guid>
-      <description> 平台及環境設置 ##平台 實驗平台：Nexus 5 Android版本：android-4.4_r1 前置知識： [Howto Build Android KitKat (4.4) for the Google Nexus 5][6]
-##環境設置 在AOSP資料夾中
-source build/envsetup.sh lunch aosp_hammerhead-userdebug  #目標：加入一個需編譯的預設App到AOSP裡
-在AOSP/development/samples裏面有許多可以借鑒的對象。 這次學習的目錄為AOSP/development/samples/HelloActivity/
+      <description> 平台及環境設置 平台 實驗平台：Nexus 5
+Android版本：android-4.4_r1
+前置知識： [Howto Build Android KitKat (4.4) for the Google Nexus 5][6]
+環境設置 在AOSP資料夾中
+source build/envsetup.sh lunch aosp_hammerhead-userdebug  目標：加入一個需編譯的預設App到AOSP裡 在AOSP/development/samples裏面有許多可以借鑒的對象。
+這次學習的目錄為AOSP/development/samples/HelloActivity/
 複製資料夾 首先我們先把這個資料夾複製到packages/app/裏面
 cp $ANDROID_BUILD_TOP/development/samples/HelloActivity $ANDROID_BUILD_TOP/packages/apps/  使用mm進行編譯 在packages/apps/HelloActivity內進行mm編譯。
-cd $ANDROID_BUILD_TOP/packages/apps/HelloActivity mm  解析 原本想長篇大論，但是好像有人寫的比我好XD 只好直接給連結，有空再來寫自己的版本吧。 懂的HelloAcitivity的結構之後，就可以對其進行修改，以符合自己的需求。 對於Android.mk若有什麼不懂的也可參考上次這篇。
+cd $ANDROID_BUILD_TOP/packages/apps/HelloActivity mm  解析 原本想長篇大論，但是好像有人寫的比我好XD
+只好直接給連結，有空再來寫自己的版本吧。
+懂的HelloAcitivity的結構之後，就可以對其進行修改，以符合自己的需求。
+對於Android.mk若有什麼不懂的也可參考上次這篇。
 Reference  Android的應用程序結構分析 Secrets of Android.mk  </description>
     </item>
     
@@ -106,12 +129,15 @@ Reference  Android的應用程序結構分析 Secrets of Android.mk  </descripti
       <pubDate>Wed, 24 Feb 2016 00:00:00 +0000</pubDate>
       
       <guid>https://cdfq152313.github.io/post/2016-02-24/</guid>
-      <description>平台及環境設置 ##平台 實驗平台：Nexus 5 Android版本：android-4.4_r1 前置知識： Howto Build Android KitKat (4.4) for the Google Nexus 5
-##環境設置 在AOSP資料夾中
-source build/envsetup.sh lunch aosp_hammerhead-userdebug  目標：在AOSP當中加入一個已經編譯好的apk檔，Hello.apk 手動編譯設置 預設的app放在 AOSP/packages/apps下，任意觀看此目錄下的資料夾，會發現皆有Android.mk此檔案，此為AOSP編譯規則。 參看 Secrets of Android.mk此份文件中的Adding a prebuilt APK章節。
-依樣畫葫蘆，在AOSP/packages/apps目錄中手動創造Hello資料夾，放入Android.mk。 ``` makefile Android.mk LOCAL_PATH := $(call my-dir) include $(CLEAR_VARS)
-Module name should match apk name to be installed. LOCAL_MODULE := Hello LOCAL_SRC_FILES := $(LOCAL_MODULE).apk LOCAL_MODULE_CLASS := APPS LOCAL_MODULE_SUFFIX := $(COMMON_ANDROID_PACKAGE_SUFFIX) LOCAL_CERTIFICATE := PRESIGNED
-include $(BUILD_PREBUILT)</description>
+      <description>平台及環境設置 平台 實驗平台：Nexus 5
+Android版本：android-4.4_r1
+前置知識： Howto Build Android KitKat (4.4) for the Google Nexus 5
+環境設置 在AOSP資料夾中
+source build/envsetup.sh lunch aosp_hammerhead-userdebug  目標：在AOSP當中加入一個已經編譯好的apk檔，Hello.apk 手動編譯設置 預設的app放在 AOSP/packages/apps下，任意觀看此目錄下的資料夾，會發現皆有Android.mk此檔案，此為AOSP編譯規則。
+參看 Secrets of Android.mk此份文件中的Adding a prebuilt APK章節。
+依樣畫葫蘆，在AOSP/packages/apps目錄中手動創造Hello資料夾，放入Android.mk。
+Android.mk
+LOCAL_PATH := $(call my-dir) include $(CLEAR_VARS) # Module name should match apk name to be installed. LOCAL_MODULE := Hello LOCAL_SRC_FILES := $(LOCAL_MODULE).apk LOCAL_MODULE_CLASS := APPS LOCAL_MODULE_SUFFIX := $(COMMON_ANDROID_PACKAGE_SUFFIX) LOCAL_CERTIFICATE := PRESIGNED include $(BUILD_PREBUILT)  並使用Android Studio(或eclipse)隨便製造出一個Hello.</description>
     </item>
     
   </channel>

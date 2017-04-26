@@ -4218,24 +4218,27 @@ body {
     </div>
     <div class="entry-content">
 
-<p>來源網址：<a href="https://read01.com/J8P4L.html">https://read01.com/J8P4L.html</a>
+<p>來源網址：<a href="https://read01.com/J8P4L.html">https://read01.com/J8P4L.html</a><br />
 要注意最後一段說get比較不安全是錯的，你他媽的不轉成https通通都是不安全。</p>
 
-<h1 id="client端">Client端</h1>
+<h2 id="client端">Client端</h2>
 
-<p>分三區塊
-- Request line
-- Request header
-- Body</p>
+<p>分三區塊</p>
 
-<h2 id="request-line">Request line</h2>
+<ul>
+<li>Request line</li>
+<li>Request header</li>
+<li>Body</li>
+</ul>
+
+<h3 id="request-line">Request line</h3>
 
 <ul>
 <li>有著方法描述，資源位置，協議版本</li>
 <li>例如：GET <a href="http://www.cnblogs.com/">http://www.cnblogs.com/</a> HTTP/1.1</li>
 </ul>
 
-<h2 id="request-header">Request header</h2>
+<h3 id="request-header">Request header</h3>
 
 <ul>
 <li>Accept：client告知server可以接受的媒體類型(json, xml, html &hellip;)，大部分使用*/*代表全部都接受。</li>
@@ -4276,41 +4279,47 @@ body {
 </ul></li>
 </ul>
 
-<h2 id="body">Body</h2>
+<h3 id="body">Body</h3>
 
 <p>就是個Body</p>
 
-<h1 id="server端">Server端</h1>
+<h2 id="server端">Server端</h2>
 
 <p>一樣分三區塊
 - Response line
 - Response header
 - Body</p>
 
-<h2 id="response-line">Response line</h2>
+<h3 id="response-line">Response line</h3>
 
 <ul>
 <li>協議版本及狀態碼</li>
 <li>例如：HTTP/1.1 200 OK</li>
 </ul>
 
-<h2 id="response-header">Response header</h2>
+<h3 id="response-header">Response header</h3>
 
 <p>有些部分跟request一樣，少部分懶得看。</p>
 
 <p>Content-Type：回傳資料的型態
-Expired：回傳資料過期時間
-- 懶得看
-    - Cache-Control
-  - Last-Modified:
-    - Server
-    - X-AspNet-Version:
-    - X-Powered-By:
-    - Connection
-    - Content-Length
-    - Date</p>
+Expired：回傳資料過期時間</p>
 
-<h2 id="body-1">Body</h2>
+<ul>
+<li>懶得看
+
+<ul>
+<li>Cache-Control</li>
+<li>Last-Modified:</li>
+<li>Server</li>
+<li>X-AspNet-Version:</li>
+<li>X-Powered-By:</li>
+<li>Connection</li>
+<li>Content-Length</li>
+<li>Date</li>
+</ul></li>
+</ul>
+
+<h3 id="body-1">Body</h3>
 
 <p>就只是個Body</p>
 </div>

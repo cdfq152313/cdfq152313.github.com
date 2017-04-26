@@ -29,11 +29,15 @@ public enum MFMailComposeResult : Int { case cancelled case saved case sent case
       <pubDate>Tue, 25 Oct 2016 00:00:00 +0000</pubDate>
       
       <guid>https://cdfq152313.github.io/post/2016-10-25/</guid>
-      <description>TableView IndexPath: Section &amp;amp; Row 看圖應該可以明瞭Section和Row的含意，Apple把tableView劃分為section，每個section下又有row。 在IOS中有一個叫做IndexPath的類別專門儲存這兩個值，在tableView以後要override的方法會經常看到。
+      <description>TableView IndexPath: Section &amp;amp; Row 看圖應該可以明瞭Section和Row的含意，Apple把tableView劃分為section，每個section下又有row。
+在IOS中有一個叫做IndexPath的類別專門儲存這兩個值，在tableView以後要override的方法會經常看到。
 必定要override的method: 幾個section 幾個row 使用tableView必須指定DataSource和Delegate (若是TableViewController則已經指定好自己作為這兩個protocol的實作)
-其中有些function是必定要override的 1. 總共有幾個section 2. 每個section裡面有幾個row
-在這個範例中，我指定兩個section，section 0有2 row，section 1有3 row。
-// 總共幾個section override func numberOfSections(in tableView: UITableView) -&amp;gt; Int { return 2 } // 每個section裡面有幾個row override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -&amp;gt; Int { if section == 0{ return 2 } else{ return 3 } }  某一列的內容 但是只有這樣，顯示出來會是空白一片，所以必須要回傳顯示的內容。 在做這個項目之前，必須先到storyBoard，將tableView裏頭的cell指定一個identifier，否則會錯誤。 在此我指定cell的identifier為myCell 然後才可以在程式碼中使用myCell
+其中有些function是必定要override的
+ 總共有幾個section 每個section裡面有幾個row  在這個範例中，我指定兩個section，section 0有2 row，section 1有3 row。
+// 總共幾個section override func numberOfSections(in tableView: UITableView) -&amp;gt; Int { return 2 } // 每個section裡面有幾個row override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -&amp;gt; Int { if section == 0{ return 2 } else{ return 3 } }  某一列的內容 但是只有這樣，顯示出來會是空白一片，所以必須要回傳顯示的內容。
+在做這個項目之前，必須先到storyBoard，將tableView裏頭的cell指定一個identifier，否則會錯誤。
+在此我指定cell的identifier為myCell
+然後才可以在程式碼中使用myCell
 override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -&amp;gt; UITableViewCell { let cell = tableView.</description>
     </item>
     
@@ -43,10 +47,14 @@ override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexP
       <pubDate>Fri, 21 Oct 2016 00:00:00 +0000</pubDate>
       
       <guid>https://cdfq152313.github.io/post/2016-10-21/</guid>
-      <description>環境設定 權限 開啟地圖本身不需要權限，如果若需要GPS位置，請在info.plist中開啟 StoryBoard &amp;amp; IBOutlet 在StoryBoard上地圖套件名稱叫做Map Kit View 如果想要拉IBOutlet到自己的class中，會發現出現Error，這是因為Map class並不包含在UIKit當中。 所以請import Mapkit
-import Mapkit  MKMapViewDelegate 最後就是記得設定mapView的delegate 如果需要特殊效果的時候非常有用，例如：開始讀取map位置的時候要做什麼，結束讀取位置的時候要做什麼&amp;hellip;
-將地址解析為GPS 可以利用CLGeocoder這個class來達成，以下是一個簡單的範例 1. 初始化CLGeocoder 2. 使用geocodeAddressString此方法，傳入兩個參數 - 需解析之address (字串) - 解析完後的動作(closure)，參數如下 - [CLPlacemark]?: 一個地址有多個可能符合之GPS位置，所以是一個Array。 - Error?: 若無則為nil 3. 在closure當中，把經緯度印出來 - 我們可以從CLPlacemark的location屬性當中，找到經度和緯度。
-// 初始化 let geoCoder = CLGeocoder() // 解析字串 geoCoder.geocodeAddressString(address) { (places, error) in // 如果解析失敗，直接回傳不做任何事 guard error == nil else { print (&amp;quot;Get position error&amp;quot;) return } // 印出位置 if(places?</description>
+      <description>環境設定 權限 開啟地圖本身不需要權限，如果若需要GPS位置，請在info.plist中開啟
+StoryBoard &amp;amp; IBOutlet 在StoryBoard上地圖套件名稱叫做Map Kit View
+如果想要拉IBOutlet到自己的class中，會發現出現Error，這是因為Map class並不包含在UIKit當中。
+所以請import Mapkit
+import Mapkit  MKMapViewDelegate 最後就是記得設定mapView的delegate
+如果需要特殊效果的時候非常有用，例如：開始讀取map位置的時候要做什麼，結束讀取位置的時候要做什麼&amp;hellip;
+將地址解析為GPS 可以利用CLGeocoder這個class來達成，以下是一個簡單的範例
+ 初始化CLGeocoder 使用geocodeAddressString此方法，傳入兩個參數  需解析之address (字串) 解析完後的動作(closure)，參數如下 [CLPlacemark]?: 一個地址有多個可能符合之GPS位置，所以是一個Array。 Error?: 若無則為nil  在closure當中，把經緯度印出來  我們可以從CLPlacemark的location屬性當中，找到經度和緯度。   // 初始化 let geoCoder = CLGeocoder() // 解析字串 geoCoder.geocodeAddressString(address) { (places, error) in // 如果解析失敗，直接回傳不做任何事 guard error == nil else { print (&amp;quot;Get position error&amp;quot;) return } // 印出位置 if(places?.count)! &amp;gt; 0 { let placeMark = places?</description>
     </item>
     
     <item>
@@ -58,7 +66,8 @@ import Mapkit  MKMapViewDelegate 最後就是記得設定mapView的delegate 如�
       <description>Swift的執行緒分為主要和背景。 Main Queue / Concurrent Queue 主執行緒不能執行同步工作，只能執行非同步工作。
 主執行緒語法 let task1 = { for i in 1...5{ print (&amp;quot;Task1: (\i)&amp;quot;) } } // DispatchQueue.main.sync(execute: task1) DispatchQueue.main.async(execute: task1)  背景執行緒語法 不指定執行緒
 DispatchQueue.global().sync(execute: task1) DispatchQueue.global().async(execute: task1)  指定執行緒
-DispatchQueue.global(qos: .background).sync(execute:task1) DispatchQueue.global(qos: .background).async(execute:task1)  下載方法 NSData  利用url生出網址 利用Data Class下載(以前叫NSData) 把下載下來的資料指定給想要的檔案  記得要使用DispatchQueue.global().async使用此function，否則畫面會被block住。 下載完畢後要更新UI時要使用ispatchQueue.main.async否則畫面不會即時更新。
+DispatchQueue.global(qos: .background).sync(execute:task1) DispatchQueue.global(qos: .background).async(execute:task1)  下載方法 NSData  利用url生出網址 利用Data Class下載(以前叫NSData) 把下載下來的資料指定給想要的檔案  記得要使用DispatchQueue.global().async使用此function，否則畫面會被block住。
+下載完畢後要更新UI時要使用ispatchQueue.main.async否則畫面不會即時更新。
 func download(){ if let url = URL(string: &amp;quot;http://www.carlosicaza.com/wp-content/uploads/2014/07/Swift-logo.png&amp;quot;){ do { let data = try Data(contentsOf:url) let image = UIImage(data:data) DispatchQueue.</description>
     </item>
     
@@ -81,7 +90,8 @@ func download(){ if let url = URL(string: &amp;quot;http://www.carlosicaza.com/w
       
       <guid>https://cdfq152313.github.io/post/2016-10-06/</guid>
       <description>播放系統音效 超簡單只需要兩行
-import AudioToolbox AudioServicesPlaySystemSound(1000)  播放自己放在app的音樂 先把自己的音效拖進Xcode，記得選擇&amp;rdquo;copy items if needed&amp;rdquo;，否則只會放入reference。 可以開一個新的Group(資料夾圖示)來專門放置音檔。
+import AudioToolbox AudioServicesPlaySystemSound(1000)  播放自己放在app的音樂 先把自己的音效拖進Xcode，記得選擇&amp;rdquo;copy items if needed&amp;rdquo;，否則只會放入reference。
+可以開一個新的Group(資料夾圖示)來專門放置音檔。
 步驟  找到檔案在哪(用Bundle) 產生URL 產生AVAudioPlayer  // AVAudioPlayer初始化 func myPlayerInit()-&amp;gt;AVAudioPlayer?{ guard let path = Bundle.main.path(forResource: &amp;quot;Right&amp;quot;, ofType:&amp;quot;mp3&amp;quot;) else{ return nil } let audioURL = URL(fileURLWithPath: path) do{ return try AVAudioPlayer(contentsOf: audioURL) } catch{ print(&amp;quot;AVAudio Player Init failed&amp;quot;) return nil } }  // 利用button播放 每次按下都將聲音時間歸零 let myPlayer = myPlayerInit() myPlayer?.play()  其他好用的方法 myPlayer?.stop() // 停止 myPlayer?.currentTime = 0 // 把音檔時間歸零 myPlayer?</description>
     </item>
     
@@ -91,7 +101,9 @@ import AudioToolbox AudioServicesPlaySystemSound(1000)  播放自己放在app的
       <pubDate>Tue, 04 Oct 2016 00:00:00 +0000</pubDate>
       
       <guid>https://cdfq152313.github.io/post/2016-10-04/</guid>
-      <description>參考資料 感謝大大～～ https://itisjoe.gitbooks.io/swiftgo/content/ 因應swift3，筆記內容與gitbook上略有不同
+      <description>參考資料 感謝大大～～
+https://itisjoe.gitbooks.io/swiftgo/content/
+因應swift3，筆記內容與gitbook上略有不同
 struct和enum是value type, class是reference type  struct宣告為常數，就無法更改內部的值，但class可以。 struct和enum這種value type，內部member function不能修改member data的值 如果真的要修改要加上mutating修飾字  struct Apple{ var x = 0.0 mutating func add(num:Double){ x += num } } var x = Apple(x:1.2) x.add(1.5) print(x.x)   mutating 還可以替換掉本身的實體結構  struct Apple{ var x = 0.0 mutating func new(num:Double){ x = Apple() } }  function注意事項 call function時，參數後要指定參數名稱，不可以省略
 func plus(a :Int, b:Int){ print(a+b) } plus(a:1, b:3)  如果要省略要加上底線</description>
     </item>
@@ -102,14 +114,18 @@ func plus(a :Int, b:Int){ print(a+b) } plus(a:1, b:3)  如果要省略要加上�
       <pubDate>Mon, 03 Oct 2016 00:00:00 +0000</pubDate>
       
       <guid>https://cdfq152313.github.io/post/2016-10-03/</guid>
-      <description>Controller之間的呼叫 present 與 dismiss 想要跳轉頁面，我們可以靠storyBoard拉出present的線，也可以靠程式碼。 在StoryBoard中只要按住ctrl，將button拉到另一個controller後再選present即可。 在程式碼的話
+      <description>Controller之間的呼叫 present 與 dismiss 想要跳轉頁面，我們可以靠storyBoard拉出present的線，也可以靠程式碼。
+在StoryBoard中只要按住ctrl，將button拉到另一個controller後再選present即可。
+在程式碼的話
 // 因為此ViewController什麼都沒設定，所以會是一片黑 present(ViewController(), animated: true, completion: nil)  有跳過去，就有返回，想返回時使用dismiss function。
-dismiss(animated: true, completion: nil)  dismiss的原理是，直接呼叫時，請求presentingViewController把你關掉。 間接呼叫時，把後面的presentedViewController們關掉。 至於這兩個是什麼意思請參看下節。
-presentingViewController 與 presentedViewController 每個controller皆有兩個重要的屬性，可以分辨這個controller是被誰present，或是present了誰。 - presentingViewController：present Controller的Controller - presentedViewController：被present的Controller
-假設ABC皆為Controller，A present B，B present C，那對於B來說。 - A為B之presentingViewController - C為B之presentedViewController
-Navigation bar push 與 pop 與present / dismiss相似，進到navigation controller後要使用 navigation屬性的push/pop方法，不然會跳出navigation controller的頁，失去Navigation Bar的效果。
+dismiss(animated: true, completion: nil)  dismiss的原理是，直接呼叫時，請求presentingViewController把你關掉。
+間接呼叫時，把後面的presentedViewController們關掉。
+至於這兩個是什麼意思請參看下節。
+presentingViewController 與 presentedViewController 每個controller皆有兩個重要的屬性，可以分辨這個controller是被誰present，或是present了誰。
+ presentingViewController：present Controller的Controller presentedViewController：被present的Controller  假設ABC皆為Controller，A present B，B present C，那對於B來說。
+ A為B之presentingViewController C為B之presentedViewController  Navigation bar push 與 pop 與present / dismiss相似，進到navigation controller後要使用 navigation屬性的push/pop方法，不然會跳出navigation controller的頁，失去Navigation Bar的效果。
 程式碼的形式如下
-// 推上下一個頁面 self.navigationController?.pushViewController(ViewController(), animated: true) // 回到上一頁 self.navigationController?.popViewController(animated: true) // 直接回到navigation最開頭 self.navigationController?.popToRootViewController(animated: true)  前後的controller 如同present / dismiss可以拿到前後關係一樣，navigation controller也是可以拿到前後關係的。 所有經過的controller都放在self.</description>
+// 推上下一個頁面 self.navigationController?.pushViewController(ViewController(), animated: true) // 回到上一頁 self.navigationController?.popViewController(animated: true) // 直接回到navigation最開頭 self.navigationController?.popToRootViewController(animated: true)  前後的controller 如同present / dismiss可以拿到前後關係一樣，navigation controller也是可以拿到前後關係的。</description>
     </item>
     
     <item>
@@ -118,8 +134,8 @@ Navigation bar push 與 pop 與present / dismiss相似，進到navigation contro
       <pubDate>Tue, 13 Sep 2016 00:00:00 +0000</pubDate>
       
       <guid>https://cdfq152313.github.io/post/2016-09-13/</guid>
-      <description>AutoLayout 只要確定好下面的參數，autoLayout就不會跑警告 1. x 2. y 3. width 4. height
-AlertController  新增AlertController  .ActionSheet可藉由點警告視窗外面而取消 .alert不可藉由點警告視窗外面而取消  如果需要&amp;rdquo;OK&amp;rdquo;等選項的話，新增UIAction (.alert必做，不然會回不去) 將UIAction放置到AlertController上 present  let myAlert = UIAlertController(title: &amp;quot;Please enter something&amp;quot;, message: nil, preferredStyle: .alert) let myAction = UIAlertAction(title: &amp;quot;OK&amp;quot;, style: .default, handler:nil) myAlert.addAction(myAction) present(myAlert, animated: true, completion: nil)  嘗試加入文字框
+      <description>AutoLayout 只要確定好下面的參數，autoLayout就不會跑警告
+ x y width height  AlertController  新增AlertController  .ActionSheet可藉由點警告視窗外面而取消 .alert不可藉由點警告視窗外面而取消  如果需要&amp;rdquo;OK&amp;rdquo;等選項的話，新增UIAction (.alert必做，不然會回不去) 將UIAction放置到AlertController上 present  let myAlert = UIAlertController(title: &amp;quot;Please enter something&amp;quot;, message: nil, preferredStyle: .alert) let myAction = UIAlertAction(title: &amp;quot;OK&amp;quot;, style: .default, handler:nil) myAlert.addAction(myAction) present(myAlert, animated: true, completion: nil)  嘗試加入文字框
 let myAlert = UIAlertController(title: &amp;quot;Add New Task&amp;quot;, message: nil, preferredStyle: .alert) myAlert.addTextField { (textfield:UITextField) in textfield.placeholder = &amp;quot;Add New Task&#39;&amp;quot; }  嘗試對加入的UIAction執行一些動作</description>
     </item>
     

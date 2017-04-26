@@ -33,27 +33,18 @@ from Crypto.Cipher import AES from Crypto import Random import base64 BS = AES.b
     </item>
     
     <item>
-      <title>Java RSA</title>
-      <link>https://cdfq152313.github.io/post/2016-12-01/</link>
-      <pubDate>Thu, 01 Dec 2016 00:00:00 +0000</pubDate>
-      
-      <guid>https://cdfq152313.github.io/post/2016-12-01/</guid>
-      <description>讀金鑰 感謝大大無私分享，大大一生平安 http://stackoverflow.com/questions/11410770/load-rsa-public-key-from-file
-加密 感謝大大無私分享，大大一生平安 http://jimwayne.blogspot.tw/2012/06/java_25.html</description>
-    </item>
-    
-    <item>
       <title>.net的RSA加解密與UWP</title>
       <link>https://cdfq152313.github.io/post/2016-10-18/</link>
       <pubDate>Tue, 18 Oct 2016 00:00:00 +0000</pubDate>
       
       <guid>https://cdfq152313.github.io/post/2016-10-18/</guid>
       <description>前言牢騷 我是要在uwp下使用加密演算法並傳送到server去，由Server進行解密。於是在google中下關鍵字&amp;rdquo;.net rsa encrypt&amp;rdquo;，所以就找到了最舊也最多人討論的RSACryptoServiceProvider。我使用Visual studio 2015開command line，想在弄到uwp前先行測試，結果發現了許多與伺服器(python)的解密不相容之處，不管是金鑰格式，還是填補方法。等到把這些問題都搞定了，又發現不能在UWP中使用，真是想死的心都有了&amp;hellip;。再次google了&amp;rdquo;uwp encrpyt&amp;rdquo;後找到了CryptographicEngine + AsymmetricKeyAlgorithmProvider這組library，才終於搞定加解密問題。
-這篇文章會大概描述下列兩種加解密方法與金鑰格式。 1. RSACryptoServiceProvider/RSACng 2. CryptographicEngine + AsymmetricKeyAlgorithmProvider
-.net RSA API概觀 在.net中RSA的加解密有三組。分別是 1. RSACryptoServiceProvider 2. RSACng 3. CryptographicEngine + AsymmetricKeyAlgorithmProvider
-以格式來說，1,2是同一組介面實作，有著類似的操作方式，AsymmetricKeyAlgorithmProvider則是另外的class. 以新舊來說，RSACryptoServiceProvider是最舊的，提供的填補格式極少。RSACng是後繼更加完善的class，但是要在.net4.6後才能用，選擇版本時要注意。至於CryptographicEngine，只能在windows app(含uwp)當中使用。
-RSACryptoServiceProvider與RSACng 加密 步驟如下 1. 先將字串轉換成Byte (可以用ASCIIEncoding或UTF8Encdoing，記得怎麼轉回來就好) 2. 初始化RSACryptoServiceProvider (可用來加解密，在此只用來加密) 3. 進行加密 4. 對加密結果進行Base64(理由說明如下) - RSA對byte進行加密，結果也是byte。 - 將加密結果直接轉回string，看起來是亂碼，會涵蓋許多無法顯示的字元。 - 因此如果要進行傳輸，最好以Base64重新編碼過，出來的字串才會全部都是可顯示的文字。 - Base64介紹
-static String Encrypt(String _content) { // 先轉成Byte再加密 Encoding ByteConverter = new ASCIIEncoding(); var content = ByteConverter.GetBytes(_content); // 初始化RSACryptoServiceProvider RSACryptoServiceProvider rsa = getRSACrypto(); // 加密 var encrypt = rsa.</description>
+這篇文章會大概描述下列兩種加解密方法與金鑰格式。
+ RSACryptoServiceProvider/RSACng CryptographicEngine + AsymmetricKeyAlgorithmProvider  .net RSA API概觀 在.net中RSA的加解密有三組。分別是
+ RSACryptoServiceProvider RSACng CryptographicEngine + AsymmetricKeyAlgorithmProvider  以格式來說，1,2是同一組介面實作，有著類似的操作方式，AsymmetricKeyAlgorithmProvider則是另外的class.
+以新舊來說，RSACryptoServiceProvider是最舊的，提供的填補格式極少。RSACng是後繼更加完善的class，但是要在.net4.6後才能用，選擇版本時要注意。至於CryptographicEngine，只能在windows app(含uwp)當中使用。
+RSACryptoServiceProvider與RSACng 加密 步驟如下
+ 先將字串轉換成Byte (可以用ASCIIEncoding或UTF8Encdoing，記得怎麼轉回來就好) 初始化RSACryptoServiceProvider (可用來加解密，在此只用來加密) 進行加密 對加密結果進行Base64(理由說明如下)  RSA對byte進行加密，結果也是byte。 將加密結果直接轉回string，看起來是亂碼，會涵蓋許多無法顯示的字元。 因此如果要進行傳輸，最好以Base64重新編碼過，出來的字串才會全部都是可顯示的文字。 Base64介紹   static String Encrypt(String _content) { // 先轉成Byte再加密 Encoding ByteConverter = new ASCIIEncoding(); var content = ByteConverter.GetBytes(_content); // 初始化RSACryptoServiceProvider RSACryptoServiceProvider rsa = getRSACrypto(); // 加密 var encrypt = rsa.</description>
     </item>
     
   </channel>

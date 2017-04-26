@@ -4222,7 +4222,7 @@ body {
 Main Queue / Concurrent Queue
 主執行緒不能執行同步工作，只能執行非同步工作。</p>
 
-<h1 id="主執行緒語法">主執行緒語法</h1>
+<h2 id="主執行緒語法">主執行緒語法</h2>
 
 <pre><code class="language-swift">let task1 = {
     for i in 1...5{
@@ -4235,7 +4235,7 @@ DispatchQueue.main.async(execute: task1)
 
 </code></pre>
 
-<h1 id="背景執行緒語法">背景執行緒語法</h1>
+<h2 id="背景執行緒語法">背景執行緒語法</h2>
 
 <p>不指定執行緒</p>
 
@@ -4249,9 +4249,9 @@ DispatchQueue.global().async(execute: task1)
 DispatchQueue.global(qos: .background).async(execute:task1)
 </code></pre>
 
-<h1 id="下載方法">下載方法</h1>
+<h2 id="下載方法">下載方法</h2>
 
-<h2 id="nsdata">NSData</h2>
+<h3 id="nsdata">NSData</h3>
 
 <ol>
 <li>利用url生出網址</li>
@@ -4259,7 +4259,7 @@ DispatchQueue.global(qos: .background).async(execute:task1)
 <li>把下載下來的資料指定給想要的檔案</li>
 </ol>
 
-<p>記得要使用DispatchQueue.global().async使用此function，否則畫面會被block住。
+<p>記得要使用DispatchQueue.global().async使用此function，否則畫面會被block住。<br />
 下載完畢後要更新UI時要使用ispatchQueue.main.async否則畫面不會即時更新。</p>
 
 <pre><code class="language-swift">func download(){
@@ -4282,10 +4282,10 @@ DispatchQueue.global().async {
 }
 </code></pre>
 
-<h2 id="session">Session</h2>
+<h3 id="session">Session</h3>
 
-<p>改利用Session來下載
-Session的ataTask本身即是非同步，所以不會擋住UI畫面。
+<p>改利用Session來下載<br />
+Session的ataTask本身即是非同步，所以不會擋住UI畫面。<br />
 一樣在任務結束要更新UI時要使用main thread來更新。</p>
 
 <ol>

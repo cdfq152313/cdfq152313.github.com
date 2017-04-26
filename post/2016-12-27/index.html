@@ -4214,16 +4214,16 @@ body {
 
 </div>
     </div>
-    <div class="entry-content"><p>最近遇到一個問題，使用pyinstaller製作執行檔後，在本機運作上ok，但是一傳給別人使用就會出問題。
-可是用右鍵show packages裡面的Content/MacOS/執行檔，是可以正常使用的。
+    <div class="entry-content"><p>最近遇到一個問題，使用pyinstaller製作執行檔後，在本機運作上ok，但是一傳給別人使用就會出問題。可是用右鍵show packages裡面的Content/MacOS/執行檔，是可以正常使用的。<br />
 這讓我非常困惑，後來才發現是Sierra權限設定更改。</p>
 
-<p>英文好的可以直接看下面就解決了：
+<p>英文好的可以直接看下面就解決了：<br />
 <a href="http://lapcatsoftware.com/articles/app-translocation.html">http://lapcatsoftware.com/articles/app-translocation.html</a></p>
 
 <p>英文不好的簡單翻譯就是：</p>
 
-<p>macos在Sierra的版本改變了對未知的應用程式的行為。如果你的應用程式是不明來源(Ex:網路下載)，那macos在執行這個程式的時候就會把程式挪進App Translocation這個唯讀空間再執行。這有可能出現兩個問題，第一是你的程式如果涉及資料儲存，唯讀空間是不能存的，程式就會失敗。第二個問題是被移動的只有程式本身，萬一你的程式必須仰賴資料夾中的其他的檔案才能執行，那也會失敗。</p>
+<p>macos在Sierra的版本改變了對未知的應用程式的行為。如果你的應用程式是不明來源(Ex:網路下載)，那macos在執行這個程式的時候就會把程式挪進App Translocation這個唯讀空間再執行。<br />
+這有可能出現兩個問題，第一是你的程式如果涉及資料儲存，唯讀空間是不能存的，程式就會失敗。第二個問題是被移動的只有程式本身，萬一你的程式必須仰賴資料夾中的其他的檔案才能執行，那也會失敗。</p>
 
 <p>解決方法是拖拉這個app到任意其他位置(ex:桌面)，OSX就不會再幫你把這個app放進唯讀資料夾執行。</p>
 

@@ -4214,46 +4214,6 @@ body {
 
   <article class="post">
     <h2 class="title"> 
-        <a href="/post/2016-12-01/">Java RSA</a>
-    </h2>
-    <div class="entry-content">
-    <div class="meta">
-        <div class="date">Published on: <time datetime='2016-12-01T00:00:00.000&#43;00:00' itemprop="datePublished">2016-12-01</time>
-</div>
-        <div class="tags">Tags: 
-
-<a href="https://cdfq152313.github.io//tags/java">java</a>
-
-<a href="https://cdfq152313.github.io//tags/cryptography">cryptography</a>
-
-
-</div>
-    </div>
-        
-
-<h1 id="讀金鑰">讀金鑰</h1>
-
-<p>感謝大大無私分享，大大一生平安
-<a href="http://stackoverflow.com/questions/11410770/load-rsa-public-key-from-file">http://stackoverflow.com/questions/11410770/load-rsa-public-key-from-file</a></p>
-
-<h1 id="加密">加密</h1>
-
-<p>感謝大大無私分享，大大一生平安
-<a href="http://jimwayne.blogspot.tw/2012/06/java_25.html">http://jimwayne.blogspot.tw/2012/06/java_25.html</a></p>
-
-    </div>
-
-<div class="meta">
-    
-    
-    <span class="comments"><a href="/post/2016-12-01/#disqus_thread">Comments</a></span>
-    
-    
-</div>
-</article>
-
-  <article class="post">
-    <h2 class="title"> 
         <a href="/post/2016-11-24/">基礎知識惡補 - Http協定</a>
     </h2>
     <div class="entry-content">
@@ -4271,24 +4231,27 @@ body {
     </div>
         
 
-<p>來源網址：<a href="https://read01.com/J8P4L.html">https://read01.com/J8P4L.html</a>
+<p>來源網址：<a href="https://read01.com/J8P4L.html">https://read01.com/J8P4L.html</a><br />
 要注意最後一段說get比較不安全是錯的，你他媽的不轉成https通通都是不安全。</p>
 
-<h1 id="client端">Client端</h1>
+<h2 id="client端">Client端</h2>
 
-<p>分三區塊
-- Request line
-- Request header
-- Body</p>
+<p>分三區塊</p>
 
-<h2 id="request-line">Request line</h2>
+<ul>
+<li>Request line</li>
+<li>Request header</li>
+<li>Body</li>
+</ul>
+
+<h3 id="request-line">Request line</h3>
 
 <ul>
 <li>有著方法描述，資源位置，協議版本</li>
 <li>例如：GET <a href="http://www.cnblogs.com/">http://www.cnblogs.com/</a> HTTP/1.1</li>
 </ul>
 
-<h2 id="request-header">Request header</h2>
+<h3 id="request-header">Request header</h3>
 
 <ul>
 <li>Accept：client告知server可以接受的媒體類型(json, xml, html &hellip;)，大部分使用*/*代表全部都接受。</li>
@@ -4329,41 +4292,47 @@ body {
 </ul></li>
 </ul>
 
-<h2 id="body">Body</h2>
+<h3 id="body">Body</h3>
 
 <p>就是個Body</p>
 
-<h1 id="server端">Server端</h1>
+<h2 id="server端">Server端</h2>
 
 <p>一樣分三區塊
 - Response line
 - Response header
 - Body</p>
 
-<h2 id="response-line">Response line</h2>
+<h3 id="response-line">Response line</h3>
 
 <ul>
 <li>協議版本及狀態碼</li>
 <li>例如：HTTP/1.1 200 OK</li>
 </ul>
 
-<h2 id="response-header">Response header</h2>
+<h3 id="response-header">Response header</h3>
 
 <p>有些部分跟request一樣，少部分懶得看。</p>
 
 <p>Content-Type：回傳資料的型態
-Expired：回傳資料過期時間
-- 懶得看
-    - Cache-Control
-  - Last-Modified:
-    - Server
-    - X-AspNet-Version:
-    - X-Powered-By:
-    - Connection
-    - Content-Length
-    - Date</p>
+Expired：回傳資料過期時間</p>
 
-<h2 id="body-1">Body</h2>
+<ul>
+<li>懶得看
+
+<ul>
+<li>Cache-Control</li>
+<li>Last-Modified:</li>
+<li>Server</li>
+<li>X-AspNet-Version:</li>
+<li>X-Powered-By:</li>
+<li>Connection</li>
+<li>Content-Length</li>
+<li>Date</li>
+</ul></li>
+</ul>
+
+<h3 id="body-1">Body</h3>
 
 <p>就只是個Body</p>
 
@@ -4397,11 +4366,11 @@ Expired：回傳資料過期時間
     </div>
         
 
-<h1 id="mail">Mail</h1>
+<h2 id="mail">Mail</h2>
 
 <p>不能在模擬器上跑，會crash。</p>
 
-<h2 id="簡單流程">簡單流程</h2>
+<h3 id="簡單流程">簡單流程</h3>
 
 <ol>
 <li>初始化MFMailComposeViewController</li>
@@ -4419,7 +4388,7 @@ func sendMail(){
 }
 </code></pre>
 
-<h2 id="測試能不能使用mail功能">測試能不能使用Mail功能</h2>
+<h3 id="測試能不能使用mail功能">測試能不能使用Mail功能</h3>
 
 <p>像是在模擬器上就不能使用。</p>
 
@@ -4431,7 +4400,7 @@ else{
 }
 </code></pre>
 
-<h2 id="mailcomposedelegate">mailComposeDelegate</h2>
+<h3 id="mailcomposedelegate">mailComposeDelegate</h3>
 
 <p>設定mailComposeDelegate可以讓寄信完後，dismiss到原來畫面，這邊要注意的是不要設成一般delegate了。</p>
 
@@ -4453,7 +4422,7 @@ func mailComposeController(_ controller: MFMailComposeViewController, didFinishW
 }
 </code></pre>
 
-<h2 id="夾帶圖片">夾帶圖片</h2>
+<h3 id="夾帶圖片">夾帶圖片</h3>
 
 <pre><code class="language-swift">// 夾一張圖片
 func mailCo
@@ -4467,23 +4436,25 @@ data = UIImageJPEGRepresentation(image!, 0.9)
 mailController.addAttachmentData(data!, mimeType: &quot;image/jpg&quot;, fileName: &quot;book2.jpg&quot;)
 </code></pre>
 
-<h2 id="放置html檔">放置HTML檔</h2>
+<h3 id="放置html檔">放置HTML檔</h3>
 
 <pre><code class="language-swift">let body = &quot;&lt;h1&gt;HelloWorld&lt;/h1&gt;&quot;
 mailController.setMessageBody(body, isHTML:true)
 </code></pre>
 
-<h1 id="message">Message</h1>
+<h2 id="message">Message</h2>
 
 <p>同樣不能在模擬器上跑，會crash。</p>
 
-<h2 id="簡單流程-1">簡單流程</h2>
+<h3 id="簡單流程-1">簡單流程</h3>
 
-<p>由於是訊息，只要填body即可。
-收件者可以是
-- 人名
-- 手機號碼
-- 郵件信箱</p>
+<p>由於是訊息，只要填body即可。收件者可以是</p>
+
+<ul>
+<li>人名</li>
+<li>手機號碼</li>
+<li>郵件信箱</li>
+</ul>
 
 <pre><code class="language-swift">func sendMessage(){
   let controller = MFMessageComposeViewController()
@@ -4523,21 +4494,24 @@ mailController.setMessageBody(body, isHTML:true)
     </div>
         
 
-<h1 id="tableview">TableView</h1>
+<h2 id="tableview">TableView</h2>
 
-<h2 id="indexpath-section-row">IndexPath: Section &amp; Row</h2>
+<h3 id="indexpath-section-row">IndexPath: Section &amp; Row</h3>
 
-<p><img src="http://i.imgur.com/razNcl9.png" alt="Section and Row" />
-看圖應該可以明瞭Section和Row的含意，Apple把tableView劃分為section，每個section下又有row。
+<p><img src="http://i.imgur.com/razNcl9.png" alt="Section and Row" /></p>
+
+<p>看圖應該可以明瞭Section和Row的含意，Apple把tableView劃分為section，每個section下又有row。<br />
 在IOS中有一個叫做IndexPath的類別專門儲存這兩個值，在tableView以後要override的方法會經常看到。</p>
 
-<h2 id="必定要override的method-幾個section-幾個row">必定要override的method: 幾個section 幾個row</h2>
+<h3 id="必定要override的method-幾個section-幾個row">必定要override的method: 幾個section 幾個row</h3>
 
-<p>使用tableView必須指定DataSource和Delegate (若是TableViewController則已經指定好自己作為這兩個protocol的實作)</p>
+<p>使用tableView必須指定DataSource和Delegate (若是TableViewController則已經指定好自己作為這兩個protocol的實作)<br />
+其中有些function是必定要override的</p>
 
-<p>其中有些function是必定要override的
-1. 總共有幾個section
-2. 每個section裡面有幾個row</p>
+<ol>
+<li>總共有幾個section</li>
+<li>每個section裡面有幾個row</li>
+</ol>
 
 <p>在這個範例中，我指定兩個section，section 0有2 row，section 1有3 row。</p>
 
@@ -4557,11 +4531,11 @@ override func tableView(_ tableView: UITableView, numberOfRowsInSection section:
 }
 </code></pre>
 
-<h2 id="某一列的內容">某一列的內容</h2>
+<h3 id="某一列的內容">某一列的內容</h3>
 
-<p>但是只有這樣，顯示出來會是空白一片，所以必須要回傳顯示的內容。
-在做這個項目之前，必須先到storyBoard，將tableView裏頭的cell指定一個identifier，否則會錯誤。
-在此我指定cell的identifier為myCell
+<p>但是只有這樣，顯示出來會是空白一片，所以必須要回傳顯示的內容。<br />
+在做這個項目之前，必須先到storyBoard，將tableView裏頭的cell指定一個identifier，否則會錯誤。<br />
+在此我指定cell的identifier為myCell<br />
 <img src="http://i.imgur.com/0mgnfd6.png" alt="Identifier" /></p>
 
 <p>然後才可以在程式碼中使用myCell</p>
@@ -4577,7 +4551,7 @@ override func tableView(_ tableView: UITableView, numberOfRowsInSection section:
 
 <p><img src="http://i.imgur.com/MFz1Rhv.png" alt="目前畫面" /></p>
 
-<h2 id="section-title">Section Title</h2>
+<h3 id="section-title">Section Title</h3>
 
 <p>但是這樣少了每個section的title，沒有段落感，所以用以下的code加上。</p>
 
@@ -4593,7 +4567,7 @@ override func tableView(_ tableView: UITableView, numberOfRowsInSection section:
 
 <p><img src="http://i.imgur.com/razNcl9.png" alt="目前畫面" /></p>
 
-<h2 id="點擊某列跳轉到下一個controller-並傳值">點擊某列跳轉到下一個Controller，並傳值</h2>
+<h3 id="點擊某列跳轉到下一個controller-並傳值">點擊某列跳轉到下一個Controller，並傳值</h3>
 
 <p><a href="http://dennycheng-blog.logdown.com/posts/946492-controller-interaction">請參閱之前的傳值方法</a>，我們選用方法一。這邊要補充的是：可以藉由tableview中的indexPathForselectedRow屬性來得知哪一列被選中。</p>
 
@@ -4615,7 +4589,7 @@ override func tableView(_ tableView: UITableView, numberOfRowsInSection section:
 }
 </code></pre>
 
-<h2 id="滑動刪除">滑動刪除</h2>
+<h3 id="滑動刪除">滑動刪除</h3>
 
 <p>只要複寫方法即可，記得必須同時刪除實際的Array以及畫面上的元件，否則會造成畫面與實際資料不同步的問題。</p>
 
@@ -4631,13 +4605,17 @@ override func tableView(_ tableView: UITableView, numberOfRowsInSection section:
 
 <p>但使用這個方法，只能滑出一個按鈕。如果想滑動時有多個按鈕可以選擇請看下節。</p>
 
-<h2 id="自訂滑動選項">自訂滑動選項</h2>
+<h3 id="自訂滑動選項">自訂滑動選項</h3>
 
-<p>如果想要自訂滑動按鈕的文字樣式，或是想指定多個滑動按鈕，那就不能使用上述的複寫方法。而必須改用下面這個。
-1. 複寫方法
-2. 自訂UITableViewRowAction
-3. 回傳UITableViewRowAction陣列
-因為此方法回傳陣列，所以可以塞進多個按鈕。</p>
+<p>如果想要自訂滑動按鈕的文字樣式，或是想指定多個滑動按鈕，那就不能使用上述的複寫方法。而必須改用下面這個。</p>
+
+<ol>
+<li>複寫方法</li>
+<li>自訂UITableViewRowAction</li>
+<li>回傳UITableViewRowAction陣列</li>
+</ol>
+
+<p>因為此方法回傳陣列，所以可以塞進多個按鈕。</p>
 
 <pre><code class="language-swift">override func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -&gt; [UITableViewRowAction]? {
         let addAction = UITableViewRowAction(style: .normal, title: &quot;insert&quot;) { 
@@ -4653,12 +4631,15 @@ override func tableView(_ tableView: UITableView, numberOfRowsInSection section:
     }
 </code></pre>
 
-<h2 id="更新畫面的method">更新畫面的method</h2>
+<h3 id="更新畫面的method">更新畫面的method</h3>
 
-<p>TableView裡面有三個method可以更新畫面。列表如下
-- 刪除：需提供IndexPath的陣列，一次可以刪一串。
-- 插入：需提供IndexPath的陣列，一次可以加入一串。
-- 重新整理</p>
+<p>TableView裡面有三個method可以更新畫面。列表如下</p>
+
+<ul>
+<li>刪除：需提供IndexPath的陣列，一次可以刪一串。</li>
+<li>插入：需提供IndexPath的陣列，一次可以加入一串。</li>
+<li>重新整理</li>
+</ul>
 
 <p>程式碼如下</p>
 
@@ -4667,9 +4648,9 @@ tableView.insertRows(at: [indexPath], with: .fade)
 tableView.reloadData()
 </code></pre>
 
-<h2 id="更換位置">更換位置</h2>
+<h3 id="更換位置">更換位置</h3>
 
-<h2 id="下拉更新">下拉更新</h2>
+<h3 id="下拉更新">下拉更新</h3>
 
 <p>常常會看到有APP在tableView下拉時畫面會開始轉圈圈，然後更新，現在試著製作這個效果。
 1. 在StoryBoard中點選TableViewController。
@@ -4684,7 +4665,7 @@ tableView.reloadData()
   }
 </code></pre>
 
-<h2 id="搜尋">搜尋</h2>
+<h3 id="搜尋">搜尋</h3>
 
 <pre><code class="language-swift">let searchController = UISearchController(searchResultsController: nil)
 searchController.searchResultsUpdater = self
@@ -4692,9 +4673,9 @@ self.tableView.tableHeaderView = searchController.searchBar
 searchController.dimsBackgroundDuringPresentation = false
 </code></pre>
 
-<h1 id="uicollectionview">UICollectionView</h1>
+<h2 id="uicollectionview">UICollectionView</h2>
 
-<h2 id="uicollectionviewdelegateflowlayout">UICollectionViewDelegateFlowLayout</h2>
+<h3 id="uicollectionviewdelegateflowlayout">UICollectionViewDelegateFlowLayout</h3>
 
 <p>可以調整cell的大小</p>
 
@@ -4728,38 +4709,47 @@ searchController.dimsBackgroundDuringPresentation = false
     </div>
         
 
-<h1 id="環境設定">環境設定</h1>
+<h2 id="環境設定">環境設定</h2>
 
-<h2 id="權限">權限</h2>
+<h3 id="權限">權限</h3>
 
-<p>開啟地圖本身不需要權限，如果若需要GPS位置，請在info.plist中開啟
+<p>開啟地圖本身不需要權限，如果若需要GPS位置，請在info.plist中開啟<br />
 <img src="http://i.imgur.com/sHeMOKN.png" alt="Alt Text" /></p>
 
-<h2 id="storyboard-iboutlet">StoryBoard &amp; IBOutlet</h2>
+<h3 id="storyboard-iboutlet">StoryBoard &amp; IBOutlet</h3>
 
-<p>在StoryBoard上地圖套件名稱叫做<strong>Map Kit View</strong>
-如果想要拉IBOutlet到自己的class中，會發現出現Error，這是因為Map class並不包含在UIKit當中。
+<p>在StoryBoard上地圖套件名稱叫做<strong>Map Kit View</strong><br />
+如果想要拉IBOutlet到自己的class中，會發現出現Error，這是因為Map class並不包含在UIKit當中。<br />
 所以請import Mapkit</p>
 
 <pre><code class="language-swift">import Mapkit
 </code></pre>
 
-<h2 id="mkmapviewdelegate">MKMapViewDelegate</h2>
+<h3 id="mkmapviewdelegate">MKMapViewDelegate</h3>
 
-<p>最後就是記得設定mapView的delegate
+<p>最後就是記得設定mapView的delegate<br />
 如果需要特殊效果的時候非常有用，例如：開始讀取map位置的時候要做什麼，結束讀取位置的時候要做什麼&hellip;</p>
 
-<h1 id="將地址解析為gps">將地址解析為GPS</h1>
+<h3 id="將地址解析為gps">將地址解析為GPS</h3>
 
-<p>可以利用CLGeocoder這個class來達成，以下是一個簡單的範例
-1. 初始化CLGeocoder
-2. 使用geocodeAddressString此方法，傳入兩個參數
-    - 需解析之address (字串)
-  - 解析完後的動作(closure)，參數如下
-    - [CLPlacemark]?: 一個地址有多個可能符合之GPS位置，所以是一個Array。
-    - Error?: 若無則為nil
-3. 在closure當中，把經緯度印出來
-    - 我們可以從CLPlacemark的location屬性當中，找到經度和緯度。</p>
+<p>可以利用CLGeocoder這個class來達成，以下是一個簡單的範例</p>
+
+<ol>
+<li>初始化CLGeocoder</li>
+<li>使用geocodeAddressString此方法，傳入兩個參數
+
+<ul>
+<li>需解析之address (字串)</li>
+<li>解析完後的動作(closure)，參數如下</li>
+<li>[CLPlacemark]?: 一個地址有多個可能符合之GPS位置，所以是一個Array。</li>
+<li>Error?: 若無則為nil</li>
+</ul></li>
+<li>在closure當中，把經緯度印出來
+
+<ul>
+<li>我們可以從CLPlacemark的location屬性當中，找到經度和緯度。</li>
+</ul></li>
+</ol>
 
 <pre><code class="language-swift">// 初始化
 let geoCoder = CLGeocoder()
@@ -4782,13 +4772,16 @@ geoCoder.geocodeAddressString(address) {
 }
 </code></pre>
 
-<h1 id="標註位置">標註位置</h1>
+<h2 id="標註位置">標註位置</h2>
 
-<p>先拿到要標註的GPS位置，再開始進行標註。
-1. 初始化MKPointAnnotation
-2. 設定title / subtitle / image等等欄位
-3. 設定GPS位置
-4. 使用方法addAnnotation方法將大頭針插在地圖上</p>
+<p>先拿到要標註的GPS位置，再開始進行標註。</p>
+
+<ol>
+<li>初始化MKPointAnnotation</li>
+<li>設定title / subtitle / image等等欄位</li>
+<li>設定GPS位置</li>
+<li>使用方法addAnnotation方法將大頭針插在地圖上</li>
+</ol>
 
 <pre><code class="language-swift">func setAnnotation(placeMark:CLPlacemark){
     // 開始進行標註
@@ -4800,13 +4793,16 @@ geoCoder.geocodeAddressString(address) {
 }
 </code></pre>
 
-<h1 id="將畫面拉到特定位置">將畫面拉到特定位置</h1>
+<h2 id="將畫面拉到特定位置">將畫面拉到特定位置</h2>
 
-<p>標註畫面只是將大頭針插上位置，地圖並沒有移動。如果想要將地圖zoom in到某個地點附近，就必須使用這個功能。
-1. 初始化座標，需要使用到經緯度。
-2. 初始化想顯示範圍，MKCoordinateSpanMake的兩個參數分別代表經緯度長度。
-3. 用上述兩個參數初始化MKCoordinateRegion
-4. 使用setRegion方法</p>
+<p>標註畫面只是將大頭針插上位置，地圖並沒有移動。如果想要將地圖zoom in到某個地點附近，就必須使用這個功能。</p>
+
+<ol>
+<li>初始化座標，需要使用到經緯度。</li>
+<li>初始化想顯示範圍，MKCoordinateSpanMake的兩個參數分別代表經緯度長度。</li>
+<li>用上述兩個參數初始化MKCoordinateRegion</li>
+<li>使用setRegion方法</li>
+</ol>
 
 <pre><code class="language-swift">func zoomInMap(placeMark:CLPlacemark){
         // set region
@@ -4817,9 +4813,9 @@ geoCoder.geocodeAddressString(address) {
 }
 </code></pre>
 
-<h1 id="以下難產中">以下難產中</h1>
+<h2 id="以下難產中">以下難產中</h2>
 
-<h1 id="mapkit-位置改變時定位">MapKit 位置改變時定位</h1>
+<h2 id="mapkit-位置改變時定位">MapKit 位置改變時定位</h2>
 
     </div>
 
@@ -4851,37 +4847,49 @@ geoCoder.geocodeAddressString(address) {
     </div>
         
 
-<h1 id="前言牢騷">前言牢騷</h1>
+<h2 id="前言牢騷">前言牢騷</h2>
 
 <p>我是要在uwp下使用加密演算法並傳送到server去，由Server進行解密。於是在google中下關鍵字&rdquo;.net rsa encrypt&rdquo;，所以就找到了最舊也最多人討論的RSACryptoServiceProvider。我使用Visual studio 2015開command line，想在弄到uwp前先行測試，結果發現了許多與伺服器(python)的解密不相容之處，不管是金鑰格式，還是填補方法。等到把這些問題都搞定了，又發現不能在UWP中使用，真是想死的心都有了&hellip;。再次google了&rdquo;uwp encrpyt&rdquo;後找到了CryptographicEngine + AsymmetricKeyAlgorithmProvider這組library，才終於搞定加解密問題。</p>
 
-<p>這篇文章會大概描述下列兩種加解密方法與金鑰格式。
-1. RSACryptoServiceProvider/RSACng
-2. CryptographicEngine + AsymmetricKeyAlgorithmProvider</p>
+<p>這篇文章會大概描述下列兩種加解密方法與金鑰格式。</p>
 
-<h1 id="net-rsa-api概觀">.net RSA API概觀</h1>
+<ol>
+<li>RSACryptoServiceProvider/RSACng</li>
+<li>CryptographicEngine + AsymmetricKeyAlgorithmProvider</li>
+</ol>
 
-<p>在.net中RSA的加解密有三組。分別是
-1. <a href="https://msdn.microsoft.com/zh-tw/library/system.security.cryptography.rsacryptoserviceprovider(v=vs.110).aspx">RSACryptoServiceProvider</a>
-2. <a href="https://msdn.microsoft.com/zh-tw/library/system.security.cryptography.rsacng(v=vs.110).aspx">RSACng</a>
-3. <a href="https://msdn.microsoft.com/library/windows/apps/br241490">CryptographicEngine</a> + <a href="https://msdn.microsoft.com/library/windows/apps/br241478">AsymmetricKeyAlgorithmProvider</a></p>
+<h2 id="net-rsa-api概觀">.net RSA API概觀</h2>
 
-<p>以格式來說，1,2是同一組介面實作，有著類似的操作方式，AsymmetricKeyAlgorithmProvider則是另外的class.
+<p>在.net中RSA的加解密有三組。分別是</p>
+
+<ol>
+<li><a href="https://msdn.microsoft.com/zh-tw/library/system.security.cryptography.rsacryptoserviceprovider(v=vs.110).aspx">RSACryptoServiceProvider</a></li>
+<li><a href="https://msdn.microsoft.com/zh-tw/library/system.security.cryptography.rsacng(v=vs.110).aspx">RSACng</a></li>
+<li><a href="https://msdn.microsoft.com/library/windows/apps/br241490">CryptographicEngine</a> + <a href="https://msdn.microsoft.com/library/windows/apps/br241478">AsymmetricKeyAlgorithmProvider</a></li>
+</ol>
+
+<p>以格式來說，1,2是同一組介面實作，有著類似的操作方式，AsymmetricKeyAlgorithmProvider則是另外的class.<br />
 以新舊來說，RSACryptoServiceProvider是最舊的，提供的填補格式極少。RSACng是後繼更加完善的class，但是要在.net4.6後才能用，選擇版本時要注意。至於CryptographicEngine，只能在windows app(含uwp)當中使用。</p>
 
-<h1 id="rsacryptoserviceprovider與rsacng">RSACryptoServiceProvider與RSACng</h1>
+<h2 id="rsacryptoserviceprovider與rsacng">RSACryptoServiceProvider與RSACng</h2>
 
-<h2 id="加密">加密</h2>
+<h3 id="加密">加密</h3>
 
-<p>步驟如下
-1. 先將字串轉換成Byte (可以用ASCIIEncoding或UTF8Encdoing，記得怎麼轉回來就好)
-2. 初始化RSACryptoServiceProvider (可用來加解密，在此只用來加密)
-3. 進行加密
-4. 對加密結果進行Base64(理由說明如下)
-    - RSA對byte進行加密，結果也是byte。
-  - 將加密結果直接轉回string，看起來是亂碼，會涵蓋許多無法顯示的字元。
-  - 因此如果要進行傳輸，最好以Base64重新編碼過，出來的字串才會全部都是可顯示的文字。
-  - <a href="https://zh.wikipedia.org/wiki/Base64">Base64介紹</a></p>
+<p>步驟如下</p>
+
+<ol>
+<li>先將字串轉換成Byte (可以用ASCIIEncoding或UTF8Encdoing，記得怎麼轉回來就好)</li>
+<li>初始化RSACryptoServiceProvider (可用來加解密，在此只用來加密)</li>
+<li>進行加密</li>
+<li>對加密結果進行Base64(理由說明如下)
+
+<ul>
+<li>RSA對byte進行加密，結果也是byte。</li>
+<li>將加密結果直接轉回string，看起來是亂碼，會涵蓋許多無法顯示的字元。</li>
+<li>因此如果要進行傳輸，最好以Base64重新編碼過，出來的字串才會全部都是可顯示的文字。</li>
+<li><a href="https://zh.wikipedia.org/wiki/Base64">Base64介紹</a></li>
+</ul></li>
+</ol>
 
 <pre><code class="language-csharp">static String Encrypt(String _content)
 {
@@ -4900,7 +4908,7 @@ geoCoder.geocodeAddressString(address) {
 }
 </code></pre>
 
-<p>在步驟2的時候，我使用了自己撰寫的getRSACrypto，透過匯入金鑰來產生實體，在下一小節會說明。
+<p>在步驟2的時候，我使用了自己撰寫的getRSACrypto，透過匯入金鑰來產生實體，在下一小節會說明。<br />
 不過從來沒有產生過金鑰的人，可能會需要自己先行產生。程式碼如下。</p>
 
 <pre><code class="language-csharp">// 指定金鑰長度在2048以上比較安全
@@ -4911,7 +4919,7 @@ String privatekey = rsa.ToXmlString(true)
 
 <p>再將這兩個key儲存起來即可。</p>
 
-<h2 id="匯入金鑰">匯入金鑰</h2>
+<h3 id="匯入金鑰">匯入金鑰</h3>
 
 <p>那來看看要如何匯入金鑰，其實只要引用FromXmlString即可。</p>
 
@@ -4924,45 +4932,59 @@ String privatekey = rsa.ToXmlString(true)
 }
 </code></pre>
 
-<p>特別將金鑰的地方提出來看看，是一個XML
-```xml publickey.xml
-<RSAKeyValue>
-<Modulus>
+<p>特別將金鑰的地方提出來看看，是一個XML</p>
+
+<p>publickey.xml</p>
+
+<pre><code class="language-xml">&lt;RSAKeyValue&gt;
+&lt;Modulus&gt;
 w3XOM8su/sXvgAIhwlNhpihgVIjWQUhW9zoocwCNWGI8b4YtU/qfOlX3bsWzqw6IqRF/Ncmkbs6Rr5uiDzhHwt7cz/+vgZ9Hm346OM6K2N70a7Lbzr/LlDDb4Yt/PzBEOHEffCkKnpy31KL6Xkfg2a0OkZiF8dny9PbKQaYbXQUJIhCx9YcZ4JZ5cRGMvpNKpS+Wx2q22GV5akKVZ6jVcIgotAgp+MtMJoSr8av61eX6sOl0JborsuuX8Cao278MGKCkUldU1hUDTJtH6IOQfeeJhWolEUS6KXj0FAReWR76aYXBDQ3xJAQHvB/mjMLSiB4mpfk0JETz9Bh0o9FvXw==
-</Modulus>
-<Exponent>AQAB</Exponent>
-</RSAKeyValue></p>
+&lt;/Modulus&gt;
+&lt;Exponent&gt;AQAB&lt;/Exponent&gt;
+&lt;/RSAKeyValue&gt;
+</code></pre>
 
-<pre><code>
-## PEM to XML
-上述的金鑰有一個問題，目前大多數的linux server產出的金鑰都是PEM格式，頂多是base64後的PEM格式，根本沒辦法匯入RSACryptoServiceProvider。
-幸好網路上有人幫忙解決這個問題[RSA Key Converter
-](https://superdry.apphb.com/tools/online-rsa-key-converter)，不過美中不足的是XML to PEM似乎有BUG。以server產key來說，應該還堪用就是。
+<h3 id="pem-to-xml">PEM to XML</h3>
 
-## RSACng與填補
-RSACng的使用方法與RSACryptoServiceProvider幾乎一模一樣，只在加密的時候，可以選擇更多種類的填補。
-關於填補的種類可以參閱[RSAEncryptionPadding](https://msdn.microsoft.com/zh-tw/library/system.security.cryptography.rsaencryptionpadding(v=vs.110).aspx)此一class。注意，只有.net4.6以上才支援此class。
-RSACryptoServiceProvider的Encrypt只有
-- OaepSHA1
-- Pkcs1
+<p>上述的金鑰有一個問題，目前大多數的linux server產出的金鑰都是PEM格式，頂多是base64後的PEM格式，根本沒辦法匯入RSACryptoServiceProvider。<br />
+幸好網路上有人幫忙解決這個問題<a href="https://superdry.apphb.com/tools/online-rsa-key-converter">RSA Key Converter</a>，不過美中不足的是XML to PEM似乎有BUG。以server產key來說，應該還堪用就是。</p>
 
-RASCng除了上述兩種外還有
-- OaepSHA256
-- OaepSHA384
-- OaepSHA512
+<h3 id="rsacng與填補">RSACng與填補</h3>
 
-# CryptographicEngine + AsymmetricKeyAlgorithmProvider
-CryptographicEngine和AsymmetricKeyAlgorithmProvider是用在**Windows app(UWP)**上的Library，在**一般的.net中似乎無法使用**。
+<p>RSACng的使用方法與RSACryptoServiceProvider幾乎一模一樣，只在加密的時候，可以選擇更多種類的填補。<br />
+關於填補的種類可以參閱<a href="https://msdn.microsoft.com/zh-tw/library/system.security.cryptography.rsaencryptionpadding(v=vs.110).aspx">RSAEncryptionPadding</a>此一class。注意，只有.net4.6以上才支援此class。</p>
 
-## 加密
-大致流程如下
-1. 先將字串轉換成IBuffer，可藉由先轉成Byte，再使用AsBuffer來轉換
-2. 初始化CryptographicKey，此key包含指定的加密之演算法與金鑰
-3. 利用CryptographicEngine進行加密，需匯入步驟2的key與想加密的內容
-4. 對加密結果進行Base64(理由剛剛已經說明過了)
+<p>RSACryptoServiceProvider的Encrypt只有</p>
 
-```csharp
-public String Encrypt(string _content)
+<ul>
+<li>OaepSHA1</li>
+<li>Pkcs1</li>
+</ul>
+
+<p>RASCng除了上述兩種外還有</p>
+
+<ul>
+<li>OaepSHA256</li>
+<li>OaepSHA384</li>
+<li>OaepSHA512</li>
+</ul>
+
+<h2 id="cryptographicengine-asymmetrickeyalgorithmprovider">CryptographicEngine + AsymmetricKeyAlgorithmProvider</h2>
+
+<p>CryptographicEngine和AsymmetricKeyAlgorithmProvider是用在<strong>Windows app(UWP)</strong>上的Library，在<strong>一般的.net中似乎無法使用</strong>。</p>
+
+<h3 id="加密-1">加密</h3>
+
+<p>大致流程如下</p>
+
+<ol>
+<li>先將字串轉換成IBuffer，可藉由先轉成Byte，再使用AsBuffer來轉換</li>
+<li>初始化CryptographicKey，此key包含指定的加密之演算法與金鑰</li>
+<li>利用CryptographicEngine進行加密，需匯入步驟2的key與想加密的內容</li>
+<li>對加密結果進行Base64(理由剛剛已經說明過了)</li>
+</ol>
+
+<pre><code class="language-csharp">public String Encrypt(string _content)
 {
   // 將字串轉換成IBuffer
   Encoding ByteConverter = new ASCIIEncoding();
@@ -4982,7 +5004,7 @@ public String Encrypt(string _content)
 
 <p>在步驟2的時候，我使用了自己撰寫的getCryptographicKey，透過選擇演算法和匯入金鑰來產生實體，在下一小節會說明。</p>
 
-<h2 id="cryptographickey的初始化">CryptographicKey的初始化</h2>
+<h3 id="cryptographickey的初始化">CryptographicKey的初始化</h3>
 
 <ol>
 <li>使用AsymmetricKeyAlgorithmProvider.OpenAlgorithm選擇加密演算法，返回一個實體
@@ -5007,15 +5029,18 @@ public String Encrypt(string _content)
 }
 </code></pre>
 
-<p>單獨把pulbic key拿出來看，是一個pem格式的金鑰。
-```pem publickey
-MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAw3XOM8su/sXvgAIhwlNhpihgVIjWQUhW9zoocwCNWGI8b4YtU/qfOlX3bsWzqw6IqRF/Ncmkbs6Rr5uiDzhHwt7cz/+vgZ9Hm346OM6K2N70a7Lbzr/LlDDb4Yt/PzBEOHEffCkKnpy31KL6Xkfg2a0OkZiF8dny9PbKQaYbXQUJIhCx9YcZ4JZ5cRGMvpNKpS+Wx2q22GV5akKVZ6jVcIgotAgp+MtMJoSr8av61eX6sOl0JborsuuX8Cao278MGKCkUldU1hUDTJtH6IOQfeeJhWolEUS6KXj0FAReWR76aYXBDQ3xJAQHvB/mjMLSiB4mpfk0JETz9Bh0o9FvXwIDAQAB</p>
+<p>單獨把pulbic key拿出來看，是一個pem格式的金鑰。</p>
 
-<pre><code>
-# 與python共舞
-如果安裝pycrypto並使用
-```python
-from Crypto.PublicKey import RSA
+<p>publickey</p>
+
+<pre><code class="language-pem">MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAw3XOM8su/sXvgAIhwlNhpihgVIjWQUhW9zoocwCNWGI8b4YtU/qfOlX3bsWzqw6IqRF/Ncmkbs6Rr5uiDzhHwt7cz/+vgZ9Hm346OM6K2N70a7Lbzr/LlDDb4Yt/PzBEOHEffCkKnpy31KL6Xkfg2a0OkZiF8dny9PbKQaYbXQUJIhCx9YcZ4JZ5cRGMvpNKpS+Wx2q22GV5akKVZ6jVcIgotAgp+MtMJoSr8av61eX6sOl0JborsuuX8Cao278MGKCkUldU1hUDTJtH6IOQfeeJhWolEUS6KXj0FAReWR76aYXBDQ3xJAQHvB/mjMLSiB4mpfk0JETz9Bh0o9FvXwIDAQAB
+</code></pre>
+
+<h2 id="與python共舞">與python共舞</h2>
+
+<p>如果安裝pycrypto並使用</p>
+
+<pre><code class="language-python">from Crypto.PublicKey import RSA
 from Crypto.Cipher import PKCS1_v1_5
 </code></pre>
 
@@ -5063,7 +5088,7 @@ from Crypto.Cipher import PKCS1_v1_5
 Main Queue / Concurrent Queue
 主執行緒不能執行同步工作，只能執行非同步工作。</p>
 
-<h1 id="主執行緒語法">主執行緒語法</h1>
+<h2 id="主執行緒語法">主執行緒語法</h2>
 
 <pre><code class="language-swift">let task1 = {
     for i in 1...5{
@@ -5076,7 +5101,7 @@ DispatchQueue.main.async(execute: task1)
 
 </code></pre>
 
-<h1 id="背景執行緒語法">背景執行緒語法</h1>
+<h2 id="背景執行緒語法">背景執行緒語法</h2>
 
 <p>不指定執行緒</p>
 
@@ -5090,9 +5115,9 @@ DispatchQueue.global().async(execute: task1)
 DispatchQueue.global(qos: .background).async(execute:task1)
 </code></pre>
 
-<h1 id="下載方法">下載方法</h1>
+<h2 id="下載方法">下載方法</h2>
 
-<h2 id="nsdata">NSData</h2>
+<h3 id="nsdata">NSData</h3>
 
 <ol>
 <li>利用url生出網址</li>
@@ -5100,7 +5125,7 @@ DispatchQueue.global(qos: .background).async(execute:task1)
 <li>把下載下來的資料指定給想要的檔案</li>
 </ol>
 
-<p>記得要使用DispatchQueue.global().async使用此function，否則畫面會被block住。
+<p>記得要使用DispatchQueue.global().async使用此function，否則畫面會被block住。<br />
 下載完畢後要更新UI時要使用ispatchQueue.main.async否則畫面不會即時更新。</p>
 
 <pre><code class="language-swift">func download(){
@@ -5123,10 +5148,10 @@ DispatchQueue.global().async {
 }
 </code></pre>
 
-<h2 id="session">Session</h2>
+<h3 id="session">Session</h3>
 
-<p>改利用Session來下載
-Session的ataTask本身即是非同步，所以不會擋住UI畫面。
+<p>改利用Session來下載<br />
+Session的ataTask本身即是非同步，所以不會擋住UI畫面。<br />
 一樣在任務結束要更新UI時要使用main thread來更新。</p>
 
 <ol>
@@ -5190,9 +5215,9 @@ task.resume()
     </div>
         
 
-<h1 id="ios的路徑">iOS的路徑</h1>
+<h2 id="ios的路徑">iOS的路徑</h2>
 
-<h2 id="專案資料夾內的路徑">專案資料夾內的路徑</h2>
+<h3 id="專案資料夾內的路徑">專案資料夾內的路徑</h3>
 
 <p>利用Bundle.main獲取
 可以指定檔案名稱以及副檔名。</p>
@@ -5203,7 +5228,7 @@ let url = Bundle.main.url(forResource: &quot;myjson&quot;, withExtension: &quot;
 let path = Bundle.main.path(forResource: &quot;myjson&quot;, ofType: &quot;json&quot;)
 </code></pre>
 
-<h2 id="一般app路徑">一般App路徑</h2>
+<h3 id="一般app路徑">一般App路徑</h3>
 
 <p>Document範例</p>
 
@@ -5235,15 +5260,14 @@ let pathFromLibrary = NSTemporaryDirectory()
 let urlfrompath = URL(fileURLWithPath: pathFromNSHome)
 </code></pre>
 
-<h2 id="新增路徑">新增路徑</h2>
+<h3 id="新增路徑">新增路徑</h3>
 
 <ol>
 <li>將想要新增的路徑名稱寫出來</li>
 <li>利用FileManager.default.createDirectory新增路徑
 
 <ul>
-<li>此方法的withIntermediateDirctories參數若設成true，可以幫你遞迴建立不存在的資料夾
-<br /></li>
+<li>此方法的withIntermediateDirctories參數若設成true，可以幫你遞迴建立不存在的資料夾</li>
 </ul></li>
 </ol>
 
@@ -5255,7 +5279,7 @@ do{
 }
 </code></pre>
 
-<h2 id="列出某個路徑下的所有檔案">列出某個路徑下的所有檔案</h2>
+<h3 id="列出某個路徑下的所有檔案">列出某個路徑下的所有檔案</h3>
 
 <ol>
 <li>先找到想列出檔案的路徑</li>
@@ -5274,9 +5298,9 @@ catch{
 }
 </code></pre>
 
-<h2 id="查看路徑資訊">查看路徑資訊</h2>
+<h3 id="查看路徑資訊">查看路徑資訊</h3>
 
-<p>FileManager.default.fileExists 可以幫你查看這個檔案是否存在，以及該檔案是否為一個Directory。
+<p>FileManager.default.fileExists 可以幫你查看這個檔案是否存在，以及該檔案是否為一個Directory。<br />
 需要特別注意的是OBJCBool的使用</p>
 
 <pre><code class="language-swift">let path = NSTemporaryDirectory() + &quot;/images&quot;
@@ -5293,7 +5317,7 @@ else{
 }
 </code></pre>
 
-<h2 id="複製貼上刪除檔案">複製貼上刪除檔案</h2>
+<h3 id="複製貼上刪除檔案">複製貼上刪除檔案</h3>
 
 <p>使用下方函式，記得加上do try catch。</p>
 
@@ -5302,9 +5326,9 @@ FileManager.default.moveItem(atPath: path, toPath: mvPath)
 FileManager.default.removeItem(atPath: path)
 </code></pre>
 
-<h1 id="一般型別寫檔讀檔">一般型別寫檔讀檔</h1>
+<h2 id="一般型別寫檔讀檔">一般型別寫檔讀檔</h2>
 
-<h2 id="讀寫string">讀寫String</h2>
+<h3 id="讀寫string">讀寫String</h3>
 
 <p>寫檔要呼叫String的方法</p>
 
@@ -5328,7 +5352,7 @@ do{
 }
 </code></pre>
 
-<h2 id="讀寫array">讀寫Array</h2>
+<h3 id="讀寫array">讀寫Array</h3>
 
 <p>利用NSArray做寫入</p>
 
@@ -5346,7 +5370,7 @@ if let loadArray = NSArray(contentsOfFile: filePath) as? [String]{
 }
 </code></pre>
 
-<h2 id="讀寫dict">讀寫Dict</h2>
+<h3 id="讀寫dict">讀寫Dict</h3>
 
 <p>寫入靠NSDictionary</p>
 
@@ -5364,11 +5388,11 @@ dictToSave.write(toFile: filePath, atomically: true)
 }
 </code></pre>
 
-<h1 id="多媒體寫檔讀檔">多媒體寫檔讀檔</h1>
+<h2 id="多媒體寫檔讀檔">多媒體寫檔讀檔</h2>
 
-<h2 id="圖檔">圖檔</h2>
+<h3 id="圖檔">圖檔</h3>
 
-<p>存檔
+<p>存檔<br />
 多媒體的寫檔只能依靠URL而不能靠檔案路徑。</p>
 
 <ol>
@@ -5397,20 +5421,26 @@ if let dataToSave = UIImagePNGRepresentation(image){
 }
 </code></pre>
 
-<p>讀檔
-1. 先用UIImage載入
-2. 把載入圖片放在UIImageView上面</p>
+<p>讀檔</p>
+
+<ol>
+<li>先用UIImage載入</li>
+<li>把載入圖片放在UIImageView上面</li>
+</ol>
 
 <pre><code class="language-swift">let filePath = NSTemporaryDirectory() + &quot;savedImage.png&quot;
 let image = UIImage(contentsOfFile: filePath)
 myImageView.image = image
 </code></pre>
 
-<h1 id="自定義class讀寫檔">自定義class讀寫檔</h1>
+<h2 id="自定義class讀寫檔">自定義class讀寫檔</h2>
 
-<p>要寫檔的class必須繼承
-- NSObject
-- NSCoding</p>
+<p>要寫檔的class必須繼承</p>
+
+<ul>
+<li>NSObject</li>
+<li>NSCoding</li>
+</ul>
 
 <p>並複寫相關function</p>
 
@@ -5435,12 +5465,15 @@ myImageView.image = image
 }
 </code></pre>
 
-<p>可以來試著測試了
-寫檔
-1. 產生物件
-2. 利用NSKeyedArchiver.archivedData包裹物件，產生data
-3. 找到寫檔路徑
-4. 將data寫入指定路徑</p>
+<p>可以來試著測試了<br />
+寫檔</p>
+
+<ol>
+<li>產生物件</li>
+<li>利用NSKeyedArchiver.archivedData包裹物件，產生data</li>
+<li>找到寫檔路徑</li>
+<li>將data寫入指定路徑</li>
+</ol>
 
 <pre><code class="language-swift">let item = Item(name: &quot;危城&quot;, detail: &quot;動作&quot;)
 let data = NSKeyedArchiver.archivedData(withRootObject: item)
@@ -5449,10 +5482,13 @@ let url = docUrl.appendingPathComponent(&quot;myfile.txt&quot;)
 try! data.write(to: url)
 </code></pre>
 
-<p>讀檔
-1. 找到讀檔路徑
-2. 獲取Data
-3. 利用NSKeyedUnarchiver.unarchiveObject，將data轉換成指定物件</p>
+<p>讀檔</p>
+
+<ol>
+<li>找到讀檔路徑</li>
+<li>獲取Data</li>
+<li>利用NSKeyedUnarchiver.unarchiveObject，將data轉換成指定物件</li>
+</ol>
 
 <pre><code class="language-swift">let docUrl = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
 let url = docUrl.appendingPathComponent(&quot;myfile.txt&quot;)
@@ -5496,7 +5532,7 @@ if let data = data {
     </div>
         
 
-<h1 id="播放系統音效">播放系統音效</h1>
+<h2 id="播放系統音效">播放系統音效</h2>
 
 <p>超簡單只需要兩行</p>
 
@@ -5504,12 +5540,12 @@ if let data = data {
 AudioServicesPlaySystemSound(1000)
 </code></pre>
 
-<h1 id="播放自己放在app的音樂">播放自己放在app的音樂</h1>
+<h2 id="播放自己放在app的音樂">播放自己放在app的音樂</h2>
 
-<p>先把自己的音效拖進Xcode，記得選擇&rdquo;copy items if needed&rdquo;，否則只會放入reference。
+<p>先把自己的音效拖進Xcode，記得選擇&rdquo;copy items if needed&rdquo;，否則只會放入reference。<br />
 可以開一個新的Group(資料夾圖示)來專門放置音檔。</p>
 
-<h2 id="步驟">步驟</h2>
+<h3 id="步驟">步驟</h3>
 
 <ol>
 <li>找到檔案在哪(用Bundle)</li>
@@ -5539,7 +5575,7 @@ let myPlayer = myPlayerInit()
 myPlayer?.play()
 </code></pre>
 
-<h2 id="其他好用的方法">其他好用的方法</h2>
+<h3 id="其他好用的方法">其他好用的方法</h3>
 
 <pre><code class="language-swift">myPlayer?.stop() // 停止
 myPlayer?.currentTime = 0 // 把音檔時間歸零
@@ -5551,11 +5587,11 @@ myPlayer?.enableRate = true
 myPlayer?.rate = 0.5
 </code></pre>
 
-<h1 id="播放手機內部的音樂">播放手機內部的音樂</h1>
+<h2 id="播放手機內部的音樂">播放手機內部的音樂</h2>
 
 <p>利用MPMediaPickerController，此一Controller會讓你選擇音樂。我們只需要指定選完音樂(或沒選到)要做什麼動作即可。</p>
 
-<h2 id="步驟-1">步驟</h2>
+<h3 id="步驟-1">步驟</h3>
 
 <ol>
 <li>在Xcode調整權限
@@ -5596,7 +5632,7 @@ func mediaPicker(_ mediaPicker: MPMediaPickerController, didPickMediaItems media
 
 <p>若要停止MPmusicPlayerController一樣可以使用.stop函數</p>
 
-<h1 id="錄音">錄音</h1>
+<h2 id="錄音">錄音</h2>
 
 <ol>
 <li>在info.plist增加麥克風權限</li>
@@ -5611,11 +5647,11 @@ func mediaPicker(_ mediaPicker: MPMediaPickerController, didPickMediaItems media
 <li>開始錄音</li>
 </ol>
 
-<h2 id="權限設定-1">權限設定</h2>
+<h3 id="權限設定-1">權限設定</h3>
 
 <p><img src="http://i.imgur.com/WwJpAMB.png" alt="麥克風權限" /></p>
 
-<h2 id="步驟2-3-4-5">步驟2 3 4 5</h2>
+<h3 id="步驟2-3-4-5">步驟2 3 4 5</h3>
 
 <pre><code class="language-swift">func audioRecorderInit()-&gt;AVAudioRecorder?{
     // 步驟2 設定路徑
@@ -5641,7 +5677,7 @@ func mediaPicker(_ mediaPicker: MPMediaPickerController, didPickMediaItems media
 }
 </code></pre>
 
-<h2 id="avaudiorecorderdelegate的實作">AVAudioRecorderDelegate的實作</h2>
+<h3 id="avaudiorecorderdelegate的實作">AVAudioRecorderDelegate的實作</h3>
 
 <p>參數recorder的屬性url可以拿到錄製好的檔案路徑</p>
 
@@ -5657,7 +5693,7 @@ func mediaPicker(_ mediaPicker: MPMediaPickerController, didPickMediaItems media
 }
 </code></pre>
 
-<h2 id="開始錄音">開始錄音</h2>
+<h3 id="開始錄音">開始錄音</h3>
 
 <p>將AVAudioSession調成AVAudioSessionCatetoryPlayAndRecord，可有效增大錄音音量。若不調整則會很小聲。</p>
 
@@ -5671,7 +5707,7 @@ audioRecorder?.prepareToRecord()
 audioRecorder?.record()
 </code></pre>
 
-<h2 id="停止錄音">停止錄音</h2>
+<h3 id="停止錄音">停止錄音</h3>
 
 <p>記得把剛剛的AVAudioSession.sharedInstance()調回原樣</p>
 
@@ -5715,13 +5751,13 @@ catch{
     </div>
         
 
-<h1 id="參考資料">參考資料</h1>
+<h2 id="參考資料">參考資料</h2>
 
-<p>感謝大大～～
-<a href="https://itisjoe.gitbooks.io/swiftgo/content/">https://itisjoe.gitbooks.io/swiftgo/content/</a>
+<p>感謝大大～～<br />
+<a href="https://itisjoe.gitbooks.io/swiftgo/content/">https://itisjoe.gitbooks.io/swiftgo/content/</a><br />
 因應swift3，筆記內容與gitbook上略有不同</p>
 
-<h1 id="struct和enum是value-type-class是reference-type">struct和enum是value type, class是reference type</h1>
+<h2 id="struct和enum是value-type-class是reference-type">struct和enum是value type, class是reference type</h2>
 
 <ul>
 <li>struct宣告為常數，就無法更改內部的值，但class可以。</li>
@@ -5753,7 +5789,7 @@ print(x.x)
 }
 </code></pre>
 
-<h1 id="function注意事項">function注意事項</h1>
+<h2 id="function注意事項">function注意事項</h2>
 
 <p>call function時，參數後要指定參數名稱，不可以省略</p>
 
@@ -5771,9 +5807,9 @@ plus(a:1, b:3)
 plus(1, 3)
 </code></pre>
 
-<h2 id="外部參數名稱-external-parameter-name">外部參數名稱(External parameter Name)</h2>
+<h3 id="外部參數名稱-external-parameter-name">外部參數名稱(External parameter Name)</h3>
 
-<p>事實上a前面的底線是External parameter Name的意思。External parameter Name用於外部呼叫Function時的參數識別名，若不寫則與內部名稱相同。
+<p>事實上a前面的底線是External parameter Name的意思。External parameter Name用於外部呼叫Function時的參數識別名，若不寫則與內部名稱相同。<br />
 而底線代表不在意參數識別名稱，即為可忽略的意思。</p>
 
 <pre><code class="language-swift">func plus(AAA a :Int,BBB b:Int){
@@ -5782,7 +5818,7 @@ plus(1, 3)
 plus(AAA:1, BBB:3)
 </code></pre>
 
-<h1 id="型別方法">型別方法</h1>
+<h2 id="型別方法">型別方法</h2>
 
 <p>在class中要宣告class方法(非object方法)，可以用關鍵字<strong>class</strong>或<strong>static</strong></p>
 
@@ -5794,14 +5830,14 @@ plus(AAA:1, BBB:3)
 }
 </code></pre>
 
-<h1 id="closure">Closure</h1>
+<h2 id="closure">Closure</h2>
 
-<h2 id="函式也是一種型別">函式也是一種型別</h2>
+<h3 id="函式也是一種型別">函式也是一種型別</h3>
 
-<p>型別名稱為
+<p>型別名稱為<br />
 (參數型別)-&gt;回傳型別</p>
 
-<h2 id="化function為clousure">化function為Clousure</h2>
+<h3 id="化function為clousure">化function為Clousure</h3>
 
 <ol>
 <li>刪掉func與函式名</li>
@@ -5824,25 +5860,25 @@ plus(AAA:1, BBB:3)
 }
 </code></pre>
 
-<h2 id="closure簡寫">Closure簡寫</h2>
+<h3 id="closure簡寫">Closure簡寫</h3>
 
 <ol>
 <li><p>如果已經知道參數跟回傳值的型別的話，可以省略Clousure裡的參數與回傳值型別</p>
 
 <pre><code class="language-swift">let numberArray=[1,3,6,8,10,45]
-  numberArray.map( {(number) in return number+10} ) // 省略型別
+numberArray.map( {(number) in return number+10} ) // 省略型別
 </code></pre></li>
 
 <li><p>如果Closure有回傳值，而且程式碼是一行的話，可以省略return，</p>
 
 <pre><code class="language-swift">let numberArray=[1,3,6,8,10,45]
-  numberArray.map( {(number) in number+10} ) // 回傳number+10
+numberArray.map( {(number) in number+10} ) // 回傳number+10
 </code></pre></li>
 
 <li><p>可以用$0, $1 &hellip; 代表參數。</p>
 
 <pre><code class="language-swift">let numberArray=[1,3,6,8,10,45]
-  numberArray.map( {$0 + 10} ) // 省略參數，利用$0代表參數
+numberArray.map( {$0 + 10} ) // 省略參數，利用$0代表參數
 </code></pre></li>
 
 <li><p>如果Closure是最後一個參數的話，可以把clousure寫在小括號的外面。</p>
@@ -5858,7 +5894,7 @@ plus(AAA:1, BBB:3)
 </code></pre></li>
 </ol>
 
-<h1 id="guard的用途">guard的用途</h1>
+<h2 id="guard的用途">guard的用途</h2>
 
 <p>guard比if能更好的實行Defensive Programming，因為在guard中的可選綁定可以在接下來code中使用。</p>
 
@@ -5878,20 +5914,23 @@ guard let apple = text else{
 print(apple)
 </code></pre>
 
-<h1 id="error">Error</h1>
+<h2 id="error">Error</h2>
 
-<p>Swift丟出的異常是一種enum，實作時繼承Error。
-有幾種方法
-1. 最基本的do try catch
-2. 向上拋擲function填throw
-3. try? : 如果出現錯誤則回傳nil(不用再寫do catch)，可搭配optinal binding
-4. try! : 一定成功。(若沒成功會crash)</p>
+<p>Swift丟出的異常是一種enum，實作時繼承Error。<br />
+有幾種方法</p>
 
-<h1 id="init">init</h1>
+<ol>
+<li>最基本的do try catch</li>
+<li>向上拋擲function填throw</li>
+<li>try? : 如果出現錯誤則回傳nil(不用再寫do catch)，可搭配optinal binding</li>
+<li>try! : 一定成功。(若沒成功會crash)</li>
+</ol>
 
-<h2 id="init-1">init?</h2>
+<h2 id="init">init</h2>
 
-<p>init?代表可以回傳nil，也就是可能init失敗。
+<h3 id="init-1">init?</h3>
+
+<p>init?代表可以回傳nil，也就是可能init失敗。<br />
 參看下面的code</p>
 
 <pre><code class="language-swift">class Baby{
@@ -5907,7 +5946,7 @@ print(apple)
 
 <p>一個寶寶生出來小於一歲是不合理的，所以init失敗回傳nil</p>
 
-<h2 id="init的順序">init的順序</h2>
+<h3 id="init的順序">init的順序</h3>
 
 <ul>
 <li>原則1：屬性的初始,必須在當初宣告屬性的類別裡進⾏。</li>
@@ -5975,13 +6014,16 @@ print(apple)
 }
 </code></pre>
 
-<h2 id="convenience-init">convenience init</h2>
+<h3 id="convenience-init">convenience init</h3>
 
-<p>有兩種類型的init
-- designated initializer : 一般的init
-- convenience initializer : 加了關鍵字convenience的init</p>
+<p>有兩種類型的init</p>
 
-<p>擁有convenience關鍵字的init才可以call其他init function，來減少重複工作，非常<strong>方便</strong>。
+<ul>
+<li>designated initializer : 一般的init</li>
+<li>convenience initializer : 加了關鍵字convenience的init</li>
+</ul>
+
+<p>擁有convenience關鍵字的init才可以call其他init function，來減少重複工作，非常<strong>方便</strong>。<br />
 舉例來說：</p>
 
 <pre><code class="language-swift">class Baby{
@@ -5998,7 +6040,7 @@ print(apple)
 }
 </code></pre>
 
-<h2 id="init的繼承">init的繼承</h2>
+<h3 id="init的繼承">init的繼承</h3>
 
 <ul>
 <li>designated initializer的繼承
@@ -6022,7 +6064,7 @@ print(apple)
 <pre><code class="language-swift">
 </code></pre>
 
-<h2 id="使用required防止init失傳">使用required防止init失傳</h2>
+<h3 id="使用required防止init失傳">使用required防止init失傳</h3>
 
     </div>
 
@@ -6030,6 +6072,359 @@ print(apple)
     
     
     <span class="comments"><a href="/post/2016-10-04/#disqus_thread">Comments</a></span>
+    
+    
+</div>
+</article>
+
+  <article class="post">
+    <h2 class="title"> 
+        <a href="/post/2016-10-03/">Swift 不同Controller互動 與 Navigation Bar</a>
+    </h2>
+    <div class="entry-content">
+    <div class="meta">
+        <div class="date">Published on: <time datetime='2016-10-03T00:00:00.000&#43;00:00' itemprop="datePublished">2016-10-03</time>
+</div>
+        <div class="tags">Tags: 
+
+<a href="https://cdfq152313.github.io//tags/ios">ios</a>
+
+<a href="https://cdfq152313.github.io//tags/swift">swift</a>
+
+
+</div>
+    </div>
+        
+
+<h2 id="controller之間的呼叫">Controller之間的呼叫</h2>
+
+<h3 id="present-與-dismiss">present 與 dismiss</h3>
+
+<p>想要跳轉頁面，我們可以靠storyBoard拉出present的線，也可以靠程式碼。<br />
+在StoryBoard中只要按住ctrl，將button拉到另一個controller後再選present即可。<br />
+在程式碼的話</p>
+
+<pre><code class="language-swift">// 因為此ViewController什麼都沒設定，所以會是一片黑
+present(ViewController(), animated: true, completion: nil)
+</code></pre>
+
+<p>有跳過去，就有返回，想返回時使用dismiss function。</p>
+
+<pre><code class="language-swift">dismiss(animated: true, completion: nil)
+</code></pre>
+
+<p>dismiss的原理是，直接呼叫時，請求presentingViewController把你關掉。<br />
+間接呼叫時，把後面的presentedViewController們關掉。<br />
+至於這兩個是什麼意思請參看下節。</p>
+
+<h3 id="presentingviewcontroller-與-presentedviewcontroller">presentingViewController 與 presentedViewController</h3>
+
+<p>每個controller皆有兩個重要的屬性，可以分辨這個controller是被誰present，或是present了誰。</p>
+
+<ul>
+<li>presentingViewController：present Controller的Controller</li>
+<li>presentedViewController：被present的Controller</li>
+</ul>
+
+<p>假設ABC皆為Controller，A present B，B present C，那對於B來說。</p>
+
+<ul>
+<li>A為B之presentingViewController</li>
+<li>C為B之presentedViewController</li>
+</ul>
+
+<h2 id="navigation-bar">Navigation bar</h2>
+
+<h3 id="push-與-pop">push 與 pop</h3>
+
+<p>與present / dismiss相似，進到navigation controller後要使用 navigation屬性的push/pop方法，不然會跳出navigation controller的頁，失去Navigation Bar的效果。</p>
+
+<p>程式碼的形式如下</p>
+
+<pre><code class="language-swift">// 推上下一個頁面
+self.navigationController?.pushViewController(ViewController(), animated: true)
+// 回到上一頁
+self.navigationController?.popViewController(animated: true)
+// 直接回到navigation最開頭
+self.navigationController?.popToRootViewController(animated: true)
+</code></pre>
+
+<h3 id="前後的controller">前後的controller</h3>
+
+<p>如同present / dismiss可以拿到前後關係一樣，navigation controller也是可以拿到前後關係的。<br />
+所有經過的controller都放在self.navigationController?.viewControllers這個array裡可以拿取。</p>
+
+<pre><code class="language-swift">self.navigationController?.viewControllers[0]
+self.navigationController?.viewControllers[1]
+...
+</code></pre>
+
+<h3 id="navigation-controller的建立">Navigation Controller的建立</h3>
+
+<p>Navigation Contrller本身並不帶有頁面資訊，而是在Navigation Controller的下一個Controller才會開始顯示。<br />
+那兩者之間要建立連線，必須要指定Navigation Controller當中的Root View Controller才行。</p>
+
+<ul>
+<li>方法1: Navigation綁定Root Controller，有兩種做法
+
+<ul>
+<li>按住Ctrl並將Navigation Controller拉到想要顯示的第一個Controller，鬆開後選擇Root view Controller</li>
+<li>在Navigation Controller的Triggered Segue中，指定Root view Controller</li>
+</ul></li>
+<li>方法2: 在StoryBoard中，點擊已經存在的Controller。並從上方選單Editor =&gt; Embed in =&gt; NavigatioController即可</li>
+</ul>
+
+<h3 id="上面的title和向右鈕">上面的title和向右鈕</h3>
+
+<p>預設只有Navigation Controller後第一個Bar可以編輯Title，若要加入新title則要從StoryBoard中拉入<strong>Navigation item</strong><br />
+預設上方並無向右鍵，只有返回鍵，若要加入則拉入<strong>Bar Button Item</strong></p>
+
+<h2 id="tab-bar-controller">Tab Bar Controller</h2>
+
+<p>與Navigation View許多做法類似，想加上新的tab可以</p>
+
+<ul>
+<li>方法1: TabViewController綁定View Controllers，有兩種做法
+
+<ul>
+<li>按住Ctrl並將TabViewController拉到想要加上的Controller，鬆開後選擇View Controllers</li>
+<li>在TabViewController的Triggered Segue中，指定新的View Controllers</li>
+</ul></li>
+<li>方法2: 在StoryBoard中，點擊已經存在的Controller。並從上方選單Editor =&gt; Embed in =&gt; TabViewController即可</li>
+</ul>
+
+<h3 id="tab-bar-controller下的controller們">tab bar controller下的controller們</h3>
+
+<pre><code class="language-swift">self.tabBarController?.viewControllers[0]
+self.tabBarController?.viewControllers[1]
+...
+</code></pre>
+
+<p>要注意的是，如果是tab bar controller下包著navigation controller，在存取時要先轉型成navigation controller，再取用navigation controller裡面的controller，才不會錯誤。</p>
+
+<h3 id="切換tab">切換tab</h3>
+
+<pre><code class="language-swift">self.tabBarController?.selectedIndex = 0
+</code></pre>
+
+<h3 id="隱藏tab">隱藏tab</h3>
+
+<pre><code class="language-swift">self.tabBarController?.tabBar.isHidden = true
+</code></pre>
+
+<h2 id="在不同的controller之間跳轉">在不同的Controller之間跳轉</h2>
+
+<h3 id="方法1-直接拖拉">方法1 直接拖拉</h3>
+
+<p>在storyboard上<br />
+按住ctrl點下來源Controller之button拉到要呈現的Controller後鬆開，選擇show或present即可。<br />
+show會在啟用navigation bar的時候自動使用navigation.push，若無navigation bar則是使用present。</p>
+
+<h3 id="方法2-利用segue">方法2 利用segue</h3>
+
+<p>在storyboard上<br />
+按住ctrl點下來源Controller，拉到要呈現的Controller，會多一條segue連線，幫此條連線取名字(identifer)<br />
+接下來在想切換的情況下使用performSegue即可(參數為剛剛取的identifer)</p>
+
+<pre><code class="language-swift">performSegue(withIdentifier: &quot;goToView2&quot;, sender: nil)
+</code></pre>
+
+<h3 id="方法3-指定storyboard以及controller-通常用在更換story-board的時候">方法3 指定StoryBoard以及Controller (通常用在更換Story Board的時候)</h3>
+
+<p>將要呈現的Controller取名字(StoryBoardID)<br />
+並在程式碼中指定</p>
+
+<ol>
+<li>位於哪個StoryBoard</li>
+<li>Controller的StoryBoardID</li>
+</ol>
+
+<p>最後present或push即可</p>
+
+<pre><code class="language-swift">let myStoryBoard = UIStoryboard(name: &quot;Main&quot;, bundle: nil)
+let whiteViewController = myStoryBoard.instantiateViewController(withIdentifier: &quot;whiteView&quot;)
+present(whiteViewController, animated:true, completion:nil)
+</code></pre>
+
+<p>如果是位於同一個storyboard，也可以拿到自己的storyboard</p>
+
+<pre><code class="language-swift">let myStoryBoard = self.storyboard!
+let whiteViewController = myStoryBoard.instantiateInitialViewController(withIdentifier: &quot;whiteView&quot;)
+present(whiteViewController, animated:true, completion:nil)
+</code></pre>
+
+<h3 id="方法4-storyboard-reference-通常用在更換story-board的時候">方法4 StoryBoard Reference (通常用在更換Story Board的時候)</h3>
+
+<p>在StoryBoard中，將StoryBoard Reference<br />
+拖到畫面上，指定StoryBoard Reference上的StoryBoard和ControllerID<br />
+接下來利用方法1或2拖拉即可成功</p>
+
+<h3 id="方法5-逃生門-通常用在要返回前一個controller的時候">方法5 逃生門 (通常用在要返回前一個Controller的時候)</h3>
+
+<h4 id="情況">情況</h4>
+
+<p>假設最初的controller取名叫parent controller<br />
+parent controller可以連到許多child controller<br />
+當child controller想返回parent controller的時候</p>
+
+<h4 id="作法">作法</h4>
+
+<p>先寫在parent controller</p>
+
+<pre><code class="language-swift">@IBAction func backToMain(_ segue:UIStoryboardSegue){
+    print(&quot;back to main&quot;)
+}
+</code></pre>
+
+<p>再用StoryBoard選擇child controller<br />
+按鈕按住ctrl往該controller的逃生門拉 (上方最右邊的圖示)<br />
+即會出現backToMain的方法<br />
+如果parent controller在child controller返回後想執行什麼動作也可在此function中填入</p>
+
+<h2 id="controller之間傳遞訊息">Controller之間傳遞訊息</h2>
+
+<h3 id="方法1-利用destination-controller的property-呼叫下一個controller時">方法1. 利用destination controller的property (呼叫下一個Controller時)</h3>
+
+<ol>
+<li>複寫Source Controller的prepare Function</li>
+<li>參數segue之屬性destionation即為destination controller</li>
+<li>強制轉型為destination controller</li>
+<li>將其塞入數值</li>
+</ol>
+
+<p>這裡要注意的是，不能把值塞進destination controller的UI元件內(Ex: Label)，因為這個時候畫面元件還沒生成。</p>
+
+<pre><code class="language-swift">// Source Controller
+override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+    if segue.destination is SecondViewController{
+    let des = segue.destination as! SecondViewController
+    des.textFromFirstView = &quot;Hello World&quot;
+    }
+}
+</code></pre>
+
+<h3 id="方法2-利用前後階層關係-僅適用於返回controller時">方法2. 利用前後階層關係(僅適用於返回controller時)</h3>
+
+<p>前面有說過present可以靠</p>
+
+<ul>
+<li>presentingViewController</li>
+<li>presentedViewController</li>
+</ul>
+
+<p>navigation bar可以靠</p>
+
+<ul>
+<li>self.navigationController?.viewControllers[0]</li>
+<li>self.navigationController?.viewControllers[1]</li>
+<li>&hellip;</li>
+</ul>
+
+<p>來獲得前面的controller元件
+取得controller後再參考方法1塞入值</p>
+
+<h3 id="方法3-protocol-返回前一個controller時">方法3. protocol (返回前一個controller時)</h3>
+
+<p>將前一個controller名為FirstViewController<br />
+現在這個controller名為SecondViewController<br />
+令一個protocol叫做SecondViewControllerDelegate</p>
+
+<ol>
+<li>將SecondViewControllerDelegate當作SecondViewController的屬性</li>
+<li>在FirstViewController跳轉到SecondViewController前，通過方法1塞進自己實作的SecondViewControllerDelegate</li>
+<li>SecondViewController消失前，執行該protocol的method (透過複寫viewWillDisapear來達成)</li>
+</ol>
+
+<p>SecondController</p>
+
+<pre><code class="language-swift">var delegate:SecondViewControllerDelegate?
+@IBAction func goBack(_ sender: UIButton) {
+    let _ = navigationController?.popViewController(animated: true)
+}
+
+override func viewWillDisappear(_ animated: Bool) {
+  super.viewWillDisappear(animated)
+  if self.isMovingFromParentViewController{
+        delegate?.setColor(colorType: &quot;red&quot;)
+    }
+}
+</code></pre>
+
+<p><code>hint: 可以靠 self.isMovingFromParentViewController來測試是否為返回到前一個Controller</code></p>
+
+<p>SecondViewControllerDelegate</p>
+
+<pre><code class="language-swift">protocol SecondViewControllerDelegate{
+    func setColor(colorType:String)
+}
+</code></pre>
+
+<p>FirstViewController (實作SecondViewControllerDelegate)</p>
+
+<pre><code class="language-swift">override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+  if let des = segue.destination as? SecondViewController{
+    des.delegate = self
+  }
+}
+</code></pre>
+
+<h3 id="方法4-notification-返回前一個controller時">方法4. notification (返回前一個controller時)</h3>
+
+<ol>
+<li>parent controller先監聽事件
+
+<ul>
+<li>撰寫接收到監聽後要執行的function</li>
+<li>註冊監聽事件</li>
+</ul></li>
+<li>child controller發送notification</li>
+</ol>
+
+<p>ParentController</p>
+
+<pre><code class="language-swift">// 接收到事件後要執行的任務
+func getUpdateNoti(noti:Notification) {
+    let data = noti.userInfo![&quot;data&quot;] as! String
+    print(data)
+}
+
+override func viewDidLoad() {
+  super.viewDidLoad()
+    
+  // 註冊事件
+  let notificationName = Notification.Name(&quot;GetUpdateNoti&quot;)
+  NotificationCenter.default.addObserver(self, selector: #selector(ViewController.getUpdateNoti(noti:)), name: notificationName, object: nil)
+}
+</code></pre>
+
+<p>ChildController</p>
+
+<pre><code class="language-swift">// 發送事件
+let notificationName = Notification.Name(&quot;GetUpdateNoti&quot;)
+NotificationCenter.default().post(name: notificationName,object: nil, userInfo: [&quot;data&quot;:&quot;Hello World&quot;])
+</code></pre>
+
+<h3 id="方法5-全域變數">方法5. 全域變數</h3>
+
+<p>在AppDelegate增加property<br />
+並在想要使用的class裡面，將UIApplication.shared.delegate轉型為AppDelegate<br />
+即可使用裡面的property</p>
+
+<pre><code class="language-swift">if let appDelegate = UIApplication.shared.delegate as? AppDelegate{
+    if let colorName = appDelegate.color{
+    setColor(colorType: colorName)
+  }
+}
+</code></pre>
+
+<p>全域變數還有很多做法，像是singleton或是寫在class之外，有機會再開一篇講。</p>
+
+    </div>
+
+<div class="meta">
+    
+    
+    <span class="comments"><a href="/post/2016-10-03/#disqus_thread">Comments</a></span>
     
     
 </div>

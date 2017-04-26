@@ -4218,9 +4218,9 @@ body {
     </div>
     <div class="entry-content">
 
-<h1 id="ios的路徑">iOS的路徑</h1>
+<h2 id="ios的路徑">iOS的路徑</h2>
 
-<h2 id="專案資料夾內的路徑">專案資料夾內的路徑</h2>
+<h3 id="專案資料夾內的路徑">專案資料夾內的路徑</h3>
 
 <p>利用Bundle.main獲取
 可以指定檔案名稱以及副檔名。</p>
@@ -4231,7 +4231,7 @@ let url = Bundle.main.url(forResource: &quot;myjson&quot;, withExtension: &quot;
 let path = Bundle.main.path(forResource: &quot;myjson&quot;, ofType: &quot;json&quot;)
 </code></pre>
 
-<h2 id="一般app路徑">一般App路徑</h2>
+<h3 id="一般app路徑">一般App路徑</h3>
 
 <p>Document範例</p>
 
@@ -4263,15 +4263,14 @@ let pathFromLibrary = NSTemporaryDirectory()
 let urlfrompath = URL(fileURLWithPath: pathFromNSHome)
 </code></pre>
 
-<h2 id="新增路徑">新增路徑</h2>
+<h3 id="新增路徑">新增路徑</h3>
 
 <ol>
 <li>將想要新增的路徑名稱寫出來</li>
 <li>利用FileManager.default.createDirectory新增路徑
 
 <ul>
-<li>此方法的withIntermediateDirctories參數若設成true，可以幫你遞迴建立不存在的資料夾
-<br /></li>
+<li>此方法的withIntermediateDirctories參數若設成true，可以幫你遞迴建立不存在的資料夾</li>
 </ul></li>
 </ol>
 
@@ -4283,7 +4282,7 @@ do{
 }
 </code></pre>
 
-<h2 id="列出某個路徑下的所有檔案">列出某個路徑下的所有檔案</h2>
+<h3 id="列出某個路徑下的所有檔案">列出某個路徑下的所有檔案</h3>
 
 <ol>
 <li>先找到想列出檔案的路徑</li>
@@ -4302,9 +4301,9 @@ catch{
 }
 </code></pre>
 
-<h2 id="查看路徑資訊">查看路徑資訊</h2>
+<h3 id="查看路徑資訊">查看路徑資訊</h3>
 
-<p>FileManager.default.fileExists 可以幫你查看這個檔案是否存在，以及該檔案是否為一個Directory。
+<p>FileManager.default.fileExists 可以幫你查看這個檔案是否存在，以及該檔案是否為一個Directory。<br />
 需要特別注意的是OBJCBool的使用</p>
 
 <pre><code class="language-swift">let path = NSTemporaryDirectory() + &quot;/images&quot;
@@ -4321,7 +4320,7 @@ else{
 }
 </code></pre>
 
-<h2 id="複製貼上刪除檔案">複製貼上刪除檔案</h2>
+<h3 id="複製貼上刪除檔案">複製貼上刪除檔案</h3>
 
 <p>使用下方函式，記得加上do try catch。</p>
 
@@ -4330,9 +4329,9 @@ FileManager.default.moveItem(atPath: path, toPath: mvPath)
 FileManager.default.removeItem(atPath: path)
 </code></pre>
 
-<h1 id="一般型別寫檔讀檔">一般型別寫檔讀檔</h1>
+<h2 id="一般型別寫檔讀檔">一般型別寫檔讀檔</h2>
 
-<h2 id="讀寫string">讀寫String</h2>
+<h3 id="讀寫string">讀寫String</h3>
 
 <p>寫檔要呼叫String的方法</p>
 
@@ -4356,7 +4355,7 @@ do{
 }
 </code></pre>
 
-<h2 id="讀寫array">讀寫Array</h2>
+<h3 id="讀寫array">讀寫Array</h3>
 
 <p>利用NSArray做寫入</p>
 
@@ -4374,7 +4373,7 @@ if let loadArray = NSArray(contentsOfFile: filePath) as? [String]{
 }
 </code></pre>
 
-<h2 id="讀寫dict">讀寫Dict</h2>
+<h3 id="讀寫dict">讀寫Dict</h3>
 
 <p>寫入靠NSDictionary</p>
 
@@ -4392,11 +4391,11 @@ dictToSave.write(toFile: filePath, atomically: true)
 }
 </code></pre>
 
-<h1 id="多媒體寫檔讀檔">多媒體寫檔讀檔</h1>
+<h2 id="多媒體寫檔讀檔">多媒體寫檔讀檔</h2>
 
-<h2 id="圖檔">圖檔</h2>
+<h3 id="圖檔">圖檔</h3>
 
-<p>存檔
+<p>存檔<br />
 多媒體的寫檔只能依靠URL而不能靠檔案路徑。</p>
 
 <ol>
@@ -4425,20 +4424,26 @@ if let dataToSave = UIImagePNGRepresentation(image){
 }
 </code></pre>
 
-<p>讀檔
-1. 先用UIImage載入
-2. 把載入圖片放在UIImageView上面</p>
+<p>讀檔</p>
+
+<ol>
+<li>先用UIImage載入</li>
+<li>把載入圖片放在UIImageView上面</li>
+</ol>
 
 <pre><code class="language-swift">let filePath = NSTemporaryDirectory() + &quot;savedImage.png&quot;
 let image = UIImage(contentsOfFile: filePath)
 myImageView.image = image
 </code></pre>
 
-<h1 id="自定義class讀寫檔">自定義class讀寫檔</h1>
+<h2 id="自定義class讀寫檔">自定義class讀寫檔</h2>
 
-<p>要寫檔的class必須繼承
-- NSObject
-- NSCoding</p>
+<p>要寫檔的class必須繼承</p>
+
+<ul>
+<li>NSObject</li>
+<li>NSCoding</li>
+</ul>
 
 <p>並複寫相關function</p>
 
@@ -4463,12 +4468,15 @@ myImageView.image = image
 }
 </code></pre>
 
-<p>可以來試著測試了
-寫檔
-1. 產生物件
-2. 利用NSKeyedArchiver.archivedData包裹物件，產生data
-3. 找到寫檔路徑
-4. 將data寫入指定路徑</p>
+<p>可以來試著測試了<br />
+寫檔</p>
+
+<ol>
+<li>產生物件</li>
+<li>利用NSKeyedArchiver.archivedData包裹物件，產生data</li>
+<li>找到寫檔路徑</li>
+<li>將data寫入指定路徑</li>
+</ol>
 
 <pre><code class="language-swift">let item = Item(name: &quot;危城&quot;, detail: &quot;動作&quot;)
 let data = NSKeyedArchiver.archivedData(withRootObject: item)
@@ -4477,10 +4485,13 @@ let url = docUrl.appendingPathComponent(&quot;myfile.txt&quot;)
 try! data.write(to: url)
 </code></pre>
 
-<p>讀檔
-1. 找到讀檔路徑
-2. 獲取Data
-3. 利用NSKeyedUnarchiver.unarchiveObject，將data轉換成指定物件</p>
+<p>讀檔</p>
+
+<ol>
+<li>找到讀檔路徑</li>
+<li>獲取Data</li>
+<li>利用NSKeyedUnarchiver.unarchiveObject，將data轉換成指定物件</li>
+</ol>
 
 <pre><code class="language-swift">let docUrl = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
 let url = docUrl.appendingPathComponent(&quot;myfile.txt&quot;)

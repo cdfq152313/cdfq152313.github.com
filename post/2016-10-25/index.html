@@ -4218,21 +4218,24 @@ body {
     </div>
     <div class="entry-content">
 
-<h1 id="tableview">TableView</h1>
+<h2 id="tableview">TableView</h2>
 
-<h2 id="indexpath-section-row">IndexPath: Section &amp; Row</h2>
+<h3 id="indexpath-section-row">IndexPath: Section &amp; Row</h3>
 
-<p><img src="http://i.imgur.com/razNcl9.png" alt="Section and Row" />
-看圖應該可以明瞭Section和Row的含意，Apple把tableView劃分為section，每個section下又有row。
+<p><img src="http://i.imgur.com/razNcl9.png" alt="Section and Row" /></p>
+
+<p>看圖應該可以明瞭Section和Row的含意，Apple把tableView劃分為section，每個section下又有row。<br />
 在IOS中有一個叫做IndexPath的類別專門儲存這兩個值，在tableView以後要override的方法會經常看到。</p>
 
-<h2 id="必定要override的method-幾個section-幾個row">必定要override的method: 幾個section 幾個row</h2>
+<h3 id="必定要override的method-幾個section-幾個row">必定要override的method: 幾個section 幾個row</h3>
 
-<p>使用tableView必須指定DataSource和Delegate (若是TableViewController則已經指定好自己作為這兩個protocol的實作)</p>
+<p>使用tableView必須指定DataSource和Delegate (若是TableViewController則已經指定好自己作為這兩個protocol的實作)<br />
+其中有些function是必定要override的</p>
 
-<p>其中有些function是必定要override的
-1. 總共有幾個section
-2. 每個section裡面有幾個row</p>
+<ol>
+<li>總共有幾個section</li>
+<li>每個section裡面有幾個row</li>
+</ol>
 
 <p>在這個範例中，我指定兩個section，section 0有2 row，section 1有3 row。</p>
 
@@ -4252,11 +4255,11 @@ override func tableView(_ tableView: UITableView, numberOfRowsInSection section:
 }
 </code></pre>
 
-<h2 id="某一列的內容">某一列的內容</h2>
+<h3 id="某一列的內容">某一列的內容</h3>
 
-<p>但是只有這樣，顯示出來會是空白一片，所以必須要回傳顯示的內容。
-在做這個項目之前，必須先到storyBoard，將tableView裏頭的cell指定一個identifier，否則會錯誤。
-在此我指定cell的identifier為myCell
+<p>但是只有這樣，顯示出來會是空白一片，所以必須要回傳顯示的內容。<br />
+在做這個項目之前，必須先到storyBoard，將tableView裏頭的cell指定一個identifier，否則會錯誤。<br />
+在此我指定cell的identifier為myCell<br />
 <img src="http://i.imgur.com/0mgnfd6.png" alt="Identifier" /></p>
 
 <p>然後才可以在程式碼中使用myCell</p>
@@ -4272,7 +4275,7 @@ override func tableView(_ tableView: UITableView, numberOfRowsInSection section:
 
 <p><img src="http://i.imgur.com/MFz1Rhv.png" alt="目前畫面" /></p>
 
-<h2 id="section-title">Section Title</h2>
+<h3 id="section-title">Section Title</h3>
 
 <p>但是這樣少了每個section的title，沒有段落感，所以用以下的code加上。</p>
 
@@ -4288,7 +4291,7 @@ override func tableView(_ tableView: UITableView, numberOfRowsInSection section:
 
 <p><img src="http://i.imgur.com/razNcl9.png" alt="目前畫面" /></p>
 
-<h2 id="點擊某列跳轉到下一個controller-並傳值">點擊某列跳轉到下一個Controller，並傳值</h2>
+<h3 id="點擊某列跳轉到下一個controller-並傳值">點擊某列跳轉到下一個Controller，並傳值</h3>
 
 <p><a href="http://dennycheng-blog.logdown.com/posts/946492-controller-interaction">請參閱之前的傳值方法</a>，我們選用方法一。這邊要補充的是：可以藉由tableview中的indexPathForselectedRow屬性來得知哪一列被選中。</p>
 
@@ -4310,7 +4313,7 @@ override func tableView(_ tableView: UITableView, numberOfRowsInSection section:
 }
 </code></pre>
 
-<h2 id="滑動刪除">滑動刪除</h2>
+<h3 id="滑動刪除">滑動刪除</h3>
 
 <p>只要複寫方法即可，記得必須同時刪除實際的Array以及畫面上的元件，否則會造成畫面與實際資料不同步的問題。</p>
 
@@ -4326,13 +4329,17 @@ override func tableView(_ tableView: UITableView, numberOfRowsInSection section:
 
 <p>但使用這個方法，只能滑出一個按鈕。如果想滑動時有多個按鈕可以選擇請看下節。</p>
 
-<h2 id="自訂滑動選項">自訂滑動選項</h2>
+<h3 id="自訂滑動選項">自訂滑動選項</h3>
 
-<p>如果想要自訂滑動按鈕的文字樣式，或是想指定多個滑動按鈕，那就不能使用上述的複寫方法。而必須改用下面這個。
-1. 複寫方法
-2. 自訂UITableViewRowAction
-3. 回傳UITableViewRowAction陣列
-因為此方法回傳陣列，所以可以塞進多個按鈕。</p>
+<p>如果想要自訂滑動按鈕的文字樣式，或是想指定多個滑動按鈕，那就不能使用上述的複寫方法。而必須改用下面這個。</p>
+
+<ol>
+<li>複寫方法</li>
+<li>自訂UITableViewRowAction</li>
+<li>回傳UITableViewRowAction陣列</li>
+</ol>
+
+<p>因為此方法回傳陣列，所以可以塞進多個按鈕。</p>
 
 <pre><code class="language-swift">override func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -&gt; [UITableViewRowAction]? {
         let addAction = UITableViewRowAction(style: .normal, title: &quot;insert&quot;) { 
@@ -4348,12 +4355,15 @@ override func tableView(_ tableView: UITableView, numberOfRowsInSection section:
     }
 </code></pre>
 
-<h2 id="更新畫面的method">更新畫面的method</h2>
+<h3 id="更新畫面的method">更新畫面的method</h3>
 
-<p>TableView裡面有三個method可以更新畫面。列表如下
-- 刪除：需提供IndexPath的陣列，一次可以刪一串。
-- 插入：需提供IndexPath的陣列，一次可以加入一串。
-- 重新整理</p>
+<p>TableView裡面有三個method可以更新畫面。列表如下</p>
+
+<ul>
+<li>刪除：需提供IndexPath的陣列，一次可以刪一串。</li>
+<li>插入：需提供IndexPath的陣列，一次可以加入一串。</li>
+<li>重新整理</li>
+</ul>
 
 <p>程式碼如下</p>
 
@@ -4362,9 +4372,9 @@ tableView.insertRows(at: [indexPath], with: .fade)
 tableView.reloadData()
 </code></pre>
 
-<h2 id="更換位置">更換位置</h2>
+<h3 id="更換位置">更換位置</h3>
 
-<h2 id="下拉更新">下拉更新</h2>
+<h3 id="下拉更新">下拉更新</h3>
 
 <p>常常會看到有APP在tableView下拉時畫面會開始轉圈圈，然後更新，現在試著製作這個效果。
 1. 在StoryBoard中點選TableViewController。
@@ -4379,7 +4389,7 @@ tableView.reloadData()
   }
 </code></pre>
 
-<h2 id="搜尋">搜尋</h2>
+<h3 id="搜尋">搜尋</h3>
 
 <pre><code class="language-swift">let searchController = UISearchController(searchResultsController: nil)
 searchController.searchResultsUpdater = self
@@ -4387,9 +4397,9 @@ self.tableView.tableHeaderView = searchController.searchBar
 searchController.dimsBackgroundDuringPresentation = false
 </code></pre>
 
-<h1 id="uicollectionview">UICollectionView</h1>
+<h2 id="uicollectionview">UICollectionView</h2>
 
-<h2 id="uicollectionviewdelegateflowlayout">UICollectionViewDelegateFlowLayout</h2>
+<h3 id="uicollectionviewdelegateflowlayout">UICollectionViewDelegateFlowLayout</h3>
 
 <p>可以調整cell的大小</p>
 </div>

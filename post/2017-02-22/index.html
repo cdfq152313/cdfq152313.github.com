@@ -4218,21 +4218,21 @@ body {
     </div>
     <div class="entry-content">
 
-<h1 id="平台">平台</h1>
+<h2 id="平台">平台</h2>
 
 <p>Android Studio
 - compileSdkVersion 25
 - buildToolsVersion &ldquo;25.0.1&rdquo;</p>
 
-<h1 id="全域變數">全域變數</h1>
+<h2 id="全域變數">全域變數</h2>
 
 <pre><code class="language-java">SecretKey secretKey; // 金鑰
 AlgorithmParameterSpec mAlgorithmParameterSpec; // 之後要放置初始化向量的參數
 </code></pre>
 
-<h1 id="初始化">初始化</h1>
+<h2 id="初始化">初始化</h2>
 
-<h2 id="金鑰初始化">金鑰初始化</h2>
+<h3 id="金鑰初始化">金鑰初始化</h3>
 
 <pre><code class="language-java">private void genAESKey() throws Exception {
   KeyGenerator keyGen = KeyGenerator.getInstance(&quot;AES&quot;); // 指定AES演算法
@@ -4241,31 +4241,32 @@ AlgorithmParameterSpec mAlgorithmParameterSpec; // 之後要放置初始化向�
 }
 </code></pre>
 
-<h2 id="初始向量初始化">初始向量初始化</h2>
+<h3 id="初始向量初始化">初始向量初始化</h3>
 
-<p>private void genInitializationVector() throws NoSuchPaddingException, NoSuchAlgorithmException {
-  cipher = Cipher.getInstance(&ldquo;AES/CBC/PKCS5Padding&rdquo;); // 指定AES演算法
+<pre><code class="language-java">private void genInitializationVector() throws NoSuchPaddingException, NoSuchAlgorithmException {
+  cipher = Cipher.getInstance(&quot;AES/CBC/PKCS5Padding&quot;); // 指定AES演算法
   byte [] iVAES = new byte[ cipher.getBlockSize() ]; // new AES演算法所需的block size
   SecureRandom random = new SecureRandom();
   random.nextBytes(iVAES); // 填充向量
   mAlgorithmParameterSpec = new IvParameterSpec(iVAES); // 向量初始化
-}</p>
+}
+</code></pre>
 
-<h1 id="將字串加密">將字串加密</h1>
+<h2 id="將字串加密">將字串加密</h2>
 
-<p>在AES加密完之後，用Base64把結果轉成可讀的字串以便以http傳送。
-不做Base64亦可，只是到時候要以byte為單位做傳送。
+<p>在AES加密完之後，用Base64把結果轉成可讀的字串以便以http傳送。<br />
+不做Base64亦可，只是到時候要以byte為單位做傳送。<br />
 初始化模式為 ENCRYPT_MODE</p>
 
 <pre><code class="language-java">private String encrypt(String content) throws Exception {
-    cipher = Cipher.getInstance(&quot;AES/CBC/PKCS5Padding&quot;);
-    cipher.init(Cipher.ENCRYPT_MODE, secretKey, mAlgorithmParameterSpec);
-    byte [] encrypt = cipher.doFinal(contentB64);
+  cipher = Cipher.getInstance(&quot;AES/CBC/PKCS5Padding&quot;);
+  cipher.init(Cipher.ENCRYPT_MODE, secretKey, mAlgorithmParameterSpec);
+  byte [] encrypt = cipher.doFinal(contentB64);
   return Base64.encodeToString(encrypt, Base64.DEFAULT);
 }
 </code></pre>
 
-<h1 id="將字串解密">將字串解密</h1>
+<h2 id="將字串解密">將字串解密</h2>
 
 <p>初始化模式為 DECRYPT_MODE</p>
 
@@ -4278,9 +4279,9 @@ AlgorithmParameterSpec mAlgorithmParameterSpec; // 之後要放置初始化向�
 }
 </code></pre>
 
-<h1 id="匯出金鑰">匯出金鑰</h1>
+<h2 id="匯出金鑰">匯出金鑰</h2>
 
-<p>SecretKey使用getEncoded()可以獲得金鑰，為byte形式，若要方便閱讀與傳送可以轉換為Base64
+<p>SecretKey使用getEncoded()可以獲得金鑰，為byte形式，若要方便閱讀與傳送可以轉換為Base64<br />
 初始化向量本身有getIV()這個method可以使用，一樣為byte形式，可轉換為Base64。</p>
 
 <pre><code class="language-java">private void export(){

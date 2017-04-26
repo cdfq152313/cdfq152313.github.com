@@ -16,12 +16,16 @@
       <pubDate>Sun, 07 Jun 2015 00:00:00 +0000</pubDate>
       
       <guid>https://cdfq152313.github.io/post/2015-06-07/</guid>
-      <description>環境設定 系統: linux mint 套件: sudo apt-get install openssh-server git
-基本操作 安裝完openssh-server和git後，即可開始嘗試創建remote repository。 為了之後的安全性議題，創建一個新的帳號來管理git server
-sudo adduser git  下方指令新增project.git目錄做為remote repository (我新增在此帳號的家目錄下，而git官方文件則是放在 /opt/git/ 裡)
-su git mkdir /home/git/project.git cd /home/git/project.git git --bare init  remote repository已經建立，可以開始使用。 git@gitserver 代表 登入帳號@serverIP位置 試著用ssh連線抓下git repository吧。
+      <description>環境設定 系統: linux mint
+套件: sudo apt-get install openssh-server git
+基本操作 安裝完openssh-server和git後，即可開始嘗試創建remote repository。
+為了之後的安全性議題，創建一個新的帳號來管理git server
+sudo adduser git  下方指令新增project.git目錄做為remote repository
+(我新增在此帳號的家目錄下，而git官方文件則是放在 /opt/git/ 裡)
+su git mkdir /home/git/project.git cd /home/git/project.git git --bare init  remote repository已經建立，可以開始使用。 git@gitserver 代表 登入帳號@serverIP位置
+試著用ssh連線抓下git repository吧。
 git clone git@gitserver:/home/git/project.git git remote -v origin git@gitserver:/home/git/project.git (fetch) origin git@gitserver:/home/git/project.git (push)  當然push pull指令也沒問題囉~ 只要有該帳戶密碼即可。
-git push origin master git pull origin master  安全性議題 - SSH Public Key Authentication 上述推送git repository的流程中，只需要有帳號密碼即可登入。 我們可以改以更安全的SSH Public Key Authentication來登入</description>
+git push origin master git pull origin master  安全性議題 - SSH Public Key Authentication 上述推送git repository的流程中，只需要有帳號密碼即可登入。</description>
     </item>
     
     <item>
