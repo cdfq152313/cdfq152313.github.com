@@ -4214,6 +4214,167 @@ body {
 
   <article class="post">
     <h2 class="title"> 
+        <a href="/post/2016-03-04/">在AOSP中增加預設app (3) : 利用Android Studio來進行編輯</a>
+    </h2>
+    <div class="entry-content">
+    <div class="meta">
+        <div class="date">Published on: <time datetime='2016-03-04T00:00:00.000&#43;00:00' itemprop="datePublished">2016-03-04</time>
+</div>
+        <div class="tags">Tags: 
+
+<a href="https://cdfq152313.github.io//tags/android">android</a>
+
+<a href="https://cdfq152313.github.io//tags/aosp">aosp</a>
+
+
+</div>
+    </div>
+        
+
+<h2 id="平台及環境設置">平台及環境設置</h2>
+
+<h3 id="平台">平台</h3>
+
+<p>實驗平台：Nexus 5<br />
+Android版本：android-4.4_r1<br />
+前置知識： [Howto Build Android KitKat (4.4) for the Google Nexus 5][6]</p>
+
+<h3 id="環境設置">環境設置</h3>
+
+<p>在AOSP資料夾中</p>
+
+<pre><code class="language-bash">source build/envsetup.sh
+lunch aosp_hammerhead-userdebug
+</code></pre>
+
+<h2 id="目標-利用android-studio來新增app-命名為world">目標：利用Android Studio來新增APP (命名為World)</h2>
+
+<p>在上一篇文章中，說明了如何copy一份已有的project來改寫。但是寫Android App有許多煩雜的地方，有時候還是需要IDE來幫助比較快，這裡找了一個比較tricky的方法來使用IDE。</p>
+
+<h3 id="新增android-studio-project">新增Android Studio Project</h3>
+
+<p>我們直接從Android Studio中產生一個空的project，命名為<code>World</code>。<br />
+新增project時記得選empty Activity，之後比較好做。<br />
+<img src="http://i.imgur.com/LTorwRZ.png" alt="Alt Text" /></p>
+
+<h3 id="建立soft-link">建立soft link</h3>
+
+<p>在剛剛產生出來的Android Project路徑底下，<code>World/app/src/main</code>應該有<strong>java、res</strong>資料夾，以及<strong>AndroidManifest.xml</strong>。<br />
+在<code>AOSP/packages/apps</code>建立新目錄<code>World</code>，並在其底下建立起上述3個檔案之<a href="http://linux.vbird.org/linux_basic/0230filesystem.php#ln" title="鳥哥 - ln解說">軟連結(soft link)</a>。</p>
+
+<pre><code class="language-bash">mkdir $ANDROID_BUILD_TOP/packages/apps/World &amp;&amp; cd $_
+ln -s AndroidProject目錄/World/app/src/main/java  java
+ln -s AndroidProject目錄/World/app/src/main/res  res
+ln -s AndroidProject目錄/World/app/src/main/AndroidManifest.xml  AndroidManifest.xml
+</code></pre>
+
+<h3 id="撰寫android-mk">撰寫Android.mk</h3>
+
+<p>參考<a href="http://android.mk/" title="Secrets of Android.mk">Secrets of Android.mk</a>此份文件當中的<strong>Building a simple APK</strong>目錄。將其加到<code>AOSP/packages/apps/World</code>資料夾下。</p>
+
+<p>Android.mk</p>
+
+<pre><code class="language-makefile">  LOCAL_PATH := $(call my-dir)
+  include $(CLEAR_VARS)
+   
+  # Build all java files in the java subdirectory
+  LOCAL_SRC_FILES := $(call all-subdir-java-files)
+   
+  # Name of the APK to build
+  LOCAL_PACKAGE_NAME := LocalPackage
+   
+  # Tell it to build an APK
+  include $(BUILD_PACKAGE)
+</code></pre>
+
+<h3 id="修改掉所有appcompat的部份">修改掉所有appcompat的部份</h3>
+
+<p>再來使用<code>mm</code>在<code>AOSP/packages/apps/World</code>進行編譯，運氣不好的話，編譯會出現找不到某些命名的錯誤。這是因為Google為了讓各種app看起來更有一致性，將Android Studio的新Project皆使用Appcompat此library來協調視覺效果。可是此library並不存在於預設的編譯環境當中。為了為了節省麻煩，將其去掉。</p>
+
+<p>style.xml</p>
+
+<pre><code class="language-xml">&lt;resources&gt;
+
+    &lt;!-- Base application theme. --&gt;
+    &lt;style name=&quot;AppTheme&quot; parent=&quot;android:Theme.Holo.Light.DarkActionBar&quot;&gt;
+        &lt;!-- Customize your theme here. --&gt;
+    &lt;/style&gt;
+
+&lt;/resources&gt;
+</code></pre>
+
+<p>並把MainActivity中可能會用<strong>ActionBarActivity</strong>或是<strong>AppCompatActivity</strong>來替代Activity，請一律換成Activity來使用。</p>
+
+<p>MainActivity.java</p>
+
+<pre><code class="language-java">package com.android.world;
+
+import android.app.Activity;
+import android.os.Bundle;
+
+public class MainActivity extends Activity{
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+    }
+}
+</code></pre>
+
+<p>最後，我在編譯途中還遇到標籤問題。預設的編譯環境似乎不允許著無命名的字串存在。也就是說，如果你有任何的<strong>text</strong>標籤是直接給予字串值的，可能會編譯失敗。</p>
+
+<p>修改前</p>
+
+<pre><code class="language-xml">&lt;TextView
+        android:layout_width=&quot;wrap_content&quot;
+        android:layout_height=&quot;wrap_content&quot;
+        android:text=&quot;Hello World&quot; /&gt;
+</code></pre>
+
+<p>可能要改將字串引用自string.xml才能編譯成功。</p>
+
+<p>修改後</p>
+
+<pre><code class="language-xml">&lt;TextView
+        android:layout_width=&quot;wrap_content&quot;
+        android:layout_height=&quot;wrap_content&quot;
+        android:text=&quot;@string/app_name&quot; /&gt;
+</code></pre>
+
+<p>res/values/string.xml</p>
+
+<pre><code class="language-xml">&lt;resources&gt;
+    &lt;string name=&quot;app_name&quot;&gt;World&lt;/string&gt;
+&lt;/resources&gt;
+</code></pre>
+
+<h3 id="編譯">編譯</h3>
+
+<p>使用<code>mm</code>進行編譯，此次應該可以順利通過了。<br />
+之後直接在Android Studio裡對Application進行編輯，由於建立了軟連結，AOSP內部的內容也會同步更改。<br />
+這樣就可以用Android Studio來撰寫APP囉。</p>
+
+<h2 id="reference">Reference</h2>
+
+<ul>
+<li><a href="http://android.mk/" title="Secrets of Android.mk">Android.mk</a></li>
+<li><a href="http://linux.vbird.org/linux_basic/0230filesystem.php#ln" title="鳥哥 - ln解說">鳥哥 - ln解說</a></li>
+</ul>
+
+    </div>
+
+<div class="meta">
+    
+    
+    <span class="comments"><a href="/post/2016-03-04/#disqus_thread">Comments</a></span>
+    
+    
+</div>
+</article>
+
+  <article class="post">
+    <h2 class="title"> 
         <a href="/post/2016-02-28/">在AOSP中增加預設app (2) : 自行編譯</a>
     </h2>
     <div class="entry-content">

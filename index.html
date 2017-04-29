@@ -4214,6 +4214,298 @@ body {
 
   <article class="post">
     <h2 class="title"> 
+        <a href="/post/2017-04-27/">[Java] Date SimpleDateFormat Calendar之轉換與時區(UTC/GMT)問題</a>
+    </h2>
+    <div class="entry-content">
+    <div class="meta">
+        <div class="date">Published on: <time datetime='2017-04-27T12:44:55.000&#43;08:00' itemprop="datePublished">2017-04-27</time>
+</div>
+        <div class="tags">Tags: 
+
+<a href="https://cdfq152313.github.io//tags/java">java</a>
+
+
+</div>
+    </div>
+        
+
+<h2 id="簡介">簡介</h2>
+
+<p>這篇主要探討怎麼把當地時間轉換成GMT(UTC)時間，不在意一秒誤差的話這兩者基本上是一樣的。<br />
+主要用到下列三個元件</p>
+
+<ul>
+<li>Date：
+
+<ul>
+<li>最基礎的時間紀錄</li>
+<li>無法呈現任何有意義的資訊(例如年月的int，或格式化過的字串)</li>
+</ul></li>
+<li>SimpleDateFormat
+
+<ul>
+<li>擅長格式化字串與Date之間的轉換</li>
+</ul></li>
+<li>Calendar
+
+<ul>
+<li>擅長對時間作操作(比較，加減)</li>
+<li>擅長單獨取出欄位(年、月、日、時、分、秒等)</li>
+</ul></li>
+</ul>
+
+<h2 id="格式化字串">格式化字串</h2>
+
+<p>這邊示範如果取得一個Date或一個Calendar，應該如何將其格式化為字串。<br />
+格式統一採用 &ldquo;年-月-日 時:分:秒&rdquo;。</p>
+
+<h3 id="date">Date</h3>
+
+<p>Date本身沒辦法呈現任何有意義的資訊，只是一個時間記錄器而已。<br />
+因此必須依靠SimpleDateFormat來將Date格式化為有意義的字串。</p>
+
+<pre><code class="language-Java">String formatDate(Date date){
+    SimpleDateFormat sdf = new SimpleDateFormat(&quot;yyyy-MM-dd HH:mm:ss&quot;); // HH是24小時制，hh是12小時制
+    return sdf.format(date);
+}
+</code></pre>
+
+<h3 id="calendar">Calendar</h3>
+
+<p>Calendar有一個method叫getTime，可以取出此Calendar目前的Date。在有<code>formatDate</code>此函式的情況下，其實只要先getTime再丟給formatDate即可。<br />
+只是這邊為了展示calendar單獨取值的方法走了不一樣的路徑。</p>
+
+<pre><code class="language-Java">String formatCalendar(Calendar calendar){
+    int year = calendar.get(Calendar.YEAR);
+    int month = calendar.get(Calendar.MONTH) + 1; // 1月的值為0
+    int day = calendar.get(Calendar.DAY_OF_MONTH);
+    int hour = calendar.get(Calendar.HOUR_OF_DAY); // HOUR_OF_DAY是24小時制，HOUR是12小時制
+    int minute = calendar.get(Calendar.MINUTE);
+    int second = calendar.get(Calendar.SECOND);
+    return String.format(&quot;%d-%02d-%02d %02d:%02d:%02d&quot;, year, month, day, hour, minute, second);
+}
+</code></pre>
+
+<p><code>hint: 這兩個function在後續的程式碼中會常常用到</code></p>
+
+<h2 id="取得現在時間">取得現在時間</h2>
+
+<p>使用Date和Calendar都可以直接取得現在時間，程式碼分別如下。</p>
+
+<pre><code class="language-Java">Date date = new Date(); // 直接初始化即可取得現在時間
+Calendar calendar = Calendar.getInstance(); // getInstance可以取得現在時間
+</code></pre>
+
+<p>要記得，如果單獨使用Date的話基本上是無法呈現任何有用資訊的。<br />
+可以配合剛剛的format method來印出格式化資訊觀看。</p>
+
+<pre><code class="language-Java">Date currentTime = new Date(); // 現在時間的Date物件
+String display = formatDate(currentTime);
+System.out.println( display );
+</code></pre>
+
+<pre><code class="language-Java">Calendar currentTime = Calendar.getInstance(); // 現在時間的Calendar物件
+String display = formatCalendar(calendar)
+System.out.println( display );
+</code></pre>
+
+<h2 id="顯示現在gmt時間">顯示現在GMT時間</h2>
+
+<h3 id="date-1">Date</h3>
+
+<p>默念三次</p>
+
+<p><strong>Date本身是絕對時間</strong><br />
+<strong>Date本身是絕對時間</strong><br />
+<strong>Date本身是絕對時間</strong></p>
+
+<p>格式化Date為有意義的字串是SimpleDateFormat提供的功能。<br />
+SimpleDateFormat會以使用者所在的時區當作預設顯示時區，若要調整可以在兩個地方修改。</p>
+
+<ol>
+<li>初始化時指定地區</li>
+<li>初始化後再set時區</li>
+</ol>
+
+<p>下面選的是第二種。</p>
+
+<pre><code class="language-Java">String formatDateInGMT(Date date){
+    SimpleDateFormat sdf = new SimpleDateFormat(&quot;yyyy-MM-dd HH:mm:ss&quot;); // HH是24小時制，hh是12小時制
+    sdf.setTimeZone(TimeZone.getTimeZone(&quot;GMT&quot;) );
+    return sdf.format(date);
+}
+</code></pre>
+
+<p>接下來只要獲得現在的Date，就可以印出對應的GMT時間了。</p>
+
+<pre><code class="language-Java">Date date = new Date();
+String display = formatDateInGMT(date);
+System.out.println(display);
+</code></pre>
+
+<h3 id="calendar-1">Calendar</h3>
+
+<p>Calendar本身就可以設定時區。<br />
+因此若要顯示現在的GMT時間的話，只要在取得Calendar實例後更改時區即可。</p>
+
+<pre><code class="language-Java">Calendar calendar = Calendar.getInstance();
+calendar.setTimeZone(TimeZone.getTimeZone(&quot;GMT&quot;));
+String display = formatCalendar(calendar);
+System.out.println(display);
+</code></pre>
+
+<h2 id="由字串取得時間">由字串取得時間</h2>
+
+<p>SimpleDateFormat可以很方便的在格式化字串和Date之間做轉換，但遺憾的是無法將格式化字串直接轉換為Calendar，必須要用Date來設定Calendar才行。</p>
+
+<h3 id="格式化字串轉換為date">格式化字串轉換為Date</h3>
+
+<p>下方的範例利用SimpleDateFormat將字串轉換為Date</p>
+
+<pre><code class="language-Java">public Date convertStringToDate(String time) throws ParseException {
+    // 假設input的字串是 &quot;年-月-日 時:分:秒&quot; 格式
+    SimpleDateFormat sdf = new SimpleDateFormat(&quot;yyyy-MM-dd HH:mm:ss&quot;);
+    Date date = sdf.parse(time);
+    return date;
+}
+</code></pre>
+
+<p>觀看有沒有成功一樣可以使用formatDate來觀看，這邊就不說明了。</p>
+
+<h3 id="格式化字串為calendar">格式化字串為Calendar</h3>
+
+<p>先取得Date，再設定Calendar，會用到上方的convertStringToDate函式。</p>
+
+<pre><code class="language-Java">public Calendar convertStringToCalendar(String time) throws ParseException {
+    // 假設input的字串是 &quot;年-月-日 時:分:秒&quot; 格式
+    Date date = convertStringToDate(time);
+    Calendar calendar = Calendar.getInstance();
+    calendar.setTime(date);
+    return calendar;
+}
+</code></pre>
+
+<h2 id="由gmt字串取得時間">由GMT字串取得時間</h2>
+
+<p>先默念三次</p>
+
+<p><strong>Date是絕對時間</strong><br />
+<strong>Date是絕對時間</strong><br />
+<strong>Date是絕對時間</strong></p>
+
+<p>因此要從字串轉換為Date時，該告知的是SimpleDateFormat<strong>此時間字串是在GMT時區</strong>，如此SimpleDateFormat轉出來的Date才會正確。</p>
+
+<h3 id="格式化gmt字串為date">格式化GMT字串為Date</h3>
+
+<pre><code class="language-Java">public Date convertGMTStringToDate(String time) throws ParseException {
+    // 假設input的字串是 &quot;年-月-日 時:分:秒&quot; 格式
+    SimpleDateFormat sdf = new SimpleDateFormat(&quot;yyyy-MM-dd HH:mm:ss&quot;);
+    sdf.setTimeZone(TimeZone.getTimeZone(&quot;GMT&quot;) ); // 告知接下來的字串時區位在GMT
+    Date date = sdf.parse(time);
+    return date;
+}
+</code></pre>
+
+<p>驗證一樣可以用</p>
+
+<ul>
+<li>formatDate</li>
+<li>formatDateInGMT</li>
+</ul>
+
+<p>這兩個函式來格式化結果並印出觀看。</p>
+
+<h3 id="格式化gmt字串為calendar">格式化GMT字串為Calendar</h3>
+
+<p>轉換為Calendar也是同理，先取得Date，再設定Calendar。</p>
+
+<pre><code class="language-Java">public Calendar convertGMTStringToCalendar(String time) throws ParseException {
+    // 假設input的字串是 &quot;年-月-日 時:分:秒&quot; 格式
+    Date date = convertGMTStringToDate(time);
+    Calendar calendar = Calendar.getInstance();
+    calendar.setTime(date);
+    return calendar;
+}
+</code></pre>
+
+<p>驗證一樣可以用</p>
+
+<ul>
+<li>formatCalendar()</li>
+</ul>
+
+<p>來格式化結果。要記得若要觀看不同時區的結果，必須先設定Calendar。</p>
+
+<h2 id="快速複製區">快速複製區</h2>
+
+<p>剛剛講解中一些重要函式的快速複製區，提供給以後的自己使用。</p>
+
+<pre><code class="language-Java">String formatDate(Date date){
+    SimpleDateFormat sdf = new SimpleDateFormat(&quot;yyyy-MM-dd HH:mm:ss&quot;); // HH是24小時制，hh是12小時制
+    return sdf.format(date);
+}
+
+String formatDateInGMT(Date date){
+    SimpleDateFormat sdf = new SimpleDateFormat(&quot;yyyy-MM-dd HH:mm:ss&quot;); // HH是24小時制，hh是12小時制
+    sdf.setTimeZone(TimeZone.getTimeZone(&quot;GMT&quot;) );
+    return sdf.format(date);
+}
+
+String formatCalendar(Calendar calendar){
+    int year = calendar.get(Calendar.YEAR);
+    int month = calendar.get(Calendar.MONTH) + 1; // 1月的值為0
+    int day = calendar.get(Calendar.DAY_OF_MONTH);
+    int hour = calendar.get(Calendar.HOUR_OF_DAY); // HOUR_OF_DAY是24小時制，HOUR是12小時制
+    int minute = calendar.get(Calendar.MINUTE);
+    int second = calendar.get(Calendar.SECOND);
+    return String.format(&quot;%d-%02d-%02d %02d:%02d:%02d&quot;, year, month, day, hour, minute, second);
+}
+
+public Date convertStringToDate(String time) throws ParseException {
+    // 假設input的字串是 &quot;年-月-日 時:分:秒&quot; 格式
+    SimpleDateFormat sdf = new SimpleDateFormat(&quot;yyyy-MM-dd HH:mm:ss&quot;);
+    Date date = sdf.parse(time);
+    return date;
+}
+
+public Calendar convertStringToCalendar(String time) throws ParseException {
+    // 假設input的字串是 &quot;年-月-日 時:分:秒&quot; 格式
+    Date date = convertStringToDate(time);
+    Calendar calendar = Calendar.getInstance();
+    calendar.setTime(date);
+    return calendar;
+}
+
+public Date convertGMTStringToDate(String time) throws ParseException {
+    // 假設input的字串是 &quot;年-月-日 時:分:秒&quot; 格式
+    SimpleDateFormat sdf = new SimpleDateFormat(&quot;yyyy-MM-dd HH:mm:ss&quot;);
+    sdf.setTimeZone(TimeZone.getTimeZone(&quot;GMT&quot;) ); // 告知接下來的字串時區位在GMT
+    Date date = sdf.parse(time);
+    return date;
+}
+
+public Calendar convertGMTStringToCalendar(String time) throws ParseException {
+    // 假設input的字串是 &quot;年-月-日 時:分:秒&quot; 格式
+    Date date = convertGMTStringToDate(time);
+    Calendar calendar = Calendar.getInstance();
+    calendar.setTime(date);
+    return calendar;
+}
+</code></pre>
+
+    </div>
+
+<div class="meta">
+    
+    
+    <span class="comments"><a href="/post/2017-04-27/#disqus_thread">Comments</a></span>
+    
+    
+</div>
+</article>
+
+  <article class="post">
+    <h2 class="title"> 
         <a href="/post/2017-04-24/">renpy (6) 讀檔</a>
     </h2>
     <div class="entry-content">
@@ -4908,42 +5200,6 @@ class DateSplit{<br />
     
     
     <span class="comments"><a href="/post/2016-12-27/#disqus_thread">Comments</a></span>
-    
-    
-</div>
-</article>
-
-  <article class="post">
-    <h2 class="title"> 
-        <a href="/misc/2016-12-27/">[讀書心得] 圖解密碼學與比特幣原理</a>
-    </h2>
-    <div class="entry-content">
-    <div class="meta">
-        <div class="date">Published on: <time datetime='2016-12-27T00:00:00.000&#43;00:00' itemprop="datePublished">2016-12-27</time>
-</div>
-        <div class="tags">Tags: 
-
-<a href="https://cdfq152313.github.io//tags/general">general</a>
-
-<a href="https://cdfq152313.github.io//tags/cryptography">cryptography</a>
-
-
-</div>
-    </div>
-        <p><a href="https://www.tenlong.com.tw/items/9864761935?item_id=1025404">圖解密碼學與比特幣原理</a></p>
-
-<p>花了很久才斷斷續續的看完這本，覺得是一本很不錯的科普書，沒有太艱深的數學。</p>
-
-<p>書中有系統的把目前密碼學的發展介紹了一遍，非常著重在oo密碼技術可以解決xx難題，或是oo技術無法解決xx難題。以及oo技術中的yy演算法目前無人破解，或是oo技術的yy演算法已經被破解。</p>
-
-<p>書中最後也提到了不少混合型密碼系統在現今世界上的應用，讓這本書不會只流於技術介紹的紙上談兵。對我這個密碼學大外行幫助很大，好書，極推。</p>
-
-    </div>
-
-<div class="meta">
-    
-    
-    <span class="comments"><a href="/misc/2016-12-27/#disqus_thread">Comments</a></span>
     
     
 </div>

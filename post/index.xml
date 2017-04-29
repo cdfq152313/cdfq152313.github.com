@@ -5,10 +5,27 @@
     <link>https://cdfq152313.github.io/post/</link>
     <description>Recent content in Posts on Denny&#39;s Blog</description>
     <generator>Hugo -- gohugo.io</generator>
-    <lastBuildDate>Mon, 24 Apr 2017 04:25:31 +0000</lastBuildDate>
+    <lastBuildDate>Thu, 27 Apr 2017 12:44:55 +0800</lastBuildDate>
     
 	<atom:link href="https://cdfq152313.github.io/post/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>[Java] Date SimpleDateFormat Calendar之轉換與時區(UTC/GMT)問題</title>
+      <link>https://cdfq152313.github.io/post/2017-04-27/</link>
+      <pubDate>Thu, 27 Apr 2017 12:44:55 +0800</pubDate>
+      
+      <guid>https://cdfq152313.github.io/post/2017-04-27/</guid>
+      <description>簡介 這篇主要探討怎麼把當地時間轉換成GMT(UTC)時間，不在意一秒誤差的話這兩者基本上是一樣的。
+主要用到下列三個元件
+ Date：  最基礎的時間紀錄 無法呈現任何有意義的資訊(例如年月的int，或格式化過的字串)  SimpleDateFormat  擅長格式化字串與Date之間的轉換  Calendar  擅長對時間作操作(比較，加減) 擅長單獨取出欄位(年、月、日、時、分、秒等)   格式化字串 這邊示範如果取得一個Date或一個Calendar，應該如何將其格式化為字串。
+格式統一採用 &amp;ldquo;年-月-日 時:分:秒&amp;rdquo;。
+Date Date本身沒辦法呈現任何有意義的資訊，只是一個時間記錄器而已。
+因此必須依靠SimpleDateFormat來將Date格式化為有意義的字串。
+String formatDate(Date date){ SimpleDateFormat sdf = new SimpleDateFormat(&amp;quot;yyyy-MM-dd HH:mm:ss&amp;quot;); // HH是24小時制，hh是12小時制 return sdf.format(date); }  Calendar Calendar有一個method叫getTime，可以取出此Calendar目前的Date。在有formatDate此函式的情況下，其實只要先getTime再丟給formatDate即可。
+只是這邊為了展示calendar單獨取值的方法走了不一樣的路徑。
+String formatCalendar(Calendar calendar){ int year = calendar.get(Calendar.YEAR); int month = calendar.get(Calendar.MONTH) + 1; // 1月的值為0 int day = calendar.get(Calendar.DAY_OF_MONTH); int hour = calendar.get(Calendar.HOUR_OF_DAY); // HOUR_OF_DAY是24小時制，HOUR是12小時制 int minute = calendar.</description>
+    </item>
     
     <item>
       <title>renpy (6) 讀檔</title>
