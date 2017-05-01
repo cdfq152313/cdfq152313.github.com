@@ -2,13 +2,10 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>General on Denny&#39;s Blog</title>
-    <link>https://cdfq152313.github.io/tags/general/</link>
+    <link>https://cdfq152313.github.io/tags/general/index.xml</link>
     <description>Recent content in General on Denny&#39;s Blog</description>
     <generator>Hugo -- gohugo.io</generator>
-    <lastBuildDate>Tue, 27 Dec 2016 00:00:00 +0000</lastBuildDate>
-    
-	<atom:link href="https://cdfq152313.github.io/tags/general/index.xml" rel="self" type="application/rss+xml" />
-    
+    <atom:link href="https://cdfq152313.github.io/tags/general/index.xml" rel="self" type="application/rss+xml" />
     
     <item>
       <title>[讀書心得] 圖解密碼學與比特幣原理</title>
@@ -16,10 +13,14 @@
       <pubDate>Tue, 27 Dec 2016 00:00:00 +0000</pubDate>
       
       <guid>https://cdfq152313.github.io/misc/2016-12-27/</guid>
-      <description>圖解密碼學與比特幣原理
-花了很久才斷斷續續的看完這本，覺得是一本很不錯的科普書，沒有太艱深的數學。
-書中有系統的把目前密碼學的發展介紹了一遍，非常著重在oo密碼技術可以解決xx難題，或是oo技術無法解決xx難題。以及oo技術中的yy演算法目前無人破解，或是oo技術的yy演算法已經被破解。
-書中最後也提到了不少混合型密碼系統在現今世界上的應用，讓這本書不會只流於技術介紹的紙上談兵。對我這個密碼學大外行幫助很大，好書，極推。</description>
+      <description>&lt;p&gt;&lt;a href=&#34;https://www.tenlong.com.tw/items/9864761935?item_id=1025404&#34;&gt;圖解密碼學與比特幣原理&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;花了很久才斷斷續續的看完這本，覺得是一本很不錯的科普書，沒有太艱深的數學。&lt;/p&gt;
+
+&lt;p&gt;書中有系統的把目前密碼學的發展介紹了一遍，非常著重在oo密碼技術可以解決xx難題，或是oo技術無法解決xx難題。以及oo技術中的yy演算法目前無人破解，或是oo技術的yy演算法已經被破解。&lt;/p&gt;
+
+&lt;p&gt;書中最後也提到了不少混合型密碼系統在現今世界上的應用，讓這本書不會只流於技術介紹的紙上談兵。對我這個密碼學大外行幫助很大，好書，極推。&lt;/p&gt;
+</description>
     </item>
     
     <item>
@@ -28,11 +29,113 @@
       <pubDate>Thu, 24 Nov 2016 00:00:00 +0000</pubDate>
       
       <guid>https://cdfq152313.github.io/post/2016-11-24/</guid>
-      <description>來源網址：https://read01.com/J8P4L.html
-要注意最後一段說get比較不安全是錯的，你他媽的不轉成https通通都是不安全。
-Client端 分三區塊
- Request line Request header Body  Request line  有著方法描述，資源位置，協議版本 例如：GET http://www.cnblogs.com/ HTTP/1.1  Request header  Accept：client告知server可以接受的媒體類型(json, xml, html &amp;hellip;)，大部分使用*/*代表全部都接受。 Referer：告訴伺服器端我是從哪裡連過來 Accept-Language：瀏覽器端接受的語言  EX: 中文、英文&amp;hellip;  Accept-Charset：瀏覽器端接受的字符集  EX: BIG5, UTF-8, GBK &amp;hellip;  Content-Type  Body的檔案類型 補充資料，與Accept的差別 簡單的說，當client傳送檔案給server，content-type可以描述這個檔案的類型。當server吐response回給client，content-type一樣可以描述這個檔案的類型。 accept是請求對方返回的類型，content-type是實際一個request或response中夾帶的類型。  Accept-Encoding：client端的編碼(壓縮)方法 User-Agent：client端的作業系統，瀏覽器名稱 Connection  是否在接收完檔案後立刻斷開TCP [補充資料])(https://www.byvoid.com/zht/blog/http-keep-alive-header)  Content-length: 訊息長度 Host：該資源的domain Name 剩下一些懶得看  Pragma Cookie   Body 就是個Body
-Server端 一樣分三區塊 - Response line - Response header - Body</description>
+      <description>
+
+&lt;p&gt;來源網址：&lt;a href=&#34;https://read01.com/J8P4L.html&#34;&gt;https://read01.com/J8P4L.html&lt;/a&gt;&lt;br /&gt;
+要注意最後一段說get比較不安全是錯的，你他媽的不轉成https通通都是不安全。&lt;/p&gt;
+
+&lt;h2 id=&#34;client端&#34;&gt;Client端&lt;/h2&gt;
+
+&lt;p&gt;分三區塊&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Request line&lt;/li&gt;
+&lt;li&gt;Request header&lt;/li&gt;
+&lt;li&gt;Body&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&#34;request-line&#34;&gt;Request line&lt;/h3&gt;
+
+&lt;ul&gt;
+&lt;li&gt;有著方法描述，資源位置，協議版本&lt;/li&gt;
+&lt;li&gt;例如：GET &lt;a href=&#34;http://www.cnblogs.com/&#34;&gt;http://www.cnblogs.com/&lt;/a&gt; HTTP/1.1&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&#34;request-header&#34;&gt;Request header&lt;/h3&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Accept：client告知server可以接受的媒體類型(json, xml, html &amp;hellip;)，大部分使用*/*代表全部都接受。&lt;/li&gt;
+&lt;li&gt;Referer：告訴伺服器端我是從哪裡連過來&lt;/li&gt;
+&lt;li&gt;Accept-Language：瀏覽器端接受的語言
+
+&lt;ul&gt;
+&lt;li&gt;EX: 中文、英文&amp;hellip;&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;Accept-Charset：瀏覽器端接受的字符集
+
+&lt;ul&gt;
+&lt;li&gt;EX: BIG5, UTF-8, GBK &amp;hellip;&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;Content-Type
+
+&lt;ul&gt;
+&lt;li&gt;Body的檔案類型&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://webmasters.stackexchange.com/questions/31212/difference-between-the-accept-and-content-type-http-headers&#34;&gt;補充資料&lt;/a&gt;，與Accept的差別&lt;/li&gt;
+&lt;li&gt;簡單的說，當client傳送檔案給server，content-type可以描述這個檔案的類型。當server吐response回給client，content-type一樣可以描述這個檔案的類型。&lt;/li&gt;
+&lt;li&gt;accept是請求對方返回的類型，content-type是實際一個request或response中夾帶的類型。&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;Accept-Encoding：client端的編碼(壓縮)方法&lt;/li&gt;
+&lt;li&gt;User-Agent：client端的作業系統，瀏覽器名稱&lt;/li&gt;
+&lt;li&gt;Connection
+
+&lt;ul&gt;
+&lt;li&gt;是否在接收完檔案後立刻斷開TCP&lt;/li&gt;
+&lt;li&gt;[補充資料])(&lt;a href=&#34;https://www.byvoid.com/zht/blog/http-keep-alive-header&#34;&gt;https://www.byvoid.com/zht/blog/http-keep-alive-header&lt;/a&gt;)&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;Content-length: 訊息長度&lt;/li&gt;
+&lt;li&gt;Host：該資源的domain Name&lt;/li&gt;
+&lt;li&gt;剩下一些懶得看
+
+&lt;ul&gt;
+&lt;li&gt;Pragma&lt;/li&gt;
+&lt;li&gt;Cookie&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&#34;body&#34;&gt;Body&lt;/h3&gt;
+
+&lt;p&gt;就是個Body&lt;/p&gt;
+
+&lt;h2 id=&#34;server端&#34;&gt;Server端&lt;/h2&gt;
+
+&lt;p&gt;一樣分三區塊
+- Response line
+- Response header
+- Body&lt;/p&gt;
+
+&lt;h3 id=&#34;response-line&#34;&gt;Response line&lt;/h3&gt;
+
+&lt;ul&gt;
+&lt;li&gt;協議版本及狀態碼&lt;/li&gt;
+&lt;li&gt;例如：HTTP/1.1 200 OK&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&#34;response-header&#34;&gt;Response header&lt;/h3&gt;
+
+&lt;p&gt;有些部分跟request一樣，少部分懶得看。&lt;/p&gt;
+
+&lt;p&gt;Content-Type：回傳資料的型態
+Expired：回傳資料過期時間&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;懶得看
+
+&lt;ul&gt;
+&lt;li&gt;Cache-Control&lt;/li&gt;
+&lt;li&gt;Last-Modified:&lt;/li&gt;
+&lt;li&gt;Server&lt;/li&gt;
+&lt;li&gt;X-AspNet-Version:&lt;/li&gt;
+&lt;li&gt;X-Powered-By:&lt;/li&gt;
+&lt;li&gt;Connection&lt;/li&gt;
+&lt;li&gt;Content-Length&lt;/li&gt;
+&lt;li&gt;Date&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&#34;body-1&#34;&gt;Body&lt;/h3&gt;
+
+&lt;p&gt;就只是個Body&lt;/p&gt;
+</description>
     </item>
     
   </channel>

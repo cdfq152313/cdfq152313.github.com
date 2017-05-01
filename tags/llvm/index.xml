@@ -2,13 +2,10 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Llvm on Denny&#39;s Blog</title>
-    <link>https://cdfq152313.github.io/tags/llvm/</link>
+    <link>https://cdfq152313.github.io/tags/llvm/index.xml</link>
     <description>Recent content in Llvm on Denny&#39;s Blog</description>
     <generator>Hugo -- gohugo.io</generator>
-    <lastBuildDate>Wed, 10 Jun 2015 00:00:00 +0000</lastBuildDate>
-    
-	<atom:link href="https://cdfq152313.github.io/tags/llvm/index.xml" rel="self" type="application/rss+xml" />
-    
+    <atom:link href="https://cdfq152313.github.io/tags/llvm/index.xml" rel="self" type="application/rss+xml" />
     
     <item>
       <title>llvm - helloworld</title>
@@ -16,7 +13,97 @@
       <pubDate>Wed, 10 Jun 2015 00:00:00 +0000</pubDate>
       
       <guid>https://cdfq152313.github.io/post/2015-06-10/</guid>
-      <description>環境設置  ubuntu體系：sudo apt-get install llvm MAC: brew install llvm  makefile (MAC) BIN_PATH=/usr/local/Cellar/llvm/3.6.1/bin/ export PATH:=$(PATH):$(BIN_PATH) LLVM_CONFIG=llvm-config FLAGS= --cxxflags --ldflags --system-libs --libs core toy: toy.cpp clang++ -g -O3 toy.cpp `$(LLVM_CONFIG) $(FLAGS)` -o toy clean: rm -f toy  top module #include &amp;quot;llvm/LLVMContext.h&amp;quot; #include &amp;quot;llvm/Module.h&amp;quot; #include &amp;quot;llvm/Support/IRBuilder.h&amp;quot; int main() { llvm::LLVMContext&amp;amp; context = llvm::getGlobalContext(); llvm::Module* module = new llvm::Module(&amp;quot;top&amp;quot;, context); llvm::IRBuilder&amp;lt;&amp;gt; builder(context); module-&amp;gt;dump( ); }  function 宣告function 無參數 llvm::FunctionType *funcType = llvm::FunctionType::get(builder.</description>
+      <description>
+
+&lt;h2 id=&#34;環境設置&#34;&gt;環境設置&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;ubuntu體系：sudo apt-get install llvm&lt;/li&gt;
+&lt;li&gt;MAC: brew install llvm&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&#34;makefile-mac&#34;&gt;makefile (MAC)&lt;/h2&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-makefile&#34;&gt;BIN_PATH=/usr/local/Cellar/llvm/3.6.1/bin/
+export PATH:=$(PATH):$(BIN_PATH)
+LLVM_CONFIG=llvm-config
+FLAGS= --cxxflags --ldflags --system-libs --libs core
+
+toy: toy.cpp
+	clang++ -g -O3 toy.cpp `$(LLVM_CONFIG) $(FLAGS)` -o toy
+clean:
+	rm -f toy
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;top-module&#34;&gt;top module&lt;/h2&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-c++&#34;&gt;#include &amp;quot;llvm/LLVMContext.h&amp;quot;
+#include &amp;quot;llvm/Module.h&amp;quot;
+#include &amp;quot;llvm/Support/IRBuilder.h&amp;quot;
+
+int main()
+{
+  llvm::LLVMContext&amp;amp; context = llvm::getGlobalContext();
+  llvm::Module* module = new llvm::Module(&amp;quot;top&amp;quot;, context);
+  llvm::IRBuilder&amp;lt;&amp;gt; builder(context);
+
+  module-&amp;gt;dump( );
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;function&#34;&gt;function&lt;/h2&gt;
+
+&lt;h3 id=&#34;宣告function&#34;&gt;宣告function&lt;/h3&gt;
+
+&lt;h4 id=&#34;無參數&#34;&gt;無參數&lt;/h4&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-c++&#34;&gt;  llvm::FunctionType *funcType =
+      llvm::FunctionType::get(builder.getInt32Ty(), false);
+  llvm::Function *mainFunc = llvm::Function::Create(funcType, llvm::Function::ExternalLinkage, &amp;quot;main&amp;quot;, module);
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h4 id=&#34;有參數&#34;&gt;有參數&lt;/h4&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-c++&#34;&gt;  std::vector&amp;lt; llvm::Type* &amp;gt; putsArgs;
+  putsArgs.push_back(builder.getInt8Ty()-&amp;gt;getPointerTo());
+  llvm::ArrayRef&amp;lt; llvm::Type* &amp;gt;  argsRef(putsArgs);
+
+  llvm::FunctionType *putsType =
+    llvm::FunctionType::get(builder.getInt32Ty(), argsRef, false);
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=&#34;定義function&#34;&gt;定義function&lt;/h3&gt;
+
+&lt;h4 id=&#34;引用已有的function&#34;&gt;引用已有的function&lt;/h4&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-c++&#34;&gt;  llvm::Constant *putsFunc = module-&amp;gt;getOrInsertFunction(&amp;quot;puts&amp;quot;, putsType);
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h4 id=&#34;創造新的function&#34;&gt;創造新的function&lt;/h4&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-c++&#34;&gt;  llvm::BasicBlock *entry = llvm::BasicBlock::Create(context, &amp;quot;entrypoint&amp;quot;, mainFunc);
+  builder.SetInsertPoint(entry);
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;增添function內容&lt;/p&gt;
+
+&lt;h2 id=&#34;新增變數&#34;&gt;新增變數&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;global variable&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;pre&gt;&lt;code&gt;  llvm::Value *helloWorld = builder.CreateGlobalStringPtr(&amp;quot;hello world!\n&amp;quot;);
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;ul&gt;
+&lt;li&gt;local variable&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&#34;reference&#34;&gt;Reference&lt;/h2&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://www.ibm.com/developerworks/library/os-createcompilerllvm1/&#34;&gt;Create a working compiler with the LLVM framework&lt;/a&gt;&lt;/p&gt;
+</description>
     </item>
     
     <item>
@@ -25,10 +112,138 @@
       <pubDate>Sat, 06 Jun 2015 00:00:00 +0000</pubDate>
       
       <guid>https://cdfq152313.github.io/post/2015-06-06/</guid>
-      <description>Overview llvm 示意圖 通過front end後程式碼會被轉為中間碼( LLVM Intermediate Representation (IR) ) 紅色部分為llvm提供的功能。 出作業應該不會用到1 (要自己寫)，但可能會用到 2. IR interpreter (指令lli) 3. IR compiler (指令 llc)
-llvm 指令 v = operation type op1, op2 , opn %sum = add i32 %op1, %op2 運算結果 運算元 型態 運算子們  llvm function 宣告
-define i32 @add1 ( i32 %a, i32 %b ) define 回傳型態 @函數名稱( 參數列 )  回傳
-ret i32 5 ; 回傳integer ，值為5 ret void ; 回傳void ret { i32, i8 } { i32 4, i8 2 } ; 回傳結構 {int 32, int 8} , 值為 4 , 2  範例</description>
+      <description>
+
+&lt;h2 id=&#34;overview&#34;&gt;Overview&lt;/h2&gt;
+
+&lt;p&gt;llvm 示意圖
+&lt;img src=&#34;http://www.aosabook.org/images/llvm/SimpleCompiler.png&#34; alt=&#34;&#34; /&gt;
+&lt;img src=&#34;http://i.imgur.com/YWNh2wy.png&#34; alt=&#34;&#34; /&gt;
+通過front end後程式碼會被轉為中間碼( LLVM Intermediate Representation (IR) )
+紅色部分為llvm提供的功能。
+出作業應該不會用到1 (要自己寫)，但可能會用到
+2. IR interpreter (指令lli)
+3. IR compiler (指令 llc)&lt;/p&gt;
+
+&lt;h2 id=&#34;llvm-指令&#34;&gt;llvm 指令&lt;/h2&gt;
+
+&lt;pre&gt;&lt;code&gt;v    =  operation   type      op1,       op2 ,     opn
+%sum =     add             i32      %op1,      %op2  
+運算結果   運算元      型態      運算子們
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;llvm-function&#34;&gt;llvm function&lt;/h2&gt;
+
+&lt;p&gt;宣告&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;define i32            @add1       (   i32 %a,   i32 %b )
+define 回傳型態 @函數名稱(  參數列          )
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;回傳&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;ret i32 5                       ; 回傳integer ，值為5
+ret void                        ; 回傳void
+ret { i32, i8 } { i32 4, i8 2 } ; 回傳結構 {int 32, int 8} ,  值為 4 , 2
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;範例&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;define i32 @add1(i32 %a, i32 %b) {
+entry:
+  %tmp1 = add i32 %a, %b
+  ret i32 %tmp1
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;identifiers&#34;&gt;Identifiers&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;regular expression: &amp;lsquo;[%@][a-zA-Z$._][a-zA-Z$._0-9]*&amp;lsquo;.&lt;br /&gt;&lt;/li&gt;
+&lt;li&gt;@全域變數&lt;/li&gt;
+&lt;li&gt;%區域變數&lt;/li&gt;
+&lt;li&gt;雙引號為字串，可用跳脫字元 \， 後面接ASCII code (ex: 換行為\0A, 而非\n)&lt;/li&gt;
+&lt;li&gt;@1 $2這些應該是暫存變數(不確定)&lt;/li&gt;
+&lt;li&gt;全部皆為SSA(single static assigment)
+
+&lt;ul&gt;
+&lt;li&gt;將變數編上編號&lt;/li&gt;
+&lt;li&gt;每個變數只會賦值一次&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&#34;利用clang-front-end-做測試&#34;&gt;利用clang front end 做測試&lt;/h2&gt;
+
+&lt;p&gt;安裝&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;    sudo apt-get install clang llvm
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;把C code 變成 llvm IR (以test.c為例)&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;    clang test.c -emit-llvm -S
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;C code&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-c&#34;&gt;    #include&amp;lt;stdio.h&amp;gt;
+    int main()
+    {
+        int a, b;
+        a = 1;
+        b = a + 1;
+        printf(&amp;quot;%d\n&amp;quot;, b);
+    }
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;llvm IR (test.ll)&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-llvm&#34;&gt;    ; Function Attrs: nounwind uwtable
+    define i32 @main() #0 {
+      %a = alloca i32, align 4
+      %b = alloca i32, align 4
+      store i32 1, i32* %a, align 4
+      %1 = load i32* %a, align 4
+      %2 = add nsw i32 %1, 1
+      store i32 %2, i32* %b, align 4
+      %3 = load i32* %b, align 4
+      %4 = call i32 (i8*, ...)* @printf(i8* getelementptr inbounds ([4 x i8]* @.str, i32 0, i32 0), i32 %3)
+      ret i32 0
+    }
+
+    declare i32 @printf(i8*, ...) #1
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;1-用interpreter執行llvm-ir&#34;&gt;1. 用interpreter執行llvm IR&lt;/h2&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;    lli test.ll
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;2-把llvm-ir-編譯成assembly-code&#34;&gt;2. 把llvm IR 編譯成assembly code&lt;/h2&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;    llc test.ll
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;產生出 test.s
+利用clang把assembly轉成machine code&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;    clang test.ll
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;執行&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;    ./test.ll
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;結論&#34;&gt;結論&lt;/h2&gt;
+
+&lt;p&gt;用llvm學習compiler，不需考慮暫存器分配(assembly code geneate)，但需要考慮SSA。&lt;/p&gt;
+
+&lt;h2 id=&#34;參考資料&#34;&gt;參考資料&lt;/h2&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://www.slideshare.net/kitocheng/ss-42438227&#34;&gt;神人投影片&lt;/a&gt;
+&lt;a href=&#34;http://llvm.org/docs/LangRef.html&#34;&gt;llvm reference&lt;/a&gt;&lt;/p&gt;
+</description>
     </item>
     
   </channel>

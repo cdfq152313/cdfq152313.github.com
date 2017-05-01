@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Design on Denny&#39;s Blog</title>
+    <link>https://cdfq152313.github.io/tags/design/index.xml</link>
+    <description>Recent content in Design on Denny&#39;s Blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <atom:link href="https://cdfq152313.github.io/tags/design/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>[Design] SocketIO與Queue</title>
+      <link>https://cdfq152313.github.io/post/2017-05-01/</link>
+      <pubDate>Mon, 01 May 2017 12:44:55 +0800</pubDate>
+      
+      <guid>https://cdfq152313.github.io/post/2017-05-01/</guid>
+      <description>
+
+&lt;h2 id=&#34;問題&#34;&gt;問題&lt;/h2&gt;
+
+&lt;p&gt;今天才發現應該要有的一個小小設計，在使用SocketIO(或其他強連線函式庫)時，可能會希望連線後，立刻執行某條指令。&lt;br /&gt;
+舉例來說，如果現在有兩台裝置(稱為AB)，想用SocketIO進行對接，步驟為&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;B已經連上Server，並有一組房間編號。&lt;/li&gt;
+&lt;li&gt;A在線下取得B之編號&lt;/li&gt;
+&lt;li&gt;A連上Server&lt;/li&gt;
+&lt;li&gt;A知會Server房間編號。&lt;/li&gt;
+&lt;li&gt;A知會B，&amp;rdquo;你好 拎北來阿。&amp;rdquo;&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;我一開始是4和5都直接塞在onConnection的時候，也就是一連上就執行。但是如果socketio斷線了，那重連的時候，5就會重複發送。也就是說B會再次看到&amp;rdquo;你好 拎北來阿。&amp;rdquo;&lt;/p&gt;
+
+&lt;h2 id=&#34;更多問題&#34;&gt;更多問題&lt;/h2&gt;
+
+&lt;p&gt;解決問題的方法也很單純，就是把5從onConnection切開來，等連上後再執行即可。不過這邊就出現另一個問題，我怎麼知道SocketIO連上了？我一開始想用Listener解決，等連上後通知我該執行5的動作。但是這樣程式碼寫起來超不直覺。&lt;/p&gt;
+
+&lt;p&gt;明明應該是&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;1. socketIO 連上後知會房間編號
+2. socketIO 拎北來阿
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;變成Listener的話就變成&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;1. socketIO 連上後知會房間編號, 再通知那個Call function的人我連上了。
+2. 我接收到通知了，拎北來阿
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;怎麼樣都覺得第一種方法比較直觀容易理解。&lt;/p&gt;
+
+&lt;h2 id=&#34;用queue解決&#34;&gt;用Queue解決&lt;/h2&gt;
+
+&lt;p&gt;後來解決方法就是，做一個Queue蒐集沒Connect時的指令。所有沒Connect時的Message都會跑進這個Queue。等到Connect上後再把Queue裡的指令批次發送就好了。&lt;/p&gt;
+
+&lt;p&gt;這樣就可以繼續用&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;1. socketIO 連上後知會房間編號
+2. socketIO 拎北來阿（這行可能尚未執行，放在Queue中等待連上時批次執行）
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;這樣的方式來寫Code了。&lt;/p&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

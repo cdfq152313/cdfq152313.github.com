@@ -2,13 +2,10 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Java on Denny&#39;s Blog</title>
-    <link>https://cdfq152313.github.io/tags/java/</link>
+    <link>https://cdfq152313.github.io/tags/java/index.xml</link>
     <description>Recent content in Java on Denny&#39;s Blog</description>
     <generator>Hugo -- gohugo.io</generator>
-    <lastBuildDate>Thu, 27 Apr 2017 12:44:55 +0800</lastBuildDate>
-    
-	<atom:link href="https://cdfq152313.github.io/tags/java/index.xml" rel="self" type="application/rss+xml" />
-    
+    <atom:link href="https://cdfq152313.github.io/tags/java/index.xml" rel="self" type="application/rss+xml" />
     
     <item>
       <title>[Java] Date SimpleDateFormat Calendar之轉換與時區(UTC/GMT)問題</title>
@@ -16,15 +13,272 @@
       <pubDate>Thu, 27 Apr 2017 12:44:55 +0800</pubDate>
       
       <guid>https://cdfq152313.github.io/post/2017-04-27/</guid>
-      <description>簡介 這篇主要探討怎麼把當地時間轉換成GMT(UTC)時間，不在意一秒誤差的話這兩者基本上是一樣的。
-主要用到下列三個元件
- Date：  最基礎的時間紀錄 無法呈現任何有意義的資訊(例如年月的int，或格式化過的字串)  SimpleDateFormat  擅長格式化字串與Date之間的轉換  Calendar  擅長對時間作操作(比較，加減) 擅長單獨取出欄位(年、月、日、時、分、秒等)   格式化字串 這邊示範如果取得一個Date或一個Calendar，應該如何將其格式化為字串。
-格式統一採用 &amp;ldquo;年-月-日 時:分:秒&amp;rdquo;。
-Date Date本身沒辦法呈現任何有意義的資訊，只是一個時間記錄器而已。
-因此必須依靠SimpleDateFormat來將Date格式化為有意義的字串。
-String formatDate(Date date){ SimpleDateFormat sdf = new SimpleDateFormat(&amp;quot;yyyy-MM-dd HH:mm:ss&amp;quot;); // HH是24小時制，hh是12小時制 return sdf.format(date); }  Calendar Calendar有一個method叫getTime，可以取出此Calendar目前的Date。在有formatDate此函式的情況下，其實只要先getTime再丟給formatDate即可。
-只是這邊為了展示calendar單獨取值的方法走了不一樣的路徑。
-String formatCalendar(Calendar calendar){ int year = calendar.get(Calendar.YEAR); int month = calendar.get(Calendar.MONTH) + 1; // 1月的值為0 int day = calendar.get(Calendar.DAY_OF_MONTH); int hour = calendar.get(Calendar.HOUR_OF_DAY); // HOUR_OF_DAY是24小時制，HOUR是12小時制 int minute = calendar.</description>
+      <description>
+
+&lt;h2 id=&#34;簡介&#34;&gt;簡介&lt;/h2&gt;
+
+&lt;p&gt;這篇主要探討怎麼把當地時間轉換成GMT(UTC)時間，不在意一秒誤差的話這兩者基本上是一樣的。&lt;br /&gt;
+主要用到下列三個元件&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Date：
+
+&lt;ul&gt;
+&lt;li&gt;最基礎的時間紀錄&lt;/li&gt;
+&lt;li&gt;無法呈現任何有意義的資訊(例如年月的int，或格式化過的字串)&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;SimpleDateFormat
+
+&lt;ul&gt;
+&lt;li&gt;擅長格式化字串與Date之間的轉換&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;Calendar
+
+&lt;ul&gt;
+&lt;li&gt;擅長對時間作操作(比較，加減)&lt;/li&gt;
+&lt;li&gt;擅長單獨取出欄位(年、月、日、時、分、秒等)&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&#34;格式化字串&#34;&gt;格式化字串&lt;/h2&gt;
+
+&lt;p&gt;這邊示範如果取得一個Date或一個Calendar，應該如何將其格式化為字串。&lt;br /&gt;
+格式統一採用 &amp;ldquo;年-月-日 時:分:秒&amp;rdquo;。&lt;/p&gt;
+
+&lt;h3 id=&#34;date&#34;&gt;Date&lt;/h3&gt;
+
+&lt;p&gt;Date本身沒辦法呈現任何有意義的資訊，只是一個時間記錄器而已。&lt;br /&gt;
+因此必須依靠SimpleDateFormat來將Date格式化為有意義的字串。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-Java&#34;&gt;String formatDate(Date date){
+	SimpleDateFormat sdf = new SimpleDateFormat(&amp;quot;yyyy-MM-dd HH:mm:ss&amp;quot;); // HH是24小時制，hh是12小時制
+	return sdf.format(date);
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=&#34;calendar&#34;&gt;Calendar&lt;/h3&gt;
+
+&lt;p&gt;Calendar有一個method叫getTime，可以取出此Calendar目前的Date。在有&lt;code&gt;formatDate&lt;/code&gt;此函式的情況下，其實只要先getTime再丟給formatDate即可。&lt;br /&gt;
+只是這邊為了展示calendar單獨取值的方法走了不一樣的路徑。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-Java&#34;&gt;String formatCalendar(Calendar calendar){
+	int year = calendar.get(Calendar.YEAR);
+	int month = calendar.get(Calendar.MONTH) + 1; // 1月的值為0
+	int day = calendar.get(Calendar.DAY_OF_MONTH);
+	int hour = calendar.get(Calendar.HOUR_OF_DAY); // HOUR_OF_DAY是24小時制，HOUR是12小時制
+	int minute = calendar.get(Calendar.MINUTE);
+	int second = calendar.get(Calendar.SECOND);
+	return String.format(&amp;quot;%d-%02d-%02d %02d:%02d:%02d&amp;quot;, year, month, day, hour, minute, second);
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;code&gt;hint: 這兩個function在後續的程式碼中會常常用到&lt;/code&gt;&lt;/p&gt;
+
+&lt;h2 id=&#34;取得現在時間&#34;&gt;取得現在時間&lt;/h2&gt;
+
+&lt;p&gt;使用Date和Calendar都可以直接取得現在時間，程式碼分別如下。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-Java&#34;&gt;Date date = new Date(); // 直接初始化即可取得現在時間
+Calendar calendar = Calendar.getInstance(); // getInstance可以取得現在時間
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;要記得，如果單獨使用Date的話基本上是無法呈現任何有用資訊的。&lt;br /&gt;
+可以配合剛剛的format method來印出格式化資訊觀看。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-Java&#34;&gt;Date currentTime = new Date(); // 現在時間的Date物件
+String display = formatDate(currentTime);
+System.out.println( display );
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-Java&#34;&gt;Calendar currentTime = Calendar.getInstance(); // 現在時間的Calendar物件
+String display = formatCalendar(calendar)
+System.out.println( display );
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;顯示現在gmt時間&#34;&gt;顯示現在GMT時間&lt;/h2&gt;
+
+&lt;h3 id=&#34;date-1&#34;&gt;Date&lt;/h3&gt;
+
+&lt;p&gt;默念三次&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;Date本身是絕對時間&lt;/strong&gt;&lt;br /&gt;
+&lt;strong&gt;Date本身是絕對時間&lt;/strong&gt;&lt;br /&gt;
+&lt;strong&gt;Date本身是絕對時間&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;格式化Date為有意義的字串是SimpleDateFormat提供的功能。&lt;br /&gt;
+SimpleDateFormat會以使用者所在的時區當作預設顯示時區，若要調整可以在兩個地方修改。&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;初始化時指定地區&lt;/li&gt;
+&lt;li&gt;初始化後再set時區&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;下面選的是第二種。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-Java&#34;&gt;String formatDateInGMT(Date date){
+	SimpleDateFormat sdf = new SimpleDateFormat(&amp;quot;yyyy-MM-dd HH:mm:ss&amp;quot;); // HH是24小時制，hh是12小時制
+	sdf.setTimeZone(TimeZone.getTimeZone(&amp;quot;GMT&amp;quot;) );
+	return sdf.format(date);
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;接下來只要獲得現在的Date，就可以印出對應的GMT時間了。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-Java&#34;&gt;Date date = new Date();
+String display = formatDateInGMT(date);
+System.out.println(display);
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=&#34;calendar-1&#34;&gt;Calendar&lt;/h3&gt;
+
+&lt;p&gt;Calendar本身就可以設定時區。&lt;br /&gt;
+因此若要顯示現在的GMT時間的話，只要在取得Calendar實例後更改時區即可。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-Java&#34;&gt;Calendar calendar = Calendar.getInstance();
+calendar.setTimeZone(TimeZone.getTimeZone(&amp;quot;GMT&amp;quot;));
+String display = formatCalendar(calendar);
+System.out.println(display);
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;由字串取得時間&#34;&gt;由字串取得時間&lt;/h2&gt;
+
+&lt;p&gt;SimpleDateFormat可以很方便的在格式化字串和Date之間做轉換，但遺憾的是無法將格式化字串直接轉換為Calendar，必須要用Date來設定Calendar才行。&lt;/p&gt;
+
+&lt;h3 id=&#34;格式化字串轉換為date&#34;&gt;格式化字串轉換為Date&lt;/h3&gt;
+
+&lt;p&gt;下方的範例利用SimpleDateFormat將字串轉換為Date&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-Java&#34;&gt;public Date convertStringToDate(String time) throws ParseException {
+	// 假設input的字串是 &amp;quot;年-月-日 時:分:秒&amp;quot; 格式
+	SimpleDateFormat sdf = new SimpleDateFormat(&amp;quot;yyyy-MM-dd HH:mm:ss&amp;quot;);
+	Date date = sdf.parse(time);
+	return date;
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;觀看有沒有成功一樣可以使用formatDate來觀看，這邊就不說明了。&lt;/p&gt;
+
+&lt;h3 id=&#34;格式化字串為calendar&#34;&gt;格式化字串為Calendar&lt;/h3&gt;
+
+&lt;p&gt;先取得Date，再設定Calendar，會用到上方的convertStringToDate函式。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-Java&#34;&gt;public Calendar convertStringToCalendar(String time) throws ParseException {
+	// 假設input的字串是 &amp;quot;年-月-日 時:分:秒&amp;quot; 格式
+	Date date = convertStringToDate(time);
+	Calendar calendar = Calendar.getInstance();
+	calendar.setTime(date);
+	return calendar;
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;由gmt字串取得時間&#34;&gt;由GMT字串取得時間&lt;/h2&gt;
+
+&lt;p&gt;先默念三次&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;Date是絕對時間&lt;/strong&gt;&lt;br /&gt;
+&lt;strong&gt;Date是絕對時間&lt;/strong&gt;&lt;br /&gt;
+&lt;strong&gt;Date是絕對時間&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;因此要從字串轉換為Date時，該告知的是SimpleDateFormat&lt;strong&gt;此時間字串是在GMT時區&lt;/strong&gt;，如此SimpleDateFormat轉出來的Date才會正確。&lt;/p&gt;
+
+&lt;h3 id=&#34;格式化gmt字串為date&#34;&gt;格式化GMT字串為Date&lt;/h3&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-Java&#34;&gt;public Date convertGMTStringToDate(String time) throws ParseException {
+	// 假設input的字串是 &amp;quot;年-月-日 時:分:秒&amp;quot; 格式
+	SimpleDateFormat sdf = new SimpleDateFormat(&amp;quot;yyyy-MM-dd HH:mm:ss&amp;quot;);
+	sdf.setTimeZone(TimeZone.getTimeZone(&amp;quot;GMT&amp;quot;) ); // 告知接下來的字串時區位在GMT
+	Date date = sdf.parse(time);
+	return date;
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;驗證一樣可以用&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;formatDate&lt;/li&gt;
+&lt;li&gt;formatDateInGMT&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;這兩個函式來格式化結果並印出觀看。&lt;/p&gt;
+
+&lt;h3 id=&#34;格式化gmt字串為calendar&#34;&gt;格式化GMT字串為Calendar&lt;/h3&gt;
+
+&lt;p&gt;轉換為Calendar也是同理，先取得Date，再設定Calendar。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-Java&#34;&gt;public Calendar convertGMTStringToCalendar(String time) throws ParseException {
+	// 假設input的字串是 &amp;quot;年-月-日 時:分:秒&amp;quot; 格式
+	Date date = convertGMTStringToDate(time);
+	Calendar calendar = Calendar.getInstance();
+	calendar.setTime(date);
+	return calendar;
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;驗證一樣可以用&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;formatCalendar()&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;來格式化結果。要記得若要觀看不同時區的結果，必須先設定Calendar。&lt;/p&gt;
+
+&lt;h2 id=&#34;快速複製區&#34;&gt;快速複製區&lt;/h2&gt;
+
+&lt;p&gt;剛剛講解中一些重要函式的快速複製區，提供給以後的自己使用。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-Java&#34;&gt;String formatDate(Date date){
+	SimpleDateFormat sdf = new SimpleDateFormat(&amp;quot;yyyy-MM-dd HH:mm:ss&amp;quot;); // HH是24小時制，hh是12小時制
+	return sdf.format(date);
+}
+
+String formatDateInGMT(Date date){
+	SimpleDateFormat sdf = new SimpleDateFormat(&amp;quot;yyyy-MM-dd HH:mm:ss&amp;quot;); // HH是24小時制，hh是12小時制
+	sdf.setTimeZone(TimeZone.getTimeZone(&amp;quot;GMT&amp;quot;) );
+	return sdf.format(date);
+}
+
+String formatCalendar(Calendar calendar){
+	int year = calendar.get(Calendar.YEAR);
+	int month = calendar.get(Calendar.MONTH) + 1; // 1月的值為0
+	int day = calendar.get(Calendar.DAY_OF_MONTH);
+	int hour = calendar.get(Calendar.HOUR_OF_DAY); // HOUR_OF_DAY是24小時制，HOUR是12小時制
+	int minute = calendar.get(Calendar.MINUTE);
+	int second = calendar.get(Calendar.SECOND);
+	return String.format(&amp;quot;%d-%02d-%02d %02d:%02d:%02d&amp;quot;, year, month, day, hour, minute, second);
+}
+
+public Date convertStringToDate(String time) throws ParseException {
+	// 假設input的字串是 &amp;quot;年-月-日 時:分:秒&amp;quot; 格式
+	SimpleDateFormat sdf = new SimpleDateFormat(&amp;quot;yyyy-MM-dd HH:mm:ss&amp;quot;);
+	Date date = sdf.parse(time);
+	return date;
+}
+
+public Calendar convertStringToCalendar(String time) throws ParseException {
+	// 假設input的字串是 &amp;quot;年-月-日 時:分:秒&amp;quot; 格式
+	Date date = convertStringToDate(time);
+	Calendar calendar = Calendar.getInstance();
+	calendar.setTime(date);
+	return calendar;
+}
+
+public Date convertGMTStringToDate(String time) throws ParseException {
+	// 假設input的字串是 &amp;quot;年-月-日 時:分:秒&amp;quot; 格式
+	SimpleDateFormat sdf = new SimpleDateFormat(&amp;quot;yyyy-MM-dd HH:mm:ss&amp;quot;);
+	sdf.setTimeZone(TimeZone.getTimeZone(&amp;quot;GMT&amp;quot;) ); // 告知接下來的字串時區位在GMT
+	Date date = sdf.parse(time);
+	return date;
+}
+
+public Calendar convertGMTStringToCalendar(String time) throws ParseException {
+	// 假設input的字串是 &amp;quot;年-月-日 時:分:秒&amp;quot; 格式
+	Date date = convertGMTStringToDate(time);
+	Calendar calendar = Calendar.getInstance();
+	calendar.setTime(date);
+	return calendar;
+}
+&lt;/code&gt;&lt;/pre&gt;
+</description>
     </item>
     
     <item>
@@ -33,8 +287,84 @@ String formatCalendar(Calendar calendar){ int year = calendar.get(Calendar.YEAR)
       <pubDate>Wed, 22 Feb 2017 00:00:00 +0000</pubDate>
       
       <guid>https://cdfq152313.github.io/post/2017-02-22/</guid>
-      <description>平台 Android Studio - compileSdkVersion 25 - buildToolsVersion &amp;ldquo;25.0.1&amp;rdquo;
-全域變數 SecretKey secretKey; // 金鑰 AlgorithmParameterSpec mAlgorithmParameterSpec; // 之後要放置初始化向量的參數  初始化 金鑰初始化 private void genAESKey() throws Exception { KeyGenerator keyGen = KeyGenerator.getInstance(&amp;quot;AES&amp;quot;); // 指定AES演算法 keyGen.init(256, new SecureRandom()); // 指定256位元，並使用SecureRandom secretKey = keyGen.generateKey(); // 產生AES金鑰 }  初始向量初始化 private void genInitializationVector() throws NoSuchPaddingException, NoSuchAlgorithmException { cipher = Cipher.getInstance(&amp;quot;AES/CBC/PKCS5Padding&amp;quot;); // 指定AES演算法 byte [] iVAES = new byte[ cipher.getBlockSize() ]; // new AES演算法所需的block size SecureRandom random = new SecureRandom(); random.</description>
+      <description>
+
+&lt;h2 id=&#34;平台&#34;&gt;平台&lt;/h2&gt;
+
+&lt;p&gt;Android Studio
+- compileSdkVersion 25
+- buildToolsVersion &amp;ldquo;25.0.1&amp;rdquo;&lt;/p&gt;
+
+&lt;h2 id=&#34;全域變數&#34;&gt;全域變數&lt;/h2&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;SecretKey secretKey; // 金鑰
+AlgorithmParameterSpec mAlgorithmParameterSpec; // 之後要放置初始化向量的參數
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;初始化&#34;&gt;初始化&lt;/h2&gt;
+
+&lt;h3 id=&#34;金鑰初始化&#34;&gt;金鑰初始化&lt;/h3&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;private void genAESKey() throws Exception {
+  KeyGenerator keyGen = KeyGenerator.getInstance(&amp;quot;AES&amp;quot;); // 指定AES演算法
+  keyGen.init(256, new SecureRandom()); // 指定256位元，並使用SecureRandom
+  secretKey = keyGen.generateKey(); // 產生AES金鑰
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=&#34;初始向量初始化&#34;&gt;初始向量初始化&lt;/h3&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;private void genInitializationVector() throws NoSuchPaddingException, NoSuchAlgorithmException {
+  cipher = Cipher.getInstance(&amp;quot;AES/CBC/PKCS5Padding&amp;quot;); // 指定AES演算法
+  byte [] iVAES = new byte[ cipher.getBlockSize() ]; // new AES演算法所需的block size
+  SecureRandom random = new SecureRandom();
+  random.nextBytes(iVAES); // 填充向量
+  mAlgorithmParameterSpec = new IvParameterSpec(iVAES); // 向量初始化
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;將字串加密&#34;&gt;將字串加密&lt;/h2&gt;
+
+&lt;p&gt;在AES加密完之後，用Base64把結果轉成可讀的字串以便以http傳送。&lt;br /&gt;
+不做Base64亦可，只是到時候要以byte為單位做傳送。&lt;br /&gt;
+初始化模式為 ENCRYPT_MODE&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;private String encrypt(String content) throws Exception {
+  cipher = Cipher.getInstance(&amp;quot;AES/CBC/PKCS5Padding&amp;quot;);
+  cipher.init(Cipher.ENCRYPT_MODE, secretKey, mAlgorithmParameterSpec);
+  byte [] encrypt = cipher.doFinal(contentB64);
+  return Base64.encodeToString(encrypt, Base64.DEFAULT);
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;將字串解密&#34;&gt;將字串解密&lt;/h2&gt;
+
+&lt;p&gt;初始化模式為 DECRYPT_MODE&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;private String decrypt(String content) throws Exception{
+  cipher = Cipher.getInstance(&amp;quot;AES/CBC/PKCS5Padding&amp;quot;);
+  cipher.init(Cipher.DECRYPT_MODE, secretKey, mAlgorithmParameterSpec);
+  byte [] temp = Base64.decode(content, Base64.DEFAULT); // 將字串還原為bytes
+  byte [] decodeBytes = cipher.doFinal(temp); // 解密
+  return new String(decodeBytes); // 編回字串
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;匯出金鑰&#34;&gt;匯出金鑰&lt;/h2&gt;
+
+&lt;p&gt;SecretKey使用getEncoded()可以獲得金鑰，為byte形式，若要方便閱讀與傳送可以轉換為Base64&lt;br /&gt;
+初始化向量本身有getIV()這個method可以使用，一樣為byte形式，可轉換為Base64。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;private void export(){
+  String secretKeyB64 = Base64.encodeToString(secretKey.getEncoded(), Base64.DEFAULT);
+  IvParameterSpec iv = (IvParameterSpec) mAlgorithmParameterSpec;
+  String vectorB64 = Base64.encodeToString(iv.getIV(), Base64.DEFAULT);
+
+  Log.i(&amp;quot;Secret Key Base64&amp;quot;, secretKeyB64);
+  Log.i(&amp;quot;Vector Base64&amp;quot;, vectorB64);
+}
+&lt;/code&gt;&lt;/pre&gt;
+</description>
     </item>
     
   </channel>

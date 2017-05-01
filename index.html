@@ -1,7 +1,7 @@
 <!DOCTYPE HTML>
 <html>
 <head>
-	<meta name="generator" content="Hugo 0.20.2" />
+	<meta name="generator" content="Hugo 0.19" />
 	<meta charset="utf-8">
     
     
@@ -4214,6 +4214,79 @@ body {
 
   <article class="post">
     <h2 class="title"> 
+        <a href="/post/2017-05-01/">[Design] SocketIO與Queue</a>
+    </h2>
+    <div class="entry-content">
+    <div class="meta">
+        <div class="date">Published on: <time datetime='2017-05-01T12:44:55.000&#43;08:00' itemprop="datePublished">2017-05-01</time>
+</div>
+        <div class="tags">Tags: 
+
+<a href="https://cdfq152313.github.io//tags/design">design</a>
+
+
+</div>
+    </div>
+        
+
+<h2 id="問題">問題</h2>
+
+<p>今天才發現應該要有的一個小小設計，在使用SocketIO(或其他強連線函式庫)時，可能會希望連線後，立刻執行某條指令。<br />
+舉例來說，如果現在有兩台裝置(稱為AB)，想用SocketIO進行對接，步驟為</p>
+
+<ol>
+<li>B已經連上Server，並有一組房間編號。</li>
+<li>A在線下取得B之編號</li>
+<li>A連上Server</li>
+<li>A知會Server房間編號。</li>
+<li>A知會B，&rdquo;你好 拎北來阿。&rdquo;</li>
+</ol>
+
+<p>我一開始是4和5都直接塞在onConnection的時候，也就是一連上就執行。但是如果socketio斷線了，那重連的時候，5就會重複發送。也就是說B會再次看到&rdquo;你好 拎北來阿。&rdquo;</p>
+
+<h2 id="更多問題">更多問題</h2>
+
+<p>解決問題的方法也很單純，就是把5從onConnection切開來，等連上後再執行即可。不過這邊就出現另一個問題，我怎麼知道SocketIO連上了？我一開始想用Listener解決，等連上後通知我該執行5的動作。但是這樣程式碼寫起來超不直覺。</p>
+
+<p>明明應該是</p>
+
+<pre><code>1. socketIO 連上後知會房間編號
+2. socketIO 拎北來阿
+</code></pre>
+
+<p>變成Listener的話就變成</p>
+
+<pre><code>1. socketIO 連上後知會房間編號, 再通知那個Call function的人我連上了。
+2. 我接收到通知了，拎北來阿
+</code></pre>
+
+<p>怎麼樣都覺得第一種方法比較直觀容易理解。</p>
+
+<h2 id="用queue解決">用Queue解決</h2>
+
+<p>後來解決方法就是，做一個Queue蒐集沒Connect時的指令。所有沒Connect時的Message都會跑進這個Queue。等到Connect上後再把Queue裡的指令批次發送就好了。</p>
+
+<p>這樣就可以繼續用</p>
+
+<pre><code>1. socketIO 連上後知會房間編號
+2. socketIO 拎北來阿（這行可能尚未執行，放在Queue中等待連上時批次執行）
+</code></pre>
+
+<p>這樣的方式來寫Code了。</p>
+
+    </div>
+
+<div class="meta">
+    
+    
+    <span class="comments"><a href="/post/2017-05-01/#disqus_thread">Comments</a></span>
+    
+    
+</div>
+</article>
+
+  <article class="post">
+    <h2 class="title"> 
         <a href="/post/2017-04-27/">[Java] Date SimpleDateFormat Calendar之轉換與時區(UTC/GMT)問題</a>
     </h2>
     <div class="entry-content">
@@ -4265,8 +4338,8 @@ body {
 因此必須依靠SimpleDateFormat來將Date格式化為有意義的字串。</p>
 
 <pre><code class="language-Java">String formatDate(Date date){
-    SimpleDateFormat sdf = new SimpleDateFormat(&quot;yyyy-MM-dd HH:mm:ss&quot;); // HH是24小時制，hh是12小時制
-    return sdf.format(date);
+	SimpleDateFormat sdf = new SimpleDateFormat(&quot;yyyy-MM-dd HH:mm:ss&quot;); // HH是24小時制，hh是12小時制
+	return sdf.format(date);
 }
 </code></pre>
 
@@ -4276,13 +4349,13 @@ body {
 只是這邊為了展示calendar單獨取值的方法走了不一樣的路徑。</p>
 
 <pre><code class="language-Java">String formatCalendar(Calendar calendar){
-    int year = calendar.get(Calendar.YEAR);
-    int month = calendar.get(Calendar.MONTH) + 1; // 1月的值為0
-    int day = calendar.get(Calendar.DAY_OF_MONTH);
-    int hour = calendar.get(Calendar.HOUR_OF_DAY); // HOUR_OF_DAY是24小時制，HOUR是12小時制
-    int minute = calendar.get(Calendar.MINUTE);
-    int second = calendar.get(Calendar.SECOND);
-    return String.format(&quot;%d-%02d-%02d %02d:%02d:%02d&quot;, year, month, day, hour, minute, second);
+	int year = calendar.get(Calendar.YEAR);
+	int month = calendar.get(Calendar.MONTH) + 1; // 1月的值為0
+	int day = calendar.get(Calendar.DAY_OF_MONTH);
+	int hour = calendar.get(Calendar.HOUR_OF_DAY); // HOUR_OF_DAY是24小時制，HOUR是12小時制
+	int minute = calendar.get(Calendar.MINUTE);
+	int second = calendar.get(Calendar.SECOND);
+	return String.format(&quot;%d-%02d-%02d %02d:%02d:%02d&quot;, year, month, day, hour, minute, second);
 }
 </code></pre>
 
@@ -4330,9 +4403,9 @@ SimpleDateFormat會以使用者所在的時區當作預設顯示時區，若要�
 <p>下面選的是第二種。</p>
 
 <pre><code class="language-Java">String formatDateInGMT(Date date){
-    SimpleDateFormat sdf = new SimpleDateFormat(&quot;yyyy-MM-dd HH:mm:ss&quot;); // HH是24小時制，hh是12小時制
-    sdf.setTimeZone(TimeZone.getTimeZone(&quot;GMT&quot;) );
-    return sdf.format(date);
+	SimpleDateFormat sdf = new SimpleDateFormat(&quot;yyyy-MM-dd HH:mm:ss&quot;); // HH是24小時制，hh是12小時制
+	sdf.setTimeZone(TimeZone.getTimeZone(&quot;GMT&quot;) );
+	return sdf.format(date);
 }
 </code></pre>
 
@@ -4363,10 +4436,10 @@ System.out.println(display);
 <p>下方的範例利用SimpleDateFormat將字串轉換為Date</p>
 
 <pre><code class="language-Java">public Date convertStringToDate(String time) throws ParseException {
-    // 假設input的字串是 &quot;年-月-日 時:分:秒&quot; 格式
-    SimpleDateFormat sdf = new SimpleDateFormat(&quot;yyyy-MM-dd HH:mm:ss&quot;);
-    Date date = sdf.parse(time);
-    return date;
+	// 假設input的字串是 &quot;年-月-日 時:分:秒&quot; 格式
+	SimpleDateFormat sdf = new SimpleDateFormat(&quot;yyyy-MM-dd HH:mm:ss&quot;);
+	Date date = sdf.parse(time);
+	return date;
 }
 </code></pre>
 
@@ -4377,11 +4450,11 @@ System.out.println(display);
 <p>先取得Date，再設定Calendar，會用到上方的convertStringToDate函式。</p>
 
 <pre><code class="language-Java">public Calendar convertStringToCalendar(String time) throws ParseException {
-    // 假設input的字串是 &quot;年-月-日 時:分:秒&quot; 格式
-    Date date = convertStringToDate(time);
-    Calendar calendar = Calendar.getInstance();
-    calendar.setTime(date);
-    return calendar;
+	// 假設input的字串是 &quot;年-月-日 時:分:秒&quot; 格式
+	Date date = convertStringToDate(time);
+	Calendar calendar = Calendar.getInstance();
+	calendar.setTime(date);
+	return calendar;
 }
 </code></pre>
 
@@ -4398,11 +4471,11 @@ System.out.println(display);
 <h3 id="格式化gmt字串為date">格式化GMT字串為Date</h3>
 
 <pre><code class="language-Java">public Date convertGMTStringToDate(String time) throws ParseException {
-    // 假設input的字串是 &quot;年-月-日 時:分:秒&quot; 格式
-    SimpleDateFormat sdf = new SimpleDateFormat(&quot;yyyy-MM-dd HH:mm:ss&quot;);
-    sdf.setTimeZone(TimeZone.getTimeZone(&quot;GMT&quot;) ); // 告知接下來的字串時區位在GMT
-    Date date = sdf.parse(time);
-    return date;
+	// 假設input的字串是 &quot;年-月-日 時:分:秒&quot; 格式
+	SimpleDateFormat sdf = new SimpleDateFormat(&quot;yyyy-MM-dd HH:mm:ss&quot;);
+	sdf.setTimeZone(TimeZone.getTimeZone(&quot;GMT&quot;) ); // 告知接下來的字串時區位在GMT
+	Date date = sdf.parse(time);
+	return date;
 }
 </code></pre>
 
@@ -4420,11 +4493,11 @@ System.out.println(display);
 <p>轉換為Calendar也是同理，先取得Date，再設定Calendar。</p>
 
 <pre><code class="language-Java">public Calendar convertGMTStringToCalendar(String time) throws ParseException {
-    // 假設input的字串是 &quot;年-月-日 時:分:秒&quot; 格式
-    Date date = convertGMTStringToDate(time);
-    Calendar calendar = Calendar.getInstance();
-    calendar.setTime(date);
-    return calendar;
+	// 假設input的字串是 &quot;年-月-日 時:分:秒&quot; 格式
+	Date date = convertGMTStringToDate(time);
+	Calendar calendar = Calendar.getInstance();
+	calendar.setTime(date);
+	return calendar;
 }
 </code></pre>
 
@@ -4441,55 +4514,55 @@ System.out.println(display);
 <p>剛剛講解中一些重要函式的快速複製區，提供給以後的自己使用。</p>
 
 <pre><code class="language-Java">String formatDate(Date date){
-    SimpleDateFormat sdf = new SimpleDateFormat(&quot;yyyy-MM-dd HH:mm:ss&quot;); // HH是24小時制，hh是12小時制
-    return sdf.format(date);
+	SimpleDateFormat sdf = new SimpleDateFormat(&quot;yyyy-MM-dd HH:mm:ss&quot;); // HH是24小時制，hh是12小時制
+	return sdf.format(date);
 }
 
 String formatDateInGMT(Date date){
-    SimpleDateFormat sdf = new SimpleDateFormat(&quot;yyyy-MM-dd HH:mm:ss&quot;); // HH是24小時制，hh是12小時制
-    sdf.setTimeZone(TimeZone.getTimeZone(&quot;GMT&quot;) );
-    return sdf.format(date);
+	SimpleDateFormat sdf = new SimpleDateFormat(&quot;yyyy-MM-dd HH:mm:ss&quot;); // HH是24小時制，hh是12小時制
+	sdf.setTimeZone(TimeZone.getTimeZone(&quot;GMT&quot;) );
+	return sdf.format(date);
 }
 
 String formatCalendar(Calendar calendar){
-    int year = calendar.get(Calendar.YEAR);
-    int month = calendar.get(Calendar.MONTH) + 1; // 1月的值為0
-    int day = calendar.get(Calendar.DAY_OF_MONTH);
-    int hour = calendar.get(Calendar.HOUR_OF_DAY); // HOUR_OF_DAY是24小時制，HOUR是12小時制
-    int minute = calendar.get(Calendar.MINUTE);
-    int second = calendar.get(Calendar.SECOND);
-    return String.format(&quot;%d-%02d-%02d %02d:%02d:%02d&quot;, year, month, day, hour, minute, second);
+	int year = calendar.get(Calendar.YEAR);
+	int month = calendar.get(Calendar.MONTH) + 1; // 1月的值為0
+	int day = calendar.get(Calendar.DAY_OF_MONTH);
+	int hour = calendar.get(Calendar.HOUR_OF_DAY); // HOUR_OF_DAY是24小時制，HOUR是12小時制
+	int minute = calendar.get(Calendar.MINUTE);
+	int second = calendar.get(Calendar.SECOND);
+	return String.format(&quot;%d-%02d-%02d %02d:%02d:%02d&quot;, year, month, day, hour, minute, second);
 }
 
 public Date convertStringToDate(String time) throws ParseException {
-    // 假設input的字串是 &quot;年-月-日 時:分:秒&quot; 格式
-    SimpleDateFormat sdf = new SimpleDateFormat(&quot;yyyy-MM-dd HH:mm:ss&quot;);
-    Date date = sdf.parse(time);
-    return date;
+	// 假設input的字串是 &quot;年-月-日 時:分:秒&quot; 格式
+	SimpleDateFormat sdf = new SimpleDateFormat(&quot;yyyy-MM-dd HH:mm:ss&quot;);
+	Date date = sdf.parse(time);
+	return date;
 }
 
 public Calendar convertStringToCalendar(String time) throws ParseException {
-    // 假設input的字串是 &quot;年-月-日 時:分:秒&quot; 格式
-    Date date = convertStringToDate(time);
-    Calendar calendar = Calendar.getInstance();
-    calendar.setTime(date);
-    return calendar;
+	// 假設input的字串是 &quot;年-月-日 時:分:秒&quot; 格式
+	Date date = convertStringToDate(time);
+	Calendar calendar = Calendar.getInstance();
+	calendar.setTime(date);
+	return calendar;
 }
 
 public Date convertGMTStringToDate(String time) throws ParseException {
-    // 假設input的字串是 &quot;年-月-日 時:分:秒&quot; 格式
-    SimpleDateFormat sdf = new SimpleDateFormat(&quot;yyyy-MM-dd HH:mm:ss&quot;);
-    sdf.setTimeZone(TimeZone.getTimeZone(&quot;GMT&quot;) ); // 告知接下來的字串時區位在GMT
-    Date date = sdf.parse(time);
-    return date;
+	// 假設input的字串是 &quot;年-月-日 時:分:秒&quot; 格式
+	SimpleDateFormat sdf = new SimpleDateFormat(&quot;yyyy-MM-dd HH:mm:ss&quot;);
+	sdf.setTimeZone(TimeZone.getTimeZone(&quot;GMT&quot;) ); // 告知接下來的字串時區位在GMT
+	Date date = sdf.parse(time);
+	return date;
 }
 
 public Calendar convertGMTStringToCalendar(String time) throws ParseException {
-    // 假設input的字串是 &quot;年-月-日 時:分:秒&quot; 格式
-    Date date = convertGMTStringToDate(time);
-    Calendar calendar = Calendar.getInstance();
-    calendar.setTime(date);
-    return calendar;
+	// 假設input的字串是 &quot;年-月-日 時:分:秒&quot; 格式
+	Date date = convertGMTStringToDate(time);
+	Calendar calendar = Calendar.getInstance();
+	calendar.setTime(date);
+	return calendar;
 }
 </code></pre>
 
@@ -5159,47 +5232,6 @@ class DateSplit{<br />
     
     
     <span class="comments"><a href="/misc/2017-01-15/#disqus_thread">Comments</a></span>
-    
-    
-</div>
-</article>
-
-  <article class="post">
-    <h2 class="title"> 
-        <a href="/post/2016-12-27/">Python Mac Sierra pyinstaller py2app 的權限問題</a>
-    </h2>
-    <div class="entry-content">
-    <div class="meta">
-        <div class="date">Published on: <time datetime='2016-12-27T00:00:00.000&#43;00:00' itemprop="datePublished">2016-12-27</time>
-</div>
-        <div class="tags">Tags: 
-
-<a href="https://cdfq152313.github.io//tags/python">python</a>
-
-
-</div>
-    </div>
-        <p>最近遇到一個問題，使用pyinstaller製作執行檔後，在本機運作上ok，但是一傳給別人使用就會出問題。可是用右鍵show packages裡面的Content/MacOS/執行檔，是可以正常使用的。<br />
-這讓我非常困惑，後來才發現是Sierra權限設定更改。</p>
-
-<p>英文好的可以直接看下面就解決了：<br />
-<a href="http://lapcatsoftware.com/articles/app-translocation.html">http://lapcatsoftware.com/articles/app-translocation.html</a></p>
-
-<p>英文不好的簡單翻譯就是：</p>
-
-<p>macos在Sierra的版本改變了對未知的應用程式的行為。如果你的應用程式是不明來源(Ex:網路下載)，那macos在執行這個程式的時候就會把程式挪進App Translocation這個唯讀空間再執行。<br />
-這有可能出現兩個問題，第一是你的程式如果涉及資料儲存，唯讀空間是不能存的，程式就會失敗。第二個問題是被移動的只有程式本身，萬一你的程式必須仰賴資料夾中的其他的檔案才能執行，那也會失敗。</p>
-
-<p>解決方法是拖拉這個app到任意其他位置(ex:桌面)，OSX就不會再幫你把這個app放進唯讀資料夾執行。</p>
-
-<p>還記得幾乎所有的MAC app都需要拖拉到應用程式裡面才能使用嗎? MAC應該就是希望你對想使用的APP進行過此一確認才加上這個功能。</p>
-
-    </div>
-
-<div class="meta">
-    
-    
-    <span class="comments"><a href="/post/2016-12-27/#disqus_thread">Comments</a></span>
     
     
 </div>

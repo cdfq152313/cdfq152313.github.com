@@ -4233,9 +4233,9 @@ LLVM_CONFIG=llvm-config
 FLAGS= --cxxflags --ldflags --system-libs --libs core
 
 toy: toy.cpp
-    clang++ -g -O3 toy.cpp `$(LLVM_CONFIG) $(FLAGS)` -o toy
+	clang++ -g -O3 toy.cpp `$(LLVM_CONFIG) $(FLAGS)` -o toy
 clean:
-    rm -f toy
+	rm -f toy
 </code></pre>
 
 <h2 id="top-module">top module</h2>

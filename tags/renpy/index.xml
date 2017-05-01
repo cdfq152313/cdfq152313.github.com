@@ -2,13 +2,10 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Renpy on Denny&#39;s Blog</title>
-    <link>https://cdfq152313.github.io/tags/renpy/</link>
+    <link>https://cdfq152313.github.io/tags/renpy/index.xml</link>
     <description>Recent content in Renpy on Denny&#39;s Blog</description>
     <generator>Hugo -- gohugo.io</generator>
-    <lastBuildDate>Mon, 24 Apr 2017 04:25:31 +0000</lastBuildDate>
-    
-	<atom:link href="https://cdfq152313.github.io/tags/renpy/index.xml" rel="self" type="application/rss+xml" />
-    
+    <atom:link href="https://cdfq152313.github.io/tags/renpy/index.xml" rel="self" type="application/rss+xml" />
     
     <item>
       <title>renpy (6) 讀檔</title>
@@ -16,17 +13,55 @@
       <pubDate>Mon, 24 Apr 2017 04:25:31 +0000</pubDate>
       
       <guid>https://cdfq152313.github.io/post/2017-04-24/</guid>
-      <description>前言 renpy加入對話很簡單，不過想要加入文本就不是那麼容易了。有的時候想要在遊戲中閱讀長文本，還需要插入\n來作為換行，頗不方便。這個時候讀檔功能就派上用場了。
-在這裡要注意，不能使用python原生的開檔函式，否則程式有一定可能出錯(詳情看最後一段)。
-Renpy讀檔函式 官方讀檔文件在這裡。
-不過在讀unicode檔案的時候，還需要做一些特別處理才行，否則讀出來的檔案都是亂碼。以下為範例程式碼，為python語法。
-def read_file(filepath): import codecs # 開檔 f = renpy.file(filepath) # 讀入檔案 data = f.read() # 轉換為unicode data = codecs.decode(data, &#39;utf-8&#39;) return data  如此一來，最後產生的data就會是unicode格式囉。
-另外，原本想使用官網上所提供的renpy.fsdecode(s)來做編碼轉換，但是失敗了，可能是沒搞懂用法。後來就使用python原生的codec來做轉換。運作得還算不錯。
-Renpy路徑問題 renpy的path一律是以game資料夾作為根目錄，往下一層目錄是使用&amp;rsquo;/&amp;lsquo;作為識別。所以不用自作聰明使用python原生地os.path.join函式來合成路徑。在windows合成出來的路徑反而會出錯，因為windows是用反斜線&amp;rsquo;\&amp;lsquo;來分割目錄的。
-以下為組合路徑的方法。
-# 假設路徑為game目錄底下的info資料夾裡面的info01.txt檔案 filepath = &#39;info/info01.txt&#39;  最後碎碎念 其實也並不是不能使用原生地python函式來做開檔，但是要記得一件事，如果你有在renpy的設定中封裝檔案，像下列程式碼。
-# 在options.rpy中 build.classify(&#39;game/info/*.txt&#39;, &#39;data&#39;)  那麼在製作釋出版時，這些資料會很自然地被封裝到data.rpa的檔案中。如此一來。python原生函式所取得的路徑，自然就會抓不到任何東西。
-反過來說，只要你不封裝任何檔案，那你想使用任何python的函式都沒問題(ex: os.path.join / open / &amp;hellip;)</description>
+      <description>
+
+&lt;h2 id=&#34;前言&#34;&gt;前言&lt;/h2&gt;
+
+&lt;p&gt;renpy加入對話很簡單，不過想要加入文本就不是那麼容易了。有的時候想要在遊戲中閱讀長文本，還需要插入\n來作為換行，頗不方便。這個時候讀檔功能就派上用場了。&lt;br /&gt;
+在這裡要注意，不能使用python原生的開檔函式，否則程式有一定可能出錯(詳情看最後一段)。&lt;/p&gt;
+
+&lt;h2 id=&#34;renpy讀檔函式&#34;&gt;Renpy讀檔函式&lt;/h2&gt;
+
+&lt;p&gt;&lt;a href=&#34;https://www.renpy.org/doc/html/file_python.html&#34;&gt;官方讀檔文件&lt;/a&gt;在這裡。&lt;br /&gt;
+不過在讀unicode檔案的時候，還需要做一些特別處理才行，否則讀出來的檔案都是亂碼。以下為範例程式碼，為python語法。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;
+def read_file(filepath):
+    import codecs
+
+    # 開檔
+    f = renpy.file(filepath)
+    # 讀入檔案
+    data = f.read()
+    # 轉換為unicode
+    data = codecs.decode(data, &#39;utf-8&#39;)
+    return data
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;如此一來，最後產生的data就會是unicode格式囉。&lt;/p&gt;
+
+&lt;p&gt;另外，原本想使用官網上所提供的renpy.fsdecode(s)來做編碼轉換，但是失敗了，可能是沒搞懂用法。後來就使用python原生的codec來做轉換。運作得還算不錯。&lt;/p&gt;
+
+&lt;h2 id=&#34;renpy路徑問題&#34;&gt;Renpy路徑問題&lt;/h2&gt;
+
+&lt;p&gt;renpy的path一律是以game資料夾作為根目錄，往下一層目錄是使用&amp;rsquo;/&amp;lsquo;作為識別。所以不用自作聰明使用python原生地os.path.join函式來合成路徑。在windows合成出來的路徑反而會出錯，因為windows是用反斜線&amp;rsquo;\&amp;lsquo;來分割目錄的。&lt;br /&gt;
+以下為組合路徑的方法。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;# 假設路徑為game目錄底下的info資料夾裡面的info01.txt檔案
+filepath = &#39;info/info01.txt&#39;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;最後碎碎念&#34;&gt;最後碎碎念&lt;/h2&gt;
+
+&lt;p&gt;其實也並不是不能使用原生地python函式來做開檔，但是要記得一件事，如果你有在renpy的設定中封裝檔案，像下列程式碼。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;# 在options.rpy中
+build.classify(&#39;game/info/*.txt&#39;, &#39;data&#39;)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;那麼在製作釋出版時，這些資料會很自然地被封裝到data.rpa的檔案中。如此一來。python原生函式所取得的路徑，自然就會抓不到任何東西。&lt;br /&gt;
+反過來說，只要你不封裝任何檔案，那你想使用任何python的函式都沒問題(ex: os.path.join / open / &amp;hellip;)&lt;/p&gt;
+</description>
     </item>
     
     <item>
@@ -35,13 +70,54 @@ Renpy路徑問題 renpy的path一律是以game資料夾作為根目錄，往下�
       <pubDate>Sun, 24 Jul 2016 00:00:00 +0000</pubDate>
       
       <guid>https://cdfq152313.github.io/post/2016-07-24/</guid>
-      <description>在官網可以看到有很多可使用的Action。
-萬一想要的功能並不在裡面呢? 其實也有Function此一Action的存在，可自己撰寫Function傳進去使用。 這裡只是提點一些Function使用上的誤區。
-絕對要使用Function此Action  絕對要使用Function此Action 絕對不要直接把自己寫的function當Action  錯誤範例 python: def test(): pass textbutton &amp;quot;Click Me!!&amp;quot;: action test()  在renpy眼中，這是一個正常行為，他不會報錯。
-但是這會導致此button並非在點擊才觸發Action，而是在載入、textbutton出來的那瞬間，就執行了action。
-正確寫法 python: def test(): pass textbutton &amp;quot;Click Me!!&amp;quot;: action Function(test)  傳入參數 如果這個function需要支援參數傳遞呢? 一樣可以用Function達到
-python: def test(text): pass textbutton &amp;quot;Click Me!!&amp;quot;: action Function(test, text = &amp;quot;apple&amp;quot;)  Function在官方的文件上說支援args和kwargs的參數傳遞。
-但實際測試後發現，args的參數傳遞是壞的，並不能使用。所以請都用kwargs的參數傳遞法。</description>
+      <description>
+
+&lt;p&gt;在&lt;a href=&#34;https://www.renpy.org/doc/html/screen_actions.html&#34;&gt;官網&lt;/a&gt;可以看到有很多可使用的Action。&lt;br /&gt;
+萬一想要的功能並不在裡面呢? 其實也有&lt;a href=&#34;https://www.renpy.org/doc/html/screen_actions.html#Function&#34;&gt;Function&lt;/a&gt;此一Action的存在，可自己撰寫Function傳進去使用。
+這裡只是提點一些Function使用上的誤區。&lt;/p&gt;
+
+&lt;h2 id=&#34;絕對要使用function此action&#34;&gt;絕對要使用Function此Action&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;絕對要使用Function此Action&lt;/li&gt;
+&lt;li&gt;絕對不要直接把自己寫的function當Action&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&#34;錯誤範例&#34;&gt;錯誤範例&lt;/h3&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;python:
+    def test():
+        pass
+textbutton &amp;quot;Click Me!!&amp;quot;:
+    action test()
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;在renpy眼中，這是一個正常行為，他不會報錯。&lt;br /&gt;
+但是這會導致此button並非在點擊才觸發Action，而是在載入、textbutton出來的那瞬間，就執行了action。&lt;/p&gt;
+
+&lt;h3 id=&#34;正確寫法&#34;&gt;正確寫法&lt;/h3&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;python:
+    def test():
+        pass
+textbutton &amp;quot;Click Me!!&amp;quot;:
+    action Function(test)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;傳入參數&#34;&gt;傳入參數&lt;/h2&gt;
+
+&lt;p&gt;如果這個function需要支援參數傳遞呢? 一樣可以用Function達到&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;python:
+    def test(text):
+        pass
+textbutton &amp;quot;Click Me!!&amp;quot;:
+    action Function(test, text = &amp;quot;apple&amp;quot;)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Function在官方的文件上說支援args和kwargs的參數傳遞。&lt;br /&gt;
+但實際測試後發現，&lt;strong&gt;args的參數傳遞是壞的&lt;/strong&gt;，並不能使用。所以請都用kwargs的參數傳遞法。&lt;/p&gt;
+</description>
     </item>
     
     <item>
@@ -50,18 +126,72 @@ python: def test(text): pass textbutton &amp;quot;Click Me!!&amp;quot;: action F
       <pubDate>Sat, 23 Jul 2016 00:00:00 +0000</pubDate>
       
       <guid>https://cdfq152313.github.io/post/2016-07-23/</guid>
-      <description>當滑鼠移上按鈕，咻，按鈕變色了。當滑鼠離開按鈕，咻，按鈕又變回來了。
-藉由這樣的效果，可以讓玩家清楚感受到這是一個可點選的按鈕。
-要如何製作這樣的效果呢?
-imagebutton 難度：簡單
-Imagebutton: idle &amp;quot;滑鼠離開時照片&amp;quot; hover &amp;quot;滑鼠移上時照片&amp;quot; action NullAction()  參閱官網只要設定屬性idle及hover即可，要注意的一點是，必須要有任意Action，變色效果才會顯現出來。
-如果不打算有任何Action，則使用NullAction吧，此方法就是為了變色而設立的。
-textbutton 難度：中等 參閱官網在options.rpy當中，有欄位為
-widget_text = &amp;quot;滑鼠離開時顏色&amp;quot;, widget_selected = &amp;quot;滑鼠移上時顏色&amp;quot;,  設定好後，textbutton的變色就會依照此設定來做調整囉。
-缺點是不能在任意的textbutton指定變數顏色，如果今天有兩個textbutton，想指定為
- textbutton1 滑鼠移上紅色 滑鼠離開白色 textbutton2 滑鼠移上藍色 滑鼠離開白色  在此方法中是無能為力的。
-button 難度：困難，但textbutton或imagebutton也可用此方法來變色，最萬用。
-Screen button_test: default myhover = False button: action SetScreenVariable(&amp;quot;myhover&amp;quot;, False) hovered SetScreenVariable(&amp;quot;myhover&amp;quot;, True) unhovered SetScreenVariable(&amp;quot;myhover&amp;quot;, False) if myhover: image &amp;quot;滑鼠移上時照片&amp;quot; text (&amp;quot;YA&amp;quot;) color &amp;quot;滑鼠移上時顏色&amp;quot; else: image &amp;quot;滑鼠離開時圖片&amp;quot; text (&amp;quot;YA&amp;quot;) color &amp;quot;滑鼠離開時顏色&amp;quot;  在Screen Language當中，可以使用defalut這個字眼來定義專屬於某個Screen的變數，並且可使用SetScreenVariable此Action來指定變數值。</description>
+      <description>
+
+&lt;p&gt;當滑鼠移上按鈕，咻，按鈕變色了。當滑鼠離開按鈕，咻，按鈕又變回來了。&lt;br /&gt;
+藉由這樣的效果，可以讓玩家清楚感受到這是一個可點選的按鈕。&lt;br /&gt;
+要如何製作這樣的效果呢?&lt;/p&gt;
+
+&lt;h2 id=&#34;imagebutton&#34;&gt;imagebutton&lt;/h2&gt;
+
+&lt;p&gt;難度：簡單&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;Imagebutton:
+    idle &amp;quot;滑鼠離開時照片&amp;quot;
+    hover &amp;quot;滑鼠移上時照片&amp;quot;
+    action NullAction()
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;參閱&lt;a href=&#34;https://www.renpy.org/doc/html/screens.html#imagebutton&#34;&gt;官網&lt;/a&gt;只要設定屬性idle及hover即可，要注意的一點是，必須要有任意Action，變色效果才會顯現出來。&lt;br /&gt;
+如果不打算有任何Action，則使用NullAction吧，此方法就是為了變色而設立的。&lt;/p&gt;
+
+&lt;h2 id=&#34;textbutton&#34;&gt;textbutton&lt;/h2&gt;
+
+&lt;p&gt;難度：中等
+參閱&lt;a href=&#34;https://www.renpy.org/doc/html/thequestion.html#options-rpy&#34;&gt;官網&lt;/a&gt;在&lt;strong&gt;options.rpy&lt;/strong&gt;當中，有欄位為&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;widget_text = &amp;quot;滑鼠離開時顏色&amp;quot;,
+widget_selected = &amp;quot;滑鼠移上時顏色&amp;quot;,
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;設定好後，textbutton的變色就會依照此設定來做調整囉。&lt;br /&gt;
+缺點是不能在任意的textbutton指定變數顏色，如果今天有兩個textbutton，想指定為&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;textbutton1 滑鼠移上紅色 滑鼠離開白色&lt;/li&gt;
+&lt;li&gt;textbutton2 滑鼠移上藍色 滑鼠離開白色&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;在此方法中是無能為力的。&lt;/p&gt;
+
+&lt;h2 id=&#34;button&#34;&gt;button&lt;/h2&gt;
+
+&lt;p&gt;難度：困難，但textbutton或imagebutton也可用此方法來變色，最萬用。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;Screen button_test:
+    default myhover = False
+    button:
+        action SetScreenVariable(&amp;quot;myhover&amp;quot;, False)
+        hovered SetScreenVariable(&amp;quot;myhover&amp;quot;, True)
+        unhovered SetScreenVariable(&amp;quot;myhover&amp;quot;, False)
+        if myhover:
+          image &amp;quot;滑鼠移上時照片&amp;quot;
+          text (&amp;quot;YA&amp;quot;) color &amp;quot;滑鼠移上時顏色&amp;quot;
+        else:
+          image &amp;quot;滑鼠離開時圖片&amp;quot;
+          text (&amp;quot;YA&amp;quot;) color &amp;quot;滑鼠離開時顏色&amp;quot;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;在Screen Language當中，可以使用defalut這個字眼來定義專屬於某個Screen的變數，並且可使用&lt;a href=&#34;https://www.renpy.org/doc/html/screen_actions.html#SetScreenVariable&#34;&gt;SetScreenVariable&lt;/a&gt;此Action來指定變數值。&lt;br /&gt;
+所以只要指定，在滑鼠移上時，變數值為True，滑鼠離開時，變數值為False。&lt;br /&gt;
+最後再根據True/False之值，來決定畫面上要顯示什麼即可。&lt;/p&gt;
+
+&lt;p&gt;另外，除了if else寫法以外，單純圖片變色也可以使用ConditionSwitch這個函式&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;image ConditionSwitch( myhover, &amp;quot;滑鼠移上時圖片&amp;quot;,
+                        True, &amp;quot;滑鼠離開時圖片&amp;quot;)
+&lt;/code&gt;&lt;/pre&gt;
+</description>
     </item>
     
     <item>
@@ -70,16 +200,79 @@ Screen button_test: default myhover = False button: action SetScreenVariable(&am
       <pubDate>Mon, 11 Jul 2016 00:00:00 +0000</pubDate>
       
       <guid>https://cdfq152313.github.io/post/2016-07-11/</guid>
-      <description>tooltip 所謂的tooltip，就是當你滑鼠移到一個button上後，可以顯示一些說明，讓使用者更了解這個button的功能。
-可以用以下的程式碼簡單的實作tootip
-screen tooltip(tip, positon): frame: text tip pos position  然後在button上的hovered和unhovered加上action即可
-button: hovered Show(tooltip, tip=&amp;quot;說明文字&amp;quot;, position = (10,20) ) unhovered Hide(tooltip)  出現在滑鼠的位置 目前這個簡陋的tooltip，它的位置是被固定死的。也就是說，每次有新的tooltip，都得自己先行想好tooltip的位置。
-能不能要tooltip直接顯示在滑鼠旁邊呢? 可行的，renpy有提供滑鼠位置的函式。
-screen tooltip(tip=None): frame: $ position = renpy.get_mouse_pos() text tip pos position  如此一來，不用輸入position也可以直接顯示在滑鼠上了，使用者想要自己加減pixel，讓tooltip出現在滑鼠的上下左右方也是非常輕而易舉。
-隨著滑鼠而移動 如果想要tooltip不僅僅只是閃現的那刻出現在滑鼠旁，而是無時無刻的跟著滑鼠移動呢?
-查閱官網，影響位置的參數有兩個。大部分的Screen物件都有兩種可調的位置屬性，第一個是Common Properties中的at，第二個是Position Style Properties。
-據我所知，Position Style Properties是無法動態調整的，所以我們只能依靠關鍵字at後面所接續的trnasform statement來解決這個問題了。
-具體步驟  新增一個transform執行function 此function內容為定時更新位置(範例為0.05秒) 在tooltip當中對frame加上at 步驟1的transform  範例 transform follow_mouse: function follow_mouse_func init python: def follow_mouse_func(trans, st, at): trans.</description>
+      <description>
+
+&lt;h2 id=&#34;tooltip&#34;&gt;tooltip&lt;/h2&gt;
+
+&lt;p&gt;所謂的tooltip，就是當你滑鼠移到一個button上後，可以顯示一些說明，讓使用者更了解這個button的功能。&lt;br /&gt;
+可以用以下的程式碼簡單的實作tootip&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;screen tooltip(tip, positon):
+    frame:
+        text tip pos position
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;然後在button上的hovered和unhovered加上action即可&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;button:
+    hovered Show(tooltip, tip=&amp;quot;說明文字&amp;quot;, position = (10,20) )
+    unhovered Hide(tooltip)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;出現在滑鼠的位置&#34;&gt;出現在滑鼠的位置&lt;/h2&gt;
+
+&lt;p&gt;目前這個簡陋的tooltip，它的位置是被固定死的。也就是說，每次有新的tooltip，都得自己先行想好tooltip的位置。&lt;br /&gt;
+能不能要tooltip直接顯示在滑鼠旁邊呢? 可行的，renpy有提供滑鼠位置的函式。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;screen tooltip(tip=None):
+    frame:
+        $ position = renpy.get_mouse_pos()
+        text tip pos position
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;如此一來，不用輸入position也可以直接顯示在滑鼠上了，使用者想要自己加減pixel，讓tooltip出現在滑鼠的上下左右方也是非常輕而易舉。&lt;/p&gt;
+
+&lt;h2 id=&#34;隨著滑鼠而移動&#34;&gt;隨著滑鼠而移動&lt;/h2&gt;
+
+&lt;p&gt;如果想要tooltip不僅僅只是閃現的那刻出現在滑鼠旁，而是無時無刻的跟著滑鼠移動呢?&lt;br /&gt;
+查閱&lt;a href=&#34;https://www.renpy.org/doc/html/screens.html&#34;&gt;官網&lt;/a&gt;，影響位置的參數有兩個。大部分的Screen物件都有兩種可調的位置屬性，第一個是Common Properties中的at，第二個是Position Style Properties。&lt;br /&gt;
+據我所知，Position Style Properties是無法動態調整的，所以我們只能依靠關鍵字at後面所接續的&lt;a href=&#34;https://www.renpy.org/doc/html/atl.html&#34;&gt;trnasform statement&lt;/a&gt;來解決這個問題了。&lt;/p&gt;
+
+&lt;h3 id=&#34;具體步驟&#34;&gt;具體步驟&lt;/h3&gt;
+
+&lt;ol&gt;
+&lt;li&gt;新增一個transform執行function&lt;/li&gt;
+&lt;li&gt;此function內容為定時更新位置(範例為0.05秒)&lt;/li&gt;
+&lt;li&gt;在tooltip當中對frame加上at 步驟1的transform&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h3 id=&#34;範例&#34;&gt;範例&lt;/h3&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;transform follow_mouse:
+    function follow_mouse_func
+    
+init python:
+    def follow_mouse_func(trans, st, at):
+        trans.pos = renpy.get_mouse_pos()
+        return 0.05
+
+screen tooltip(tip=None):
+    frame:
+        at follow_mouse
+        if tip is not None:
+            text tip size 14 color &amp;quot;#000000&amp;quot;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;function的撰寫可以參考&lt;a href=&#34;https://www.renpy.org/doc/html/atl.html#function-statement&#34;&gt;官網&lt;/a&gt;
+簡略的說一下內容：&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;必須有3個參數&lt;/li&gt;
+&lt;li&gt;第一個參數為transfrom物件，物件的資訊一樣看&lt;a href=&#34;https://www.renpy.org/doc/html/atl.html#list-of-transform-properties&#34;&gt;官網&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;第二、三個參數跟執行時間相關，較不重要。&lt;/li&gt;
+&lt;li&gt;回傳值為&lt;strong&gt;希望多久後再呼叫一次此function&lt;/strong&gt;，0秒代表立刻，None代表不再call function，可以繼續向下執行其他transition內容。&lt;/li&gt;
+&lt;/ol&gt;
+</description>
     </item>
     
     <item>
@@ -88,15 +281,78 @@ screen tooltip(tip=None): frame: $ position = renpy.get_mouse_pos() text tip pos
       <pubDate>Sun, 10 Jul 2016 00:00:00 +0000</pubDate>
       
       <guid>https://cdfq152313.github.io/post/2016-07-10/</guid>
-      <description>問題 在寫AVG遊戲的時候，常常遇到立繪需要變更的狀況。考量以下場景
- 人物A平常表情 人物A笑 人物A平常表情 人物A立繪從場上消失  程式碼可能會長這樣
-image a_normal = &amp;quot;a_normal.png&amp;quot; image a_laugh = &amp;quot;a_laugh.png&amp;quot; label start: show a_normal pause 2 hide a_normal show a_laugh puase 2 hide a_laugh show a_normal pause 2 hide a_normal  如果要人物A換動作，就得先記得他上次是哪個圖片，隱藏之後再show新的，想想就累。
-解法 renpy提供了一個方便的解法。在取變數名稱的時候可以用兩個識別字來描述。
-例如可以把立繪取叫
-image a normal = &amp;quot;a_normal.png&amp;quot; image a laugh = &amp;quot;a_laugh.png&amp;quot;  如此一來，renpy就會知道a normal和 a laugh為同一人的不同種表情，因為前識別字a都一樣。
-這樣show a normal時如果a laugh在場上就會自動隱藏了。
-最後若要將a隱藏起來的時候只需要hide前識別字即可。
-image a normal = &amp;quot;a_normal.png&amp;quot; image a laugh = &amp;quot;a_laugh.</description>
+      <description>
+
+&lt;h2 id=&#34;問題&#34;&gt;問題&lt;/h2&gt;
+
+&lt;p&gt;在寫AVG遊戲的時候，常常遇到立繪需要變更的狀況。考量以下場景&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;人物A平常表情&lt;/li&gt;
+&lt;li&gt;人物A笑&lt;/li&gt;
+&lt;li&gt;人物A平常表情&lt;/li&gt;
+&lt;li&gt;人物A立繪從場上消失&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;程式碼可能會長這樣&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;image a_normal = &amp;quot;a_normal.png&amp;quot;
+image a_laugh = &amp;quot;a_laugh.png&amp;quot;
+
+label start:
+    show a_normal
+    
+    pause 2
+    
+    hide a_normal
+    show a_laugh
+    
+    puase 2
+    
+    hide a_laugh
+    show a_normal
+    
+    pause 2
+    
+    hide a_normal
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;如果要人物A換動作，就得先記得他上次是哪個圖片，隱藏之後再show新的，想想就累。&lt;/p&gt;
+
+&lt;h2 id=&#34;解法&#34;&gt;解法&lt;/h2&gt;
+
+&lt;p&gt;renpy提供了一個方便的解法。在取變數名稱的時候可以用兩個識別字來描述。&lt;br /&gt;
+例如可以把立繪取叫&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;image a normal = &amp;quot;a_normal.png&amp;quot;  
+image a laugh = &amp;quot;a_laugh.png&amp;quot;  
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;如此一來，renpy就會知道a normal和 a laugh為同一人的不同種表情，因為前識別字a都一樣。&lt;br /&gt;
+這樣show a normal時如果a laugh在場上就會自動隱藏了。&lt;br /&gt;
+最後若要將a隱藏起來的時候只需要hide前識別字即可。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;image a normal = &amp;quot;a_normal.png&amp;quot;
+image a laugh = &amp;quot;a_laugh.png&amp;quot;
+
+label start:
+    show a normal
+    
+    pause 2
+    
+    show a laugh
+    
+    puase 2
+
+    show a normal
+    
+    pause 2
+    
+    hide a
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;省了不少程式碼，也不需要記上次是哪種立繪。&lt;/p&gt;
+</description>
     </item>
     
     <item>
@@ -105,19 +361,129 @@ image a normal = &amp;quot;a_normal.png&amp;quot; image a laugh = &amp;quot;a_la
       <pubDate>Wed, 06 Jul 2016 00:00:00 +0000</pubDate>
       
       <guid>https://cdfq152313.github.io/post/2016-07-06/</guid>
-      <description>緣起 其實很多內容在 雪凡與好朋友們的 Ren&amp;rsquo;Py 遊戲引擎初學心得提示 就有了，大概寫一些製作時的心得而已。
- 第一回 第二回 第三回 第四回 第五回 第六回 第七回 第八回 第九回  搭配renpy官網服用，妙不可言。
-檔案目錄 初學要知道的在renpy中有三個區段。我稱之為init區段，label區段以及python區段。這三個區段的語法都略有不同。
-而撰寫語法的檔案，只要在game目錄下新增.rpy檔即可，不管命名為何，renpy會預設載入game目錄下所有的.rpy檔作為renpy的語法輸入。
-接下來就分別說明三個區段的差異之處。
-init區段 新增一個.rpy檔，若無明確指定為label或python區段，那就可以視為init區段了。
-init區段通常做為定義變數、圖片、screen之用，會在遊戲啟動的瞬間先行載入。
-init區段可以透過下列語法來新增
-init -1: define abc = character(&amp;quot;abc&amp;quot;) image def = &amp;quot;def&amp;quot;  init旁邊接的數字的意義為載入順序(若沒寫則為0)，比如說，若有三個init區段
-init 1: image a = &amp;quot;a&amp;quot; init 2: image b = &amp;quot;b&amp;quot; init 3: image c = &amp;quot;c&amp;quot;  雖然撰寫順序為由上往下，但由於數字大的先載入，所以renpy會先讀取image c，接下來是b，最後才為a。 如果有載入順序的要求的話(雖然我還沒遇過)，可以嘗試看看這招。
-label區段 此處為遊戲運行之腳本，對於玩過avg遊戲的人應該很熟悉，就是讓你可以點一點繼續向下看對話的地方。
-可以運用show , call, with dissolve之類的語句來展現對話效果。
-這裡列出兩個極為重要的保留(reserved) label</description>
+      <description>
+
+&lt;h2 id=&#34;緣起&#34;&gt;緣起&lt;/h2&gt;
+
+&lt;p&gt;其實很多內容在 &lt;strong&gt;雪凡與好朋友們的 Ren&amp;rsquo;Py 遊戲引擎初學心得提示&lt;/strong&gt; 就有了，大概寫一些製作時的心得而已。&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;http://www.openfoundry.org/foss-programs/8811&#34;&gt;第一回&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://www.openfoundry.org/foss-programs/8836&#34;&gt;第二回&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://www.openfoundry.org/foss-programs/8848&#34;&gt;第三回&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://www.openfoundry.org/foss-programs/8859&#34;&gt;第四回&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://www.openfoundry.org/foss-programs/8874&#34;&gt;第五回&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://www.openfoundry.org/foss-programs/8901&#34;&gt;第六回&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://www.openfoundry.org/foss-programs/8919&#34;&gt;第七回&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://www.openfoundry.org/foss-programs/8972&#34;&gt;第八回&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://www.openfoundry.org/foss-programs/9045&#34;&gt;第九回&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;搭配&lt;a href=&#34;https://www.renpy.org/doc/html/index.html&#34;&gt;renpy官網&lt;/a&gt;服用，妙不可言。&lt;/p&gt;
+
+&lt;h2 id=&#34;檔案目錄&#34;&gt;檔案目錄&lt;/h2&gt;
+
+&lt;p&gt;初學要知道的在renpy中有三個區段。我稱之為init區段，label區段以及python區段。這三個區段的語法都略有不同。&lt;br /&gt;
+而撰寫語法的檔案，只要在game目錄下新增.rpy檔即可，不管命名為何，renpy會預設載入game目錄下所有的.rpy檔作為renpy的語法輸入。&lt;/p&gt;
+
+&lt;p&gt;接下來就分別說明三個區段的差異之處。&lt;/p&gt;
+
+&lt;h3 id=&#34;init區段&#34;&gt;init區段&lt;/h3&gt;
+
+&lt;p&gt;新增一個.rpy檔，若無明確指定為label或python區段，那就可以視為init區段了。&lt;br /&gt;
+init區段通常做為定義變數、圖片、screen之用，會在遊戲啟動的瞬間先行載入。&lt;br /&gt;
+init區段可以透過下列語法來新增&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;init -1:
+    define abc = character(&amp;quot;abc&amp;quot;)
+    image def = &amp;quot;def&amp;quot;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;init旁邊接的數字的意義為載入順序(若沒寫則為0)，比如說，若有三個init區段&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;init 1:
+    image a = &amp;quot;a&amp;quot;
+init 2:
+    image b = &amp;quot;b&amp;quot;
+init 3:
+    image c = &amp;quot;c&amp;quot;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;雖然撰寫順序為由上往下，但由於數字大的先載入，所以renpy會先讀取image c，接下來是b，最後才為a。
+如果有載入順序的要求的話(雖然我還沒遇過)，可以嘗試看看這招。&lt;/p&gt;
+
+&lt;h3 id=&#34;label區段&#34;&gt;label區段&lt;/h3&gt;
+
+&lt;p&gt;此處為遊戲運行之腳本，對於玩過avg遊戲的人應該很熟悉，就是讓你可以點一點繼續向下看對話的地方。&lt;br /&gt;
+可以運用show , call, with dissolve之類的語句來展現對話效果。&lt;br /&gt;
+這裡列出兩個極為重要的保留(reserved) label&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;label start:
+    a &amp;quot;Are u ok&amp;quot;
+    b &amp;quot;I&#39;m fine.&amp;quot;
+
+label splashscreen:
+    &amp;quot;hello moto&amp;quot;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;現在市面上遊戲開始的流程大致如下&lt;br /&gt;
+(開啟遊戲) 遊戲廠商logo(或片頭動畫) =&amp;gt; 遊戲主選單 =&amp;gt; 進入遊戲主題&lt;/p&gt;
+
+&lt;p&gt;label start為預設的遊戲主題進入點，當你使用Start()這個函式時即會自動跳轉到start label所在的位置。&lt;br /&gt;
+label splashscreen則可以作為遊戲廠商logo或片頭動畫之用，是進入遊戲主選單前要執行之語句。&lt;/p&gt;
+
+&lt;p&gt;其他重要的label可參照&lt;a href=&#34;https://www.renpy.org/doc/html/label.html##special-labels&#34;&gt;官網&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;另外，若無指定&lt;strong&gt;main_menu&lt;/strong&gt;此label，則&lt;strong&gt;screen main_menu&lt;/strong&gt;是預設的遊戲主選單畫面。&lt;/p&gt;
+
+&lt;h3 id=&#34;python區段&#34;&gt;python區段&lt;/h3&gt;
+
+&lt;p&gt;在撰寫renpy的時候應該多數人都會覺得自己是在寫renpy而非寫python，雖然語法相似，很多地方還是有不同XD&lt;br /&gt;
+另外，renpy語法雖然已經夠強大，但有些時候還是得靠python才能做到一些renpy不支援的特效。於是renpy也支援在renpy中插入python語法。&lt;/p&gt;
+
+&lt;p&gt;最基本的插入法可看下列程式碼&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;$ x = &amp;quot;abc&amp;quot;
+$ y = &amp;quot;def&amp;quot;
+
+python:
+    x = &amp;quot;abc&amp;quot;
+    y = &amp;quot;def&amp;quot;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;這兩種寫法都是同義的，如果你只想寫一行python，可以考慮使用 $ 符號，如果你想一次撰寫多行(例如function)可以用python:的方式來撰寫。&lt;br /&gt;
+在label區段中，插入python code應該沒任何問題，不過在init區段的screen language當中，插入python的位置就要小心。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;screen test:
+    python:
+        def func():
+            pass
+    frame:
+        textbutton &amp;quot;abc&amp;quot;:
+            action Function(func)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;screen test:
+    frame:
+        python:
+            def func():
+                pass
+        textbutton &amp;quot;abc&amp;quot;:
+            action Function(func)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;這兩個寫法只是將python code稍微移動一下而已，但是下面那個版本在renpy 6.98的版本會找不到func。可能跟renpy的載入順序有關。&lt;br /&gt;
+所以我個人是建議使用若要在screen中使用python，最好在使用前的上一層結構就先行定義。&lt;br /&gt;
+但，如果是使用 $ 符號，好像就沒有這個問題。&lt;/p&gt;
+
+&lt;p&gt;python區段也可以為init，在最初的時候就先行載入，而非等到程式執行到了才動態載入。語法如下&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;init 2 python:
+	x = &amp;quot;abc&amp;quot;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;同樣的init後面的數字為載入之優先權，若無指定則為0。&lt;/p&gt;
+</description>
     </item>
     
   </channel>

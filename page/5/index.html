@@ -1,18 +1,17 @@
 <!DOCTYPE HTML>
 <html>
 <head>
+	<meta name="generator" content="Hugo 0.19" />
 	<meta charset="utf-8">
     
     
-    
-    
-    <title>Swift 聲音播放與錄製 - Denny&#39;s Blog</title>
+    <title>Denny&#39;s Blog</title>
     <meta name="author" content="">
     <meta name="description" content="">
     <meta name="keywords" content="">
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
-    <link href="" rel="alternate" title="Denny&#39;s Blog" type="application/atom+xml">
+    <link href="https://cdfq152313.github.io/index.xml" rel="alternate" title="Denny&#39;s Blog" type="application/atom+xml">
     <link href="https://cdfq152313.github.io//images/fav.ico" rel="shortcut icon">
     <style>
     @charset "UTF-8";
@@ -4202,255 +4201,67 @@ body {
 
     <div id="content" class="inner">
         
-<article class="post">
-    <h2 class="title">Swift 聲音播放與錄製</h2>
+
+
+
+
+    
+    <script id="dsq-count-scr" src="//blog-vygy2ifrxm.disqus.com/count.js" async></script>
+    
+
+
+
+
+  <article class="post">
+    <h2 class="title"> 
+        <a href="/mytags/">標籤列表</a>
+    </h2>
+    <div class="entry-content">
     <div class="meta">
-        <div class="date">Published on: <time datetime='2016-10-06T00:00:00.000&#43;00:00' itemprop="datePublished">2016-10-06</time>
+        <div class="date">Published on: <time datetime='0001-01-01T00:00:00.000&#43;00:00' itemprop="datePublished">0001-01-01</time>
 </div>
         <div class="tags">Tags: 
-
-<a href="https://cdfq152313.github.io//tags/ios">ios</a>
-
-<a href="https://cdfq152313.github.io//tags/swift">swift</a>
-
-
 </div>
     </div>
-    <div class="entry-content">
+        <ul>
+<li><a href="/tags/general">general</a></li>
+<li><a href="/tags/design">design</a></li>
+<li><a href="/tags/android">android</a></li>
+<li><a href="/tags/java">java</a></li>
+<li><a href="/tags/jni">jni</a></li>
+<li><a href="/tags/aosp">AOSP</a></li>
+<li><a href="/tags/ios">iOS</a></li>
+<li><a href="/tags/swift">Swift</a></li>
+<li><a href="/tags/uwp">UWP</a></li>
+<li><a href="/tags/compiler">compiler</a></li>
+<li><a href="/tags/llvm">LLVM</a></li>
+<li><a href="/tags/git">git</a></li>
+<li><a href="/tags/python">python</a></li>
+<li><a href="/tags/renpy">renpy</a></li>
+<li><a href="/tags/cryptography">Cryptography</a></li>
+<li><a href="/tags/mutt">mutt</a></li>
+</ul>
 
-<h2 id="播放系統音效">播放系統音效</h2>
-
-<p>超簡單只需要兩行</p>
-
-<pre><code class="language-swift">import AudioToolbox
-AudioServicesPlaySystemSound(1000)
-</code></pre>
-
-<h2 id="播放自己放在app的音樂">播放自己放在app的音樂</h2>
-
-<p>先把自己的音效拖進Xcode，記得選擇&rdquo;copy items if needed&rdquo;，否則只會放入reference。<br />
-可以開一個新的Group(資料夾圖示)來專門放置音檔。</p>
-
-<h3 id="步驟">步驟</h3>
-
-<ol>
-<li>找到檔案在哪(用Bundle)</li>
-<li>產生URL</li>
-<li>產生AVAudioPlayer</li>
-</ol>
-
-<pre><code class="language-swift">// AVAudioPlayer初始化
-func myPlayerInit()-&gt;AVAudioPlayer?{
-	guard let path = Bundle.main.path(forResource: &quot;Right&quot;, ofType:&quot;mp3&quot;) else{
-		return nil
-	}
-
-  let audioURL = URL(fileURLWithPath: path)
-  do{
-  	return try AVAudioPlayer(contentsOf: audioURL)
-  }
-  catch{
-    print(&quot;AVAudio Player Init failed&quot;)
-    return nil
-  }
-}
-</code></pre>
-
-<pre><code class="language-swift">// 利用button播放 每次按下都將聲音時間歸零
-let myPlayer = myPlayerInit()
-myPlayer?.play()
-</code></pre>
-
-<h3 id="其他好用的方法">其他好用的方法</h3>
-
-<pre><code class="language-swift">myPlayer?.stop() // 停止
-myPlayer?.currentTime = 0 // 把音檔時間歸零
-myPlayer?.numberOfLoops = 2 // 重複播放次數，若為負數則為無限次播放
-myPlayer?.volume = 0.5 // 調整音量
-
-// 把播放速度調慢或調快
-myPlayer?.enableRate = true
-myPlayer?.rate = 0.5
-</code></pre>
-
-<h2 id="播放手機內部的音樂">播放手機內部的音樂</h2>
-
-<p>利用MPMediaPickerController，此一Controller會讓你選擇音樂。我們只需要指定選完音樂(或沒選到)要做什麼動作即可。</p>
-
-<h3 id="步驟-1">步驟</h3>
-
-<ol>
-<li>在Xcode調整權限
-
-<ul>
-<li>在info.plist裡面新增 &ldquo;Privacy - Media Library Ussage Description&rdquo;</li>
-<li>在右方新增你的理由</li>
-</ul></li>
-<li>新增MPMediaPickerController</li>
-<li>實作MPMediaPickerController之delegate (MPMediaPickerControllerDelegate)
-
-<ul>
-<li>取消不動作</li>
-<li>選取到音樂則播放</li>
-</ul></li>
-<li>指定2實作的delegate給1</li>
-</ol>
-
-<h3 id="權限設定">權限設定</h3>
-
-<p><img src="http://i.imgur.com/m9279lW.png" alt="存取影音檔案權限" /></p>
-
-<h3 id="mpmediapickercontrollerdelegate的實作">MPMediaPickerControllerDelegate的實作</h3>
-
-<pre><code class="language-swift">// 取消不動作直接消除視窗
-func mediaPickerDidCancel(_ mediaPicker: MPMediaPickerController) {
-	dismiss(animated: true, completion: nil)
-}
-
-// 選取到音樂則播放
-func mediaPicker(_ mediaPicker: MPMediaPickerController, didPickMediaItems mediaItemCollection: MPMediaItemCollection) {
-  let musicPlayer = MPMusicPlayerController.applicationMusicPlayer()
-  musicPlayer.setQueue(with:mediaItemCollection)
-  musicPlayer.play()
-  dismiss(animated:true, completion: nil)
-}
-</code></pre>
-
-<p>若要停止MPmusicPlayerController一樣可以使用.stop函數</p>
-
-<h2 id="錄音">錄音</h2>
-
-<ol>
-<li>在info.plist增加麥克風權限</li>
-<li>選好放置路徑並產生URL</li>
-<li>設定錄音數據(dict)</li>
-<li>產生AVAudioRecorder實體</li>
-<li>指定AVAudioRecorder的delegate
-
-<ul>
-<li>指定錄完音後執行的動作</li>
-</ul></li>
-<li>開始錄音</li>
-</ol>
-
-<h3 id="權限設定-1">權限設定</h3>
-
-<p><img src="http://i.imgur.com/WwJpAMB.png" alt="麥克風權限" /></p>
-
-<h3 id="步驟2-3-4-5">步驟2 3 4 5</h3>
-
-<pre><code class="language-swift">func audioRecorderInit()-&gt;AVAudioRecorder?{
-	// 步驟2 設定路徑
-  let path = NSHomeDirectory() + &quot;/Documents/user.wav&quot;
-  let url = URL(fileURLWithPath: path)
-  // 步驟3 設定錄音數據(dict)
-  let recordSettings:[String:Any] = [
-    AVEncoderAudioQualityKey : AVAudioQuality.min.rawValue,
-    AVEncoderBitRateKey: 16,
-    AVNumberOfChannelsKey: 2,
-    AVSampleRateKey: 44100.0
-  ]
-  do {
-  	// 步驟4 5 產生實體並指定delegate
-  	let audioRecorder = try AVAudioRecorder(url: url, settings:recordSettings)
-    audioRecorder.delegate = self
-    return audioRecorder
-  }
-  catch{
-  	print(&quot;something is worng&quot;)
-  	return nil
-  }
-}
-</code></pre>
-
-<h3 id="avaudiorecorderdelegate的實作">AVAudioRecorderDelegate的實作</h3>
-
-<p>參數recorder的屬性url可以拿到錄製好的檔案路徑</p>
-
-<pre><code class="language-swift">func audioRecorderDidFinishRecording(_ recorder: AVAudioRecorder, successfully flag: Bool) {
-  if flag == true{
-    do {
-    	try audioPlayer = AVAudioPlayer(contentsOf: recorder.url)
-  	}
-    catch{
-    	print(&quot;something is Wrong...&quot;)
-    }
-  }
-}
-</code></pre>
-
-<h3 id="開始錄音">開始錄音</h3>
-
-<p>將AVAudioSession調成AVAudioSessionCatetoryPlayAndRecord，可有效增大錄音音量。若不調整則會很小聲。</p>
-
-<pre><code class="language-swift">do {
-	try AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategoryPlayAndRecord)
-}
-catch{
-	print(&quot;can't set audio session&quot;)
-}
-audioRecorder?.prepareToRecord()
-audioRecorder?.record()
-</code></pre>
-
-<h3 id="停止錄音">停止錄音</h3>
-
-<p>記得把剛剛的AVAudioSession.sharedInstance()調回原樣</p>
-
-<pre><code class="language-swift">self.audioRecorder?.stop()
-do{
-	try AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategoryPlayback)
-	try AVAudioSession.sharedInstance().setActive(false)
-}
-catch{
-	print(&quot;can't set audio session&quot;)
-}
-</code></pre>
-</div>
+    </div>
 
 <div class="meta">
+    
+    
+    <span class="comments"><a href="/mytags/#disqus_thread">Comments</a></span>
+    
     
 </div>
 </article>
 
 
-<div class="share">
-	<div class="addthis_toolbox addthis_default_style ">
-	
-	
-	
-	<a class="addthis_counter addthis_pill_style"></a>
-	</div>
-  <script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js#pubid="></script>
-</div>
 
-
-
+  <nav id="pagenavi">
     
-     <script type="text/javascript">
-        var disqus_config = function () {
-            this.page.url = 'https:\/\/cdfq152313.github.io\/post\/2016-10-06\/';
-            this.page.identifier = 'https:\/\/cdfq152313.github.io\/post\/2016-10-06\/';
-        };
-
-        (function() {
-          var d = document, s = d.createElement('script');
-          s.src = '//blog-vygy2ifrxm.disqus.com/embed.js';
-          s.setAttribute('data-timestamp', +new Date());
-          (d.head || d.body).appendChild(s);
-        })();
-     </script>
+        <a href="/page/4/" class="prev">Prev</a>
     
-
-
-
-
-<section id="comment">
-    <h2 class="title">Comments</h2>
-    <div id="disqus_thread" aria-live="polite">
-        <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
-    </div>
-</section>
+    
+    <div class="center"><a href="https://cdfq152313.github.io//archives/index.html">Blog Archives</a></div>
+  </nav>
 
 
     </div>
