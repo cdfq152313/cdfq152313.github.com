@@ -2,10 +2,13 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Git on Denny&#39;s Blog</title>
-    <link>https://cdfq152313.github.io/tags/git/index.xml</link>
+    <link>https://cdfq152313.github.io/tags/git/</link>
     <description>Recent content in Git on Denny&#39;s Blog</description>
     <generator>Hugo -- gohugo.io</generator>
-    <atom:link href="https://cdfq152313.github.io/tags/git/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sun, 07 Jun 2015 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="https://cdfq152313.github.io/tags/git/index.xml" rel="self" type="application/rss+xml" />
+    
     
     <item>
       <title>在linux上跑git server</title>
@@ -13,137 +16,16 @@
       <pubDate>Sun, 07 Jun 2015 00:00:00 +0000</pubDate>
       
       <guid>https://cdfq152313.github.io/post/2015-06-07/</guid>
-      <description>
-
-&lt;h2 id=&#34;環境設定&#34;&gt;環境設定&lt;/h2&gt;
-
-&lt;p&gt;系統: linux mint&lt;br /&gt;
-套件: &lt;code&gt;sudo apt-get install openssh-server git&lt;/code&gt;&lt;/p&gt;
-
-&lt;h2 id=&#34;基本操作&#34;&gt;基本操作&lt;/h2&gt;
-
-&lt;p&gt;安裝完openssh-server和git後，即可開始嘗試創建remote repository。&lt;br /&gt;
-為了之後的安全性議題，創建一個新的帳號來管理git server&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;	sudo adduser git
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;下方指令新增project.git目錄做為remote repository&lt;br /&gt;
-(我新增在此帳號的家目錄下，而git官方文件則是放在 /opt/git/ 裡)&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;su git
-mkdir /home/git/project.git
-cd /home/git/project.git
-git --bare init
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;remote repository已經建立，可以開始使用。
-&lt;strong&gt;git@gitserver&lt;/strong&gt; 代表 &lt;strong&gt;登入帳號@serverIP位置&lt;/strong&gt;&lt;br /&gt;
-試著用ssh連線抓下git repository吧。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;git clone git@gitserver:/home/git/project.git
-git remote -v
-origin git@gitserver:/home/git/project.git (fetch)
-origin git@gitserver:/home/git/project.git (push)
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;當然push pull指令也沒問題囉~ 只要有該帳戶密碼即可。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;git push origin master
-git pull origin master
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h2 id=&#34;安全性議題-ssh-public-key-authentication&#34;&gt;安全性議題 - SSH Public Key Authentication&lt;/h2&gt;
-
-&lt;p&gt;上述推送git repository的流程中，只需要有帳號密碼即可登入。&lt;br /&gt;
-我們可以改以更安全的SSH Public Key Authentication來登入&lt;/p&gt;
-
-&lt;h3 id=&#34;client&#34;&gt;client&lt;/h3&gt;
-
-&lt;p&gt;在terminal上輸入&lt;code&gt;ssh-keygen&lt;/code&gt;&lt;br /&gt;
-全部使用預設值後，成對的公私鑰會出現在~/.ssh裡&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;公鑰:id_rsa.pub&lt;/li&gt;
-&lt;li&gt;私鑰:id_rsa&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;公鑰長起來像這樣&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCB007n/ww+ouN4gSLKssMxXnBOvf9LGt4LojG6rs6hPB09j9R/T17/x4lhJA0F3FR1rP6kYBRsWj2aThGw6HXLm9/5zytK6Ztg3RPKK+4kYjh6541NYsnEAZuXz0jTTyAUfrtU3Z5E003C4oxOj6H0rfIF1kKI9MAQLMdpGW1GYEIgS9EzSdfd8AcCIicTDWbqLAcU4UpkaX8KyGlLwsNuuGztobF8m72ALC/nLF6JLtPofwFBlgc+myivO7TCUSBdLQlgMVOFq1I2uPWQOkOWQAHukEOmfjy2jctxSDBQ220ymjaNsHT4kgtZg2AYYgPqdAv8JggJICUvax2T9va5 gsg-keypair
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h3 id=&#34;server&#34;&gt;server&lt;/h3&gt;
-
-&lt;p&gt;登入管理git server的帳戶&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;    su git
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;把允許連到這個server的用戶公鑰，複製貼上到~/.ssh/authorized_keys文件中。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;    mkdir ~/.ssh
-    vi ~/.ssh/authorized_keys
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;authorized_keys中，有幾個公鑰就放幾行。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;    公鑰1
-    公鑰2
-    公鑰3
-    ...
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h2 id=&#34;安全性議題-限制shell功能&#34;&gt;安全性議題 - 限制shell功能&lt;/h2&gt;
-
-&lt;p&gt;如果有人遠端登入伺服器後，使用vi、rm、touch等指令隨便更改repository內容，豈不是很危險。&lt;br /&gt;
-因此要限制此帳戶只能拿來做為唯一用途──推送版本庫。&lt;br /&gt;
-將原本的bash-shell改為git-shell，使此帳戶只剩下git相關功能吧。&lt;br /&gt;
-編輯權限檔&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;    sudo vim /etc/passwd
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;passwd檔案底會出現剛剛的帳戶，這行可能長這樣。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;    git:x :1001:1001:/home/git:/bin/sh
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;由左到右分別代表&lt;br /&gt;
-&lt;strong&gt;帳戶:密碼(以x代替):UID(使用者識別碼):GID(群組識別碼):家目錄位置:使用的shell&lt;/strong&gt;&lt;br /&gt;
-將shell替代成git-shell，使此帳戶只剩下git相關功能。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;    git:x :1001:1001::/home/git:/usr/bin/git-shell
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;git-shell的位置可以用下列指令找到&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;    which git-shell
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;調整完權限後，再想以ssh登入此帳戶就會出現&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;    $ ssh git@gitserver
-    Welcome to Linux Mint 17.1 Rebecca (GNU/Linux 3.13.0-37-generic x86_64)
-    Welcome to Linux Mint
-     * Documentation:  http://www.linuxmint.com
-    Last login: Sat Jun  6 19:55:30 2015 from localhost
-    fatal: Interactive git shell is not enabled.
-    hint: ~/git-shell-commands should exist and have read and execute access.
-    Connection to gitserver closed.
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;此帳號無法再使用shell囉~&lt;/p&gt;
-
-&lt;h2 id=&#34;reference&#34;&gt;reference&lt;/h2&gt;
-
-&lt;ul&gt;
-&lt;li&gt;&lt;a href=&#34;https://git-scm.com/book/zh-tw/v1/%E4%BC%BA%E6%9C%8D%E5%99%A8%E4%B8%8A%E7%9A%84-Git&#34;&gt;git server官方文件&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&#34;http://linux.vbird.org/linux_basic/0410accountmanager.php#passwd_file&#34;&gt;/etc/passwd文件含意&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&#34;http://blogger.gtwang.org/2014/05/linux-ssh-public-key-authentication.html&#34;&gt;ssh產生金鑰&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&#34;http://blog.udn.com/nigerchen/2262865&#34;&gt;ssh安全性設定&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-</description>
+      <description>環境設定 系統: linux mint
+套件: sudo apt-get install openssh-server git
+基本操作 安裝完openssh-server和git後，即可開始嘗試創建remote repository。
+為了之後的安全性議題，創建一個新的帳號來管理git server
+sudo adduser git  下方指令新增project.git目錄做為remote repository
+(我新增在此帳號的家目錄下，而git官方文件則是放在 /opt/git/ 裡)
+su git mkdir /home/git/project.git cd /home/git/project.git git --bare init  remote repository已經建立，可以開始使用。 git@gitserver 代表 登入帳號@serverIP位置
+試著用ssh連線抓下git repository吧。
+git clone git@gitserver:/home/git/project.git git remote -v origin git@gitserver:/home/git/project.git (fetch) origin git@gitserver:/home/git/project.git (push)  當然push pull指令也沒問題囉~ 只要有該帳戶密碼即可。
+git push origin master git pull origin master  安全性議題 - SSH Public Key Authentication 上述推送git repository的流程中，只需要有帳號密碼即可登入。</description>
     </item>
     
     <item>
@@ -152,77 +34,16 @@ git pull origin master
       <pubDate>Fri, 05 Jun 2015 00:00:00 +0000</pubDate>
       
       <guid>https://cdfq152313.github.io/post/2015-06-05/</guid>
-      <description>&lt;p&gt;初始化&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;git init
-git config --global user.name &amp;quot;你的ID&amp;quot;
-git config --global user.email &amp;quot;你的信箱&amp;quot;
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;狀態
-    git status&lt;/p&gt;
-
-&lt;p&gt;新增&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;git add 檔名
-git add -A
-git add -u
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;提交&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;git commit -m &amp;quot;改動訊息&amp;quot;
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;歷史訊息&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;git log
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;忽略&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;.gitignore
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;比較不同&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;git diff (工作和暫存)
-git diff 分支名稱 (工作和分支)
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;分支(版本)名稱
-HEAD(目前頭分支) : HEAD HEAD^ HEAD^^ HEAD^^^
-master(branch名)
-695606fc5e31&amp;hellip;.. (commit hash名)&lt;/p&gt;
-
-&lt;p&gt;重置&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;git reset --hard 分支名稱(分支覆蓋暫存區和工作區，後悔藥，危險不可逆)
-git reset 分支名稱 (分支覆蓋暫存區，通常拿來撤銷git add操作)
-
-git checkout 分支名稱 (看以前的版本)
-
-git tag -m &amp;quot;wahaha version 1000&amp;quot; v_1000
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;在git中，為了吃後悔藥，完成一個小功能立刻commit
-在git中，為了找尋方便，完成大改版記得tag&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;git describe (方便產生版本號)
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;老闆叫你交東西給客戶 但是你程式改到一半&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;git stash
-git stash pop
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;交成品囉 []裡面為可加可不加的內容&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;git archive -o 輸出.zip 分支名稱 [想要複製的資料夾/檔案，可多個]
-git archive -o output.zip HEAD src obj
-&lt;/code&gt;&lt;/pre&gt;
-</description>
+      <description>初始化
+git init git config --global user.name &amp;quot;你的ID&amp;quot; git config --global user.email &amp;quot;你的信箱&amp;quot;  狀態 git status
+新增
+git add 檔名 git add -A git add -u  提交
+git commit -m &amp;quot;改動訊息&amp;quot;  歷史訊息
+git log  忽略
+.gitignore  比較不同
+git diff (工作和暫存) git diff 分支名稱 (工作和分支)  分支(版本)名稱 HEAD(目前頭分支) : HEAD HEAD^ HEAD^^ HEAD^^^ master(branch名) 695606fc5e31&amp;hellip;.. (commit hash名)
+重置
+git reset --hard 分支名稱(分支覆蓋暫存區和工作區，後悔藥，危險不可逆) git reset 分支名稱 (分支覆蓋暫存區，通常拿來撤銷git add操作) git checkout 分支名稱 (看以前的版本) git tag -m &amp;quot;wahaha version 1000&amp;quot; v_1000  在git中，為了吃後悔藥，完成一個小功能立刻commit 在git中，為了找尋方便，完成大改版記得tag</description>
     </item>
     
   </channel>

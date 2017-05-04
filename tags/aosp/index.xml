@@ -2,10 +2,13 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Aosp on Denny&#39;s Blog</title>
-    <link>https://cdfq152313.github.io/tags/aosp/index.xml</link>
+    <link>https://cdfq152313.github.io/tags/aosp/</link>
     <description>Recent content in Aosp on Denny&#39;s Blog</description>
     <generator>Hugo -- gohugo.io</generator>
-    <atom:link href="https://cdfq152313.github.io/tags/aosp/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Fri, 04 Mar 2016 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="https://cdfq152313.github.io/tags/aosp/index.xml" rel="self" type="application/rss+xml" />
+    
     
     <item>
       <title>在AOSP中增加預設app (3) : 利用Android Studio來進行編輯</title>
@@ -13,139 +16,18 @@
       <pubDate>Fri, 04 Mar 2016 00:00:00 +0000</pubDate>
       
       <guid>https://cdfq152313.github.io/post/2016-03-04/</guid>
-      <description>
-
-&lt;h2 id=&#34;平台及環境設置&#34;&gt;平台及環境設置&lt;/h2&gt;
-
-&lt;h3 id=&#34;平台&#34;&gt;平台&lt;/h3&gt;
-
-&lt;p&gt;實驗平台：Nexus 5&lt;br /&gt;
-Android版本：android-4.4_r1&lt;br /&gt;
-前置知識： [Howto Build Android KitKat (4.4) for the Google Nexus 5][6]&lt;/p&gt;
-
-&lt;h3 id=&#34;環境設置&#34;&gt;環境設置&lt;/h3&gt;
-
-&lt;p&gt;在AOSP資料夾中&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;source build/envsetup.sh
-lunch aosp_hammerhead-userdebug
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h2 id=&#34;目標-利用android-studio來新增app-命名為world&#34;&gt;目標：利用Android Studio來新增APP (命名為World)&lt;/h2&gt;
-
-&lt;p&gt;在上一篇文章中，說明了如何copy一份已有的project來改寫。但是寫Android App有許多煩雜的地方，有時候還是需要IDE來幫助比較快，這裡找了一個比較tricky的方法來使用IDE。&lt;/p&gt;
-
-&lt;h3 id=&#34;新增android-studio-project&#34;&gt;新增Android Studio Project&lt;/h3&gt;
-
-&lt;p&gt;我們直接從Android Studio中產生一個空的project，命名為&lt;code&gt;World&lt;/code&gt;。&lt;br /&gt;
-新增project時記得選empty Activity，之後比較好做。&lt;br /&gt;
-&lt;img src=&#34;http://i.imgur.com/LTorwRZ.png&#34; alt=&#34;Alt Text&#34; /&gt;&lt;/p&gt;
-
-&lt;h3 id=&#34;建立soft-link&#34;&gt;建立soft link&lt;/h3&gt;
-
-&lt;p&gt;在剛剛產生出來的Android Project路徑底下，&lt;code&gt;World/app/src/main&lt;/code&gt;應該有&lt;strong&gt;java、res&lt;/strong&gt;資料夾，以及&lt;strong&gt;AndroidManifest.xml&lt;/strong&gt;。&lt;br /&gt;
-在&lt;code&gt;AOSP/packages/apps&lt;/code&gt;建立新目錄&lt;code&gt;World&lt;/code&gt;，並在其底下建立起上述3個檔案之&lt;a href=&#34;http://linux.vbird.org/linux_basic/0230filesystem.php#ln&#34; title=&#34;鳥哥 - ln解說&#34;&gt;軟連結(soft link)&lt;/a&gt;。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;mkdir $ANDROID_BUILD_TOP/packages/apps/World &amp;amp;&amp;amp; cd $_
-ln -s AndroidProject目錄/World/app/src/main/java  java
-ln -s AndroidProject目錄/World/app/src/main/res  res
-ln -s AndroidProject目錄/World/app/src/main/AndroidManifest.xml  AndroidManifest.xml
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h3 id=&#34;撰寫android-mk&#34;&gt;撰寫Android.mk&lt;/h3&gt;
-
-&lt;p&gt;參考&lt;a href=&#34;http://android.mk/&#34; title=&#34;Secrets of Android.mk&#34;&gt;Secrets of Android.mk&lt;/a&gt;此份文件當中的&lt;strong&gt;Building a simple APK&lt;/strong&gt;目錄。將其加到&lt;code&gt;AOSP/packages/apps/World&lt;/code&gt;資料夾下。&lt;/p&gt;
-
-&lt;p&gt;Android.mk&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-makefile&#34;&gt;  LOCAL_PATH := $(call my-dir)
-  include $(CLEAR_VARS)
-   
-  # Build all java files in the java subdirectory
-  LOCAL_SRC_FILES := $(call all-subdir-java-files)
-   
-  # Name of the APK to build
-  LOCAL_PACKAGE_NAME := LocalPackage
-   
-  # Tell it to build an APK
-  include $(BUILD_PACKAGE)
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h3 id=&#34;修改掉所有appcompat的部份&#34;&gt;修改掉所有appcompat的部份&lt;/h3&gt;
-
-&lt;p&gt;再來使用&lt;code&gt;mm&lt;/code&gt;在&lt;code&gt;AOSP/packages/apps/World&lt;/code&gt;進行編譯，運氣不好的話，編譯會出現找不到某些命名的錯誤。這是因為Google為了讓各種app看起來更有一致性，將Android Studio的新Project皆使用Appcompat此library來協調視覺效果。可是此library並不存在於預設的編譯環境當中。為了為了節省麻煩，將其去掉。&lt;/p&gt;
-
-&lt;p&gt;style.xml&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-xml&#34;&gt;&amp;lt;resources&amp;gt;
-
-    &amp;lt;!-- Base application theme. --&amp;gt;
-    &amp;lt;style name=&amp;quot;AppTheme&amp;quot; parent=&amp;quot;android:Theme.Holo.Light.DarkActionBar&amp;quot;&amp;gt;
-        &amp;lt;!-- Customize your theme here. --&amp;gt;
-    &amp;lt;/style&amp;gt;
-
-&amp;lt;/resources&amp;gt;
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;並把MainActivity中可能會用&lt;strong&gt;ActionBarActivity&lt;/strong&gt;或是&lt;strong&gt;AppCompatActivity&lt;/strong&gt;來替代Activity，請一律換成Activity來使用。&lt;/p&gt;
-
-&lt;p&gt;MainActivity.java&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;package com.android.world;
-
-import android.app.Activity;
-import android.os.Bundle;
-
-public class MainActivity extends Activity{
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-    }
-}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;最後，我在編譯途中還遇到標籤問題。預設的編譯環境似乎不允許著無命名的字串存在。也就是說，如果你有任何的&lt;strong&gt;text&lt;/strong&gt;標籤是直接給予字串值的，可能會編譯失敗。&lt;/p&gt;
-
-&lt;p&gt;修改前&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-xml&#34;&gt;&amp;lt;TextView
-        android:layout_width=&amp;quot;wrap_content&amp;quot;
-        android:layout_height=&amp;quot;wrap_content&amp;quot;
-		android:text=&amp;quot;Hello World&amp;quot; /&amp;gt;
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;可能要改將字串引用自string.xml才能編譯成功。&lt;/p&gt;
-
-&lt;p&gt;修改後&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-xml&#34;&gt;&amp;lt;TextView
-        android:layout_width=&amp;quot;wrap_content&amp;quot;
-        android:layout_height=&amp;quot;wrap_content&amp;quot;
-		android:text=&amp;quot;@string/app_name&amp;quot; /&amp;gt;
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;res/values/string.xml&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-xml&#34;&gt;&amp;lt;resources&amp;gt;
-    &amp;lt;string name=&amp;quot;app_name&amp;quot;&amp;gt;World&amp;lt;/string&amp;gt;
-&amp;lt;/resources&amp;gt;
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h3 id=&#34;編譯&#34;&gt;編譯&lt;/h3&gt;
-
-&lt;p&gt;使用&lt;code&gt;mm&lt;/code&gt;進行編譯，此次應該可以順利通過了。&lt;br /&gt;
-之後直接在Android Studio裡對Application進行編輯，由於建立了軟連結，AOSP內部的內容也會同步更改。&lt;br /&gt;
-這樣就可以用Android Studio來撰寫APP囉。&lt;/p&gt;
-
-&lt;h2 id=&#34;reference&#34;&gt;Reference&lt;/h2&gt;
-
-&lt;ul&gt;
-&lt;li&gt;&lt;a href=&#34;http://android.mk/&#34; title=&#34;Secrets of Android.mk&#34;&gt;Android.mk&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&#34;http://linux.vbird.org/linux_basic/0230filesystem.php#ln&#34; title=&#34;鳥哥 - ln解說&#34;&gt;鳥哥 - ln解說&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-</description>
+      <description>平台及環境設置 平台 實驗平台：Nexus 5
+Android版本：android-4.4_r1
+前置知識： [Howto Build Android KitKat (4.4) for the Google Nexus 5][6]
+環境設置 在AOSP資料夾中
+source build/envsetup.sh lunch aosp_hammerhead-userdebug  目標：利用Android Studio來新增APP (命名為World) 在上一篇文章中，說明了如何copy一份已有的project來改寫。但是寫Android App有許多煩雜的地方，有時候還是需要IDE來幫助比較快，這裡找了一個比較tricky的方法來使用IDE。
+新增Android Studio Project 我們直接從Android Studio中產生一個空的project，命名為World。
+新增project時記得選empty Activity，之後比較好做。
+建立soft link 在剛剛產生出來的Android Project路徑底下，World/app/src/main應該有java、res資料夾，以及AndroidManifest.xml。
+在AOSP/packages/apps建立新目錄World，並在其底下建立起上述3個檔案之軟連結(soft link)。
+mkdir $ANDROID_BUILD_TOP/packages/apps/World &amp;amp;&amp;amp; cd $_ ln -s AndroidProject目錄/World/app/src/main/java java ln -s AndroidProject目錄/World/app/src/main/res res ln -s AndroidProject目錄/World/app/src/main/AndroidManifest.xml AndroidManifest.xml  撰寫Android.mk 參考Secrets of Android.mk此份文件當中的Building a simple APK目錄。將其加到AOSP/packages/apps/World資料夾下。
+Android.mk
+LOCAL_PATH := $(call my-dir) include $(CLEAR_VARS) # Build all java files in the java subdirectory LOCAL_SRC_FILES := $(call all-subdir-java-files) # Name of the APK to build LOCAL_PACKAGE_NAME := LocalPackage # Tell it to build an APK include $(BUILD_PACKAGE)  修改掉所有appcompat的部份 再來使用mm在AOSP/packages/apps/World進行編譯，運氣不好的話，編譯會出現找不到某些命名的錯誤。這是因為Google為了讓各種app看起來更有一致性，將Android Studio的新Project皆使用Appcompat此library來協調視覺效果。可是此library並不存在於預設的編譯環境當中。為了為了節省麻煩，將其去掉。</description>
     </item>
     
     <item>
@@ -154,58 +36,19 @@ public class MainActivity extends Activity{
       <pubDate>Sun, 28 Feb 2016 00:00:00 +0000</pubDate>
       
       <guid>https://cdfq152313.github.io/post/2016-02-28/</guid>
-      <description>
-
-&lt;h2 id=&#34;平台及環境設置&#34;&gt;平台及環境設置&lt;/h2&gt;
-
-&lt;h3 id=&#34;平台&#34;&gt;平台&lt;/h3&gt;
-
-&lt;p&gt;實驗平台：Nexus 5&lt;br /&gt;
-Android版本：android-4.4_r1&lt;br /&gt;
-前置知識： [Howto Build Android KitKat (4.4) for the Google Nexus 5][6]&lt;/p&gt;
-
-&lt;h3 id=&#34;環境設置&#34;&gt;環境設置&lt;/h3&gt;
-
-&lt;p&gt;在AOSP資料夾中&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;source build/envsetup.sh
-lunch aosp_hammerhead-userdebug
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h2 id=&#34;目標-加入一個需編譯的預設app到aosp裡&#34;&gt;目標：加入一個需編譯的預設App到AOSP裡&lt;/h2&gt;
-
-&lt;p&gt;在&lt;code&gt;AOSP/development/samples&lt;/code&gt;裏面有許多可以借鑒的對象。&lt;br /&gt;
-這次學習的目錄為&lt;code&gt;AOSP/development/samples/HelloActivity/&lt;/code&gt;&lt;/p&gt;
-
-&lt;h3 id=&#34;複製資料夾&#34;&gt;複製資料夾&lt;/h3&gt;
-
-&lt;p&gt;首先我們先把這個資料夾複製到&lt;code&gt;packages/app/&lt;/code&gt;裏面&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;cp $ANDROID_BUILD_TOP/development/samples/HelloActivity   $ANDROID_BUILD_TOP/packages/apps/
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h3 id=&#34;使用mm進行編譯&#34;&gt;使用mm進行編譯&lt;/h3&gt;
-
-&lt;p&gt;在&lt;code&gt;packages/apps/HelloActivity&lt;/code&gt;內進行&lt;code&gt;mm&lt;/code&gt;編譯。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;cd $ANDROID_BUILD_TOP/packages/apps/HelloActivity
-mm
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h3 id=&#34;解析&#34;&gt;解析&lt;/h3&gt;
-
-&lt;p&gt;原本想長篇大論，但是好像有人寫的比我好XD&lt;br /&gt;
-只好直接給&lt;a href=&#34;http://kezeodsnx.pixnet.net/blog/post/26377152-%5B%E8%BD%89%E8%B2%BC%5Dandroid%E7%9A%84%E5%BA%94%E7%94%A8%E7%A8%8B%E5%BA%8F%E7%BB%93%E6%9E%84%E5%88%86%E6%9E%90%EF%BC%9Ahelloactivity&#34; title=&#34;Android的應用程序結構分析&#34;&gt;連結&lt;/a&gt;，有空再來寫自己的版本吧。&lt;br /&gt;
-懂的HelloAcitivity的結構之後，就可以對其進行修改，以符合自己的需求。&lt;br /&gt;
-對於Android.mk若有什麼不懂的也可參考上次&lt;a href=&#34;http://android.mk/&#34; title=&#34;Secrets of Android.mk&#34;&gt;這篇&lt;/a&gt;。&lt;/p&gt;
-
-&lt;h2 id=&#34;reference&#34;&gt;Reference&lt;/h2&gt;
-
-&lt;ul&gt;
-&lt;li&gt;&lt;a href=&#34;http://kezeodsnx.pixnet.net/blog/post/26377152-%5B%E8%BD%89%E8%B2%BC%5Dandroid%E7%9A%84%E5%BA%94%E7%94%A8%E7%A8%8B%E5%BA%8F%E7%BB%93%E6%9E%84%E5%88%86%E6%9E%90%EF%BC%9Ahelloactivity&#34; title=&#34;Android的應用程序結構分析&#34;&gt;Android的應用程序結構分析&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&#34;http://android.mk/&#34; title=&#34;Secrets of Android.mk&#34;&gt;Secrets of Android.mk&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-</description>
+      <description> 平台及環境設置 平台 實驗平台：Nexus 5
+Android版本：android-4.4_r1
+前置知識： [Howto Build Android KitKat (4.4) for the Google Nexus 5][6]
+環境設置 在AOSP資料夾中
+source build/envsetup.sh lunch aosp_hammerhead-userdebug  目標：加入一個需編譯的預設App到AOSP裡 在AOSP/development/samples裏面有許多可以借鑒的對象。
+這次學習的目錄為AOSP/development/samples/HelloActivity/
+複製資料夾 首先我們先把這個資料夾複製到packages/app/裏面
+cp $ANDROID_BUILD_TOP/development/samples/HelloActivity $ANDROID_BUILD_TOP/packages/apps/  使用mm進行編譯 在packages/apps/HelloActivity內進行mm編譯。
+cd $ANDROID_BUILD_TOP/packages/apps/HelloActivity mm  解析 原本想長篇大論，但是好像有人寫的比我好XD
+只好直接給連結，有空再來寫自己的版本吧。
+懂的HelloAcitivity的結構之後，就可以對其進行修改，以符合自己的需求。
+對於Android.mk若有什麼不懂的也可參考上次這篇。
+Reference  Android的應用程序結構分析 Secrets of Android.mk  </description>
     </item>
     
     <item>
@@ -214,98 +57,15 @@ mm
       <pubDate>Wed, 24 Feb 2016 00:00:00 +0000</pubDate>
       
       <guid>https://cdfq152313.github.io/post/2016-02-24/</guid>
-      <description>
-
-&lt;h2 id=&#34;平台及環境設置&#34;&gt;平台及環境設置&lt;/h2&gt;
-
-&lt;h3 id=&#34;平台&#34;&gt;平台&lt;/h3&gt;
-
-&lt;p&gt;實驗平台：Nexus 5&lt;br /&gt;
-Android版本：android-4.4_r1&lt;br /&gt;
-前置知識： &lt;a href=&#34;https://nosemaj.org/howto-build-android-kitkat-nexus-5&#34; title=&#34;Howto Build Android KitKat (4.4) for the Google Nexus 5&#34;&gt;Howto Build Android KitKat (4.4) for the Google Nexus 5&lt;/a&gt;&lt;/p&gt;
-
-&lt;h3 id=&#34;環境設置&#34;&gt;環境設置&lt;/h3&gt;
-
-&lt;p&gt;在AOSP資料夾中&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;source build/envsetup.sh
-lunch aosp_hammerhead-userdebug
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h2 id=&#34;目標-在aosp當中加入一個已經編譯好的apk檔-hello-apk&#34;&gt;目標：在AOSP當中加入一個已經編譯好的apk檔，Hello.apk&lt;/h2&gt;
-
-&lt;h3 id=&#34;手動編譯設置&#34;&gt;手動編譯設置&lt;/h3&gt;
-
-&lt;p&gt;預設的app放在 &lt;code&gt;AOSP/packages/apps&lt;/code&gt;下，任意觀看此目錄下的資料夾，會發現皆有&lt;strong&gt;Android.mk&lt;/strong&gt;此檔案，此為AOSP編譯規則。&lt;br /&gt;
-參看 &lt;a href=&#34;http://android.mk/&#34; title=&#34;Secrets of Android.mk&#34;&gt;Secrets of Android.mk&lt;/a&gt;此份文件中的&lt;a href=&#34;http://android.mk/#prebuiltAPK&#34;&gt;Adding a prebuilt APK&lt;/a&gt;章節。&lt;/p&gt;
-
-&lt;p&gt;依樣畫葫蘆，在&lt;code&gt;AOSP/packages/apps&lt;/code&gt;目錄中手動創造Hello資料夾，放入Android.mk。&lt;/p&gt;
-
-&lt;p&gt;Android.mk&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-makefile&#34;&gt;LOCAL_PATH := $(call my-dir)
-include $(CLEAR_VARS)
-
-# Module name should match apk name to be installed.
-LOCAL_MODULE := Hello
-LOCAL_SRC_FILES := $(LOCAL_MODULE).apk
-LOCAL_MODULE_CLASS := APPS
-LOCAL_MODULE_SUFFIX := $(COMMON_ANDROID_PACKAGE_SUFFIX)
-LOCAL_CERTIFICATE := PRESIGNED
-
-include $(BUILD_PREBUILT)
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;並使用Android Studio(或eclipse)隨便製造出一個Hello.apk，同樣將其放置在&lt;code&gt;AOSP/packages/apps&lt;/code&gt;目錄下。&lt;br /&gt;
-在&lt;a href=&#34;https://source.android.com/source/building.html#initialize&#34; title=&#34;Set up environment&#34;&gt;設置好環境&lt;/a&gt;後，使用指令&lt;code&gt;mm&lt;/code&gt;在Hello資料夾底下進行編譯，即可將檔案複製到&lt;code&gt;AOSP/out/target/product/板子名/system/app/&lt;/code&gt;裏面去。&lt;br /&gt;
-最後執行&lt;code&gt;make snod&lt;/code&gt;即可將此apk包入system.img之中。&lt;/p&gt;
-
-&lt;blockquote&gt;
-&lt;p&gt;註：若放置的apk沒簽名，可能會出現&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;build/core/prebuilt.mk:122: *** No LOCAL_CERTIFICATE specified for prebuilt &amp;quot;packages/apps/Hello/Hello .apk&amp;quot;.  Stop.
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;此錯誤訊息。
-關於如何產生簽名過後的apk，可參看&lt;a href=&#34;http://developer.android.com/intl/zh-tw/tools/publishing/app-signing.html&#34; title=&#34;Signing Your Applications&#34;&gt;Android官網&lt;/a&gt;。&lt;br /&gt;
-眼尖的人應該注意到，在上述的Android.mk當中多了一行&lt;code&gt;LOCAL_CERTIFICATE := PRESIGNED&lt;/code&gt;，若沒有此行，則即使在Android Studio中已經編譯出簽名過後的apk，依然會出現錯誤訊息。要小心。&lt;/p&gt;
-
-&lt;h3 id=&#34;自動編譯設置&#34;&gt;自動編譯設置&lt;/h3&gt;
-
-&lt;p&gt;上述的手動編譯可總結為三步驟&lt;/p&gt;
-
-&lt;ol&gt;
-&lt;li&gt;在AOSP/packages/apps裡新增Hello資料夾，並放入Android.mk與Hello.apk&lt;/li&gt;
-&lt;li&gt;在Hello資料夾使用指令&lt;code&gt;mm&lt;/code&gt;，檔案會複製到&lt;code&gt;AOSP/out/target/product/板子名/system/app/&lt;/code&gt;&lt;/li&gt;
-&lt;li&gt;使用指令&lt;code&gt;make snod&lt;/code&gt;將檔案打包進system.img之中&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;想像每次修改檔案，皆需重複執行2,3步驟，不太方便。若有不只一個的pre-built apk，則進入每個資料夾使用mm更是麻煩。所以我們要修改make規則，讓AOSP在執行make時，也能偵測到這些新增資料夾。&lt;br /&gt;
-修改的地方位在&lt;code&gt;AOSP/build/target/product/generic_no_telephony.mk&lt;/code&gt;，可以發現這個檔案中有不少的原生app名稱。&lt;br /&gt;
-將&lt;code&gt;Hello&lt;/code&gt;加入&lt;code&gt;PRODUCT_PACKAGES&lt;/code&gt;之下。如&lt;/p&gt;
-
-&lt;p&gt;generic_no_telephony.mk&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-makefile&#34;&gt;(...省略...)
- PRODUCT_PACKAGES := \
-      Hello
-(...省略...)
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;如此一來就可以在一般make時偵測到&lt;code&gt;AOSP/packages/apps&lt;/code&gt;所新增的Hello資料夾。&lt;/p&gt;
-
-&lt;h2 id=&#34;reference&#34;&gt;Reference&lt;/h2&gt;
-
-&lt;ul&gt;
-&lt;li&gt;&lt;a href=&#34;https://nosemaj.org/howto-build-android-kitkat-nexus-5&#34; title=&#34;Howto Build Android KitKat (4.4) for the Google Nexus 5&#34;&gt;Howto Build Android KitKat (4.4) for the Google Nexus 5&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&#34;http://android.mk/&#34; title=&#34;Secrets of Android.mk&#34;&gt;Secrets of Android.mk&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&#34;http://stackoverflow.com/questions/10579827/add-apk-files-in-aosp&#34; title=&#34;Add .apk files in aosp&#34;&gt;Add .apk files in aosp&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&#34;https://source.android.com/source/building.html#initialize&#34; title=&#34;Set up environment&#34;&gt;Building the System&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&#34;http://mrslowblog.blogspot.tw/2013/01/sign-apk-android-app.html&#34; title=&#34; [教學]簽署應用程式 sign APK 發佈 Android App &#34;&gt; [教學]簽署應用程式 sign APK 發佈 Android App &lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&#34;http://developer.android.com/intl/zh-tw/tools/publishing/app-signing.html&#34; title=&#34;Signing Your Applications&#34;&gt;Signing Your Applications&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-</description>
+      <description>平台及環境設置 平台 實驗平台：Nexus 5
+Android版本：android-4.4_r1
+前置知識： Howto Build Android KitKat (4.4) for the Google Nexus 5
+環境設置 在AOSP資料夾中
+source build/envsetup.sh lunch aosp_hammerhead-userdebug  目標：在AOSP當中加入一個已經編譯好的apk檔，Hello.apk 手動編譯設置 預設的app放在 AOSP/packages/apps下，任意觀看此目錄下的資料夾，會發現皆有Android.mk此檔案，此為AOSP編譯規則。
+參看 Secrets of Android.mk此份文件中的Adding a prebuilt APK章節。
+依樣畫葫蘆，在AOSP/packages/apps目錄中手動創造Hello資料夾，放入Android.mk。
+Android.mk
+LOCAL_PATH := $(call my-dir) include $(CLEAR_VARS) # Module name should match apk name to be installed. LOCAL_MODULE := Hello LOCAL_SRC_FILES := $(LOCAL_MODULE).apk LOCAL_MODULE_CLASS := APPS LOCAL_MODULE_SUFFIX := $(COMMON_ANDROID_PACKAGE_SUFFIX) LOCAL_CERTIFICATE := PRESIGNED include $(BUILD_PREBUILT)  並使用Android Studio(或eclipse)隨便製造出一個Hello.</description>
     </item>
     
   </channel>
