@@ -58,7 +58,7 @@ public class MyDialogFragment extends DialogFragment { private final static Stri
       <pubDate>Wed, 08 Feb 2017 00:00:00 +0000</pubDate>
       
       <guid>https://cdfq152313.github.io/post/2017-02-08/</guid>
-      <description> Linearlayout  Android 对Layout_weight属性完全解析以及使用ListView来实现表格  fragment  官方API Guide Android Fragment 真正的完全解析（上） Android Fragment 真正的完全解析（下） Fragment Lifecycle中的onAttach  Toolbar  官方API Guide Toolbar左上方的返回鈕 加入新的圖示 Toolbar在Activity和Fragment下的使用情況  RecyclerView 和 ListView  RecyclerView 和 ListView的對比  UI/UX  List of Android UI/UX Libraries Fancy Button  Testing  Android单元测试（二）：再来谈谈为什么 Android单元测试（四）：Mock以及Mockito的使用 安卓单元测试(十一)：异步代码怎么测试  Library整合  整合1  Parcelable vs Serializable  Android Parcelable和Serializable的區別  權限管理  Android綠豆湯 - Android 6.0的Permission權限設計  檔案處理  Android developer - 儲存檔案  心得  Best practice  </description>
+      <description> Linearlayout  Android 对Layout_weight属性完全解析以及使用ListView来实现表格  fragment  官方API Guide Android Fragment 真正的完全解析（上） Android Fragment 真正的完全解析（下） Fragment Lifecycle中的onAttach  Toolbar  官方API Guide Toolbar左上方的返回鈕 加入新的圖示 Toolbar在Activity和Fragment下的使用情況  RecyclerView 和 ListView  RecyclerView 和 ListView的對比  UI/UX  List of Android UI/UX Libraries Fancy Button  Testing  Android单元测试（二）：再来谈谈为什么 Android单元测试（四）：Mock以及Mockito的使用 安卓单元测试(十一)：异步代码怎么测试  Library整合  整合1  Parcelable vs Serializable  Android Parcelable和Serializable的區別  權限管理  Android綠豆湯 - Android 6.0的Permission權限設計  檔案處理  Android developer - 儲存檔案  使用函式庫  Import Android Library 的各種方式  心得  Best practice  </description>
     </item>
     
     <item>

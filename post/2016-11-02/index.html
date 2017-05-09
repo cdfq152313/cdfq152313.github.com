@@ -4245,10 +4245,10 @@ func sendMail(){
 <p>像是在模擬器上就不能使用。</p>
 
 <pre><code class="language-swift">if MFMailComposeViewController.canSendMail(){
-    // 可以寄信
+	// 可以寄信
 }
 else{
-    // 不能寄信
+	// 不能寄信
 }
 </code></pre>
 
@@ -4259,7 +4259,7 @@ else{
 <pre><code class="language-swift">mailController.mailComposeDelegate = self
 
 func mailComposeController(_ controller: MFMailComposeViewController, didFinishWith result: MFMailComposeResult, error: Error?) {
-        dismiss(animated: true, completion: nil)
+		dismiss(animated: true, completion: nil)
 }
 
 </code></pre>

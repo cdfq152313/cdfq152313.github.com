@@ -4276,9 +4276,9 @@ let urlfrompath = URL(fileURLWithPath: pathFromNSHome)
 
 <pre><code class="language-swift">let directoryPath = NSTemporaryDirectory() + &quot;/images&quot;
 do{
-    try FileManager.default.createDirectory(atPath: directoryPath, withIntermediateDirectories: true, attributes: nil)
+	try FileManager.default.createDirectory(atPath: directoryPath, withIntermediateDirectories: true, attributes: nil)
 }catch{
-    print(&quot;Cannot create directory&quot;)
+	print(&quot;Cannot create directory&quot;)
 }
 </code></pre>
 
@@ -4293,11 +4293,11 @@ do{
 do{
   let fileList = try FileManager.default.contentsOfDirectory(atPath: tempPath)
   for file in fileList{
-    print(file)
+  	print(file)
   }
 }
 catch{
-    print(&quot;Cannot list directory&quot;)
+	print(&quot;Cannot list directory&quot;)
 }
 </code></pre>
 
@@ -4310,13 +4310,13 @@ catch{
 var isDirectory:ObjCBool = false
 let isExist = FileManager.default.fileExists(atPath: path, isDirectory: &amp;isDirectory)
 if isExist == true &amp;&amp; isDirectory.boolValue == true{
-    print(&quot;File exist and it is a direcotry&quot;)
+	print(&quot;File exist and it is a direcotry&quot;)
 }
 else if isExist == true &amp;&amp; isDirectory.boolValue == false{
-    print(&quot;File exist but it is not a direcotry&quot;)
+	print(&quot;File exist but it is not a direcotry&quot;)
 }
 else{
-    print(&quot;File isn't exist&quot;)
+	print(&quot;File isn't exist&quot;)
 }
 </code></pre>
 
@@ -4338,9 +4338,9 @@ FileManager.default.removeItem(atPath: path)
 <pre><code class="language-swift">let text = &quot;Hello World&quot;
 let filePath = NSTemporaryDirectory() + &quot;Text.txt&quot;
 do{
-    try text.write(toFile: filePath, atomically: true, encoding: .utf8)
+	try text.write(toFile: filePath, atomically: true, encoding: .utf8)
 }catch{
-    print(&quot;Not save correctly&quot;)
+	print(&quot;Not save correctly&quot;)
 }
 </code></pre>
 
@@ -4351,7 +4351,7 @@ do{
   let loading = try NSString(contentsOfFile: filePath, encoding: String.Encoding.utf8.rawValue)
   print(loading)
 }catch{
-    print(&quot;No save file&quot;)
+	print(&quot;No save file&quot;)
 }
 </code></pre>
 
@@ -4369,7 +4369,7 @@ arrayToSave.write(toFile: filePath, atomically: true)
 
 <pre><code class="language-swift">let filePath = NSTemporaryDirectory() + &quot;saveArray.txt&quot;
 if let loadArray = NSArray(contentsOfFile: filePath) as? [String]{
-    print(loadArray)
+	print(loadArray)
 }
 </code></pre>
 
@@ -4412,14 +4412,14 @@ guard let image = UIImage(named: &quot;Tails&quot;) else {
 }
 
 if let dataToSave = UIImagePNGRepresentation(image){
-    // 產生路徑
+	// 產生路徑
   let filePath = NSTemporaryDirectory() + &quot;savedImage.png&quot;
   let fileURL = URL(fileURLWithPath: filePath)
   // 寫入
   do{
-    try dataToSave.write(to: fileURL)
+  	try dataToSave.write(to: fileURL)
   }catch{
-    print(&quot;Can not save Image&quot;)
+  	print(&quot;Can not save Image&quot;)
   }
 }
 </code></pre>
@@ -4498,10 +4498,10 @@ let url = docUrl.appendingPathComponent(&quot;myfile.txt&quot;)
 let data = try? Data(contentsOf: url)
 
 if let data = data {
-    let item = NSKeyedUnarchiver.unarchiveObject(with: data) as! Item
-    print(&quot;=== Read ===&quot;)
-    print(item.name)
-    print(item.detail)
+	let item = NSKeyedUnarchiver.unarchiveObject(with: data) as! Item
+	print(&quot;=== Read ===&quot;)
+	print(item.name)
+	print(item.detail)
 }
 </code></pre>
 </div>
