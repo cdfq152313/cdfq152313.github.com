@@ -4214,6 +4214,94 @@ body {
 
   <article class="post">
     <h2 class="title"> 
+        <a href="/post/2017-05-18/">Mac/Linux的Bash主題(theme)設定</a>
+    </h2>
+    <div class="entry-content">
+    <div class="meta">
+        <div class="date">Published on: <time datetime='2017-05-18T00:34:00.000&#43;08:00' itemprop="datePublished">2017-05-18</time>
+</div>
+        <div class="tags">Tags: 
+
+<a href="https://cdfq152313.github.io/tags/bash">bash</a>
+
+<a href="https://cdfq152313.github.io/tags/linux">linux</a>
+
+<a href="https://cdfq152313.github.io/tags/mac">mac</a>
+
+
+</div>
+    </div>
+        
+
+<h2 id="緣起">緣起</h2>
+
+<p>MAC和Linux初始的Bash設定有兩個讓我不滿意的地方</p>
+
+<ol>
+<li>資料夾位置後緊接著指令輸入區</li>
+<li>進入git repository時不會顯示目前的branch</li>
+</ol>
+
+<p>1的問題導致指令沒打幾個字就會跳下行，因為有大半位置都被目錄路徑佔據了。<br />
+2的問題會害我一直反射性地打git status確認目前的狀況。</p>
+
+<h2 id="bash-prompt效果展示">bash_prompt效果展示</h2>
+
+<p>先展示一下效果：</p>
+
+<p>一般情況</p>
+
+<p><img src="http://i.imgur.com/gxnf04h.png" alt="" /></p>
+
+<p>有git的情況</p>
+
+<p><img src="http://i.imgur.com/lzr8n2s.png" alt="" /></p>
+
+<p>有python virtualenv的情況</p>
+
+<p><img src="http://i.imgur.com/Re0DOoa.png" alt="" /></p>
+
+<p>同時virtualenv和git
+<img src="http://i.imgur.com/7TF0kpH.png" alt="" /></p>
+
+<p>雖然不像zsh的powerline那麼炫砲，但也是勉強堪用了。</p>
+
+<h2 id="如何安裝">如何安裝</h2>
+
+<h3 id="1-下載bash-prompt">1. 下載bash_prompt</h3>
+
+<p><a href="https://gist.github.com/cdfq152313/252f6f6c279f8137ff8ca5e407c96c9b">檔案位置</a><br />
+複製並儲存到本地端，我習慣放在家目錄並取名叫<strong>.bash_prompt</strong>。</p>
+
+<h3 id="2-在bash開啟新session時載入">2. 在bash開啟新session時載入</h3>
+
+<p>linux更改<strong>~/.bashrc</strong>，mac更改<strong>~/.bash_profile</strong>。<br />
+在此檔案的最後一行插入</p>
+
+<pre><code class="language-bash">. ~/.bash_prompt
+</code></pre>
+
+<h3 id="3-開啟新session">3. 開啟新session</h3>
+
+<p>順利的話，再新開一個terminal即可看到五彩繽紛的介面了。</p>
+
+<h2 id="reference">Reference</h2>
+
+<p><a href="https://gist.github.com/insin/1425703">原始設定出處</a></p>
+
+    </div>
+
+<div class="meta">
+    
+    
+    <span class="comments"><a href="/post/2017-05-18/#disqus_thread">Comments</a></span>
+    
+    
+</div>
+</article>
+
+  <article class="post">
+    <h2 class="title"> 
         <a href="/post/2017-05-01/">[Design] SocketIO與Queue</a>
     </h2>
     <div class="entry-content">
@@ -5144,100 +5232,6 @@ AlgorithmParameterSpec mAlgorithmParameterSpec; // 之後要放置初始化向�
     
     
     <span class="comments"><a href="/post/2017-02-08/#disqus_thread">Comments</a></span>
-    
-    
-</div>
-</article>
-
-  <article class="post">
-    <h2 class="title"> 
-        <a href="/misc/2017-01-15/">寫給朋友看的function與class</a>
-    </h2>
-    <div class="entry-content">
-    <div class="meta">
-        <div class="date">Published on: <time datetime='2017-01-15T00:00:00.000&#43;00:00' itemprop="datePublished">2017-01-15</time>
-</div>
-        <div class="tags">Tags: 
-</div>
-    </div>
-        
-
-<h2 id="今天有個簡易的app功能如下">今天有個簡易的app功能如下</h2>
-
-<ol>
-<li>只有一個ViewController</li>
-<li>這個ViewController上只有兩個UITextView</li>
-<li>Input: &ldquo;01/15&rdquo; 代表1月15日</li>
-<li>想要結果: 在第一個UITextView上呈現 &ldquo;1 月&rdquo;，在第二個UITextView上呈現&rdquo;15日&rdquo;</li>
-</ol>
-
-<p>這時候可能會寫一個function在Controller裡頭，叫做split，input為字串，output為陣列。<br />
-input為&rdquo;01/15&rdquo;的話，會出現output [&ldquo;01&rdquo;, &ldquo;15&rdquo;]<br />
-然後call一下這個function，分別把兩個UITextView給賦值陣列0和陣列1，就可以運作得很完美了。</p>
-
-<h2 id="接下來追加規格">接下來追加規格</h2>
-
-<ol>
-<li>多了兩三個ViewController，同樣需要展示日期。</li>
-</ol>
-
-<p>這時候笨方法是把剛剛的function複製到四個不同的ViewController，然後再一一呼叫。<br />
-聰明一點的方法是放到全域變數，這樣不用重寫function，但是每一個Controller都能呼叫。</p>
-
-<h2 id="再度追加規格">再度追加規格</h2>
-
-<ol>
-<li>除了顯示月日的function，我還想要展示年分。</li>
-</ol>
-
-<p>這次可能會依樣畫葫蘆，寫個叫做splityearmonthday的function，放在全域變數裡面，讓所有Controller都能使用。</p>
-
-<h2 id="再再度追加規格">再再度追加規格</h2>
-
-<ol>
-<li>這個APP多了付款功能所以需要展示金額。</li>
-<li>這個展示金額靠著另外兩個UITextView，第一個UITextView展現整數，第二個UITextView展現小數。</li>
-<li>假設input &ldquo;23.7&rdquo;，那會在第一個UITextView出現23 第二個UITextView出現.7</li>
-</ol>
-
-<p>於是又寫了一個splitmoney的funcion，放在全域變數裡。</p>
-
-<h2 id="反思">反思</h2>
-
-<p>到了這裡可以開始反思這是不是一個良好的設計了，起初APP的功能的確很簡單，但是隨著需求的擴張，分割日期的function就出現了兩種。後期更出現了分割金額的function。我們假設需求繼續擴張下去，接下來有</p>
-
-<ol>
-<li>10個分割日期的function</li>
-<li>5個分割金額的function</li>
-<li>8個分割OOXX的function</li>
-</ol>
-
-<p>你光看全域變數上的function頭就要昏了，而且還得注意名稱不得重複，每個名稱都取的又臭又長，即使這都是一些小小的function，依然會對開發人員帶來負擔。</p>
-
-<p>此時，如果你用class將分割日期、分割金額、分割OOXX的職責區分開來，程式碼或許會變得清晰? 舉例來說</p>
-
-<p>func splityearmonthday()<br />
-func splitmonthday()<br />
-改為<br />
-class DateSplit{<br />
-    func yearmonth()<br />
-    func monthday()<br />
-}</p>
-
-<h2 id="總結">總結</h2>
-
-<p>class的作用在於區分職責，不同功能的function盡可能的放在不同的class，這是為了可讀性。<br />
-程式規模小的時候，可以不必花太多心力把每個功能都丟一個class，但是當程式開始漸漸擴張，就要開始思考，我這些function之間是否有類似的職責，能夠被包成一個class來執行?<br />
-再來就是，其實並不是每件事情都可以靠function的input output就解決，有時候你可能會想記錄狀態。<br />
-舉例來說，如果你寫了一個計算機的程式，那你會希望計算機記得你上次按了什麼按鈕，這時候如果你再使用全域變數和全域function來解決問題，等老闆要求你&rdquo;我今天要兩個計算機，不要一個&rdquo;，的時候就尷尬了，因為你的狀態是靠全域變數來記，兩個計算機參考到同一個全域變數，就G_G惹。<br />
-希望有幫助到你。</p>
-
-    </div>
-
-<div class="meta">
-    
-    
-    <span class="comments"><a href="/misc/2017-01-15/#disqus_thread">Comments</a></span>
     
     
 </div>

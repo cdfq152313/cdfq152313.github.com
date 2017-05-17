@@ -4214,6 +4214,225 @@ body {
 
   <article class="post">
     <h2 class="title"> 
+        <a href="/post/2016-10-06/">Swift 聲音播放與錄製</a>
+    </h2>
+    <div class="entry-content">
+    <div class="meta">
+        <div class="date">Published on: <time datetime='2016-10-06T00:00:00.000&#43;00:00' itemprop="datePublished">2016-10-06</time>
+</div>
+        <div class="tags">Tags: 
+
+<a href="https://cdfq152313.github.io/tags/ios">ios</a>
+
+<a href="https://cdfq152313.github.io/tags/swift">swift</a>
+
+
+</div>
+    </div>
+        
+
+<h2 id="播放系統音效">播放系統音效</h2>
+
+<p>超簡單只需要兩行</p>
+
+<pre><code class="language-swift">import AudioToolbox
+AudioServicesPlaySystemSound(1000)
+</code></pre>
+
+<h2 id="播放自己放在app的音樂">播放自己放在app的音樂</h2>
+
+<p>先把自己的音效拖進Xcode，記得選擇&rdquo;copy items if needed&rdquo;，否則只會放入reference。<br />
+可以開一個新的Group(資料夾圖示)來專門放置音檔。</p>
+
+<h3 id="步驟">步驟</h3>
+
+<ol>
+<li>找到檔案在哪(用Bundle)</li>
+<li>產生URL</li>
+<li>產生AVAudioPlayer</li>
+</ol>
+
+<pre><code class="language-swift">// AVAudioPlayer初始化
+func myPlayerInit()-&gt;AVAudioPlayer?{
+	guard let path = Bundle.main.path(forResource: &quot;Right&quot;, ofType:&quot;mp3&quot;) else{
+		return nil
+	}
+
+  let audioURL = URL(fileURLWithPath: path)
+  do{
+  	return try AVAudioPlayer(contentsOf: audioURL)
+  }
+  catch{
+    print(&quot;AVAudio Player Init failed&quot;)
+    return nil
+  }
+}
+</code></pre>
+
+<pre><code class="language-swift">// 利用button播放 每次按下都將聲音時間歸零
+let myPlayer = myPlayerInit()
+myPlayer?.play()
+</code></pre>
+
+<h3 id="其他好用的方法">其他好用的方法</h3>
+
+<pre><code class="language-swift">myPlayer?.stop() // 停止
+myPlayer?.currentTime = 0 // 把音檔時間歸零
+myPlayer?.numberOfLoops = 2 // 重複播放次數，若為負數則為無限次播放
+myPlayer?.volume = 0.5 // 調整音量
+
+// 把播放速度調慢或調快
+myPlayer?.enableRate = true
+myPlayer?.rate = 0.5
+</code></pre>
+
+<h2 id="播放手機內部的音樂">播放手機內部的音樂</h2>
+
+<p>利用MPMediaPickerController，此一Controller會讓你選擇音樂。我們只需要指定選完音樂(或沒選到)要做什麼動作即可。</p>
+
+<h3 id="步驟-1">步驟</h3>
+
+<ol>
+<li>在Xcode調整權限
+
+<ul>
+<li>在info.plist裡面新增 &ldquo;Privacy - Media Library Ussage Description&rdquo;</li>
+<li>在右方新增你的理由</li>
+</ul></li>
+<li>新增MPMediaPickerController</li>
+<li>實作MPMediaPickerController之delegate (MPMediaPickerControllerDelegate)
+
+<ul>
+<li>取消不動作</li>
+<li>選取到音樂則播放</li>
+</ul></li>
+<li>指定2實作的delegate給1</li>
+</ol>
+
+<h3 id="權限設定">權限設定</h3>
+
+<p><img src="http://i.imgur.com/m9279lW.png" alt="存取影音檔案權限" /></p>
+
+<h3 id="mpmediapickercontrollerdelegate的實作">MPMediaPickerControllerDelegate的實作</h3>
+
+<pre><code class="language-swift">// 取消不動作直接消除視窗
+func mediaPickerDidCancel(_ mediaPicker: MPMediaPickerController) {
+	dismiss(animated: true, completion: nil)
+}
+
+// 選取到音樂則播放
+func mediaPicker(_ mediaPicker: MPMediaPickerController, didPickMediaItems mediaItemCollection: MPMediaItemCollection) {
+  let musicPlayer = MPMusicPlayerController.applicationMusicPlayer()
+  musicPlayer.setQueue(with:mediaItemCollection)
+  musicPlayer.play()
+  dismiss(animated:true, completion: nil)
+}
+</code></pre>
+
+<p>若要停止MPmusicPlayerController一樣可以使用.stop函數</p>
+
+<h2 id="錄音">錄音</h2>
+
+<ol>
+<li>在info.plist增加麥克風權限</li>
+<li>選好放置路徑並產生URL</li>
+<li>設定錄音數據(dict)</li>
+<li>產生AVAudioRecorder實體</li>
+<li>指定AVAudioRecorder的delegate
+
+<ul>
+<li>指定錄完音後執行的動作</li>
+</ul></li>
+<li>開始錄音</li>
+</ol>
+
+<h3 id="權限設定-1">權限設定</h3>
+
+<p><img src="http://i.imgur.com/WwJpAMB.png" alt="麥克風權限" /></p>
+
+<h3 id="步驟2-3-4-5">步驟2 3 4 5</h3>
+
+<pre><code class="language-swift">func audioRecorderInit()-&gt;AVAudioRecorder?{
+	// 步驟2 設定路徑
+  let path = NSHomeDirectory() + &quot;/Documents/user.wav&quot;
+  let url = URL(fileURLWithPath: path)
+  // 步驟3 設定錄音數據(dict)
+  let recordSettings:[String:Any] = [
+    AVEncoderAudioQualityKey : AVAudioQuality.min.rawValue,
+    AVEncoderBitRateKey: 16,
+    AVNumberOfChannelsKey: 2,
+    AVSampleRateKey: 44100.0
+  ]
+  do {
+  	// 步驟4 5 產生實體並指定delegate
+  	let audioRecorder = try AVAudioRecorder(url: url, settings:recordSettings)
+    audioRecorder.delegate = self
+    return audioRecorder
+  }
+  catch{
+  	print(&quot;something is worng&quot;)
+  	return nil
+  }
+}
+</code></pre>
+
+<h3 id="avaudiorecorderdelegate的實作">AVAudioRecorderDelegate的實作</h3>
+
+<p>參數recorder的屬性url可以拿到錄製好的檔案路徑</p>
+
+<pre><code class="language-swift">func audioRecorderDidFinishRecording(_ recorder: AVAudioRecorder, successfully flag: Bool) {
+  if flag == true{
+    do {
+    	try audioPlayer = AVAudioPlayer(contentsOf: recorder.url)
+  	}
+    catch{
+    	print(&quot;something is Wrong...&quot;)
+    }
+  }
+}
+</code></pre>
+
+<h3 id="開始錄音">開始錄音</h3>
+
+<p>將AVAudioSession調成AVAudioSessionCatetoryPlayAndRecord，可有效增大錄音音量。若不調整則會很小聲。</p>
+
+<pre><code class="language-swift">do {
+	try AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategoryPlayAndRecord)
+}
+catch{
+	print(&quot;can't set audio session&quot;)
+}
+audioRecorder?.prepareToRecord()
+audioRecorder?.record()
+</code></pre>
+
+<h3 id="停止錄音">停止錄音</h3>
+
+<p>記得把剛剛的AVAudioSession.sharedInstance()調回原樣</p>
+
+<pre><code class="language-swift">self.audioRecorder?.stop()
+do{
+	try AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategoryPlayback)
+	try AVAudioSession.sharedInstance().setActive(false)
+}
+catch{
+	print(&quot;can't set audio session&quot;)
+}
+</code></pre>
+
+    </div>
+
+<div class="meta">
+    
+    
+    <span class="comments"><a href="/post/2016-10-06/#disqus_thread">Comments</a></span>
+    
+    
+</div>
+</article>
+
+  <article class="post">
+    <h2 class="title"> 
         <a href="/post/2016-10-04/">Swift 基礎語法筆記</a>
     </h2>
     <div class="entry-content">
@@ -5947,104 +6166,6 @@ screen tooltip(tip=None):
     
     
     <span class="comments"><a href="/post/2016-07-11/#disqus_thread">Comments</a></span>
-    
-    
-</div>
-</article>
-
-  <article class="post">
-    <h2 class="title"> 
-        <a href="/post/2016-07-10/">renpy (2) show 立繪 image 變數的妙用</a>
-    </h2>
-    <div class="entry-content">
-    <div class="meta">
-        <div class="date">Published on: <time datetime='2016-07-10T00:00:00.000&#43;00:00' itemprop="datePublished">2016-07-10</time>
-</div>
-        <div class="tags">Tags: 
-
-<a href="https://cdfq152313.github.io/tags/renpy">renpy</a>
-
-
-</div>
-    </div>
-        
-
-<h2 id="問題">問題</h2>
-
-<p>在寫AVG遊戲的時候，常常遇到立繪需要變更的狀況。考量以下場景</p>
-
-<ol>
-<li>人物A平常表情</li>
-<li>人物A笑</li>
-<li>人物A平常表情</li>
-<li>人物A立繪從場上消失</li>
-</ol>
-
-<p>程式碼可能會長這樣</p>
-
-<pre><code class="language-python">image a_normal = &quot;a_normal.png&quot;
-image a_laugh = &quot;a_laugh.png&quot;
-
-label start:
-    show a_normal
-    
-    pause 2
-    
-    hide a_normal
-    show a_laugh
-    
-    puase 2
-    
-    hide a_laugh
-    show a_normal
-    
-    pause 2
-    
-    hide a_normal
-</code></pre>
-
-<p>如果要人物A換動作，就得先記得他上次是哪個圖片，隱藏之後再show新的，想想就累。</p>
-
-<h2 id="解法">解法</h2>
-
-<p>renpy提供了一個方便的解法。在取變數名稱的時候可以用兩個識別字來描述。<br />
-例如可以把立繪取叫</p>
-
-<pre><code class="language-python">image a normal = &quot;a_normal.png&quot;  
-image a laugh = &quot;a_laugh.png&quot;  
-</code></pre>
-
-<p>如此一來，renpy就會知道a normal和 a laugh為同一人的不同種表情，因為前識別字a都一樣。<br />
-這樣show a normal時如果a laugh在場上就會自動隱藏了。<br />
-最後若要將a隱藏起來的時候只需要hide前識別字即可。</p>
-
-<pre><code class="language-python">image a normal = &quot;a_normal.png&quot;
-image a laugh = &quot;a_laugh.png&quot;
-
-label start:
-    show a normal
-    
-    pause 2
-    
-    show a laugh
-    
-    puase 2
-
-    show a normal
-    
-    pause 2
-    
-    hide a
-</code></pre>
-
-<p>省了不少程式碼，也不需要記上次是哪種立繪。</p>
-
-    </div>
-
-<div class="meta">
-    
-    
-    <span class="comments"><a href="/post/2016-07-10/#disqus_thread">Comments</a></span>
     
     
 </div>

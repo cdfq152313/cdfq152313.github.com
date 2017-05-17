@@ -5,10 +5,32 @@
     <link>https://cdfq152313.github.io/</link>
     <description>Recent content on Denny&#39;s Blog</description>
     <generator>Hugo -- gohugo.io</generator>
-    <lastBuildDate>Mon, 01 May 2017 12:44:55 +0800</lastBuildDate>
+    <lastBuildDate>Thu, 18 May 2017 00:34:00 +0800</lastBuildDate>
     
 	<atom:link href="https://cdfq152313.github.io/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Mac/Linux的Bash主題(theme)設定</title>
+      <link>https://cdfq152313.github.io/post/2017-05-18/</link>
+      <pubDate>Thu, 18 May 2017 00:34:00 +0800</pubDate>
+      
+      <guid>https://cdfq152313.github.io/post/2017-05-18/</guid>
+      <description>緣起 MAC和Linux初始的Bash設定有兩個讓我不滿意的地方
+ 資料夾位置後緊接著指令輸入區 進入git repository時不會顯示目前的branch  1的問題導致指令沒打幾個字就會跳下行，因為有大半位置都被目錄路徑佔據了。
+2的問題會害我一直反射性地打git status確認目前的狀況。
+bash_prompt效果展示 先展示一下效果：
+一般情況
+有git的情況
+有python virtualenv的情況
+同時virtualenv和git 雖然不像zsh的powerline那麼炫砲，但也是勉強堪用了。
+如何安裝 1. 下載bash_prompt 檔案位置
+複製並儲存到本地端，我習慣放在家目錄並取名叫.bash_prompt。
+2. 在bash開啟新session時載入 linux更改~/.bashrc，mac更改~/.bash_profile。
+在此檔案的最後一行插入
+. ~/.bash_prompt  3. 開啟新session 順利的話，再新開一個terminal即可看到五彩繽紛的介面了。
+Reference 原始設定出處</description>
+    </item>
     
     <item>
       <title>[Design] SocketIO與Queue</title>
@@ -623,7 +645,7 @@ git reset --hard 分支名稱(分支覆蓋暫存區和工作區，後悔藥，�
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>https://cdfq152313.github.io/mytags/</guid>
-      <description> general design android java jni AOSP iOS Swift UWP compiler LLVM git python renpy Cryptography mutt  </description>
+      <description> general linux mac bash design android java jni AOSP iOS Swift UWP compiler LLVM git python renpy Cryptography mutt  </description>
     </item>
     
   </channel>

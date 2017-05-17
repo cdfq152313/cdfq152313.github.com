@@ -4214,6 +4214,104 @@ body {
 
   <article class="post">
     <h2 class="title"> 
+        <a href="/post/2016-07-10/">renpy (2) show 立繪 image 變數的妙用</a>
+    </h2>
+    <div class="entry-content">
+    <div class="meta">
+        <div class="date">Published on: <time datetime='2016-07-10T00:00:00.000&#43;00:00' itemprop="datePublished">2016-07-10</time>
+</div>
+        <div class="tags">Tags: 
+
+<a href="https://cdfq152313.github.io/tags/renpy">renpy</a>
+
+
+</div>
+    </div>
+        
+
+<h2 id="問題">問題</h2>
+
+<p>在寫AVG遊戲的時候，常常遇到立繪需要變更的狀況。考量以下場景</p>
+
+<ol>
+<li>人物A平常表情</li>
+<li>人物A笑</li>
+<li>人物A平常表情</li>
+<li>人物A立繪從場上消失</li>
+</ol>
+
+<p>程式碼可能會長這樣</p>
+
+<pre><code class="language-python">image a_normal = &quot;a_normal.png&quot;
+image a_laugh = &quot;a_laugh.png&quot;
+
+label start:
+    show a_normal
+    
+    pause 2
+    
+    hide a_normal
+    show a_laugh
+    
+    puase 2
+    
+    hide a_laugh
+    show a_normal
+    
+    pause 2
+    
+    hide a_normal
+</code></pre>
+
+<p>如果要人物A換動作，就得先記得他上次是哪個圖片，隱藏之後再show新的，想想就累。</p>
+
+<h2 id="解法">解法</h2>
+
+<p>renpy提供了一個方便的解法。在取變數名稱的時候可以用兩個識別字來描述。<br />
+例如可以把立繪取叫</p>
+
+<pre><code class="language-python">image a normal = &quot;a_normal.png&quot;  
+image a laugh = &quot;a_laugh.png&quot;  
+</code></pre>
+
+<p>如此一來，renpy就會知道a normal和 a laugh為同一人的不同種表情，因為前識別字a都一樣。<br />
+這樣show a normal時如果a laugh在場上就會自動隱藏了。<br />
+最後若要將a隱藏起來的時候只需要hide前識別字即可。</p>
+
+<pre><code class="language-python">image a normal = &quot;a_normal.png&quot;
+image a laugh = &quot;a_laugh.png&quot;
+
+label start:
+    show a normal
+    
+    pause 2
+    
+    show a laugh
+    
+    puase 2
+
+    show a normal
+    
+    pause 2
+    
+    hide a
+</code></pre>
+
+<p>省了不少程式碼，也不需要記上次是哪種立繪。</p>
+
+    </div>
+
+<div class="meta">
+    
+    
+    <span class="comments"><a href="/post/2016-07-10/#disqus_thread">Comments</a></span>
+    
+    
+</div>
+</article>
+
+  <article class="post">
+    <h2 class="title"> 
         <a href="/post/2016-07-06/">renpy (1) 基礎語句</a>
     </h2>
     <div class="entry-content">
@@ -5390,36 +5488,6 @@ git archive -o output.zip HEAD src obj
     
     
     <span class="comments"><a href="/post/2015-06-05/#disqus_thread">Comments</a></span>
-    
-    
-</div>
-</article>
-
-  <article class="post">
-    <h2 class="title"> 
-        <a href="/about/">About</a>
-    </h2>
-    <div class="entry-content">
-    <div class="meta">
-        <div class="date">Published on: <time datetime='0001-01-01T00:00:00.000&#43;00:00' itemprop="datePublished">0001-01-01</time>
-</div>
-        <div class="tags">Tags: 
-</div>
-    </div>
-        <p><img src="/image/icon.jpg" alt="icon" /></p>
-
-<p>Denny Cheng / 月月冬瓜<br />
-獸控兼工程師，目前寫Android、IOS和UWP。<br />
-家有大貓程式。<br />
-我的噗浪：<a href="https://www.plurk.com/cdfq152313">https://www.plurk.com/cdfq152313</a><br />
-我的信箱：cdfq152313@gmail.com</p>
-
-    </div>
-
-<div class="meta">
-    
-    
-    <span class="comments"><a href="/about/#disqus_thread">Comments</a></span>
     
     
 </div>
