@@ -23,7 +23,8 @@ bash_prompt效果展示 先展示一下效果：
 一般情況
 有git的情況
 有python virtualenv的情況
-同時virtualenv和git 雖然不像zsh的powerline那麼炫砲，但也是勉強堪用了。
+同時有virtualenv和git
+雖然不像zsh的powerline那麼炫砲，但也是勉強堪用了。
 如何安裝 1. 下載bash_prompt 檔案位置
 複製並儲存到本地端，我習慣放在家目錄並取名叫.bash_prompt。
 2. 在bash開啟新session時載入 linux更改~/.bashrc，mac更改~/.bash_profile。
