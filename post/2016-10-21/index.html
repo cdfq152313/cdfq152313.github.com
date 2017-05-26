@@ -4265,18 +4265,18 @@ let geoCoder = CLGeocoder()
 
 // 解析字串
 geoCoder.geocodeAddressString(address) {
-	(places, error) in
+    (places, error) in
   // 如果解析失敗，直接回傳不做任何事
-	guard error == nil else {
-		print (&quot;Get position error&quot;)
-		return
-	}
-	
+    guard error == nil else {
+        print (&quot;Get position error&quot;)
+        return
+    }
+    
   // 印出位置
-	if(places?.count)! &gt; 0 {
-		let placeMark = places?.first
-		print(&quot;Location: \(placeMark?.location)&quot;)
-	}
+    if(places?.count)! &gt; 0 {
+        let placeMark = places?.first
+        print(&quot;Location: \(placeMark?.location)&quot;)
+    }
 
 }
 </code></pre>
@@ -4314,11 +4314,11 @@ geoCoder.geocodeAddressString(address) {
 </ol>
 
 <pre><code class="language-swift">func zoomInMap(placeMark:CLPlacemark){
-		// set region
+        // set region
     let cl2d = CLLocationCoordinate2D(latitude: (placeMark.location?.coordinate.latitude)!, longitude: (placeMark.location?.coordinate.longitude)!)
-		let span = MKCoordinateSpanMake(0.075, 0.075)
-		let region = MKCoordinateRegion(center: cl2d, span: span)
-		self.mapView.setRegion(region, animated: true)
+        let span = MKCoordinateSpanMake(0.075, 0.075)
+        let region = MKCoordinateRegion(center: cl2d, span: span)
+        self.mapView.setRegion(region, animated: true)
 }
 </code></pre>
 

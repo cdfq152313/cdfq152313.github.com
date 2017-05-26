@@ -1,7 +1,7 @@
 <!DOCTYPE HTML>
 <html>
 <head>
-	<meta name="generator" content="Hugo 0.21" />
+	<meta name="generator" content="Hugo 0.20.2" />
 	<meta charset="utf-8">
     
     
@@ -4443,7 +4443,7 @@ python:
 <p>python區段也可以為init，在最初的時候就先行載入，而非等到程式執行到了才動態載入。語法如下</p>
 
 <pre><code class="language-python">init 2 python:
-	x = &quot;abc&quot;
+    x = &quot;abc&quot;
 </code></pre>
 
 <p>同樣的init後面的數字為載入之優先權，若無指定則為0。</p>
@@ -4576,7 +4576,7 @@ public class MainActivity extends Activity{
 <pre><code class="language-xml">&lt;TextView
         android:layout_width=&quot;wrap_content&quot;
         android:layout_height=&quot;wrap_content&quot;
-		android:text=&quot;Hello World&quot; /&gt;
+        android:text=&quot;Hello World&quot; /&gt;
 </code></pre>
 
 <p>可能要改將字串引用自string.xml才能編譯成功。</p>
@@ -4586,7 +4586,7 @@ public class MainActivity extends Activity{
 <pre><code class="language-xml">&lt;TextView
         android:layout_width=&quot;wrap_content&quot;
         android:layout_height=&quot;wrap_content&quot;
-		android:text=&quot;@string/app_name&quot; /&gt;
+        android:text=&quot;@string/app_name&quot; /&gt;
 </code></pre>
 
 <p>res/values/string.xml</p>
@@ -4994,9 +4994,9 @@ LLVM_CONFIG=llvm-config
 FLAGS= --cxxflags --ldflags --system-libs --libs core
 
 toy: toy.cpp
-	clang++ -g -O3 toy.cpp `$(LLVM_CONFIG) $(FLAGS)` -o toy
+    clang++ -g -O3 toy.cpp `$(LLVM_CONFIG) $(FLAGS)` -o toy
 clean:
-	rm -f toy
+    rm -f toy
 </code></pre>
 
 <h2 id="top-module">top module</h2>
@@ -5106,7 +5106,7 @@ int main()
 <p>安裝完openssh-server和git後，即可開始嘗試創建remote repository。<br />
 為了之後的安全性議題，創建一個新的帳號來管理git server</p>
 
-<pre><code class="language-bash">	sudo adduser git
+<pre><code class="language-bash">    sudo adduser git
 </code></pre>
 
 <p>下方指令新增project.git目錄做為remote repository<br />

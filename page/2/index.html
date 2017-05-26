@@ -1,7 +1,7 @@
 <!DOCTYPE HTML>
 <html>
 <head>
-	<meta name="generator" content="Hugo 0.21" />
+	<meta name="generator" content="Hugo 0.20.2" />
 	<meta charset="utf-8">
     
     
@@ -4564,10 +4564,10 @@ func sendMail(){
 <p>像是在模擬器上就不能使用。</p>
 
 <pre><code class="language-swift">if MFMailComposeViewController.canSendMail(){
-	// 可以寄信
+    // 可以寄信
 }
 else{
-	// 不能寄信
+    // 不能寄信
 }
 </code></pre>
 
@@ -4578,7 +4578,7 @@ else{
 <pre><code class="language-swift">mailController.mailComposeDelegate = self
 
 func mailComposeController(_ controller: MFMailComposeViewController, didFinishWith result: MFMailComposeResult, error: Error?) {
-		dismiss(animated: true, completion: nil)
+        dismiss(animated: true, completion: nil)
 }
 
 </code></pre>
@@ -4693,12 +4693,12 @@ override func numberOfSections(in tableView: UITableView) -&gt; Int {
 
 // 每個section裡面有幾個row
 override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -&gt; Int {
-	if section == 0{
-  	return 2
+    if section == 0{
+    return 2
   }
   else{
-  	return 3
-	}
+    return 3
+    }
 }
 </code></pre>
 
@@ -4728,10 +4728,10 @@ override func tableView(_ tableView: UITableView, numberOfRowsInSection section:
 
 <pre><code class="language-swift">override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -&gt; String? {
   if section == 0{
-  	return &quot;Section 0&quot;
+    return &quot;Section 0&quot;
   }
   else{
-  	return &quot;Section 1&quot;
+    return &quot;Section 1&quot;
   }
 }
 </code></pre>
@@ -4790,12 +4790,12 @@ override func tableView(_ tableView: UITableView, numberOfRowsInSection section:
 
 <pre><code class="language-swift">override func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -&gt; [UITableViewRowAction]? {
         let addAction = UITableViewRowAction(style: .normal, title: &quot;insert&quot;) { 
-        	(action, indexPath) in
+            (action, indexPath) in
           // 下面可寫插入元素的動作  
         }
         
         let deleteAction = UITableViewRowAction(style: .default, title: &quot;delete&quot;) { 
-        	(action, indexPath) in
+            (action, indexPath) in
           // 下面可寫刪除元素的動作  
         }
         return [deleteAction, addAction]
@@ -4927,18 +4927,18 @@ let geoCoder = CLGeocoder()
 
 // 解析字串
 geoCoder.geocodeAddressString(address) {
-	(places, error) in
+    (places, error) in
   // 如果解析失敗，直接回傳不做任何事
-	guard error == nil else {
-		print (&quot;Get position error&quot;)
-		return
-	}
-	
+    guard error == nil else {
+        print (&quot;Get position error&quot;)
+        return
+    }
+    
   // 印出位置
-	if(places?.count)! &gt; 0 {
-		let placeMark = places?.first
-		print(&quot;Location: \(placeMark?.location)&quot;)
-	}
+    if(places?.count)! &gt; 0 {
+        let placeMark = places?.first
+        print(&quot;Location: \(placeMark?.location)&quot;)
+    }
 
 }
 </code></pre>
@@ -4976,11 +4976,11 @@ geoCoder.geocodeAddressString(address) {
 </ol>
 
 <pre><code class="language-swift">func zoomInMap(placeMark:CLPlacemark){
-		// set region
+        // set region
     let cl2d = CLLocationCoordinate2D(latitude: (placeMark.location?.coordinate.latitude)!, longitude: (placeMark.location?.coordinate.longitude)!)
-		let span = MKCoordinateSpanMake(0.075, 0.075)
-		let region = MKCoordinateRegion(center: cl2d, span: span)
-		self.mapView.setRegion(region, animated: true)
+        let span = MKCoordinateSpanMake(0.075, 0.075)
+        let region = MKCoordinateRegion(center: cl2d, span: span)
+        self.mapView.setRegion(region, animated: true)
 }
 </code></pre>
 
@@ -5064,7 +5064,7 @@ geoCoder.geocodeAddressString(address) {
 
 <pre><code class="language-csharp">static String Encrypt(String _content)
 {
-	// 先轉成Byte再加密
+    // 先轉成Byte再加密
   Encoding ByteConverter = new ASCIIEncoding();
   var content = ByteConverter.GetBytes(_content);
 
@@ -5162,7 +5162,7 @@ w3XOM8su/sXvgAIhwlNhpihgVIjWQUhW9zoocwCNWGI8b4YtU/qfOlX3bsWzqw6IqRF/Ncmkbs6Rr5ui
   byte[] contentByte = ByteConverter.GetBytes(_content);
   IBuffer content = contentByte.AsBuffer();
 
-	CryptographicKey key = getCryptographicKey();
+    CryptographicKey key = getCryptographicKey();
   // 加密
   IBuffer encrypt = CryptographicEngine.Encrypt(key, content, null);
   
@@ -5193,7 +5193,7 @@ w3XOM8su/sXvgAIhwlNhpihgVIjWQUhW9zoocwCNWGI8b4YtU/qfOlX3bsWzqw6IqRF/Ncmkbs6Rr5ui
 
 <pre><code class="language-csharp">public Encrypter getCryptographicKey()
 {
-	String publickey = &quot;MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAw3XOM8su/sXvgAIhwlNhpihgVIjWQUhW9zoocwCNWGI8b4YtU/qfOlX3bsWzqw6IqRF/Ncmkbs6Rr5uiDzhHwt7cz/+vgZ9Hm346OM6K2N70a7Lbzr/LlDDb4Yt/PzBEOHEffCkKnpy31KL6Xkfg2a0OkZiF8dny9PbKQaYbXQUJIhCx9YcZ4JZ5cRGMvpNKpS+Wx2q22GV5akKVZ6jVcIgotAgp+MtMJoSr8av61eX6sOl0JborsuuX8Cao278MGKCkUldU1hUDTJtH6IOQfeeJhWolEUS6KXj0FAReWR76aYXBDQ3xJAQHvB/mjMLSiB4mpfk0JETz9Bh0o9FvXwIDAQAB&quot;;
+    String publickey = &quot;MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAw3XOM8su/sXvgAIhwlNhpihgVIjWQUhW9zoocwCNWGI8b4YtU/qfOlX3bsWzqw6IqRF/Ncmkbs6Rr5uiDzhHwt7cz/+vgZ9Hm346OM6K2N70a7Lbzr/LlDDb4Yt/PzBEOHEffCkKnpy31KL6Xkfg2a0OkZiF8dny9PbKQaYbXQUJIhCx9YcZ4JZ5cRGMvpNKpS+Wx2q22GV5akKVZ6jVcIgotAgp+MtMJoSr8av61eX6sOl0JborsuuX8Cao278MGKCkUldU1hUDTJtH6IOQfeeJhWolEUS6KXj0FAReWR76aYXBDQ3xJAQHvB/mjMLSiB4mpfk0JETz9Bh0o9FvXwIDAQAB&quot;;
   AsymmetricKeyAlgorithmProvider asymmAlg = AsymmetricKeyAlgorithmProvider.OpenAlgorithm(AsymmetricAlgorithmNames.RsaPkcs1);
   CryptographicKey key = asymmAlg.ImportPublicKey(CryptographicBuffer.DecodeFromBase64String(publickey), CryptographicPublicKeyBlobType.X509SubjectPublicKeyInfo);
   return key;
@@ -5262,9 +5262,9 @@ Main Queue / Concurrent Queue
 <h2 id="主執行緒語法">主執行緒語法</h2>
 
 <pre><code class="language-swift">let task1 = {
-	for i in 1...5{
-		print (&quot;Task1: (\i)&quot;)
-	}
+    for i in 1...5{
+        print (&quot;Task1: (\i)&quot;)
+    }
 }
 
 // DispatchQueue.main.sync(execute: task1)
@@ -5315,7 +5315,7 @@ DispatchQueue.global(qos: .background).async(execute:task1)
 }
 
 DispatchQueue.global().async {
-	self.download()
+    self.download()
 }
 </code></pre>
 
@@ -5444,9 +5444,9 @@ let urlfrompath = URL(fileURLWithPath: pathFromNSHome)
 
 <pre><code class="language-swift">let directoryPath = NSTemporaryDirectory() + &quot;/images&quot;
 do{
-	try FileManager.default.createDirectory(atPath: directoryPath, withIntermediateDirectories: true, attributes: nil)
+    try FileManager.default.createDirectory(atPath: directoryPath, withIntermediateDirectories: true, attributes: nil)
 }catch{
-	print(&quot;Cannot create directory&quot;)
+    print(&quot;Cannot create directory&quot;)
 }
 </code></pre>
 
@@ -5461,11 +5461,11 @@ do{
 do{
   let fileList = try FileManager.default.contentsOfDirectory(atPath: tempPath)
   for file in fileList{
-  	print(file)
+    print(file)
   }
 }
 catch{
-	print(&quot;Cannot list directory&quot;)
+    print(&quot;Cannot list directory&quot;)
 }
 </code></pre>
 
@@ -5478,13 +5478,13 @@ catch{
 var isDirectory:ObjCBool = false
 let isExist = FileManager.default.fileExists(atPath: path, isDirectory: &amp;isDirectory)
 if isExist == true &amp;&amp; isDirectory.boolValue == true{
-	print(&quot;File exist and it is a direcotry&quot;)
+    print(&quot;File exist and it is a direcotry&quot;)
 }
 else if isExist == true &amp;&amp; isDirectory.boolValue == false{
-	print(&quot;File exist but it is not a direcotry&quot;)
+    print(&quot;File exist but it is not a direcotry&quot;)
 }
 else{
-	print(&quot;File isn't exist&quot;)
+    print(&quot;File isn't exist&quot;)
 }
 </code></pre>
 
@@ -5506,9 +5506,9 @@ FileManager.default.removeItem(atPath: path)
 <pre><code class="language-swift">let text = &quot;Hello World&quot;
 let filePath = NSTemporaryDirectory() + &quot;Text.txt&quot;
 do{
-	try text.write(toFile: filePath, atomically: true, encoding: .utf8)
+    try text.write(toFile: filePath, atomically: true, encoding: .utf8)
 }catch{
-	print(&quot;Not save correctly&quot;)
+    print(&quot;Not save correctly&quot;)
 }
 </code></pre>
 
@@ -5519,7 +5519,7 @@ do{
   let loading = try NSString(contentsOfFile: filePath, encoding: String.Encoding.utf8.rawValue)
   print(loading)
 }catch{
-	print(&quot;No save file&quot;)
+    print(&quot;No save file&quot;)
 }
 </code></pre>
 
@@ -5537,7 +5537,7 @@ arrayToSave.write(toFile: filePath, atomically: true)
 
 <pre><code class="language-swift">let filePath = NSTemporaryDirectory() + &quot;saveArray.txt&quot;
 if let loadArray = NSArray(contentsOfFile: filePath) as? [String]{
-	print(loadArray)
+    print(loadArray)
 }
 </code></pre>
 
@@ -5580,14 +5580,14 @@ guard let image = UIImage(named: &quot;Tails&quot;) else {
 }
 
 if let dataToSave = UIImagePNGRepresentation(image){
-	// 產生路徑
+    // 產生路徑
   let filePath = NSTemporaryDirectory() + &quot;savedImage.png&quot;
   let fileURL = URL(fileURLWithPath: filePath)
   // 寫入
   do{
-  	try dataToSave.write(to: fileURL)
+    try dataToSave.write(to: fileURL)
   }catch{
-  	print(&quot;Can not save Image&quot;)
+    print(&quot;Can not save Image&quot;)
   }
 }
 </code></pre>
@@ -5666,10 +5666,10 @@ let url = docUrl.appendingPathComponent(&quot;myfile.txt&quot;)
 let data = try? Data(contentsOf: url)
 
 if let data = data {
-	let item = NSKeyedUnarchiver.unarchiveObject(with: data) as! Item
-	print(&quot;=== Read ===&quot;)
-	print(item.name)
-	print(item.detail)
+    let item = NSKeyedUnarchiver.unarchiveObject(with: data) as! Item
+    print(&quot;=== Read ===&quot;)
+    print(item.name)
+    print(item.detail)
 }
 </code></pre>
 

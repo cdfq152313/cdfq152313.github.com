@@ -4264,7 +4264,7 @@ body {
 
 <pre><code class="language-csharp">static String Encrypt(String _content)
 {
-	// 先轉成Byte再加密
+    // 先轉成Byte再加密
   Encoding ByteConverter = new ASCIIEncoding();
   var content = ByteConverter.GetBytes(_content);
 
@@ -4362,7 +4362,7 @@ w3XOM8su/sXvgAIhwlNhpihgVIjWQUhW9zoocwCNWGI8b4YtU/qfOlX3bsWzqw6IqRF/Ncmkbs6Rr5ui
   byte[] contentByte = ByteConverter.GetBytes(_content);
   IBuffer content = contentByte.AsBuffer();
 
-	CryptographicKey key = getCryptographicKey();
+    CryptographicKey key = getCryptographicKey();
   // 加密
   IBuffer encrypt = CryptographicEngine.Encrypt(key, content, null);
   
@@ -4393,7 +4393,7 @@ w3XOM8su/sXvgAIhwlNhpihgVIjWQUhW9zoocwCNWGI8b4YtU/qfOlX3bsWzqw6IqRF/Ncmkbs6Rr5ui
 
 <pre><code class="language-csharp">public Encrypter getCryptographicKey()
 {
-	String publickey = &quot;MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAw3XOM8su/sXvgAIhwlNhpihgVIjWQUhW9zoocwCNWGI8b4YtU/qfOlX3bsWzqw6IqRF/Ncmkbs6Rr5uiDzhHwt7cz/+vgZ9Hm346OM6K2N70a7Lbzr/LlDDb4Yt/PzBEOHEffCkKnpy31KL6Xkfg2a0OkZiF8dny9PbKQaYbXQUJIhCx9YcZ4JZ5cRGMvpNKpS+Wx2q22GV5akKVZ6jVcIgotAgp+MtMJoSr8av61eX6sOl0JborsuuX8Cao278MGKCkUldU1hUDTJtH6IOQfeeJhWolEUS6KXj0FAReWR76aYXBDQ3xJAQHvB/mjMLSiB4mpfk0JETz9Bh0o9FvXwIDAQAB&quot;;
+    String publickey = &quot;MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAw3XOM8su/sXvgAIhwlNhpihgVIjWQUhW9zoocwCNWGI8b4YtU/qfOlX3bsWzqw6IqRF/Ncmkbs6Rr5uiDzhHwt7cz/+vgZ9Hm346OM6K2N70a7Lbzr/LlDDb4Yt/PzBEOHEffCkKnpy31KL6Xkfg2a0OkZiF8dny9PbKQaYbXQUJIhCx9YcZ4JZ5cRGMvpNKpS+Wx2q22GV5akKVZ6jVcIgotAgp+MtMJoSr8av61eX6sOl0JborsuuX8Cao278MGKCkUldU1hUDTJtH6IOQfeeJhWolEUS6KXj0FAReWR76aYXBDQ3xJAQHvB/mjMLSiB4mpfk0JETz9Bh0o9FvXwIDAQAB&quot;;
   AsymmetricKeyAlgorithmProvider asymmAlg = AsymmetricKeyAlgorithmProvider.OpenAlgorithm(AsymmetricAlgorithmNames.RsaPkcs1);
   CryptographicKey key = asymmAlg.ImportPublicKey(CryptographicBuffer.DecodeFromBase64String(publickey), CryptographicPublicKeyBlobType.X509SubjectPublicKeyInfo);
   return key;

@@ -4394,7 +4394,7 @@ parent controller可以連到許多child controller<br />
 <p>先寫在parent controller</p>
 
 <pre><code class="language-swift">@IBAction func backToMain(_ segue:UIStoryboardSegue){
-	print(&quot;back to main&quot;)
+    print(&quot;back to main&quot;)
 }
 </code></pre>
 
@@ -4418,10 +4418,10 @@ parent controller可以連到許多child controller<br />
 
 <pre><code class="language-swift">// Source Controller
 override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-	if segue.destination is SecondViewController{
+    if segue.destination is SecondViewController{
     let des = segue.destination as! SecondViewController
-  	des.textFromFirstView = &quot;Hello World&quot;
-	}
+    des.textFromFirstView = &quot;Hello World&quot;
+    }
 }
 </code></pre>
 
@@ -4461,14 +4461,14 @@ override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
 
 <pre><code class="language-swift">var delegate:SecondViewControllerDelegate?
 @IBAction func goBack(_ sender: UIButton) {
-	let _ = navigationController?.popViewController(animated: true)
+    let _ = navigationController?.popViewController(animated: true)
 }
 
 override func viewWillDisappear(_ animated: Bool) {
   super.viewWillDisappear(animated)
   if self.isMovingFromParentViewController{
-		delegate?.setColor(colorType: &quot;red&quot;)
-	}
+        delegate?.setColor(colorType: &quot;red&quot;)
+    }
 }
 </code></pre>
 
@@ -4477,7 +4477,7 @@ override func viewWillDisappear(_ animated: Bool) {
 <p>SecondViewControllerDelegate</p>
 
 <pre><code class="language-swift">protocol SecondViewControllerDelegate{
-	func setColor(colorType:String)
+    func setColor(colorType:String)
 }
 </code></pre>
 
@@ -4506,13 +4506,13 @@ override func viewWillDisappear(_ animated: Bool) {
 
 <pre><code class="language-swift">// 接收到事件後要執行的任務
 func getUpdateNoti(noti:Notification) {
-	let data = noti.userInfo![&quot;data&quot;] as! String
-	print(data)
+    let data = noti.userInfo![&quot;data&quot;] as! String
+    print(data)
 }
 
 override func viewDidLoad() {
   super.viewDidLoad()
-	
+    
   // 註冊事件
   let notificationName = Notification.Name(&quot;GetUpdateNoti&quot;)
   NotificationCenter.default.addObserver(self, selector: #selector(ViewController.getUpdateNoti(noti:)), name: notificationName, object: nil)
@@ -4533,7 +4533,7 @@ NotificationCenter.default().post(name: notificationName,object: nil, userInfo: 
 即可使用裡面的property</p>
 
 <pre><code class="language-swift">if let appDelegate = UIApplication.shared.delegate as? AppDelegate{
-	if let colorName = appDelegate.color{
+    if let colorName = appDelegate.color{
     setColor(colorType: colorName)
   }
 }

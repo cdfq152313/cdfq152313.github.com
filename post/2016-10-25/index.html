@@ -4246,12 +4246,12 @@ override func numberOfSections(in tableView: UITableView) -&gt; Int {
 
 // 每個section裡面有幾個row
 override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -&gt; Int {
-	if section == 0{
-  	return 2
+    if section == 0{
+    return 2
   }
   else{
-  	return 3
-	}
+    return 3
+    }
 }
 </code></pre>
 
@@ -4281,10 +4281,10 @@ override func tableView(_ tableView: UITableView, numberOfRowsInSection section:
 
 <pre><code class="language-swift">override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -&gt; String? {
   if section == 0{
-  	return &quot;Section 0&quot;
+    return &quot;Section 0&quot;
   }
   else{
-  	return &quot;Section 1&quot;
+    return &quot;Section 1&quot;
   }
 }
 </code></pre>
@@ -4343,12 +4343,12 @@ override func tableView(_ tableView: UITableView, numberOfRowsInSection section:
 
 <pre><code class="language-swift">override func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -&gt; [UITableViewRowAction]? {
         let addAction = UITableViewRowAction(style: .normal, title: &quot;insert&quot;) { 
-        	(action, indexPath) in
+            (action, indexPath) in
           // 下面可寫插入元素的動作  
         }
         
         let deleteAction = UITableViewRowAction(style: .default, title: &quot;delete&quot;) { 
-        	(action, indexPath) in
+            (action, indexPath) in
           // 下面可寫刪除元素的動作  
         }
         return [deleteAction, addAction]

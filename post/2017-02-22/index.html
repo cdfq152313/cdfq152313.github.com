@@ -4219,7 +4219,7 @@ body {
     <div class="entry-content">
 
 <blockquote>
-<p>最後編輯時間 2017/05/26</p>
+<p>最後編輯時間 2017/05/27</p>
 </blockquote>
 
 <h2 id="平台">平台</h2>
@@ -4231,7 +4231,7 @@ body {
 <li>buildToolsVersion &ldquo;25.0.1&rdquo;</li>
 </ul>
 
-<p>Base64的轉換有使用到Android的函式庫，若是Java的使用者必須自行搜尋替代方案。</p>
+<p>Base64的轉換有使用到Android的函式庫，若是純Java的使用者必須自行搜尋替代方案。</p>
 
 <h2 id="金鑰初始化">金鑰初始化</h2>
 
@@ -4311,9 +4311,30 @@ public String ivToBase64(IvParameterSpec iv){
 }
 </code></pre>
 
+<h2 id="簡單使用範例">簡單使用範例</h2>
+
+<p>以下為簡單的使用範例，將字串&rdquo;Hello world&rdquo;加密後輸出加密結果。再將加密資料解密回原始字串並輸出。</p>
+
+<pre><code class="language-java">// 預備好金鑰和初始向量
+String data = &quot;Hello world&quot;;
+SecretKey secretKey = genAESKey();
+IvParameterSpec iv = genIV();
+
+// 加密
+String encryptedData = encrypt(data, secretKey, iv);
+System.out.println(&quot;Encrypted Data:&quot; + encryptedData);
+
+// 解密
+String decryptedData = decrypt(encryptedData, secretKey, iv);
+System.out.println(&quot;Decrypted Data:&quot; + decryptedData);
+</code></pre>
+
 <h2 id="程式碼github連結">程式碼Github連結</h2>
 
-<p><a href="https://github.com/cdfq152313/AndroidBackup/blob/master/MyEncrypter/app/src/main/java/com/addweup/myencrypter/AESTool.java">https://github.com/cdfq152313/AndroidBackup/blob/master/MyEncrypter/app/src/main/java/com/addweup/myencrypter/AESTool.java</a></p>
+<ul>
+<li><a href="https://github.com/cdfq152313/AndroidBackup/blob/master/MyEncrypter/app/src/main/java/com/addweup/myencrypter/AESTool.java">加解密函式封裝</a></li>
+<li><a href="https://github.com/cdfq152313/AndroidBackup/blob/master/MyEncrypter/app/src/main/java/com/addweup/myencrypter/MainActivity.java">使用範例</a></li>
+</ul>
 </div>
 
 <div class="meta">

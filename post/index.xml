@@ -135,9 +135,9 @@ from Crypto.Cipher import AES from Crypto import Random import base64 BS = AES.b
       <pubDate>Wed, 22 Feb 2017 00:00:00 +0000</pubDate>
       
       <guid>https://cdfq152313.github.io/post/2017-02-22/</guid>
-      <description>最後編輯時間 2017/05/26
+      <description>最後編輯時間 2017/05/27
  平台 Android Studio
- compileSdkVersion 25 buildToolsVersion &amp;ldquo;25.0.1&amp;rdquo;  Base64的轉換有使用到Android的函式庫，若是Java的使用者必須自行搜尋替代方案。
+ compileSdkVersion 25 buildToolsVersion &amp;ldquo;25.0.1&amp;rdquo;  Base64的轉換有使用到Android的函式庫，若是純Java的使用者必須自行搜尋替代方案。
 金鑰初始化 AES的金鑰為SecretKey類型，以下是產生範例。
 public SecretKey genAESKey() throws NoSuchAlgorithmException, NoSuchPaddingException, InvalidKeyException, UnsupportedEncodingException { // AES key KeyGenerator keyGen = KeyGenerator.getInstance(&amp;quot;AES&amp;quot;); keyGen.init(256, new SecureRandom()); return keyGen.generateKey(); }  初始向量初始化 相同的資料在相同的金鑰下會被加密成同樣結果，因此我們必須在每次加密使用不同初始化向量(被知道也無妨)，來避免同樣的加密結果。相當於灑鹽的功效。
 以下是初始化向量的產生方法。

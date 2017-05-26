@@ -1,7 +1,7 @@
 <!DOCTYPE HTML>
 <html>
 <head>
-	<meta name="generator" content="Hugo 0.21" />
+	<meta name="generator" content="Hugo 0.20.2" />
 	<meta charset="utf-8">
     
     
@@ -4427,8 +4427,8 @@ body {
 因此必須依靠SimpleDateFormat來將Date格式化為有意義的字串。</p>
 
 <pre><code class="language-Java">String formatDate(Date date){
-	SimpleDateFormat sdf = new SimpleDateFormat(&quot;yyyy-MM-dd HH:mm:ss&quot;); // HH是24小時制，hh是12小時制
-	return sdf.format(date);
+    SimpleDateFormat sdf = new SimpleDateFormat(&quot;yyyy-MM-dd HH:mm:ss&quot;); // HH是24小時制，hh是12小時制
+    return sdf.format(date);
 }
 </code></pre>
 
@@ -4438,13 +4438,13 @@ body {
 只是這邊為了展示calendar單獨取值的方法走了不一樣的路徑。</p>
 
 <pre><code class="language-Java">String formatCalendar(Calendar calendar){
-	int year = calendar.get(Calendar.YEAR);
-	int month = calendar.get(Calendar.MONTH) + 1; // 1月的值為0
-	int day = calendar.get(Calendar.DAY_OF_MONTH);
-	int hour = calendar.get(Calendar.HOUR_OF_DAY); // HOUR_OF_DAY是24小時制，HOUR是12小時制
-	int minute = calendar.get(Calendar.MINUTE);
-	int second = calendar.get(Calendar.SECOND);
-	return String.format(&quot;%d-%02d-%02d %02d:%02d:%02d&quot;, year, month, day, hour, minute, second);
+    int year = calendar.get(Calendar.YEAR);
+    int month = calendar.get(Calendar.MONTH) + 1; // 1月的值為0
+    int day = calendar.get(Calendar.DAY_OF_MONTH);
+    int hour = calendar.get(Calendar.HOUR_OF_DAY); // HOUR_OF_DAY是24小時制，HOUR是12小時制
+    int minute = calendar.get(Calendar.MINUTE);
+    int second = calendar.get(Calendar.SECOND);
+    return String.format(&quot;%d-%02d-%02d %02d:%02d:%02d&quot;, year, month, day, hour, minute, second);
 }
 </code></pre>
 
@@ -4492,9 +4492,9 @@ SimpleDateFormat會以使用者所在的時區當作預設顯示時區，若要�
 <p>下面選的是第二種。</p>
 
 <pre><code class="language-Java">String formatDateInGMT(Date date){
-	SimpleDateFormat sdf = new SimpleDateFormat(&quot;yyyy-MM-dd HH:mm:ss&quot;); // HH是24小時制，hh是12小時制
-	sdf.setTimeZone(TimeZone.getTimeZone(&quot;GMT&quot;) );
-	return sdf.format(date);
+    SimpleDateFormat sdf = new SimpleDateFormat(&quot;yyyy-MM-dd HH:mm:ss&quot;); // HH是24小時制，hh是12小時制
+    sdf.setTimeZone(TimeZone.getTimeZone(&quot;GMT&quot;) );
+    return sdf.format(date);
 }
 </code></pre>
 
@@ -4525,10 +4525,10 @@ System.out.println(display);
 <p>下方的範例利用SimpleDateFormat將字串轉換為Date</p>
 
 <pre><code class="language-Java">public Date convertStringToDate(String time) throws ParseException {
-	// 假設input的字串是 &quot;年-月-日 時:分:秒&quot; 格式
-	SimpleDateFormat sdf = new SimpleDateFormat(&quot;yyyy-MM-dd HH:mm:ss&quot;);
-	Date date = sdf.parse(time);
-	return date;
+    // 假設input的字串是 &quot;年-月-日 時:分:秒&quot; 格式
+    SimpleDateFormat sdf = new SimpleDateFormat(&quot;yyyy-MM-dd HH:mm:ss&quot;);
+    Date date = sdf.parse(time);
+    return date;
 }
 </code></pre>
 
@@ -4539,11 +4539,11 @@ System.out.println(display);
 <p>先取得Date，再設定Calendar，會用到上方的convertStringToDate函式。</p>
 
 <pre><code class="language-Java">public Calendar convertStringToCalendar(String time) throws ParseException {
-	// 假設input的字串是 &quot;年-月-日 時:分:秒&quot; 格式
-	Date date = convertStringToDate(time);
-	Calendar calendar = Calendar.getInstance();
-	calendar.setTime(date);
-	return calendar;
+    // 假設input的字串是 &quot;年-月-日 時:分:秒&quot; 格式
+    Date date = convertStringToDate(time);
+    Calendar calendar = Calendar.getInstance();
+    calendar.setTime(date);
+    return calendar;
 }
 </code></pre>
 
@@ -4560,11 +4560,11 @@ System.out.println(display);
 <h3 id="格式化gmt字串為date">格式化GMT字串為Date</h3>
 
 <pre><code class="language-Java">public Date convertGMTStringToDate(String time) throws ParseException {
-	// 假設input的字串是 &quot;年-月-日 時:分:秒&quot; 格式
-	SimpleDateFormat sdf = new SimpleDateFormat(&quot;yyyy-MM-dd HH:mm:ss&quot;);
-	sdf.setTimeZone(TimeZone.getTimeZone(&quot;GMT&quot;) ); // 告知接下來的字串時區位在GMT
-	Date date = sdf.parse(time);
-	return date;
+    // 假設input的字串是 &quot;年-月-日 時:分:秒&quot; 格式
+    SimpleDateFormat sdf = new SimpleDateFormat(&quot;yyyy-MM-dd HH:mm:ss&quot;);
+    sdf.setTimeZone(TimeZone.getTimeZone(&quot;GMT&quot;) ); // 告知接下來的字串時區位在GMT
+    Date date = sdf.parse(time);
+    return date;
 }
 </code></pre>
 
@@ -4582,11 +4582,11 @@ System.out.println(display);
 <p>轉換為Calendar也是同理，先取得Date，再設定Calendar。</p>
 
 <pre><code class="language-Java">public Calendar convertGMTStringToCalendar(String time) throws ParseException {
-	// 假設input的字串是 &quot;年-月-日 時:分:秒&quot; 格式
-	Date date = convertGMTStringToDate(time);
-	Calendar calendar = Calendar.getInstance();
-	calendar.setTime(date);
-	return calendar;
+    // 假設input的字串是 &quot;年-月-日 時:分:秒&quot; 格式
+    Date date = convertGMTStringToDate(time);
+    Calendar calendar = Calendar.getInstance();
+    calendar.setTime(date);
+    return calendar;
 }
 </code></pre>
 
@@ -4603,55 +4603,55 @@ System.out.println(display);
 <p>剛剛講解中一些重要函式的快速複製區，提供給以後的自己使用。</p>
 
 <pre><code class="language-Java">String formatDate(Date date){
-	SimpleDateFormat sdf = new SimpleDateFormat(&quot;yyyy-MM-dd HH:mm:ss&quot;); // HH是24小時制，hh是12小時制
-	return sdf.format(date);
+    SimpleDateFormat sdf = new SimpleDateFormat(&quot;yyyy-MM-dd HH:mm:ss&quot;); // HH是24小時制，hh是12小時制
+    return sdf.format(date);
 }
 
 String formatDateInGMT(Date date){
-	SimpleDateFormat sdf = new SimpleDateFormat(&quot;yyyy-MM-dd HH:mm:ss&quot;); // HH是24小時制，hh是12小時制
-	sdf.setTimeZone(TimeZone.getTimeZone(&quot;GMT&quot;) );
-	return sdf.format(date);
+    SimpleDateFormat sdf = new SimpleDateFormat(&quot;yyyy-MM-dd HH:mm:ss&quot;); // HH是24小時制，hh是12小時制
+    sdf.setTimeZone(TimeZone.getTimeZone(&quot;GMT&quot;) );
+    return sdf.format(date);
 }
 
 String formatCalendar(Calendar calendar){
-	int year = calendar.get(Calendar.YEAR);
-	int month = calendar.get(Calendar.MONTH) + 1; // 1月的值為0
-	int day = calendar.get(Calendar.DAY_OF_MONTH);
-	int hour = calendar.get(Calendar.HOUR_OF_DAY); // HOUR_OF_DAY是24小時制，HOUR是12小時制
-	int minute = calendar.get(Calendar.MINUTE);
-	int second = calendar.get(Calendar.SECOND);
-	return String.format(&quot;%d-%02d-%02d %02d:%02d:%02d&quot;, year, month, day, hour, minute, second);
+    int year = calendar.get(Calendar.YEAR);
+    int month = calendar.get(Calendar.MONTH) + 1; // 1月的值為0
+    int day = calendar.get(Calendar.DAY_OF_MONTH);
+    int hour = calendar.get(Calendar.HOUR_OF_DAY); // HOUR_OF_DAY是24小時制，HOUR是12小時制
+    int minute = calendar.get(Calendar.MINUTE);
+    int second = calendar.get(Calendar.SECOND);
+    return String.format(&quot;%d-%02d-%02d %02d:%02d:%02d&quot;, year, month, day, hour, minute, second);
 }
 
 public Date convertStringToDate(String time) throws ParseException {
-	// 假設input的字串是 &quot;年-月-日 時:分:秒&quot; 格式
-	SimpleDateFormat sdf = new SimpleDateFormat(&quot;yyyy-MM-dd HH:mm:ss&quot;);
-	Date date = sdf.parse(time);
-	return date;
+    // 假設input的字串是 &quot;年-月-日 時:分:秒&quot; 格式
+    SimpleDateFormat sdf = new SimpleDateFormat(&quot;yyyy-MM-dd HH:mm:ss&quot;);
+    Date date = sdf.parse(time);
+    return date;
 }
 
 public Calendar convertStringToCalendar(String time) throws ParseException {
-	// 假設input的字串是 &quot;年-月-日 時:分:秒&quot; 格式
-	Date date = convertStringToDate(time);
-	Calendar calendar = Calendar.getInstance();
-	calendar.setTime(date);
-	return calendar;
+    // 假設input的字串是 &quot;年-月-日 時:分:秒&quot; 格式
+    Date date = convertStringToDate(time);
+    Calendar calendar = Calendar.getInstance();
+    calendar.setTime(date);
+    return calendar;
 }
 
 public Date convertGMTStringToDate(String time) throws ParseException {
-	// 假設input的字串是 &quot;年-月-日 時:分:秒&quot; 格式
-	SimpleDateFormat sdf = new SimpleDateFormat(&quot;yyyy-MM-dd HH:mm:ss&quot;);
-	sdf.setTimeZone(TimeZone.getTimeZone(&quot;GMT&quot;) ); // 告知接下來的字串時區位在GMT
-	Date date = sdf.parse(time);
-	return date;
+    // 假設input的字串是 &quot;年-月-日 時:分:秒&quot; 格式
+    SimpleDateFormat sdf = new SimpleDateFormat(&quot;yyyy-MM-dd HH:mm:ss&quot;);
+    sdf.setTimeZone(TimeZone.getTimeZone(&quot;GMT&quot;) ); // 告知接下來的字串時區位在GMT
+    Date date = sdf.parse(time);
+    return date;
 }
 
 public Calendar convertGMTStringToCalendar(String time) throws ParseException {
-	// 假設input的字串是 &quot;年-月-日 時:分:秒&quot; 格式
-	Date date = convertGMTStringToDate(time);
-	Calendar calendar = Calendar.getInstance();
-	calendar.setTime(date);
-	return calendar;
+    // 假設input的字串是 &quot;年-月-日 時:分:秒&quot; 格式
+    Date date = convertGMTStringToDate(time);
+    Calendar calendar = Calendar.getInstance();
+    calendar.setTime(date);
+    return calendar;
 }
 </code></pre>
 
@@ -5043,7 +5043,7 @@ unpad = lambda s : s[0:-ord(s[-1])]
         
 
 <blockquote>
-<p>最後編輯時間 2017/05/26</p>
+<p>最後編輯時間 2017/05/27</p>
 </blockquote>
 
 <h2 id="平台">平台</h2>
@@ -5055,7 +5055,7 @@ unpad = lambda s : s[0:-ord(s[-1])]
 <li>buildToolsVersion &ldquo;25.0.1&rdquo;</li>
 </ul>
 
-<p>Base64的轉換有使用到Android的函式庫，若是Java的使用者必須自行搜尋替代方案。</p>
+<p>Base64的轉換有使用到Android的函式庫，若是純Java的使用者必須自行搜尋替代方案。</p>
 
 <h2 id="金鑰初始化">金鑰初始化</h2>
 
@@ -5135,9 +5135,30 @@ public String ivToBase64(IvParameterSpec iv){
 }
 </code></pre>
 
+<h2 id="簡單使用範例">簡單使用範例</h2>
+
+<p>以下為簡單的使用範例，將字串&rdquo;Hello world&rdquo;加密後輸出加密結果。再將加密資料解密回原始字串並輸出。</p>
+
+<pre><code class="language-java">// 預備好金鑰和初始向量
+String data = &quot;Hello world&quot;;
+SecretKey secretKey = genAESKey();
+IvParameterSpec iv = genIV();
+
+// 加密
+String encryptedData = encrypt(data, secretKey, iv);
+System.out.println(&quot;Encrypted Data:&quot; + encryptedData);
+
+// 解密
+String decryptedData = decrypt(encryptedData, secretKey, iv);
+System.out.println(&quot;Decrypted Data:&quot; + decryptedData);
+</code></pre>
+
 <h2 id="程式碼github連結">程式碼Github連結</h2>
 
-<p><a href="https://github.com/cdfq152313/AndroidBackup/blob/master/MyEncrypter/app/src/main/java/com/addweup/myencrypter/AESTool.java">https://github.com/cdfq152313/AndroidBackup/blob/master/MyEncrypter/app/src/main/java/com/addweup/myencrypter/AESTool.java</a></p>
+<ul>
+<li><a href="https://github.com/cdfq152313/AndroidBackup/blob/master/MyEncrypter/app/src/main/java/com/addweup/myencrypter/AESTool.java">加解密函式封裝</a></li>
+<li><a href="https://github.com/cdfq152313/AndroidBackup/blob/master/MyEncrypter/app/src/main/java/com/addweup/myencrypter/MainActivity.java">使用範例</a></li>
+</ul>
 
     </div>
 
