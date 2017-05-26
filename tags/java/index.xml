@@ -33,8 +33,13 @@ String formatCalendar(Calendar calendar){ int year = calendar.get(Calendar.YEAR)
       <pubDate>Wed, 22 Feb 2017 00:00:00 +0000</pubDate>
       
       <guid>https://cdfq152313.github.io/post/2017-02-22/</guid>
-      <description>平台 Android Studio - compileSdkVersion 25 - buildToolsVersion &amp;ldquo;25.0.1&amp;rdquo;
-全域變數 SecretKey secretKey; // 金鑰 AlgorithmParameterSpec mAlgorithmParameterSpec; // 之後要放置初始化向量的參數  初始化 金鑰初始化 private void genAESKey() throws Exception { KeyGenerator keyGen = KeyGenerator.getInstance(&amp;quot;AES&amp;quot;); // 指定AES演算法 keyGen.init(256, new SecureRandom()); // 指定256位元，並使用SecureRandom secretKey = keyGen.generateKey(); // 產生AES金鑰 }  初始向量初始化 private void genInitializationVector() throws NoSuchPaddingException, NoSuchAlgorithmException { cipher = Cipher.getInstance(&amp;quot;AES/CBC/PKCS5Padding&amp;quot;); // 指定AES演算法 byte [] iVAES = new byte[ cipher.getBlockSize() ]; // new AES演算法所需的block size SecureRandom random = new SecureRandom(); random.</description>
+      <description>最後編輯時間 2017/05/26
+ 平台 Android Studio
+ compileSdkVersion 25 buildToolsVersion &amp;ldquo;25.0.1&amp;rdquo;  Base64的轉換有使用到Android的函式庫，若是Java的使用者必須自行搜尋替代方案。
+金鑰初始化 AES的金鑰為SecretKey類型，以下是產生範例。
+public SecretKey genAESKey() throws NoSuchAlgorithmException, NoSuchPaddingException, InvalidKeyException, UnsupportedEncodingException { // AES key KeyGenerator keyGen = KeyGenerator.getInstance(&amp;quot;AES&amp;quot;); keyGen.init(256, new SecureRandom()); return keyGen.generateKey(); }  初始向量初始化 相同的資料在相同的金鑰下會被加密成同樣結果，因此我們必須在每次加密使用不同初始化向量(被知道也無妨)，來避免同樣的加密結果。相當於灑鹽的功效。
+以下是初始化向量的產生方法。
+public IvParameterSpec genIV() throws NoSuchPaddingException, NoSuchAlgorithmException { Cipher cipher = Cipher.getInstance(&amp;quot;AES/CBC/PKCS5Padding&amp;quot;); byte [] iVAES = new byte[ cipher.getBlockSize() ]; new SecureRandom().nextBytes(iVAES); return new IvParameterSpec(iVAES); }  將字串加密 金鑰初始模式為 ENCRYPT_MODE，代表接下來要執行加密。</description>
     </item>
     
   </channel>

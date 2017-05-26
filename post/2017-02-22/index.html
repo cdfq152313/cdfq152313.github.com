@@ -4218,81 +4218,107 @@ body {
     </div>
     <div class="entry-content">
 
+<blockquote>
+<p>最後編輯時間 2017/05/26</p>
+</blockquote>
+
 <h2 id="平台">平台</h2>
 
-<p>Android Studio
-- compileSdkVersion 25
-- buildToolsVersion &ldquo;25.0.1&rdquo;</p>
+<p>Android Studio</p>
 
-<h2 id="全域變數">全域變數</h2>
+<ul>
+<li>compileSdkVersion 25</li>
+<li>buildToolsVersion &ldquo;25.0.1&rdquo;</li>
+</ul>
 
-<pre><code class="language-java">SecretKey secretKey; // 金鑰
-AlgorithmParameterSpec mAlgorithmParameterSpec; // 之後要放置初始化向量的參數
-</code></pre>
+<p>Base64的轉換有使用到Android的函式庫，若是Java的使用者必須自行搜尋替代方案。</p>
 
-<h2 id="初始化">初始化</h2>
+<h2 id="金鑰初始化">金鑰初始化</h2>
 
-<h3 id="金鑰初始化">金鑰初始化</h3>
+<p>AES的金鑰為SecretKey類型，以下是產生範例。</p>
 
-<pre><code class="language-java">private void genAESKey() throws Exception {
-  KeyGenerator keyGen = KeyGenerator.getInstance(&quot;AES&quot;); // 指定AES演算法
-  keyGen.init(256, new SecureRandom()); // 指定256位元，並使用SecureRandom
-  secretKey = keyGen.generateKey(); // 產生AES金鑰
+<pre><code class="language-java">public SecretKey genAESKey() throws NoSuchAlgorithmException, NoSuchPaddingException, InvalidKeyException, UnsupportedEncodingException {
+    // AES key
+    KeyGenerator keyGen = KeyGenerator.getInstance(&quot;AES&quot;);
+    keyGen.init(256, new SecureRandom());
+    return keyGen.generateKey();
 }
 </code></pre>
 
-<h3 id="初始向量初始化">初始向量初始化</h3>
+<h2 id="初始向量初始化">初始向量初始化</h2>
 
-<pre><code class="language-java">private void genInitializationVector() throws NoSuchPaddingException, NoSuchAlgorithmException {
-  cipher = Cipher.getInstance(&quot;AES/CBC/PKCS5Padding&quot;); // 指定AES演算法
-  byte [] iVAES = new byte[ cipher.getBlockSize() ]; // new AES演算法所需的block size
-  SecureRandom random = new SecureRandom();
-  random.nextBytes(iVAES); // 填充向量
-  mAlgorithmParameterSpec = new IvParameterSpec(iVAES); // 向量初始化
+<p>相同的資料在相同的金鑰下會被加密成同樣結果，因此我們必須在每次加密使用不同初始化向量(被知道也無妨)，來避免同樣的加密結果。相當於灑鹽的功效。<br />
+以下是初始化向量的產生方法。</p>
+
+<pre><code class="language-java">public IvParameterSpec genIV() throws NoSuchPaddingException, NoSuchAlgorithmException {
+    Cipher cipher = Cipher.getInstance(&quot;AES/CBC/PKCS5Padding&quot;);
+    byte [] iVAES = new byte[ cipher.getBlockSize() ];
+    new SecureRandom().nextBytes(iVAES);
+    return new IvParameterSpec(iVAES);
 }
 </code></pre>
 
 <h2 id="將字串加密">將字串加密</h2>
 
-<p>在AES加密完之後，用Base64把結果轉成可讀的字串以便以http傳送。<br />
-不做Base64亦可，只是到時候要以byte為單位做傳送。<br />
-初始化模式為 ENCRYPT_MODE</p>
+<p>金鑰初始模式為 ENCRYPT_MODE，代表接下來要執行加密。<br />
+要記得Cipher並非thread-safe(線程安全)，因此每次加密最好重新產生一個Cipher。</p>
 
-<pre><code class="language-java">private String encrypt(String content) throws Exception {
-  cipher = Cipher.getInstance(&quot;AES/CBC/PKCS5Padding&quot;);
-  cipher.init(Cipher.ENCRYPT_MODE, secretKey, mAlgorithmParameterSpec);
-  byte [] encrypt = cipher.doFinal(contentB64);
-  return Base64.encodeToString(encrypt, Base64.DEFAULT);
+<p>在AES加密完之後，用Base64把結果轉成可讀的字串以便以http傳送。雖然不做Base64亦可，只是到時候要以byte為單位做傳送。</p>
+
+<pre><code class="language-java">public String encrypt(String content, SecretKey secretKey, IvParameterSpec iv) throws NoSuchPaddingException, NoSuchAlgorithmException, InvalidAlgorithmParameterException, InvalidKeyException, BadPaddingException, IllegalBlockSizeException {
+    Cipher cipher = Cipher.getInstance(&quot;AES/CBC/PKCS5Padding&quot;);
+    cipher.init(Cipher.ENCRYPT_MODE, secretKey, iv);
+    byte [] temp = cipher.doFinal( content.getBytes() );
+    return Base64.encodeToString(temp, Base64.DEFAULT);
 }
 </code></pre>
 
 <h2 id="將字串解密">將字串解密</h2>
 
-<p>初始化模式為 DECRYPT_MODE</p>
+<p>金鑰初始模式為 DECRYPT_MODE，代表接下來要執行解密。</p>
 
-<pre><code class="language-java">private String decrypt(String content) throws Exception{
-  cipher = Cipher.getInstance(&quot;AES/CBC/PKCS5Padding&quot;);
-  cipher.init(Cipher.DECRYPT_MODE, secretKey, mAlgorithmParameterSpec);
-  byte [] temp = Base64.decode(content, Base64.DEFAULT); // 將字串還原為bytes
-  byte [] decodeBytes = cipher.doFinal(temp); // 解密
-  return new String(decodeBytes); // 編回字串
+<pre><code class="language-java">public String decrypt(String content, SecretKey secretKey, IvParameterSpec iv) throws NoSuchPaddingException, NoSuchAlgorithmException, InvalidAlgorithmParameterException, InvalidKeyException, BadPaddingException, IllegalBlockSizeException {
+    byte [] temp = Base64.decode(content, Base64.DEFAULT);
+    Cipher cipher = Cipher.getInstance(&quot;AES/CBC/PKCS5Padding&quot;);
+    cipher.init(Cipher.DECRYPT_MODE, secretKey, iv);
+    byte [] decodeBytes = cipher.doFinal(temp);
+    return new String(decodeBytes);
 }
 </code></pre>
 
-<h2 id="匯出金鑰">匯出金鑰</h2>
+<h2 id="匯出金鑰與初始化向量">匯出金鑰與初始化向量</h2>
 
-<p>SecretKey使用getEncoded()可以獲得金鑰，為byte形式，若要方便閱讀與傳送可以轉換為Base64<br />
+<p>SecretKey使用getEncoded()可以獲得金鑰，為byte形式，若要方便閱讀與傳送可以轉換為Base64。<br />
 初始化向量本身有getIV()這個method可以使用，一樣為byte形式，可轉換為Base64。</p>
 
-<pre><code class="language-java">private void export(){
-  String secretKeyB64 = Base64.encodeToString(secretKey.getEncoded(), Base64.DEFAULT);
-  IvParameterSpec iv = (IvParameterSpec) mAlgorithmParameterSpec;
-  String vectorB64 = Base64.encodeToString(iv.getIV(), Base64.DEFAULT);
+<pre><code class="language-java">public String secretKeyToBase64(SecretKey secretKey){
+    return Base64.encodeToString(secretKey.getEncoded(), Base64.DEFAULT);
+}
 
-  Log.i(&quot;Secret Key Base64&quot;, secretKeyB64);
-  Log.i(&quot;Vector Base64&quot;, vectorB64);
+public String ivToBase64(IvParameterSpec iv){
+    return Base64.encodeToString(iv.getIV(), Base64.DEFAULT);
 }
 </code></pre>
+
+<h2 id="匯入金鑰">匯入金鑰</h2>
+
+<p>想把之前匯出為Base64的金鑰重新匯入的話，要使用<code>SercretKeySpec</code>這個類別。</p>
+
+<pre><code class="language-java">public SecretKey base64ToSecretKey(String base64Key){
+    byte [] key = Base64.decode(base64Key, Base64.DEFAULT);
+    SecretKeySpec secretKeySpec = new SecretKeySpec(key, &quot;AES&quot;);
+    return secretKeySpec;
+}
+</code></pre>
+
+<h2 id="使用範例">使用範例</h2>
+
+<pre><code class="language-java">
+</code></pre>
+
+<h2 id="程式碼github連結">程式碼Github連結</h2>
+
+<p><a href="https://github.com/cdfq152313/AndroidBackup/blob/master/MyEncrypter/app/src/main/java/com/addweup/myencrypter/AESTool.java">https://github.com/cdfq152313/AndroidBackup/blob/master/MyEncrypter/app/src/main/java/com/addweup/myencrypter/AESTool.java</a></p>
 </div>
 
 <div class="meta">
