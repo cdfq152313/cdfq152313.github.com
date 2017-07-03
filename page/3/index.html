@@ -1,7 +1,7 @@
 <!DOCTYPE HTML>
 <html>
 <head>
-	<meta name="generator" content="Hugo 0.20.2" />
+	<meta name="generator" content="Hugo 0.22" />
 	<meta charset="utf-8">
     
     
@@ -4214,6 +4214,323 @@ body {
 
   <article class="post">
     <h2 class="title"> 
+        <a href="/post/2016-10-11/">Swift 檔案路徑與讀寫檔</a>
+    </h2>
+    <div class="entry-content">
+    <div class="meta">
+        <div class="date">Published on: <time datetime='2016-10-11T00:00:00.000&#43;00:00' itemprop="datePublished">2016-10-11</time>
+</div>
+        <div class="tags">Tags: 
+
+<a href="https://cdfq152313.github.io/tags/ios">ios</a>
+
+<a href="https://cdfq152313.github.io/tags/swift">swift</a>
+
+
+</div>
+    </div>
+        
+
+<h2 id="ios的路徑">iOS的路徑</h2>
+
+<h3 id="專案資料夾內的路徑">專案資料夾內的路徑</h3>
+
+<p>利用Bundle.main獲取
+可以指定檔案名稱以及副檔名。</p>
+
+<pre><code class="language-swift">// 得到url
+let url = Bundle.main.url(forResource: &quot;myjson&quot;, withExtension: &quot;json&quot;)
+// 得到path
+let path = Bundle.main.path(forResource: &quot;myjson&quot;, ofType: &quot;json&quot;)
+</code></pre>
+
+<h3 id="一般app路徑">一般App路徑</h3>
+
+<p>Document範例</p>
+
+<pre><code class="language-swift">// 透過路徑尋找URL
+let path = NSHomeDirectory() + &quot;/Document&quot;
+let urlfrompath = URL(fileURLWithPath: path)
+
+// 直接拿取URL，陣列第0個是資料夾本身(雖然也只有一個url)
+let url = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
+</code></pre>
+
+<p>Caches 範例</p>
+
+<pre><code class="language-swift">// 透過路徑尋找URL
+let path = NSHomeDirectory() + &quot;/Library/Caches&quot;
+let urlfrompath = URL(fileURLWithPath: path)
+
+// 直接拿取URL
+let url = FileManager.default.urls(for: .cachesDirectory, in: .userDomainMask)[0]
+</code></pre>
+
+<p>Temp 範例</p>
+
+<pre><code class="language-swift">// 兩種路徑取得的方法
+let pathFromNSHome = NSHomeDirectory() + &quot;/tmp&quot;
+let pathFromLibrary = NSTemporaryDirectory()
+
+// URL
+let urlfrompath = URL(fileURLWithPath: pathFromNSHome)
+</code></pre>
+
+<h3 id="新增路徑">新增路徑</h3>
+
+<ol>
+<li>將想要新增的路徑名稱寫出來</li>
+<li>利用FileManager.default.createDirectory新增路徑
+
+<ul>
+<li>此方法的withIntermediateDirctories參數若設成true，可以幫你遞迴建立不存在的資料夾</li>
+</ul></li>
+</ol>
+
+<pre><code class="language-swift">let directoryPath = NSTemporaryDirectory() + &quot;/images&quot;
+do{
+	try FileManager.default.createDirectory(atPath: directoryPath, withIntermediateDirectories: true, attributes: nil)
+}catch{
+	print(&quot;Cannot create directory&quot;)
+}
+</code></pre>
+
+<h3 id="列出某個路徑下的所有檔案">列出某個路徑下的所有檔案</h3>
+
+<ol>
+<li>先找到想列出檔案的路徑</li>
+<li>利用 FileManager.default.contentsOfDirectory來列出此資料夾底下的檔案</li>
+</ol>
+
+<pre><code class="language-swift">let tempPath = NSTemporaryDirectory()
+do{
+  let fileList = try FileManager.default.contentsOfDirectory(atPath: tempPath)
+  for file in fileList{
+  	print(file)
+  }
+}
+catch{
+	print(&quot;Cannot list directory&quot;)
+}
+</code></pre>
+
+<h3 id="查看路徑資訊">查看路徑資訊</h3>
+
+<p>FileManager.default.fileExists 可以幫你查看這個檔案是否存在，以及該檔案是否為一個Directory。<br />
+需要特別注意的是OBJCBool的使用</p>
+
+<pre><code class="language-swift">let path = NSTemporaryDirectory() + &quot;/images&quot;
+var isDirectory:ObjCBool = false
+let isExist = FileManager.default.fileExists(atPath: path, isDirectory: &amp;isDirectory)
+if isExist == true &amp;&amp; isDirectory.boolValue == true{
+	print(&quot;File exist and it is a direcotry&quot;)
+}
+else if isExist == true &amp;&amp; isDirectory.boolValue == false{
+	print(&quot;File exist but it is not a direcotry&quot;)
+}
+else{
+	print(&quot;File isn't exist&quot;)
+}
+</code></pre>
+
+<h3 id="複製貼上刪除檔案">複製貼上刪除檔案</h3>
+
+<p>使用下方函式，記得加上do try catch。</p>
+
+<pre><code class="language-swift">FileManager.default.copyItem(atPath: path, toPath: cpPath)
+FileManager.default.moveItem(atPath: path, toPath: mvPath)
+FileManager.default.removeItem(atPath: path)
+</code></pre>
+
+<h2 id="一般型別寫檔讀檔">一般型別寫檔讀檔</h2>
+
+<h3 id="讀寫string">讀寫String</h3>
+
+<p>寫檔要呼叫String的方法</p>
+
+<pre><code class="language-swift">let text = &quot;Hello World&quot;
+let filePath = NSTemporaryDirectory() + &quot;Text.txt&quot;
+do{
+	try text.write(toFile: filePath, atomically: true, encoding: .utf8)
+}catch{
+	print(&quot;Not save correctly&quot;)
+}
+</code></pre>
+
+<p>讀檔要使用NSString</p>
+
+<pre><code class="language-swift">let filePath = NSTemporaryDirectory() + &quot;Text.txt&quot;
+do{
+  let loading = try NSString(contentsOfFile: filePath, encoding: String.Encoding.utf8.rawValue)
+  print(loading)
+}catch{
+	print(&quot;No save file&quot;)
+}
+</code></pre>
+
+<h3 id="讀寫array">讀寫Array</h3>
+
+<p>利用NSArray做寫入</p>
+
+<pre><code class="language-swift">let originalArray = [&quot;Apple&quot;, &quot;Banana&quot;, &quot;MAngo&quot;]
+let arrayToSave = NSArray(array: originalArray)
+let filePath = NSTemporaryDirectory() + &quot;saveArray.txt&quot;
+arrayToSave.write(toFile: filePath, atomically: true)
+</code></pre>
+
+<p>利用NSArray做讀出</p>
+
+<pre><code class="language-swift">let filePath = NSTemporaryDirectory() + &quot;saveArray.txt&quot;
+if let loadArray = NSArray(contentsOfFile: filePath) as? [String]{
+	print(loadArray)
+}
+</code></pre>
+
+<h3 id="讀寫dict">讀寫Dict</h3>
+
+<p>寫入靠NSDictionary</p>
+
+<pre><code class="language-swift">let originalDict = [&quot;1&quot;:&quot;apple&quot;, &quot;2&quot;:&quot;banana&quot;, &quot;3&quot;:&quot;orange&quot;]
+let dictToSave = NSDictionary(dictionary: originalDict)
+let filePath = NSTemporaryDirectory() + &quot;saveDict.txt&quot;
+dictToSave.write(toFile: filePath, atomically: true)
+</code></pre>
+
+<p>讀取靠NSDictionary</p>
+
+<pre><code class="language-swift">let filePath = NSTemporaryDirectory() + &quot;saveDict.txt&quot;
+  if let loadDict = NSDictionary(contentsOfFile: filePath) as? [String:String]{
+  print(loadDict)
+}
+</code></pre>
+
+<h2 id="多媒體寫檔讀檔">多媒體寫檔讀檔</h2>
+
+<h3 id="圖檔">圖檔</h3>
+
+<p>存檔<br />
+多媒體的寫檔只能依靠URL而不能靠檔案路徑。</p>
+
+<ol>
+<li>先拿到要儲存的UIImage (可靠照相機或手機已有的圖片)</li>
+<li>以指定格式載入圖片 (UIImagePNGRepresentation或UIImageJPGRepresentation)</li>
+<li>產生路徑及URL</li>
+<li>在指定URL下存檔</li>
+</ol>
+
+<pre><code class="language-swift">// 拿到UIImage
+guard let image = UIImage(named: &quot;Tails&quot;) else {
+  print (&quot;Cannot find image&quot;)
+  return
+}
+
+if let dataToSave = UIImagePNGRepresentation(image){
+	// 產生路徑
+  let filePath = NSTemporaryDirectory() + &quot;savedImage.png&quot;
+  let fileURL = URL(fileURLWithPath: filePath)
+  // 寫入
+  do{
+  	try dataToSave.write(to: fileURL)
+  }catch{
+  	print(&quot;Can not save Image&quot;)
+  }
+}
+</code></pre>
+
+<p>讀檔</p>
+
+<ol>
+<li>先用UIImage載入</li>
+<li>把載入圖片放在UIImageView上面</li>
+</ol>
+
+<pre><code class="language-swift">let filePath = NSTemporaryDirectory() + &quot;savedImage.png&quot;
+let image = UIImage(contentsOfFile: filePath)
+myImageView.image = image
+</code></pre>
+
+<h2 id="自定義class讀寫檔">自定義class讀寫檔</h2>
+
+<p>要寫檔的class必須繼承</p>
+
+<ul>
+<li>NSObject</li>
+<li>NSCoding</li>
+</ul>
+
+<p>並複寫相關function</p>
+
+<pre><code class="language-swift">class Item : NSObject, NSCoding{
+    var name:String?
+    var detail:String?
+    
+    init(name:String, detail:String) {
+        self.name = name
+        self.detail = detail
+    }
+    
+    required init?(coder aDecoder: NSCoder) {       
+        name = aDecoder.decodeObject(forKey: &quot;name&quot;) as! String
+        detail = aDecoder.decodeObject(forKey: &quot;detail&quot;) as! String
+    }
+    
+    func encode(with aCoder: NSCoder) {
+        aCoder.encode(name, forKey: &quot;name&quot;)
+        aCoder.encode(detail, forKey: &quot;detail&quot;)
+    }
+}
+</code></pre>
+
+<p>可以來試著測試了<br />
+寫檔</p>
+
+<ol>
+<li>產生物件</li>
+<li>利用NSKeyedArchiver.archivedData包裹物件，產生data</li>
+<li>找到寫檔路徑</li>
+<li>將data寫入指定路徑</li>
+</ol>
+
+<pre><code class="language-swift">let item = Item(name: &quot;危城&quot;, detail: &quot;動作&quot;)
+let data = NSKeyedArchiver.archivedData(withRootObject: item)
+let docUrl = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
+let url = docUrl.appendingPathComponent(&quot;myfile.txt&quot;)
+try! data.write(to: url)
+</code></pre>
+
+<p>讀檔</p>
+
+<ol>
+<li>找到讀檔路徑</li>
+<li>獲取Data</li>
+<li>利用NSKeyedUnarchiver.unarchiveObject，將data轉換成指定物件</li>
+</ol>
+
+<pre><code class="language-swift">let docUrl = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
+let url = docUrl.appendingPathComponent(&quot;myfile.txt&quot;)
+let data = try? Data(contentsOf: url)
+
+if let data = data {
+	let item = NSKeyedUnarchiver.unarchiveObject(with: data) as! Item
+	print(&quot;=== Read ===&quot;)
+	print(item.name)
+	print(item.detail)
+}
+</code></pre>
+
+    </div>
+
+<div class="meta">
+    
+    
+    <span class="comments"><a href="/post/2016-10-11/#disqus_thread">Comments</a></span>
+    
+    
+</div>
+</article>
+
+  <article class="post">
+    <h2 class="title"> 
         <a href="/post/2016-10-06/">Swift 聲音播放與錄製</a>
     </h2>
     <div class="entry-content">
@@ -4254,13 +4571,13 @@ AudioServicesPlaySystemSound(1000)
 
 <pre><code class="language-swift">// AVAudioPlayer初始化
 func myPlayerInit()-&gt;AVAudioPlayer?{
-    guard let path = Bundle.main.path(forResource: &quot;Right&quot;, ofType:&quot;mp3&quot;) else{
-        return nil
-    }
+	guard let path = Bundle.main.path(forResource: &quot;Right&quot;, ofType:&quot;mp3&quot;) else{
+		return nil
+	}
 
   let audioURL = URL(fileURLWithPath: path)
   do{
-    return try AVAudioPlayer(contentsOf: audioURL)
+  	return try AVAudioPlayer(contentsOf: audioURL)
   }
   catch{
     print(&quot;AVAudio Player Init failed&quot;)
@@ -4317,7 +4634,7 @@ myPlayer?.rate = 0.5
 
 <pre><code class="language-swift">// 取消不動作直接消除視窗
 func mediaPickerDidCancel(_ mediaPicker: MPMediaPickerController) {
-    dismiss(animated: true, completion: nil)
+	dismiss(animated: true, completion: nil)
 }
 
 // 選取到音樂則播放
@@ -4353,7 +4670,7 @@ func mediaPicker(_ mediaPicker: MPMediaPickerController, didPickMediaItems media
 <h3 id="步驟2-3-4-5">步驟2 3 4 5</h3>
 
 <pre><code class="language-swift">func audioRecorderInit()-&gt;AVAudioRecorder?{
-    // 步驟2 設定路徑
+	// 步驟2 設定路徑
   let path = NSHomeDirectory() + &quot;/Documents/user.wav&quot;
   let url = URL(fileURLWithPath: path)
   // 步驟3 設定錄音數據(dict)
@@ -4364,14 +4681,14 @@ func mediaPicker(_ mediaPicker: MPMediaPickerController, didPickMediaItems media
     AVSampleRateKey: 44100.0
   ]
   do {
-    // 步驟4 5 產生實體並指定delegate
-    let audioRecorder = try AVAudioRecorder(url: url, settings:recordSettings)
+  	// 步驟4 5 產生實體並指定delegate
+  	let audioRecorder = try AVAudioRecorder(url: url, settings:recordSettings)
     audioRecorder.delegate = self
     return audioRecorder
   }
   catch{
-    print(&quot;something is worng&quot;)
-    return nil
+  	print(&quot;something is worng&quot;)
+  	return nil
   }
 }
 </code></pre>
@@ -4383,10 +4700,10 @@ func mediaPicker(_ mediaPicker: MPMediaPickerController, didPickMediaItems media
 <pre><code class="language-swift">func audioRecorderDidFinishRecording(_ recorder: AVAudioRecorder, successfully flag: Bool) {
   if flag == true{
     do {
-        try audioPlayer = AVAudioPlayer(contentsOf: recorder.url)
-    }
+    	try audioPlayer = AVAudioPlayer(contentsOf: recorder.url)
+  	}
     catch{
-        print(&quot;something is Wrong...&quot;)
+    	print(&quot;something is Wrong...&quot;)
     }
   }
 }
@@ -4397,10 +4714,10 @@ func mediaPicker(_ mediaPicker: MPMediaPickerController, didPickMediaItems media
 <p>將AVAudioSession調成AVAudioSessionCatetoryPlayAndRecord，可有效增大錄音音量。若不調整則會很小聲。</p>
 
 <pre><code class="language-swift">do {
-    try AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategoryPlayAndRecord)
+	try AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategoryPlayAndRecord)
 }
 catch{
-    print(&quot;can't set audio session&quot;)
+	print(&quot;can't set audio session&quot;)
 }
 audioRecorder?.prepareToRecord()
 audioRecorder?.record()
@@ -4412,11 +4729,11 @@ audioRecorder?.record()
 
 <pre><code class="language-swift">self.audioRecorder?.stop()
 do{
-    try AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategoryPlayback)
-    try AVAudioSession.sharedInstance().setActive(false)
+	try AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategoryPlayback)
+	try AVAudioSession.sharedInstance().setActive(false)
 }
 catch{
-    print(&quot;can't set audio session&quot;)
+	print(&quot;can't set audio session&quot;)
 }
 </code></pre>
 
@@ -4547,14 +4864,14 @@ plus(AAA:1, BBB:3)
 <p>before</p>
 
 <pre><code class="language-swift">func add(x:Int, y:Int)-&gt;Int{
-    return x + y
+	return x + y
 }
 </code></pre>
 
 <p>after</p>
 
 <pre><code class="language-swift">{
-    (x:Int, y:Int)-&gt;Int in
+	(x:Int, y:Int)-&gt;Int in
   return x + y
 }
 </code></pre>
@@ -4564,19 +4881,19 @@ plus(AAA:1, BBB:3)
 <ol>
 <li><p>如果已經知道參數跟回傳值的型別的話，可以省略Clousure裡的參數與回傳值型別</p>
 
-<pre><code class="language-swift">let numberArray=[1,3,6,8,10,45]
+<pre><code class="language-swift">	let numberArray=[1,3,6,8,10,45]
 numberArray.map( {(number) in return number+10} ) // 省略型別
 </code></pre></li>
 
 <li><p>如果Closure有回傳值，而且程式碼是一行的話，可以省略return，</p>
 
-<pre><code class="language-swift">let numberArray=[1,3,6,8,10,45]
+<pre><code class="language-swift">	let numberArray=[1,3,6,8,10,45]
 numberArray.map( {(number) in number+10} ) // 回傳number+10
 </code></pre></li>
 
 <li><p>可以用$0, $1 &hellip; 代表參數。</p>
 
-<pre><code class="language-swift">let numberArray=[1,3,6,8,10,45]
+<pre><code class="language-swift">	let numberArray=[1,3,6,8,10,45]
 numberArray.map( {$0 + 10} ) // 省略參數，利用$0代表參數
 </code></pre></li>
 
@@ -4586,11 +4903,11 @@ numberArray.map( {$0 + 10} ) // 省略參數，利用$0代表參數
   numberArray.map(){$0 + 10} // 寫在小括號的外面
 </code></pre></li>
 
-<li><p>如果Closure是唯一的參數的話，可以省略小括號</p>
-
-<pre><code class="language-swift">let numberArray=[1,3,6,8,10,45]
-  numberArray.map{$0 + 10} // 直接省掉小括號
-</code></pre></li>
+<li><p>如果Closure是唯一的參數的話，可以省略小括號
+	<code>swift
+	let numberArray=[1,3,6,8,10,45]
+	  numberArray.map{$0 + 10} // 直接省掉小括號
+</code></p></li>
 </ol>
 
 <h2 id="guard的用途">guard的用途</h2>
@@ -4599,7 +4916,7 @@ numberArray.map( {$0 + 10} ) // 省略參數，利用$0代表參數
 
 <pre><code class="language-swift">var text:String? = &quot;abc&quot;
 if let apple = text{
-    print(apple)
+	print(apple)
 }
 // 在這邊用會失敗
 // print(apple)
@@ -4607,7 +4924,7 @@ if let apple = text{
 
 <pre><code class="language-swift">var text:String? = &quot;abc&quot;
 guard let apple = text else{
-    print(apple)
+	print(apple)
 }
 // 照用
 print(apple)
@@ -4633,12 +4950,12 @@ print(apple)
 參看下面的code</p>
 
 <pre><code class="language-swift">class Baby{
-    var age:Int
-    init?(age:Int){
-    if age &lt; 0{
-        return nil
+	var age:Int
+	init?(age:Int){
+  	if age &lt; 0{
+    	return nil
     }
-    self.age = age
+  	self.age = age
   }
 }
 </code></pre>
@@ -4695,7 +5012,7 @@ print(apple)
 <pre><code class="language-swift">class SuperBaby: Baby{
     var magic:Int
     init(age:Int, magic:Int){
-            super.init(age: age)
+    		super.init(age: age)
         self.magic = magic
     }
 }
@@ -4734,7 +5051,7 @@ print(apple)
     }
     
     convenience init(name:String){
-            self.init(age:1, name:name)
+    		self.init(age:1, name:name)
     }
 }
 </code></pre>
@@ -4971,7 +5288,7 @@ parent controller可以連到許多child controller<br />
 <p>先寫在parent controller</p>
 
 <pre><code class="language-swift">@IBAction func backToMain(_ segue:UIStoryboardSegue){
-    print(&quot;back to main&quot;)
+	print(&quot;back to main&quot;)
 }
 </code></pre>
 
@@ -4995,10 +5312,10 @@ parent controller可以連到許多child controller<br />
 
 <pre><code class="language-swift">// Source Controller
 override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-    if segue.destination is SecondViewController{
+	if segue.destination is SecondViewController{
     let des = segue.destination as! SecondViewController
-    des.textFromFirstView = &quot;Hello World&quot;
-    }
+  	des.textFromFirstView = &quot;Hello World&quot;
+	}
 }
 </code></pre>
 
@@ -5038,14 +5355,14 @@ override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
 
 <pre><code class="language-swift">var delegate:SecondViewControllerDelegate?
 @IBAction func goBack(_ sender: UIButton) {
-    let _ = navigationController?.popViewController(animated: true)
+	let _ = navigationController?.popViewController(animated: true)
 }
 
 override func viewWillDisappear(_ animated: Bool) {
   super.viewWillDisappear(animated)
   if self.isMovingFromParentViewController{
-        delegate?.setColor(colorType: &quot;red&quot;)
-    }
+		delegate?.setColor(colorType: &quot;red&quot;)
+	}
 }
 </code></pre>
 
@@ -5054,7 +5371,7 @@ override func viewWillDisappear(_ animated: Bool) {
 <p>SecondViewControllerDelegate</p>
 
 <pre><code class="language-swift">protocol SecondViewControllerDelegate{
-    func setColor(colorType:String)
+	func setColor(colorType:String)
 }
 </code></pre>
 
@@ -5083,13 +5400,13 @@ override func viewWillDisappear(_ animated: Bool) {
 
 <pre><code class="language-swift">// 接收到事件後要執行的任務
 func getUpdateNoti(noti:Notification) {
-    let data = noti.userInfo![&quot;data&quot;] as! String
-    print(data)
+	let data = noti.userInfo![&quot;data&quot;] as! String
+	print(data)
 }
 
 override func viewDidLoad() {
   super.viewDidLoad()
-    
+	
   // 註冊事件
   let notificationName = Notification.Name(&quot;GetUpdateNoti&quot;)
   NotificationCenter.default.addObserver(self, selector: #selector(ViewController.getUpdateNoti(noti:)), name: notificationName, object: nil)
@@ -5110,7 +5427,7 @@ NotificationCenter.default().post(name: notificationName,object: nil, userInfo: 
 即可使用裡面的property</p>
 
 <pre><code class="language-swift">if let appDelegate = UIApplication.shared.delegate as? AppDelegate{
-    if let colorName = appDelegate.color{
+	if let colorName = appDelegate.color{
     setColor(colorType: colorName)
   }
 }
@@ -5191,7 +5508,7 @@ myAlert.addTextField {
 <p>嘗試對加入的UIAction執行一些動作</p>
 
 <pre><code class="language-swift">let ok = UIAlertAction(title: &quot;OK&quot;, style: .default){
-    (action) in
+	(action) in
   // action是UIAlertAction
   // 在下面填入想要執行的動作
   ...
@@ -5210,7 +5527,7 @@ myAlert.addTextField {
 <p>複寫</p>
 
 <pre><code class="language-swift">func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
-    chooseColor = colorArray[row]
+	chooseColor = colorArray[row]
 }
 </code></pre>
 
@@ -5244,7 +5561,7 @@ DatePickerView的樣式可以從storyBoard中選擇。</p>
 </ol>
 
 <pre><code class="language-swift">guard let path = Bundle.main.url(forResource: &quot;HipHop&quot;, withExtension: &quot;mp4&quot;) else {
-    return
+	return
 }
 
 let videoPlayer = AVPlayer(url: path)
@@ -5456,13 +5773,13 @@ end
 
 <pre><code class="language-swift">func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -&gt; Bool {
   if check != 1 {
-    let controller = UIStoryboard(name: &quot;LogIn&quot;, bundle: nil).instantiateViewController(withIdentifier: &quot;logIn&quot;)
-    self.window?.rootViewController = controller
+  	let controller = UIStoryboard(name: &quot;LogIn&quot;, bundle: nil).instantiateViewController(withIdentifier: &quot;logIn&quot;)
+  	self.window?.rootViewController = controller
   } else {
-    let controller = UIStoryboard(name: &quot;Main&quot;, bundle: nil).instantiateViewController(withIdentifier: &quot;tab&quot;)
-    self.window?.rootViewController = controller
+  	let controller = UIStoryboard(name: &quot;Main&quot;, bundle: nil).instantiateViewController(withIdentifier: &quot;tab&quot;)
+  	self.window?.rootViewController = controller
   }
-    return true
+	return true
 }
 </code></pre>
 
@@ -6067,105 +6384,6 @@ widget_selected = &quot;滑鼠移上時顏色&quot;,
     
     
     <span class="comments"><a href="/post/2016-07-23/#disqus_thread">Comments</a></span>
-    
-    
-</div>
-</article>
-
-  <article class="post">
-    <h2 class="title"> 
-        <a href="/post/2016-07-11/">renpy (3) 改良tooltip的方法</a>
-    </h2>
-    <div class="entry-content">
-    <div class="meta">
-        <div class="date">Published on: <time datetime='2016-07-11T00:00:00.000&#43;00:00' itemprop="datePublished">2016-07-11</time>
-</div>
-        <div class="tags">Tags: 
-
-<a href="https://cdfq152313.github.io/tags/renpy">renpy</a>
-
-
-</div>
-    </div>
-        
-
-<h2 id="tooltip">tooltip</h2>
-
-<p>所謂的tooltip，就是當你滑鼠移到一個button上後，可以顯示一些說明，讓使用者更了解這個button的功能。<br />
-可以用以下的程式碼簡單的實作tootip</p>
-
-<pre><code class="language-python">screen tooltip(tip, positon):
-    frame:
-        text tip pos position
-</code></pre>
-
-<p>然後在button上的hovered和unhovered加上action即可</p>
-
-<pre><code class="language-python">button:
-    hovered Show(tooltip, tip=&quot;說明文字&quot;, position = (10,20) )
-    unhovered Hide(tooltip)
-</code></pre>
-
-<h2 id="出現在滑鼠的位置">出現在滑鼠的位置</h2>
-
-<p>目前這個簡陋的tooltip，它的位置是被固定死的。也就是說，每次有新的tooltip，都得自己先行想好tooltip的位置。<br />
-能不能要tooltip直接顯示在滑鼠旁邊呢? 可行的，renpy有提供滑鼠位置的函式。</p>
-
-<pre><code class="language-python">screen tooltip(tip=None):
-    frame:
-        $ position = renpy.get_mouse_pos()
-        text tip pos position
-</code></pre>
-
-<p>如此一來，不用輸入position也可以直接顯示在滑鼠上了，使用者想要自己加減pixel，讓tooltip出現在滑鼠的上下左右方也是非常輕而易舉。</p>
-
-<h2 id="隨著滑鼠而移動">隨著滑鼠而移動</h2>
-
-<p>如果想要tooltip不僅僅只是閃現的那刻出現在滑鼠旁，而是無時無刻的跟著滑鼠移動呢?<br />
-查閱<a href="https://www.renpy.org/doc/html/screens.html">官網</a>，影響位置的參數有兩個。大部分的Screen物件都有兩種可調的位置屬性，第一個是Common Properties中的at，第二個是Position Style Properties。<br />
-據我所知，Position Style Properties是無法動態調整的，所以我們只能依靠關鍵字at後面所接續的<a href="https://www.renpy.org/doc/html/atl.html">trnasform statement</a>來解決這個問題了。</p>
-
-<h3 id="具體步驟">具體步驟</h3>
-
-<ol>
-<li>新增一個transform執行function</li>
-<li>此function內容為定時更新位置(範例為0.05秒)</li>
-<li>在tooltip當中對frame加上at 步驟1的transform</li>
-</ol>
-
-<h3 id="範例">範例</h3>
-
-<pre><code class="language-python">transform follow_mouse:
-    function follow_mouse_func
-    
-init python:
-    def follow_mouse_func(trans, st, at):
-        trans.pos = renpy.get_mouse_pos()
-        return 0.05
-
-screen tooltip(tip=None):
-    frame:
-        at follow_mouse
-        if tip is not None:
-            text tip size 14 color &quot;#000000&quot;
-</code></pre>
-
-<p>function的撰寫可以參考<a href="https://www.renpy.org/doc/html/atl.html#function-statement">官網</a>
-簡略的說一下內容：</p>
-
-<ol>
-<li>必須有3個參數</li>
-<li>第一個參數為transfrom物件，物件的資訊一樣看<a href="https://www.renpy.org/doc/html/atl.html#list-of-transform-properties">官網</a></li>
-<li>第二、三個參數跟執行時間相關，較不重要。</li>
-<li>回傳值為<strong>希望多久後再呼叫一次此function</strong>，0秒代表立刻，None代表不再call function，可以繼續向下執行其他transition內容。</li>
-</ol>
-
-    </div>
-
-<div class="meta">
-    
-    
-    <span class="comments"><a href="/post/2016-07-11/#disqus_thread">Comments</a></span>
     
     
 </div>

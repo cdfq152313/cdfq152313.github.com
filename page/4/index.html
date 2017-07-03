@@ -1,7 +1,7 @@
 <!DOCTYPE HTML>
 <html>
 <head>
-	<meta name="generator" content="Hugo 0.20.2" />
+	<meta name="generator" content="Hugo 0.22" />
 	<meta charset="utf-8">
     
     
@@ -4214,6 +4214,105 @@ body {
 
   <article class="post">
     <h2 class="title"> 
+        <a href="/post/2016-07-11/">renpy (3) 改良tooltip的方法</a>
+    </h2>
+    <div class="entry-content">
+    <div class="meta">
+        <div class="date">Published on: <time datetime='2016-07-11T00:00:00.000&#43;00:00' itemprop="datePublished">2016-07-11</time>
+</div>
+        <div class="tags">Tags: 
+
+<a href="https://cdfq152313.github.io/tags/renpy">renpy</a>
+
+
+</div>
+    </div>
+        
+
+<h2 id="tooltip">tooltip</h2>
+
+<p>所謂的tooltip，就是當你滑鼠移到一個button上後，可以顯示一些說明，讓使用者更了解這個button的功能。<br />
+可以用以下的程式碼簡單的實作tootip</p>
+
+<pre><code class="language-python">screen tooltip(tip, positon):
+    frame:
+        text tip pos position
+</code></pre>
+
+<p>然後在button上的hovered和unhovered加上action即可</p>
+
+<pre><code class="language-python">button:
+    hovered Show(tooltip, tip=&quot;說明文字&quot;, position = (10,20) )
+    unhovered Hide(tooltip)
+</code></pre>
+
+<h2 id="出現在滑鼠的位置">出現在滑鼠的位置</h2>
+
+<p>目前這個簡陋的tooltip，它的位置是被固定死的。也就是說，每次有新的tooltip，都得自己先行想好tooltip的位置。<br />
+能不能要tooltip直接顯示在滑鼠旁邊呢? 可行的，renpy有提供滑鼠位置的函式。</p>
+
+<pre><code class="language-python">screen tooltip(tip=None):
+    frame:
+        $ position = renpy.get_mouse_pos()
+        text tip pos position
+</code></pre>
+
+<p>如此一來，不用輸入position也可以直接顯示在滑鼠上了，使用者想要自己加減pixel，讓tooltip出現在滑鼠的上下左右方也是非常輕而易舉。</p>
+
+<h2 id="隨著滑鼠而移動">隨著滑鼠而移動</h2>
+
+<p>如果想要tooltip不僅僅只是閃現的那刻出現在滑鼠旁，而是無時無刻的跟著滑鼠移動呢?<br />
+查閱<a href="https://www.renpy.org/doc/html/screens.html">官網</a>，影響位置的參數有兩個。大部分的Screen物件都有兩種可調的位置屬性，第一個是Common Properties中的at，第二個是Position Style Properties。<br />
+據我所知，Position Style Properties是無法動態調整的，所以我們只能依靠關鍵字at後面所接續的<a href="https://www.renpy.org/doc/html/atl.html">trnasform statement</a>來解決這個問題了。</p>
+
+<h3 id="具體步驟">具體步驟</h3>
+
+<ol>
+<li>新增一個transform執行function</li>
+<li>此function內容為定時更新位置(範例為0.05秒)</li>
+<li>在tooltip當中對frame加上at 步驟1的transform</li>
+</ol>
+
+<h3 id="範例">範例</h3>
+
+<pre><code class="language-python">transform follow_mouse:
+    function follow_mouse_func
+    
+init python:
+    def follow_mouse_func(trans, st, at):
+        trans.pos = renpy.get_mouse_pos()
+        return 0.05
+
+screen tooltip(tip=None):
+    frame:
+        at follow_mouse
+        if tip is not None:
+            text tip size 14 color &quot;#000000&quot;
+</code></pre>
+
+<p>function的撰寫可以參考<a href="https://www.renpy.org/doc/html/atl.html#function-statement">官網</a>
+簡略的說一下內容：</p>
+
+<ol>
+<li>必須有3個參數</li>
+<li>第一個參數為transfrom物件，物件的資訊一樣看<a href="https://www.renpy.org/doc/html/atl.html#list-of-transform-properties">官網</a></li>
+<li>第二、三個參數跟執行時間相關，較不重要。</li>
+<li>回傳值為<strong>希望多久後再呼叫一次此function</strong>，0秒代表立刻，None代表不再call function，可以繼續向下執行其他transition內容。</li>
+</ol>
+
+    </div>
+
+<div class="meta">
+    
+    
+    <span class="comments"><a href="/post/2016-07-11/#disqus_thread">Comments</a></span>
+    
+    
+</div>
+</article>
+
+  <article class="post">
+    <h2 class="title"> 
         <a href="/post/2016-07-10/">renpy (2) show 立繪 image 變數的妙用</a>
     </h2>
     <div class="entry-content">
@@ -4443,7 +4542,7 @@ python:
 <p>python區段也可以為init，在最初的時候就先行載入，而非等到程式執行到了才動態載入。語法如下</p>
 
 <pre><code class="language-python">init 2 python:
-    x = &quot;abc&quot;
+	x = &quot;abc&quot;
 </code></pre>
 
 <p>同樣的init後面的數字為載入之優先權，若無指定則為0。</p>
@@ -4576,7 +4675,7 @@ public class MainActivity extends Activity{
 <pre><code class="language-xml">&lt;TextView
         android:layout_width=&quot;wrap_content&quot;
         android:layout_height=&quot;wrap_content&quot;
-        android:text=&quot;Hello World&quot; /&gt;
+		android:text=&quot;Hello World&quot; /&gt;
 </code></pre>
 
 <p>可能要改將字串引用自string.xml才能編譯成功。</p>
@@ -4586,7 +4685,7 @@ public class MainActivity extends Activity{
 <pre><code class="language-xml">&lt;TextView
         android:layout_width=&quot;wrap_content&quot;
         android:layout_height=&quot;wrap_content&quot;
-        android:text=&quot;@string/app_name&quot; /&gt;
+		android:text=&quot;@string/app_name&quot; /&gt;
 </code></pre>
 
 <p>res/values/string.xml</p>
@@ -4994,9 +5093,9 @@ LLVM_CONFIG=llvm-config
 FLAGS= --cxxflags --ldflags --system-libs --libs core
 
 toy: toy.cpp
-    clang++ -g -O3 toy.cpp `$(LLVM_CONFIG) $(FLAGS)` -o toy
+	clang++ -g -O3 toy.cpp `$(LLVM_CONFIG) $(FLAGS)` -o toy
 clean:
-    rm -f toy
+	rm -f toy
 </code></pre>
 
 <h2 id="top-module">top module</h2>
@@ -5106,7 +5205,7 @@ int main()
 <p>安裝完openssh-server和git後，即可開始嘗試創建remote repository。<br />
 為了之後的安全性議題，創建一個新的帳號來管理git server</p>
 
-<pre><code class="language-bash">    sudo adduser git
+<pre><code class="language-bash">	sudo adduser git
 </code></pre>
 
 <p>下方指令新增project.git目錄做為remote repository<br />
@@ -5391,103 +5490,6 @@ entry:
     
     
     <span class="comments"><a href="/post/2015-06-06/#disqus_thread">Comments</a></span>
-    
-    
-</div>
-</article>
-
-  <article class="post">
-    <h2 class="title"> 
-        <a href="/post/2015-06-05/">git 基本指令</a>
-    </h2>
-    <div class="entry-content">
-    <div class="meta">
-        <div class="date">Published on: <time datetime='2015-06-05T00:00:00.000&#43;00:00' itemprop="datePublished">2015-06-05</time>
-</div>
-        <div class="tags">Tags: 
-
-<a href="https://cdfq152313.github.io/tags/git">git</a>
-
-
-</div>
-    </div>
-        <p>初始化</p>
-
-<pre><code>git init
-git config --global user.name &quot;你的ID&quot;
-git config --global user.email &quot;你的信箱&quot;
-</code></pre>
-
-<p>狀態
-    git status</p>
-
-<p>新增</p>
-
-<pre><code>git add 檔名
-git add -A
-git add -u
-</code></pre>
-
-<p>提交</p>
-
-<pre><code>git commit -m &quot;改動訊息&quot;
-</code></pre>
-
-<p>歷史訊息</p>
-
-<pre><code>git log
-</code></pre>
-
-<p>忽略</p>
-
-<pre><code>.gitignore
-</code></pre>
-
-<p>比較不同</p>
-
-<pre><code>git diff (工作和暫存)
-git diff 分支名稱 (工作和分支)
-</code></pre>
-
-<p>分支(版本)名稱
-HEAD(目前頭分支) : HEAD HEAD^ HEAD^^ HEAD^^^
-master(branch名)
-695606fc5e31&hellip;.. (commit hash名)</p>
-
-<p>重置</p>
-
-<pre><code>git reset --hard 分支名稱(分支覆蓋暫存區和工作區，後悔藥，危險不可逆)
-git reset 分支名稱 (分支覆蓋暫存區，通常拿來撤銷git add操作)
-
-git checkout 分支名稱 (看以前的版本)
-
-git tag -m &quot;wahaha version 1000&quot; v_1000
-</code></pre>
-
-<p>在git中，為了吃後悔藥，完成一個小功能立刻commit
-在git中，為了找尋方便，完成大改版記得tag</p>
-
-<pre><code>git describe (方便產生版本號)
-</code></pre>
-
-<p>老闆叫你交東西給客戶 但是你程式改到一半</p>
-
-<pre><code>git stash
-git stash pop
-</code></pre>
-
-<p>交成品囉 []裡面為可加可不加的內容</p>
-
-<pre><code>git archive -o 輸出.zip 分支名稱 [想要複製的資料夾/檔案，可多個]
-git archive -o output.zip HEAD src obj
-</code></pre>
-
-    </div>
-
-<div class="meta">
-    
-    
-    <span class="comments"><a href="/post/2015-06-05/#disqus_thread">Comments</a></span>
     
     
 </div>

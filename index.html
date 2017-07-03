@@ -1,7 +1,7 @@
 <!DOCTYPE HTML>
 <html>
 <head>
-	<meta name="generator" content="Hugo 0.20.2" />
+	<meta name="generator" content="Hugo 0.22" />
 	<meta charset="utf-8">
     
     
@@ -4214,6 +4214,153 @@ body {
 
   <article class="post">
     <h2 class="title"> 
+        <a href="/post/2017-07-03/">[iOS] 解析Json</a>
+    </h2>
+    <div class="entry-content">
+    <div class="meta">
+        <div class="date">Published on: <time datetime='2017-07-03T00:00:00.000&#43;00:00' itemprop="datePublished">2017-07-03</time>
+</div>
+        <div class="tags">Tags: 
+
+<a href="https://cdfq152313.github.io/tags/ios">ios</a>
+
+<a href="https://cdfq152313.github.io/tags/swift">swift</a>
+
+
+</div>
+    </div>
+        
+
+<h2 id="背景">背景</h2>
+
+<p><a href="/post/2017-04-01/">之前</a>寫過在Android平台用Gson函式庫來進行反序列化。<br />
+想在iOS上做同樣的事，但是用了一下EVReflection覺得效果不太滿意，好像都會出現一些未預期行為。<br />
+只好自己用swift重寫這段。</p>
+
+<h2 id="原理">原理</h2>
+
+<p>如果是要解析抓到的Json String，利用<strong>JSONSerialization</strong>轉成<strong>Dictionary</strong>。<br />
+反之亦然，先做出<strong>Dictionary</strong>再利用<strong>JSONSerialization</strong>轉成Json String。</p>
+
+<pre><code class="language-swift">func stringToDict(jsonString:String)-&gt;[String:Any]{
+    let data = jsonString.data(using: .utf8)
+    let anyObj = try! JSONSerialization.jsonObject(with: data!, options: [])
+    let dict = anyObj as! [String:Any]
+    return dict
+}
+
+func dictToString(dict:[String:Any])-&gt;String{
+    let data = try! JSONSerialization.data(withJSONObject: dict, options: .prettyPrinted)
+    let result = String(data: data, encoding: .utf8)
+    return result!
+}
+</code></pre>
+
+<blockquote>
+<p>為了便於理解用了很多&rdquo;!&ldquo;，在正式的程式碼請記得改為optional &ldquo;?&rdquo;</p>
+</blockquote>
+
+<p>可以試著來回轉換並印出，看看程式碼有無錯誤。</p>
+
+<pre><code class="language-swift">func main(){
+    let str = &quot;{\&quot;a\&quot;:1,\&quot;b\&quot;:\&quot;apple\&quot;,\&quot;c\&quot;:{\&quot;d\&quot;:\&quot;banana\&quot;}}&quot;
+
+    let dict = stringToDict(jsonString: str)
+    let jsonString = dictToString(dict: dict)
+    print(jsonString)
+}
+</code></pre>
+
+<h2 id="使用dictionary裡面的值">使用Dictionary裡面的值</h2>
+
+<p>從String解析出Dictionary後，接下來就可以開始進行解析了</p>
+
+<pre><code>func main(){
+    let str = &quot;{\&quot;a\&quot;:1,\&quot;b\&quot;:\&quot;apple\&quot;,\&quot;c\&quot;:{\&quot;d\&quot;:\&quot;banana\&quot;}}&quot;
+
+    let dict = stringToDict(jsonString: str)
+    let a = dict[&quot;a&quot;] as? Int
+    let b = dict[&quot;b&quot;] as? String
+    let c = dict[&quot;c&quot;] as? [String:String]
+    let d = c?[&quot;d&quot;] as? String
+    print(&quot;a: \(a)&quot;)
+    print(&quot;b: \(b)&quot;)
+    print(&quot;c: \(c)&quot;)
+    print(&quot;d: \(d)&quot;)
+}
+</code></pre>
+
+<h2 id="個人使用偏好">個人使用偏好</h2>
+
+<p>實際上在使用的時候，個人會偏向把Json的資料全部映射到class的property中。<br />
+主要是害怕自己在解析Json的時候不小心手殘打錯字。若同一份Json在許多地方使用的話，要挨個檢查更加麻煩。<br />
+不過映射到class這件事有時會減緩效率，如何取捨就看個人。</p>
+
+<pre><code class="language-swift">class JsonData{
+    var a:Int?
+    var b:String?
+    var c:JsonData2?
+
+    init(jsonStr:String){
+        if let data = jsonStr.data(using: .utf8),
+            let anyObj = try? JSONSerialization.jsonObject(with: data, options: []),
+            let dict = anyObj as? [String:Any]{
+            a = dict[&quot;a&quot;] as? Int
+            b = dict[&quot;b&quot;] as? String
+            c = JsonData2(jsonObj: dict[&quot;c&quot;])
+        }
+    }
+
+    func toString()-&gt;String{
+        var dict:[String:Any] = [String:Any]()
+        dict[&quot;a&quot;] =  a!
+        dict[&quot;b&quot;] = b!
+        dict[&quot;c&quot;] = c!.toDict()
+        let data = try! JSONSerialization.data(withJSONObject: dict, options: .prettyPrinted)
+        let result = String(data: data, encoding: .utf8)
+        return result!
+    }
+}
+
+class JsonData2{
+    var d:String?
+
+    init(jsonObj:Any){
+        if let dict = jsonObj as? [String:String]{
+            d = dict[&quot;d&quot;] as? String
+        }
+    }
+
+    func toDict()-&gt;[String:Any]{
+        var dict:[String:Any] = [String:Any]()
+        dict[&quot;d&quot;] = d!
+        return dict
+    }
+}
+</code></pre>
+
+<p>使用測試</p>
+
+<pre><code class="language-swift">func main4(){
+    let str = &quot;{\&quot;a\&quot;:1,\&quot;b\&quot;:\&quot;apple\&quot;,\&quot;c\&quot;:{\&quot;d\&quot;:\&quot;banana\&quot;}}&quot;
+    let jsonData = JsonData(jsonStr: str)
+    print(jsonData.toString())
+}
+</code></pre>
+
+    </div>
+
+<div class="meta">
+    
+    
+    <span class="comments"><a href="/post/2017-07-03/#disqus_thread">Comments</a></span>
+    
+    
+</div>
+</article>
+
+  <article class="post">
+    <h2 class="title"> 
         <a href="/post/2017-05-18/">Mac/Linux的Bash主題(theme)設定</a>
     </h2>
     <div class="entry-content">
@@ -4427,8 +4574,8 @@ body {
 因此必須依靠SimpleDateFormat來將Date格式化為有意義的字串。</p>
 
 <pre><code class="language-Java">String formatDate(Date date){
-    SimpleDateFormat sdf = new SimpleDateFormat(&quot;yyyy-MM-dd HH:mm:ss&quot;); // HH是24小時制，hh是12小時制
-    return sdf.format(date);
+	SimpleDateFormat sdf = new SimpleDateFormat(&quot;yyyy-MM-dd HH:mm:ss&quot;); // HH是24小時制，hh是12小時制
+	return sdf.format(date);
 }
 </code></pre>
 
@@ -4438,13 +4585,13 @@ body {
 只是這邊為了展示calendar單獨取值的方法走了不一樣的路徑。</p>
 
 <pre><code class="language-Java">String formatCalendar(Calendar calendar){
-    int year = calendar.get(Calendar.YEAR);
-    int month = calendar.get(Calendar.MONTH) + 1; // 1月的值為0
-    int day = calendar.get(Calendar.DAY_OF_MONTH);
-    int hour = calendar.get(Calendar.HOUR_OF_DAY); // HOUR_OF_DAY是24小時制，HOUR是12小時制
-    int minute = calendar.get(Calendar.MINUTE);
-    int second = calendar.get(Calendar.SECOND);
-    return String.format(&quot;%d-%02d-%02d %02d:%02d:%02d&quot;, year, month, day, hour, minute, second);
+	int year = calendar.get(Calendar.YEAR);
+	int month = calendar.get(Calendar.MONTH) + 1; // 1月的值為0
+	int day = calendar.get(Calendar.DAY_OF_MONTH);
+	int hour = calendar.get(Calendar.HOUR_OF_DAY); // HOUR_OF_DAY是24小時制，HOUR是12小時制
+	int minute = calendar.get(Calendar.MINUTE);
+	int second = calendar.get(Calendar.SECOND);
+	return String.format(&quot;%d-%02d-%02d %02d:%02d:%02d&quot;, year, month, day, hour, minute, second);
 }
 </code></pre>
 
@@ -4492,9 +4639,9 @@ SimpleDateFormat會以使用者所在的時區當作預設顯示時區，若要�
 <p>下面選的是第二種。</p>
 
 <pre><code class="language-Java">String formatDateInGMT(Date date){
-    SimpleDateFormat sdf = new SimpleDateFormat(&quot;yyyy-MM-dd HH:mm:ss&quot;); // HH是24小時制，hh是12小時制
-    sdf.setTimeZone(TimeZone.getTimeZone(&quot;GMT&quot;) );
-    return sdf.format(date);
+	SimpleDateFormat sdf = new SimpleDateFormat(&quot;yyyy-MM-dd HH:mm:ss&quot;); // HH是24小時制，hh是12小時制
+	sdf.setTimeZone(TimeZone.getTimeZone(&quot;GMT&quot;) );
+	return sdf.format(date);
 }
 </code></pre>
 
@@ -4525,10 +4672,10 @@ System.out.println(display);
 <p>下方的範例利用SimpleDateFormat將字串轉換為Date</p>
 
 <pre><code class="language-Java">public Date convertStringToDate(String time) throws ParseException {
-    // 假設input的字串是 &quot;年-月-日 時:分:秒&quot; 格式
-    SimpleDateFormat sdf = new SimpleDateFormat(&quot;yyyy-MM-dd HH:mm:ss&quot;);
-    Date date = sdf.parse(time);
-    return date;
+	// 假設input的字串是 &quot;年-月-日 時:分:秒&quot; 格式
+	SimpleDateFormat sdf = new SimpleDateFormat(&quot;yyyy-MM-dd HH:mm:ss&quot;);
+	Date date = sdf.parse(time);
+	return date;
 }
 </code></pre>
 
@@ -4539,11 +4686,11 @@ System.out.println(display);
 <p>先取得Date，再設定Calendar，會用到上方的convertStringToDate函式。</p>
 
 <pre><code class="language-Java">public Calendar convertStringToCalendar(String time) throws ParseException {
-    // 假設input的字串是 &quot;年-月-日 時:分:秒&quot; 格式
-    Date date = convertStringToDate(time);
-    Calendar calendar = Calendar.getInstance();
-    calendar.setTime(date);
-    return calendar;
+	// 假設input的字串是 &quot;年-月-日 時:分:秒&quot; 格式
+	Date date = convertStringToDate(time);
+	Calendar calendar = Calendar.getInstance();
+	calendar.setTime(date);
+	return calendar;
 }
 </code></pre>
 
@@ -4560,11 +4707,11 @@ System.out.println(display);
 <h3 id="格式化gmt字串為date">格式化GMT字串為Date</h3>
 
 <pre><code class="language-Java">public Date convertGMTStringToDate(String time) throws ParseException {
-    // 假設input的字串是 &quot;年-月-日 時:分:秒&quot; 格式
-    SimpleDateFormat sdf = new SimpleDateFormat(&quot;yyyy-MM-dd HH:mm:ss&quot;);
-    sdf.setTimeZone(TimeZone.getTimeZone(&quot;GMT&quot;) ); // 告知接下來的字串時區位在GMT
-    Date date = sdf.parse(time);
-    return date;
+	// 假設input的字串是 &quot;年-月-日 時:分:秒&quot; 格式
+	SimpleDateFormat sdf = new SimpleDateFormat(&quot;yyyy-MM-dd HH:mm:ss&quot;);
+	sdf.setTimeZone(TimeZone.getTimeZone(&quot;GMT&quot;) ); // 告知接下來的字串時區位在GMT
+	Date date = sdf.parse(time);
+	return date;
 }
 </code></pre>
 
@@ -4582,11 +4729,11 @@ System.out.println(display);
 <p>轉換為Calendar也是同理，先取得Date，再設定Calendar。</p>
 
 <pre><code class="language-Java">public Calendar convertGMTStringToCalendar(String time) throws ParseException {
-    // 假設input的字串是 &quot;年-月-日 時:分:秒&quot; 格式
-    Date date = convertGMTStringToDate(time);
-    Calendar calendar = Calendar.getInstance();
-    calendar.setTime(date);
-    return calendar;
+	// 假設input的字串是 &quot;年-月-日 時:分:秒&quot; 格式
+	Date date = convertGMTStringToDate(time);
+	Calendar calendar = Calendar.getInstance();
+	calendar.setTime(date);
+	return calendar;
 }
 </code></pre>
 
@@ -4603,55 +4750,55 @@ System.out.println(display);
 <p>剛剛講解中一些重要函式的快速複製區，提供給以後的自己使用。</p>
 
 <pre><code class="language-Java">String formatDate(Date date){
-    SimpleDateFormat sdf = new SimpleDateFormat(&quot;yyyy-MM-dd HH:mm:ss&quot;); // HH是24小時制，hh是12小時制
-    return sdf.format(date);
+	SimpleDateFormat sdf = new SimpleDateFormat(&quot;yyyy-MM-dd HH:mm:ss&quot;); // HH是24小時制，hh是12小時制
+	return sdf.format(date);
 }
 
 String formatDateInGMT(Date date){
-    SimpleDateFormat sdf = new SimpleDateFormat(&quot;yyyy-MM-dd HH:mm:ss&quot;); // HH是24小時制，hh是12小時制
-    sdf.setTimeZone(TimeZone.getTimeZone(&quot;GMT&quot;) );
-    return sdf.format(date);
+	SimpleDateFormat sdf = new SimpleDateFormat(&quot;yyyy-MM-dd HH:mm:ss&quot;); // HH是24小時制，hh是12小時制
+	sdf.setTimeZone(TimeZone.getTimeZone(&quot;GMT&quot;) );
+	return sdf.format(date);
 }
 
 String formatCalendar(Calendar calendar){
-    int year = calendar.get(Calendar.YEAR);
-    int month = calendar.get(Calendar.MONTH) + 1; // 1月的值為0
-    int day = calendar.get(Calendar.DAY_OF_MONTH);
-    int hour = calendar.get(Calendar.HOUR_OF_DAY); // HOUR_OF_DAY是24小時制，HOUR是12小時制
-    int minute = calendar.get(Calendar.MINUTE);
-    int second = calendar.get(Calendar.SECOND);
-    return String.format(&quot;%d-%02d-%02d %02d:%02d:%02d&quot;, year, month, day, hour, minute, second);
+	int year = calendar.get(Calendar.YEAR);
+	int month = calendar.get(Calendar.MONTH) + 1; // 1月的值為0
+	int day = calendar.get(Calendar.DAY_OF_MONTH);
+	int hour = calendar.get(Calendar.HOUR_OF_DAY); // HOUR_OF_DAY是24小時制，HOUR是12小時制
+	int minute = calendar.get(Calendar.MINUTE);
+	int second = calendar.get(Calendar.SECOND);
+	return String.format(&quot;%d-%02d-%02d %02d:%02d:%02d&quot;, year, month, day, hour, minute, second);
 }
 
 public Date convertStringToDate(String time) throws ParseException {
-    // 假設input的字串是 &quot;年-月-日 時:分:秒&quot; 格式
-    SimpleDateFormat sdf = new SimpleDateFormat(&quot;yyyy-MM-dd HH:mm:ss&quot;);
-    Date date = sdf.parse(time);
-    return date;
+	// 假設input的字串是 &quot;年-月-日 時:分:秒&quot; 格式
+	SimpleDateFormat sdf = new SimpleDateFormat(&quot;yyyy-MM-dd HH:mm:ss&quot;);
+	Date date = sdf.parse(time);
+	return date;
 }
 
 public Calendar convertStringToCalendar(String time) throws ParseException {
-    // 假設input的字串是 &quot;年-月-日 時:分:秒&quot; 格式
-    Date date = convertStringToDate(time);
-    Calendar calendar = Calendar.getInstance();
-    calendar.setTime(date);
-    return calendar;
+	// 假設input的字串是 &quot;年-月-日 時:分:秒&quot; 格式
+	Date date = convertStringToDate(time);
+	Calendar calendar = Calendar.getInstance();
+	calendar.setTime(date);
+	return calendar;
 }
 
 public Date convertGMTStringToDate(String time) throws ParseException {
-    // 假設input的字串是 &quot;年-月-日 時:分:秒&quot; 格式
-    SimpleDateFormat sdf = new SimpleDateFormat(&quot;yyyy-MM-dd HH:mm:ss&quot;);
-    sdf.setTimeZone(TimeZone.getTimeZone(&quot;GMT&quot;) ); // 告知接下來的字串時區位在GMT
-    Date date = sdf.parse(time);
-    return date;
+	// 假設input的字串是 &quot;年-月-日 時:分:秒&quot; 格式
+	SimpleDateFormat sdf = new SimpleDateFormat(&quot;yyyy-MM-dd HH:mm:ss&quot;);
+	sdf.setTimeZone(TimeZone.getTimeZone(&quot;GMT&quot;) ); // 告知接下來的字串時區位在GMT
+	Date date = sdf.parse(time);
+	return date;
 }
 
 public Calendar convertGMTStringToCalendar(String time) throws ParseException {
-    // 假設input的字串是 &quot;年-月-日 時:分:秒&quot; 格式
-    Date date = convertGMTStringToDate(time);
-    Calendar calendar = Calendar.getInstance();
-    calendar.setTime(date);
-    return calendar;
+	// 假設input的字串是 &quot;年-月-日 時:分:秒&quot; 格式
+	Date date = convertGMTStringToDate(time);
+	Calendar calendar = Calendar.getInstance();
+	calendar.setTime(date);
+	return calendar;
 }
 </code></pre>
 
@@ -5166,115 +5313,6 @@ System.out.println(&quot;Decrypted Data:&quot; + decryptedData);
     
     
     <span class="comments"><a href="/post/2017-02-22/#disqus_thread">Comments</a></span>
-    
-    
-</div>
-</article>
-
-  <article class="post">
-    <h2 class="title"> 
-        <a href="/post/2017-02-08/">Android 文章整理</a>
-    </h2>
-    <div class="entry-content">
-    <div class="meta">
-        <div class="date">Published on: <time datetime='2017-02-08T00:00:00.000&#43;00:00' itemprop="datePublished">2017-02-08</time>
-</div>
-        <div class="tags">Tags: 
-
-<a href="https://cdfq152313.github.io/tags/android">android</a>
-
-
-</div>
-    </div>
-        
-
-<h2 id="linearlayout">Linearlayout</h2>
-
-<ul>
-<li><a href="http://blog.csdn.net/xiaanming/article/details/13630837">Android 对Layout_weight属性完全解析以及使用ListView来实现表格</a></li>
-</ul>
-
-<h2 id="fragment">fragment</h2>
-
-<ul>
-<li><a href="https://developer.android.com/guide/components/fragments.html?hl=zh-tw">官方API Guide</a></li>
-<li><a href="http://blog.csdn.net/xiaanming/article/details/13630837">Android Fragment 真正的完全解析（上）</a></li>
-<li><a href="http://blog.csdn.net/lmj623565791/article/details/37992017">Android Fragment 真正的完全解析（下）</a></li>
-<li><a href="http://stackoverflow.com/questions/32077086/android-onattachcontext-not-called-for-api-23">Fragment Lifecycle中的onAttach</a></li>
-</ul>
-
-<h2 id="toolbar">Toolbar</h2>
-
-<ul>
-<li><a href="https://developer.android.com/training/appbar/index.html">官方API Guide</a></li>
-<li><a href="http://blog.csdn.net/lovexieyuan520/article/details/9974929">Toolbar左上方的返回鈕</a></li>
-<li><a href="http://stackoverflow.com/questions/26778701/how-to-add-buttons-like-refresh-and-search-in-toolbar-in-android">加入新的圖示</a></li>
-<li><a href="http://wuxiaolong.me/2015/11/10/toolbar/">Toolbar在Activity和Fragment下的使用情況</a></li>
-</ul>
-
-<h2 id="recyclerview-和-listview">RecyclerView 和 ListView</h2>
-
-<ul>
-<li><a href="http://www.jianshu.com/p/f592f3715ae2">RecyclerView 和 ListView的對比</a></li>
-</ul>
-
-<h2 id="ui-ux">UI/UX</h2>
-
-<ul>
-<li><a href="https://github.com/wasabeef/awesome-android-ui">List of Android UI/UX Libraries</a></li>
-<li><a href="https://github.com/medyo/Fancybuttons">Fancy Button</a></li>
-</ul>
-
-<h2 id="testing">Testing</h2>
-
-<ul>
-<li><a href="http://chriszou.com/2016/04/16/android-unit-testing-about-why.html">Android单元测试（二）：再来谈谈为什么</a></li>
-<li><a href="http://chriszou.com/2016/04/29/android-unit-testing-mockito.html">Android单元测试（四）：Mock以及Mockito的使用</a></li>
-<li><a href="http://chriszou.com/2016/08/06/android-unit-testing-async.html">安卓单元测试(十一)：异步代码怎么测试</a></li>
-</ul>
-
-<h2 id="library整合">Library整合</h2>
-
-<ul>
-<li><a href="https://guides.codepath.com/android/Must-Have-Libraries">整合1</a></li>
-</ul>
-
-<h2 id="parcelable-vs-serializable">Parcelable vs Serializable</h2>
-
-<ul>
-<li><a href="http://www.cnblogs.com/trinea/archive/2012/11/09/2763213.html">Android Parcelable和Serializable的區別</a></li>
-</ul>
-
-<h2 id="權限管理">權限管理</h2>
-
-<ul>
-<li><a href="https://litotom.com/2016/05/15/android-6-permission/">Android綠豆湯 - Android 6.0的Permission權限設計</a></li>
-</ul>
-
-<h2 id="檔案處理">檔案處理</h2>
-
-<ul>
-<li><a href="https://developer.android.com/training/basics/data-storage/files.html?hl=zh-tw">Android developer - 儲存檔案</a></li>
-</ul>
-
-<h2 id="使用函式庫">使用函式庫</h2>
-
-<ul>
-<li><a href="http://kewang.logdown.com/posts/698793-various-ways-to-import-android-library">Import Android Library 的各種方式</a></li>
-</ul>
-
-<h2 id="心得">心得</h2>
-
-<ul>
-<li><a href="https://github.com/futurice/android-best-practices">Best practice</a></li>
-</ul>
-
-    </div>
-
-<div class="meta">
-    
-    
-    <span class="comments"><a href="/post/2017-02-08/#disqus_thread">Comments</a></span>
     
     
 </div>

@@ -5,10 +5,26 @@
     <link>https://cdfq152313.github.io/tags/ios/</link>
     <description>Recent content in Ios on Denny&#39;s Blog</description>
     <generator>Hugo -- gohugo.io</generator>
-    <lastBuildDate>Wed, 02 Nov 2016 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Mon, 03 Jul 2017 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="https://cdfq152313.github.io/tags/ios/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>[iOS] 解析Json</title>
+      <link>https://cdfq152313.github.io/post/2017-07-03/</link>
+      <pubDate>Mon, 03 Jul 2017 00:00:00 +0000</pubDate>
+      
+      <guid>https://cdfq152313.github.io/post/2017-07-03/</guid>
+      <description>背景 之前寫過在Android平台用Gson函式庫來進行反序列化。
+想在iOS上做同樣的事，但是用了一下EVReflection覺得效果不太滿意，好像都會出現一些未預期行為。
+只好自己用swift重寫這段。
+原理 如果是要解析抓到的Json String，利用JSONSerialization轉成Dictionary。
+反之亦然，先做出Dictionary再利用JSONSerialization轉成Json String。
+func stringToDict(jsonString:String)-&amp;gt;[String:Any]{ let data = jsonString.data(using: .utf8) let anyObj = try! JSONSerialization.jsonObject(with: data!, options: []) let dict = anyObj as! [String:Any] return dict } func dictToString(dict:[String:Any])-&amp;gt;String{ let data = try! JSONSerialization.data(withJSONObject: dict, options: .prettyPrinted) let result = String(data: data, encoding: .utf8) return result! }   為了便於理解用了很多&amp;rdquo;!&amp;ldquo;，在正式的程式碼請記得改為optional &amp;ldquo;?&amp;rdquo;
+ 可以試著來回轉換並印出，看看程式碼有無錯誤。
+func main(){ let str = &amp;quot;{\&amp;quot;a\&amp;quot;:1,\&amp;quot;b\&amp;quot;:\&amp;quot;apple\&amp;quot;,\&amp;quot;c\&amp;quot;:{\&amp;quot;d\&amp;quot;:\&amp;quot;banana\&amp;quot;}}&amp;quot; let dict = stringToDict(jsonString: str) let jsonString = dictToString(dict: dict) print(jsonString) }  使用Dictionary裡面的值 從String解析出Dictionary後，接下來就可以開始進行解析了</description>
+    </item>
     
     <item>
       <title>Swift Mail &amp; Message</title>

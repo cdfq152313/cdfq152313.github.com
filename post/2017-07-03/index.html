@@ -6,7 +6,7 @@
     
     
     
-    <title>在AOSP中增加預設app (3) : 利用Android Studio來進行編輯 - Denny&#39;s Blog</title>
+    <title>[iOS] 解析Json - Denny&#39;s Blog</title>
     <meta name="author" content="">
     <meta name="description" content="">
     <meta name="keywords" content="">
@@ -4203,151 +4203,137 @@ body {
     <div id="content" class="inner">
         
 <article class="post">
-    <h2 class="title">在AOSP中增加預設app (3) : 利用Android Studio來進行編輯</h2>
+    <h2 class="title">[iOS] 解析Json</h2>
     <div class="meta">
-        <div class="date">Published on: <time datetime='2016-03-04T00:00:00.000&#43;00:00' itemprop="datePublished">2016-03-04</time>
+        <div class="date">Published on: <time datetime='2017-07-03T00:00:00.000&#43;00:00' itemprop="datePublished">2017-07-03</time>
 </div>
         <div class="tags">Tags: 
 
-<a href="https://cdfq152313.github.io/tags/android">android</a>
+<a href="https://cdfq152313.github.io/tags/ios">ios</a>
 
-<a href="https://cdfq152313.github.io/tags/aosp">aosp</a>
+<a href="https://cdfq152313.github.io/tags/swift">swift</a>
 
 
 </div>
     </div>
     <div class="entry-content">
 
-<h2 id="平台及環境設置">平台及環境設置</h2>
+<h2 id="背景">背景</h2>
 
-<h3 id="平台">平台</h3>
+<p><a href="/post/2017-04-01/">之前</a>寫過在Android平台用Gson函式庫來進行反序列化。<br />
+想在iOS上做同樣的事，但是用了一下EVReflection覺得效果不太滿意，好像都會出現一些未預期行為。<br />
+只好自己用swift重寫這段。</p>
 
-<p>實驗平台：Nexus 5<br />
-Android版本：android-4.4_r1<br />
-前置知識： [Howto Build Android KitKat (4.4) for the Google Nexus 5][6]</p>
+<h2 id="原理">原理</h2>
 
-<h3 id="環境設置">環境設置</h3>
+<p>如果是要解析抓到的Json String，利用<strong>JSONSerialization</strong>轉成<strong>Dictionary</strong>。<br />
+反之亦然，先做出<strong>Dictionary</strong>再利用<strong>JSONSerialization</strong>轉成Json String。</p>
 
-<p>在AOSP資料夾中</p>
+<pre><code class="language-swift">func stringToDict(jsonString:String)-&gt;[String:Any]{
+    let data = jsonString.data(using: .utf8)
+    let anyObj = try! JSONSerialization.jsonObject(with: data!, options: [])
+    let dict = anyObj as! [String:Any]
+    return dict
+}
 
-<pre><code class="language-bash">source build/envsetup.sh
-lunch aosp_hammerhead-userdebug
+func dictToString(dict:[String:Any])-&gt;String{
+    let data = try! JSONSerialization.data(withJSONObject: dict, options: .prettyPrinted)
+    let result = String(data: data, encoding: .utf8)
+    return result!
+}
 </code></pre>
 
-<h2 id="目標-利用android-studio來新增app-命名為world">目標：利用Android Studio來新增APP (命名為World)</h2>
+<blockquote>
+<p>為了便於理解用了很多&rdquo;!&ldquo;，在正式的程式碼請記得改為optional &ldquo;?&rdquo;</p>
+</blockquote>
 
-<p>在上一篇文章中，說明了如何copy一份已有的project來改寫。但是寫Android App有許多煩雜的地方，有時候還是需要IDE來幫助比較快，這裡找了一個比較tricky的方法來使用IDE。</p>
+<p>可以試著來回轉換並印出，看看程式碼有無錯誤。</p>
 
-<h3 id="新增android-studio-project">新增Android Studio Project</h3>
+<pre><code class="language-swift">func main(){
+    let str = &quot;{\&quot;a\&quot;:1,\&quot;b\&quot;:\&quot;apple\&quot;,\&quot;c\&quot;:{\&quot;d\&quot;:\&quot;banana\&quot;}}&quot;
 
-<p>我們直接從Android Studio中產生一個空的project，命名為<code>World</code>。<br />
-新增project時記得選empty Activity，之後比較好做。<br />
-<img src="http://i.imgur.com/LTorwRZ.png" alt="Alt Text" /></p>
-
-<h3 id="建立soft-link">建立soft link</h3>
-
-<p>在剛剛產生出來的Android Project路徑底下，<code>World/app/src/main</code>應該有<strong>java、res</strong>資料夾，以及<strong>AndroidManifest.xml</strong>。<br />
-在<code>AOSP/packages/apps</code>建立新目錄<code>World</code>，並在其底下建立起上述3個檔案之<a href="http://linux.vbird.org/linux_basic/0230filesystem.php#ln" title="鳥哥 - ln解說">軟連結(soft link)</a>。</p>
-
-<pre><code class="language-bash">mkdir $ANDROID_BUILD_TOP/packages/apps/World &amp;&amp; cd $_
-ln -s AndroidProject目錄/World/app/src/main/java  java
-ln -s AndroidProject目錄/World/app/src/main/res  res
-ln -s AndroidProject目錄/World/app/src/main/AndroidManifest.xml  AndroidManifest.xml
+    let dict = stringToDict(jsonString: str)
+    let jsonString = dictToString(dict: dict)
+    print(jsonString)
+}
 </code></pre>
 
-<h3 id="撰寫android-mk">撰寫Android.mk</h3>
+<h2 id="使用dictionary裡面的值">使用Dictionary裡面的值</h2>
 
-<p>參考<a href="http://android.mk/" title="Secrets of Android.mk">Secrets of Android.mk</a>此份文件當中的<strong>Building a simple APK</strong>目錄。將其加到<code>AOSP/packages/apps/World</code>資料夾下。</p>
+<p>從String解析出Dictionary後，接下來就可以開始進行解析了</p>
 
-<p>Android.mk</p>
+<pre><code>func main(){
+    let str = &quot;{\&quot;a\&quot;:1,\&quot;b\&quot;:\&quot;apple\&quot;,\&quot;c\&quot;:{\&quot;d\&quot;:\&quot;banana\&quot;}}&quot;
 
-<pre><code class="language-makefile">  LOCAL_PATH := $(call my-dir)
-  include $(CLEAR_VARS)
-   
-  # Build all java files in the java subdirectory
-  LOCAL_SRC_FILES := $(call all-subdir-java-files)
-   
-  # Name of the APK to build
-  LOCAL_PACKAGE_NAME := LocalPackage
-   
-  # Tell it to build an APK
-  include $(BUILD_PACKAGE)
+    let dict = stringToDict(jsonString: str)
+    let a = dict[&quot;a&quot;] as? Int
+    let b = dict[&quot;b&quot;] as? String
+    let c = dict[&quot;c&quot;] as? [String:String]
+    let d = c?[&quot;d&quot;] as? String
+    print(&quot;a: \(a)&quot;)
+    print(&quot;b: \(b)&quot;)
+    print(&quot;c: \(c)&quot;)
+    print(&quot;d: \(d)&quot;)
+}
 </code></pre>
 
-<h3 id="修改掉所有appcompat的部份">修改掉所有appcompat的部份</h3>
+<h2 id="個人使用偏好">個人使用偏好</h2>
 
-<p>再來使用<code>mm</code>在<code>AOSP/packages/apps/World</code>進行編譯，運氣不好的話，編譯會出現找不到某些命名的錯誤。這是因為Google為了讓各種app看起來更有一致性，將Android Studio的新Project皆使用Appcompat此library來協調視覺效果。可是此library並不存在於預設的編譯環境當中。為了為了節省麻煩，將其去掉。</p>
+<p>實際上在使用的時候，個人會偏向把Json的資料全部映射到class的property中。<br />
+主要是害怕自己在解析Json的時候不小心手殘打錯字。若同一份Json在許多地方使用的話，要挨個檢查更加麻煩。<br />
+不過映射到class這件事有時會減緩效率，如何取捨就看個人。</p>
 
-<p>style.xml</p>
+<pre><code class="language-swift">class JsonData{
+    var a:Int?
+    var b:String?
+    var c:JsonData2?
 
-<pre><code class="language-xml">&lt;resources&gt;
+    init(jsonStr:String){
+        if let data = jsonStr.data(using: .utf8),
+            let anyObj = try? JSONSerialization.jsonObject(with: data, options: []),
+            let dict = anyObj as? [String:Any]{
+            a = dict[&quot;a&quot;] as? Int
+            b = dict[&quot;b&quot;] as? String
+            c = JsonData2(jsonObj: dict[&quot;c&quot;])
+        }
+    }
 
-    &lt;!-- Base application theme. --&gt;
-    &lt;style name=&quot;AppTheme&quot; parent=&quot;android:Theme.Holo.Light.DarkActionBar&quot;&gt;
-        &lt;!-- Customize your theme here. --&gt;
-    &lt;/style&gt;
+    func toString()-&gt;String{
+        var dict:[String:Any] = [String:Any]()
+        dict[&quot;a&quot;] =  a!
+        dict[&quot;b&quot;] = b!
+        dict[&quot;c&quot;] = c!.toDict()
+        let data = try! JSONSerialization.data(withJSONObject: dict, options: .prettyPrinted)
+        let result = String(data: data, encoding: .utf8)
+        return result!
+    }
+}
 
-&lt;/resources&gt;
-</code></pre>
+class JsonData2{
+    var d:String?
 
-<p>並把MainActivity中可能會用<strong>ActionBarActivity</strong>或是<strong>AppCompatActivity</strong>來替代Activity，請一律換成Activity來使用。</p>
+    init(jsonObj:Any){
+        if let dict = jsonObj as? [String:String]{
+            d = dict[&quot;d&quot;] as? String
+        }
+    }
 
-<p>MainActivity.java</p>
-
-<pre><code class="language-java">package com.android.world;
-
-import android.app.Activity;
-import android.os.Bundle;
-
-public class MainActivity extends Activity{
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+    func toDict()-&gt;[String:Any]{
+        var dict:[String:Any] = [String:Any]()
+        dict[&quot;d&quot;] = d!
+        return dict
     }
 }
 </code></pre>
 
-<p>最後，我在編譯途中還遇到標籤問題。預設的編譯環境似乎不允許著無命名的字串存在。也就是說，如果你有任何的<strong>text</strong>標籤是直接給予字串值的，可能會編譯失敗。</p>
+<p>使用測試</p>
 
-<p>修改前</p>
-
-<pre><code class="language-xml">&lt;TextView
-        android:layout_width=&quot;wrap_content&quot;
-        android:layout_height=&quot;wrap_content&quot;
-		android:text=&quot;Hello World&quot; /&gt;
+<pre><code class="language-swift">func main4(){
+    let str = &quot;{\&quot;a\&quot;:1,\&quot;b\&quot;:\&quot;apple\&quot;,\&quot;c\&quot;:{\&quot;d\&quot;:\&quot;banana\&quot;}}&quot;
+    let jsonData = JsonData(jsonStr: str)
+    print(jsonData.toString())
+}
 </code></pre>
-
-<p>可能要改將字串引用自string.xml才能編譯成功。</p>
-
-<p>修改後</p>
-
-<pre><code class="language-xml">&lt;TextView
-        android:layout_width=&quot;wrap_content&quot;
-        android:layout_height=&quot;wrap_content&quot;
-		android:text=&quot;@string/app_name&quot; /&gt;
-</code></pre>
-
-<p>res/values/string.xml</p>
-
-<pre><code class="language-xml">&lt;resources&gt;
-    &lt;string name=&quot;app_name&quot;&gt;World&lt;/string&gt;
-&lt;/resources&gt;
-</code></pre>
-
-<h3 id="編譯">編譯</h3>
-
-<p>使用<code>mm</code>進行編譯，此次應該可以順利通過了。<br />
-之後直接在Android Studio裡對Application進行編輯，由於建立了軟連結，AOSP內部的內容也會同步更改。<br />
-這樣就可以用Android Studio來撰寫APP囉。</p>
-
-<h2 id="reference">Reference</h2>
-
-<ul>
-<li><a href="http://android.mk/" title="Secrets of Android.mk">Android.mk</a></li>
-<li><a href="http://linux.vbird.org/linux_basic/0230filesystem.php#ln" title="鳥哥 - ln解說">鳥哥 - ln解說</a></li>
-</ul>
 </div>
 
 <div class="meta">
@@ -4371,8 +4357,8 @@ public class MainActivity extends Activity{
     
      <script type="text/javascript">
         var disqus_config = function () {
-            this.page.url = 'https:\/\/cdfq152313.github.io\/post\/2016-03-04\/';
-            this.page.identifier = 'https:\/\/cdfq152313.github.io\/post\/2016-03-04\/';
+            this.page.url = 'https:\/\/cdfq152313.github.io\/post\/2017-07-03\/';
+            this.page.identifier = 'https:\/\/cdfq152313.github.io\/post\/2017-07-03\/';
         };
 
         (function() {
