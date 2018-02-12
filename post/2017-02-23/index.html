@@ -80,7 +80,7 @@
 
 
 
-<meta itemprop="keywords" content="python,cryptography," />
+<meta itemprop="keywords" content="python,密碼學," />
 <meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="Python AES (PyCrypto)"/>
 <meta name="twitter:description" content="程式碼 為了易於保存，所有金鑰、向量、輸出結果都是以Base64編碼。 from Crypto.Cipher import AES from Crypto import Random import base64 BS = AES.block_size pad = lambda s: s &#43; (BS - len(s) % BS) * chr(BS - len(s) % BS) unpad = lambda s : s[0:-ord(s[-1])]"/>
@@ -277,7 +277,7 @@ def key_generator(bits=256):
 <p>這邊要特別注意有所謂的padding問題，在網路上找了一些解決的方法，以下是程式碼。</p>
 
 <pre><code class="language-python">BS = 16
-pad = lambda s: s + (BS - len(s) % BS) * chr(BS - len(s) % BS) 
+pad = lambda s: s + (BS - len(s) % BS) * chr(BS - len(s) % BS)
 unpad = lambda s : s[0:-ord(s[-1])]
 </code></pre>
 
@@ -301,7 +301,7 @@ unpad = lambda s : s[0:-ord(s[-1])]
           
           <a href="/tags/python/">python</a>
           
-          <a href="/tags/cryptography/">cryptography</a>
+          <a href="/tags/%E5%AF%86%E7%A2%BC%E5%AD%B8/">密碼學</a>
           
         </div>
 

@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>密碼學 on Denny&#39;s Blog</title>
+    <link>https://cdfq152313.github.io/tags/%E5%AF%86%E7%A2%BC%E5%AD%B8/</link>
+    <description>Recent content in 密碼學 on Denny&#39;s Blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-hant</language>
+    <lastBuildDate>Thu, 23 Feb 2017 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="https://cdfq152313.github.io/tags/%E5%AF%86%E7%A2%BC%E5%AD%B8/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Python AES (PyCrypto)</title>
+      <link>https://cdfq152313.github.io/post/2017-02-23/</link>
+      <pubDate>Thu, 23 Feb 2017 00:00:00 +0000</pubDate>
+      
+      <guid>https://cdfq152313.github.io/post/2017-02-23/</guid>
+      <description>程式碼 為了易於保存，所有金鑰、向量、輸出結果都是以Base64編碼。 from Crypto.Cipher import AES from Crypto import Random import base64 BS = AES.block_size pad = lambda s: s + (BS - len(s) % BS) * chr(BS - len(s) % BS) unpad = lambda s : s[0:-ord(s[-1])]</description>
+    </item>
+    
+    <item>
+      <title>[讀書心得] 圖解密碼學與比特幣原理</title>
+      <link>https://cdfq152313.github.io/post/2016-12-27/</link>
+      <pubDate>Tue, 27 Dec 2016 00:00:00 +0000</pubDate>
+      
+      <guid>https://cdfq152313.github.io/post/2016-12-27/</guid>
+      <description>圖解密碼學與比特幣原理 花了很久才斷斷續續的看完這本，覺得是一本很不錯的科普書，沒有太艱深的數學。 書中有系統的把目前密碼學的發展介紹了一遍，非</description>
+    </item>
+    
+    <item>
+      <title>.net的RSA加解密與UWP</title>
+      <link>https://cdfq152313.github.io/post/2016-10-18/</link>
+      <pubDate>Tue, 18 Oct 2016 00:00:00 +0000</pubDate>
+      
+      <guid>https://cdfq152313.github.io/post/2016-10-18/</guid>
+      <description>前言牢騷 我是要在uwp下使用加密演算法並傳送到server去，由Server進行解密。於是在google中下關鍵字&amp;rdquo;.net rsa e</description>
+    </item>
+    
+  </channel>
+</rss>
