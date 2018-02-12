@@ -1,384 +1,484 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
-  xmlns:xhtml="http://www.w3.org/1999/xhtml">
-  
-  <url>
-    <loc>https://cdfq152313.github.io/post/2017-07-03/</loc>
-    <lastmod>2017-07-03T00:00:00+00:00</lastmod>
-  </url>
+<?xml-stylesheet type="text/xsl" href="https://cdfq152313.github.io/sitemap.xsl"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
     <loc>https://cdfq152313.github.io/post/2017-05-18/</loc>
     <lastmod>2017-05-18T00:34:00+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
   </url>
   
   <url>
     <loc>https://cdfq152313.github.io/post/2017-05-01/</loc>
     <lastmod>2017-05-01T12:44:55+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
   </url>
   
   <url>
     <loc>https://cdfq152313.github.io/post/2017-04-27/</loc>
     <lastmod>2017-04-27T12:44:55+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
   </url>
   
   <url>
     <loc>https://cdfq152313.github.io/post/2017-04-24/</loc>
     <lastmod>2017-04-24T04:25:31+00:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
   </url>
   
   <url>
     <loc>https://cdfq152313.github.io/archives/</loc>
     <lastmod>2017-04-17T23:33:53+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>https://cdfq152313.github.io/post/2017-04-01/</loc>
+    <loc>https://cdfq152313.github.io/post/2017-04-02/</loc>
     <lastmod>2017-04-02T15:23:51+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
   </url>
   
   <url>
     <loc>https://cdfq152313.github.io/post/2017-03-27/</loc>
     <lastmod>2017-03-27T00:00:00+00:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
   </url>
   
   <url>
     <loc>https://cdfq152313.github.io/post/2017-02-23/</loc>
     <lastmod>2017-02-23T00:00:00+00:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
   </url>
   
   <url>
     <loc>https://cdfq152313.github.io/post/2017-02-22/</loc>
     <lastmod>2017-02-22T00:00:00+00:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
   </url>
   
   <url>
     <loc>https://cdfq152313.github.io/post/2017-02-08/</loc>
     <lastmod>2017-02-08T00:00:00+00:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>https://cdfq152313.github.io/misc/2017-01-15/</loc>
+    <loc>https://cdfq152313.github.io/post/2017-01-15/</loc>
     <lastmod>2017-01-15T00:00:00+00:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
   </url>
   
   <url>
     <loc>https://cdfq152313.github.io/post/2016-12-27/</loc>
     <lastmod>2016-12-27T00:00:00+00:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>https://cdfq152313.github.io/misc/2016-12-27/</loc>
+    <loc>https://cdfq152313.github.io/post/2016-12-27/</loc>
     <lastmod>2016-12-27T00:00:00+00:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
   </url>
   
   <url>
     <loc>https://cdfq152313.github.io/post/2016-11-24/</loc>
     <lastmod>2016-11-24T00:00:00+00:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
   </url>
   
   <url>
     <loc>https://cdfq152313.github.io/post/2016-11-02/</loc>
     <lastmod>2016-11-02T00:00:00+00:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
   </url>
   
   <url>
     <loc>https://cdfq152313.github.io/post/2016-10-25/</loc>
     <lastmod>2016-10-25T00:00:00+00:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
   </url>
   
   <url>
     <loc>https://cdfq152313.github.io/post/2016-10-21/</loc>
     <lastmod>2016-10-21T00:00:00+00:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
   </url>
   
   <url>
     <loc>https://cdfq152313.github.io/post/2016-10-18/</loc>
     <lastmod>2016-10-18T00:00:00+00:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
   </url>
   
   <url>
     <loc>https://cdfq152313.github.io/post/2016-10-14/</loc>
     <lastmod>2016-10-14T00:00:00+00:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
   </url>
   
   <url>
     <loc>https://cdfq152313.github.io/post/2016-10-11/</loc>
     <lastmod>2016-10-11T00:00:00+00:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
   </url>
   
   <url>
     <loc>https://cdfq152313.github.io/post/2016-10-06/</loc>
     <lastmod>2016-10-06T00:00:00+00:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
   </url>
   
   <url>
     <loc>https://cdfq152313.github.io/post/2016-10-04/</loc>
     <lastmod>2016-10-04T00:00:00+00:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
   </url>
   
   <url>
     <loc>https://cdfq152313.github.io/post/2016-10-03/</loc>
     <lastmod>2016-10-03T00:00:00+00:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
   </url>
   
   <url>
     <loc>https://cdfq152313.github.io/post/2016-09-13/</loc>
     <lastmod>2016-09-13T00:00:00+00:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>https://cdfq152313.github.io/misc/2016-09-06/</loc>
+    <loc>https://cdfq152313.github.io/post/2016-09-06/</loc>
     <lastmod>2016-09-06T00:00:00+00:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>https://cdfq152313.github.io/misc/2016-09-05/</loc>
+    <loc>https://cdfq152313.github.io/post/2016-09-05/</loc>
     <lastmod>2016-09-05T00:00:00+00:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
   </url>
   
   <url>
     <loc>https://cdfq152313.github.io/post/2016-08-05/</loc>
     <lastmod>2016-08-05T00:00:00+00:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
   </url>
   
   <url>
     <loc>https://cdfq152313.github.io/post/2016-07-24/</loc>
     <lastmod>2016-07-24T00:00:00+00:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
   </url>
   
   <url>
     <loc>https://cdfq152313.github.io/post/2016-07-23/</loc>
     <lastmod>2016-07-23T00:00:00+00:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
   </url>
   
   <url>
     <loc>https://cdfq152313.github.io/post/2016-07-11/</loc>
     <lastmod>2016-07-11T00:00:00+00:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
   </url>
   
   <url>
     <loc>https://cdfq152313.github.io/post/2016-07-10/</loc>
     <lastmod>2016-07-10T00:00:00+00:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
   </url>
   
   <url>
     <loc>https://cdfq152313.github.io/post/2016-07-06/</loc>
     <lastmod>2016-07-06T00:00:00+00:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
   </url>
   
   <url>
     <loc>https://cdfq152313.github.io/post/2016-03-04/</loc>
     <lastmod>2016-03-04T00:00:00+00:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
   </url>
   
   <url>
     <loc>https://cdfq152313.github.io/post/2016-02-28/</loc>
     <lastmod>2016-02-28T00:00:00+00:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
   </url>
   
   <url>
     <loc>https://cdfq152313.github.io/post/2016-02-24/</loc>
     <lastmod>2016-02-24T00:00:00+00:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
   </url>
   
   <url>
     <loc>https://cdfq152313.github.io/post/2015-08-12/</loc>
     <lastmod>2015-08-12T00:00:00+00:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
   </url>
   
   <url>
     <loc>https://cdfq152313.github.io/post/2015-06-10/</loc>
     <lastmod>2015-06-10T00:00:00+00:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
   </url>
   
   <url>
     <loc>https://cdfq152313.github.io/post/2015-06-07/</loc>
     <lastmod>2015-06-07T00:00:00+00:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
   </url>
   
   <url>
     <loc>https://cdfq152313.github.io/post/2015-06-06/</loc>
     <lastmod>2015-06-06T00:00:00+00:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
   </url>
   
   <url>
     <loc>https://cdfq152313.github.io/post/2015-06-05/</loc>
     <lastmod>2015-06-05T00:00:00+00:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
   </url>
   
   <url>
     <loc>https://cdfq152313.github.io/about/</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
   </url>
   
   <url>
     <loc>https://cdfq152313.github.io/tags/android/</loc>
     <lastmod>2017-04-02T15:23:51+08:00</lastmod>
+    <changefreq>weekly</changefreq>
     <priority>0</priority>
   </url>
   
   <url>
     <loc>https://cdfq152313.github.io/tags/aosp/</loc>
     <lastmod>2016-03-04T00:00:00+00:00</lastmod>
+    <changefreq>weekly</changefreq>
     <priority>0</priority>
   </url>
   
   <url>
     <loc>https://cdfq152313.github.io/tags/bash/</loc>
     <lastmod>2017-05-18T00:34:00+08:00</lastmod>
+    <changefreq>weekly</changefreq>
     <priority>0</priority>
   </url>
   
   <url>
     <loc>https://cdfq152313.github.io/categories/</loc>
+    <changefreq>weekly</changefreq>
     <priority>0</priority>
   </url>
   
   <url>
     <loc>https://cdfq152313.github.io/tags/compiler/</loc>
     <lastmod>2015-06-10T00:00:00+00:00</lastmod>
+    <changefreq>weekly</changefreq>
     <priority>0</priority>
   </url>
   
   <url>
     <loc>https://cdfq152313.github.io/tags/cryptography/</loc>
     <lastmod>2017-02-23T00:00:00+00:00</lastmod>
+    <changefreq>weekly</changefreq>
     <priority>0</priority>
   </url>
   
   <url>
     <loc>https://cdfq152313.github.io/</loc>
-    <lastmod>2017-07-03T00:00:00+00:00</lastmod>
+    <lastmod>2017-05-18T00:34:00+08:00</lastmod>
+    <changefreq>weekly</changefreq>
     <priority>0</priority>
   </url>
   
   <url>
     <loc>https://cdfq152313.github.io/tags/design/</loc>
     <lastmod>2017-05-01T12:44:55+08:00</lastmod>
+    <changefreq>weekly</changefreq>
     <priority>0</priority>
   </url>
   
   <url>
     <loc>https://cdfq152313.github.io/tags/general/</loc>
     <lastmod>2016-12-27T00:00:00+00:00</lastmod>
+    <changefreq>weekly</changefreq>
     <priority>0</priority>
   </url>
   
   <url>
     <loc>https://cdfq152313.github.io/tags/git/</loc>
     <lastmod>2015-06-07T00:00:00+00:00</lastmod>
+    <changefreq>weekly</changefreq>
     <priority>0</priority>
   </url>
   
   <url>
     <loc>https://cdfq152313.github.io/tags/http/</loc>
     <lastmod>2016-11-24T00:00:00+00:00</lastmod>
+    <changefreq>weekly</changefreq>
     <priority>0</priority>
   </url>
   
   <url>
     <loc>https://cdfq152313.github.io/tags/ios/</loc>
-    <lastmod>2017-07-03T00:00:00+00:00</lastmod>
+    <lastmod>2016-11-02T00:00:00+00:00</lastmod>
+    <changefreq>weekly</changefreq>
     <priority>0</priority>
   </url>
   
   <url>
     <loc>https://cdfq152313.github.io/tags/java/</loc>
     <lastmod>2017-04-27T12:44:55+08:00</lastmod>
+    <changefreq>weekly</changefreq>
     <priority>0</priority>
   </url>
   
   <url>
     <loc>https://cdfq152313.github.io/tags/jni/</loc>
     <lastmod>2016-08-05T00:00:00+00:00</lastmod>
+    <changefreq>weekly</changefreq>
     <priority>0</priority>
   </url>
   
   <url>
     <loc>https://cdfq152313.github.io/tags/linux/</loc>
     <lastmod>2017-05-18T00:34:00+08:00</lastmod>
+    <changefreq>weekly</changefreq>
     <priority>0</priority>
   </url>
   
   <url>
     <loc>https://cdfq152313.github.io/tags/llvm/</loc>
     <lastmod>2015-06-10T00:00:00+00:00</lastmod>
+    <changefreq>weekly</changefreq>
     <priority>0</priority>
   </url>
   
   <url>
     <loc>https://cdfq152313.github.io/tags/mac/</loc>
     <lastmod>2017-05-18T00:34:00+08:00</lastmod>
+    <changefreq>weekly</changefreq>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>https://cdfq152313.github.io/categories/misc/</loc>
+    <loc>https://cdfq152313.github.io/categories/miscs/</loc>
     <lastmod>2017-01-15T00:00:00+00:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>https://cdfq152313.github.io/misc/</loc>
-    <lastmod>2017-01-15T00:00:00+00:00</lastmod>
+    <changefreq>weekly</changefreq>
     <priority>0</priority>
   </url>
   
   <url>
     <loc>https://cdfq152313.github.io/tags/mutt/</loc>
     <lastmod>2015-08-12T00:00:00+00:00</lastmod>
+    <changefreq>weekly</changefreq>
     <priority>0</priority>
   </url>
   
   <url>
     <loc>https://cdfq152313.github.io/categories/notes/</loc>
-    <lastmod>2017-07-03T00:00:00+00:00</lastmod>
+    <lastmod>2017-05-18T00:34:00+08:00</lastmod>
+    <changefreq>weekly</changefreq>
     <priority>0</priority>
   </url>
   
   <url>
     <loc>https://cdfq152313.github.io/post/</loc>
-    <lastmod>2017-07-03T00:00:00+00:00</lastmod>
+    <lastmod>2017-05-18T00:34:00+08:00</lastmod>
+    <changefreq>weekly</changefreq>
     <priority>0</priority>
   </url>
   
   <url>
     <loc>https://cdfq152313.github.io/tags/python/</loc>
     <lastmod>2017-04-24T04:25:31+00:00</lastmod>
+    <changefreq>weekly</changefreq>
     <priority>0</priority>
   </url>
   
   <url>
     <loc>https://cdfq152313.github.io/tags/renpy/</loc>
     <lastmod>2017-04-24T04:25:31+00:00</lastmod>
+    <changefreq>weekly</changefreq>
     <priority>0</priority>
   </url>
   
   <url>
     <loc>https://cdfq152313.github.io/tags/swift/</loc>
-    <lastmod>2017-07-03T00:00:00+00:00</lastmod>
+    <lastmod>2016-11-02T00:00:00+00:00</lastmod>
+    <changefreq>weekly</changefreq>
     <priority>0</priority>
   </url>
   
   <url>
     <loc>https://cdfq152313.github.io/tags/</loc>
     <lastmod>2017-04-02T15:23:51+08:00</lastmod>
+    <changefreq>weekly</changefreq>
     <priority>0</priority>
   </url>
   
   <url>
     <loc>https://cdfq152313.github.io/categories/tags/</loc>
+    <changefreq>weekly</changefreq>
     <priority>0</priority>
   </url>
   
   <url>
     <loc>https://cdfq152313.github.io/tags/uwp/</loc>
     <lastmod>2016-10-18T00:00:00+00:00</lastmod>
+    <changefreq>weekly</changefreq>
     <priority>0</priority>
   </url>
   
   <url>
     <loc>https://cdfq152313.github.io/mytags/</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
   </url>
   
 </urlset>

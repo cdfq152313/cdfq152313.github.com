@@ -5,6 +5,7 @@
     <link>https://cdfq152313.github.io/tags/git/</link>
     <description>Recent content in Git on Denny&#39;s Blog</description>
     <generator>Hugo -- gohugo.io</generator>
+    <language>zh-hant</language>
     <lastBuildDate>Sun, 07 Jun 2015 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="https://cdfq152313.github.io/tags/git/index.xml" rel="self" type="application/rss+xml" />
@@ -16,16 +17,7 @@
       <pubDate>Sun, 07 Jun 2015 00:00:00 +0000</pubDate>
       
       <guid>https://cdfq152313.github.io/post/2015-06-07/</guid>
-      <description>環境設定 系統: linux mint
-套件: sudo apt-get install openssh-server git
-基本操作 安裝完openssh-server和git後，即可開始嘗試創建remote repository。
-為了之後的安全性議題，創建一個新的帳號來管理git server
-sudo adduser git  下方指令新增project.git目錄做為remote repository
-(我新增在此帳號的家目錄下，而git官方文件則是放在 /opt/git/ 裡)
-su git mkdir /home/git/project.git cd /home/git/project.git git --bare init  remote repository已經建立，可以開始使用。 git@gitserver 代表 登入帳號@serverIP位置
-試著用ssh連線抓下git repository吧。
-git clone git@gitserver:/home/git/project.git git remote -v origin git@gitserver:/home/git/project.git (fetch) origin git@gitserver:/home/git/project.git (push)  當然push pull指令也沒問題囉~ 只要有該帳戶密碼即可。
-git push origin master git pull origin master  安全性議題 - SSH Public Key Authentication 上述推送git repository的流程中，只需要有帳號密碼即可登入。</description>
+      <description>環境設定 系統: linux mint 套件: sudo apt-get install openssh-server git 基本操作 安裝完openssh-server和git後，即可開始嘗試創建remote repository。 為</description>
     </item>
     
     <item>
@@ -34,16 +26,7 @@ git push origin master git pull origin master  安全性議題 - SSH Public Key 
       <pubDate>Fri, 05 Jun 2015 00:00:00 +0000</pubDate>
       
       <guid>https://cdfq152313.github.io/post/2015-06-05/</guid>
-      <description>初始化
-git init git config --global user.name &amp;quot;你的ID&amp;quot; git config --global user.email &amp;quot;你的信箱&amp;quot;  狀態 git status
-新增
-git add 檔名 git add -A git add -u  提交
-git commit -m &amp;quot;改動訊息&amp;quot;  歷史訊息
-git log  忽略
-.gitignore  比較不同
-git diff (工作和暫存) git diff 分支名稱 (工作和分支)  分支(版本)名稱 HEAD(目前頭分支) : HEAD HEAD^ HEAD^^ HEAD^^^ master(branch名) 695606fc5e31&amp;hellip;.. (commit hash名)
-重置
-git reset --hard 分支名稱(分支覆蓋暫存區和工作區，後悔藥，危險不可逆) git reset 分支名稱 (分支覆蓋暫存區，通常拿來撤銷git add操作) git checkout 分支名稱 (看以前的版本) git tag -m &amp;quot;wahaha version 1000&amp;quot; v_1000  在git中，為了吃後悔藥，完成一個小功能立刻commit 在git中，為了找尋方便，完成大改版記得tag</description>
+      <description>初始化 git init git config --global user.name &amp;quot;你的ID&amp;quot; git config --global user.email &amp;quot;你的信箱&amp;quot; 狀態 git status 新增 git add 檔名 git add -A git add -u 提交 git commit -m &amp;quo</description>
     </item>
     
   </channel>

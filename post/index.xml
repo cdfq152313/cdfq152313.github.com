@@ -5,26 +5,11 @@
     <link>https://cdfq152313.github.io/post/</link>
     <description>Recent content in Posts on Denny&#39;s Blog</description>
     <generator>Hugo -- gohugo.io</generator>
-    <lastBuildDate>Mon, 03 Jul 2017 00:00:00 +0000</lastBuildDate>
+    <language>zh-hant</language>
+    <lastBuildDate>Thu, 18 May 2017 00:34:00 +0800</lastBuildDate>
     
 	<atom:link href="https://cdfq152313.github.io/post/index.xml" rel="self" type="application/rss+xml" />
     
-    
-    <item>
-      <title>[iOS] 解析Json</title>
-      <link>https://cdfq152313.github.io/post/2017-07-03/</link>
-      <pubDate>Mon, 03 Jul 2017 00:00:00 +0000</pubDate>
-      
-      <guid>https://cdfq152313.github.io/post/2017-07-03/</guid>
-      <description>背景 之前寫過在Android平台用Gson函式庫來進行反序列化。
-想在iOS上做同樣的事，但是用了一下EVReflection覺得效果不太滿意，好像都會出現一些未預期行為。
-只好自己用swift重寫這段。
-原理 如果是要解析抓到的Json String，利用JSONSerialization轉成Dictionary。
-反之亦然，先做出Dictionary再利用JSONSerialization轉成Json String。
-func stringToDict(jsonString:String)-&amp;gt;[String:Any]{ let data = jsonString.data(using: .utf8) let anyObj = try! JSONSerialization.jsonObject(with: data!, options: []) let dict = anyObj as! [String:Any] return dict } func dictToString(dict:[String:Any])-&amp;gt;String{ let data = try! JSONSerialization.data(withJSONObject: dict, options: .prettyPrinted) let result = String(data: data, encoding: .utf8) return result! }   為了便於理解用了很多&amp;rdquo;!&amp;ldquo;，在正式的程式碼請記得改為optional &amp;ldquo;?&amp;rdquo;
- 可以試著來回轉換並印出，看看程式碼有無錯誤。
-func main(){ let str = &amp;quot;{\&amp;quot;a\&amp;quot;:1,\&amp;quot;b\&amp;quot;:\&amp;quot;apple\&amp;quot;,\&amp;quot;c\&amp;quot;:{\&amp;quot;d\&amp;quot;:\&amp;quot;banana\&amp;quot;}}&amp;quot; let dict = stringToDict(jsonString: str) let jsonString = dictToString(dict: dict) print(jsonString) }  使用Dictionary裡面的值 從String解析出Dictionary後，接下來就可以開始進行解析了</description>
-    </item>
     
     <item>
       <title>Mac/Linux的Bash主題(theme)設定</title>
@@ -32,21 +17,7 @@ func main(){ let str = &amp;quot;{\&amp;quot;a\&amp;quot;:1,\&amp;quot;b\&amp;qu
       <pubDate>Thu, 18 May 2017 00:34:00 +0800</pubDate>
       
       <guid>https://cdfq152313.github.io/post/2017-05-18/</guid>
-      <description>緣起 MAC和Linux初始的Bash設定有兩個讓我不滿意的地方
- 資料夾位置後緊接著指令輸入區 進入git repository時不會顯示目前的branch  1的問題導致指令沒打幾個字就會跳下行，因為有大半位置都被目錄路徑佔據了。
-2的問題會害我一直反射性地打git status確認目前的狀況。
-bash_prompt效果展示 先展示一下效果：
-一般情況
-有git的情況
-有python virtualenv的情況
-同時有virtualenv和git
-雖然不像zsh的powerline那麼炫砲，但也是勉強堪用了。
-如何安裝 1. 下載bash_prompt 檔案位置
-複製並儲存到本地端，我習慣放在家目錄並取名叫.bash_prompt。
-2. 在bash開啟新session時載入 linux更改~/.bashrc，mac更改~/.bash_profile。
-在此檔案的最後一行插入
-. ~/.bash_prompt  3. 開啟新session 順利的話，再新開一個terminal即可看到五彩繽紛的介面了。
-Reference 原始設定出處</description>
+      <description>緣起 MAC和Linux初始的Bash設定有兩個讓我不滿意的地方 資料夾位置後緊接著指令輸入區 進入git repository時不會顯示目前的br</description>
     </item>
     
     <item>
@@ -55,16 +26,7 @@ Reference 原始設定出處</description>
       <pubDate>Mon, 01 May 2017 12:44:55 +0800</pubDate>
       
       <guid>https://cdfq152313.github.io/post/2017-05-01/</guid>
-      <description>問題 今天才發現應該要有的一個小小設計，在使用SocketIO(或其他強連線函式庫)時，可能會希望連線後，立刻執行某條指令。
-舉例來說，如果現在有兩台裝置(稱為AB)，想用SocketIO進行對接，步驟為
- B已經連上Server，並有一組房間編號。 A在線下取得B之編號 A連上Server A知會Server房間編號。 A知會B，&amp;rdquo;你好 拎北來阿。&amp;rdquo;  我一開始是4和5都直接塞在onConnection的時候，也就是一連上就執行。但是如果socketio斷線了，那重連的時候，5就會重複發送。也就是說B會再次看到&amp;rdquo;你好 拎北來阿。&amp;rdquo;
-更多問題 解決問題的方法也很單純，就是把5從onConnection切開來，等連上後再執行即可。不過這邊就出現另一個問題，我怎麼知道SocketIO連上了？我一開始想用Listener解決，等連上後通知我該執行5的動作。但是這樣程式碼寫起來超不直覺。
-明明應該是
-1. socketIO 連上後知會房間編號 2. socketIO 拎北來阿  變成Listener的話就變成
-1. socketIO 連上後知會房間編號, 再通知那個Call function的人我連上了。 2. 我接收到通知了，拎北來阿  怎麼樣都覺得第一種方法比較直觀容易理解。
-用Queue解決 後來解決方法就是，做一個Queue蒐集沒Connect時的指令。所有沒Connect時的Message都會跑進這個Queue。等到Connect上後再把Queue裡的指令批次發送就好了。
-這樣就可以繼續用
-1. socketIO 連上後知會房間編號 2. socketIO 拎北來阿（這行可能尚未執行，放在Queue中等待連上時批次執行）  這樣的方式來寫Code了。</description>
+      <description>問題 今天才發現應該要有的一個小小設計，在使用SocketIO(或其他強連線函式庫)時，可能會希望連線後，立刻執行某條指令。 舉例來說，如果現在</description>
     </item>
     
     <item>
@@ -73,15 +35,7 @@ Reference 原始設定出處</description>
       <pubDate>Thu, 27 Apr 2017 12:44:55 +0800</pubDate>
       
       <guid>https://cdfq152313.github.io/post/2017-04-27/</guid>
-      <description>簡介 這篇主要探討怎麼把當地時間轉換成GMT(UTC)時間，不在意一秒誤差的話這兩者基本上是一樣的。
-主要用到下列三個元件
- Date：  最基礎的時間紀錄 無法呈現任何有意義的資訊(例如年月的int，或格式化過的字串)  SimpleDateFormat  擅長格式化字串與Date之間的轉換  Calendar  擅長對時間作操作(比較，加減) 擅長單獨取出欄位(年、月、日、時、分、秒等)   格式化字串 這邊示範如果取得一個Date或一個Calendar，應該如何將其格式化為字串。
-格式統一採用 &amp;ldquo;年-月-日 時:分:秒&amp;rdquo;。
-Date Date本身沒辦法呈現任何有意義的資訊，只是一個時間記錄器而已。
-因此必須依靠SimpleDateFormat來將Date格式化為有意義的字串。
-String formatDate(Date date){ SimpleDateFormat sdf = new SimpleDateFormat(&amp;quot;yyyy-MM-dd HH:mm:ss&amp;quot;); // HH是24小時制，hh是12小時制 return sdf.format(date); }  Calendar Calendar有一個method叫getTime，可以取出此Calendar目前的Date。在有formatDate此函式的情況下，其實只要先getTime再丟給formatDate即可。
-只是這邊為了展示calendar單獨取值的方法走了不一樣的路徑。
-String formatCalendar(Calendar calendar){ int year = calendar.get(Calendar.YEAR); int month = calendar.get(Calendar.MONTH) + 1; // 1月的值為0 int day = calendar.get(Calendar.DAY_OF_MONTH); int hour = calendar.get(Calendar.HOUR_OF_DAY); // HOUR_OF_DAY是24小時制，HOUR是12小時制 int minute = calendar.</description>
+      <description>簡介 這篇主要探討怎麼把當地時間轉換成GMT(UTC)時間，不在意一秒誤差的話這兩者基本上是一樣的。 主要用到下列三個元件 Date： 最基礎的時間</description>
     </item>
     
     <item>
@@ -90,35 +44,16 @@ String formatCalendar(Calendar calendar){ int year = calendar.get(Calendar.YEAR)
       <pubDate>Mon, 24 Apr 2017 04:25:31 +0000</pubDate>
       
       <guid>https://cdfq152313.github.io/post/2017-04-24/</guid>
-      <description>前言 renpy加入對話很簡單，不過想要加入文本就不是那麼容易了。有的時候想要在遊戲中閱讀長文本，還需要插入\n來作為換行，頗不方便。這個時候讀檔功能就派上用場了。
-在這裡要注意，不能使用python原生的開檔函式，否則程式有一定可能出錯(詳情看最後一段)。
-Renpy讀檔函式 官方讀檔文件在這裡。
-不過在讀unicode檔案的時候，還需要做一些特別處理才行，否則讀出來的檔案都是亂碼。以下為範例程式碼，為python語法。
-def read_file(filepath): import codecs # 開檔 f = renpy.file(filepath) # 讀入檔案 data = f.read() # 轉換為unicode data = codecs.decode(data, &#39;utf-8&#39;) return data  如此一來，最後產生的data就會是unicode格式囉。
-另外，原本想使用官網上所提供的renpy.fsdecode(s)來做編碼轉換，但是失敗了，可能是沒搞懂用法。後來就使用python原生的codec來做轉換。運作得還算不錯。
-Renpy路徑問題 renpy的path一律是以game資料夾作為根目錄，往下一層目錄是使用&amp;rsquo;/&amp;lsquo;作為識別。所以不用自作聰明使用python原生地os.path.join函式來合成路徑。在windows合成出來的路徑反而會出錯，因為windows是用反斜線&amp;rsquo;\&amp;lsquo;來分割目錄的。
-以下為組合路徑的方法。
-# 假設路徑為game目錄底下的info資料夾裡面的info01.txt檔案 filepath = &#39;info/info01.txt&#39;  最後碎碎念 其實也並不是不能使用原生地python函式來做開檔，但是要記得一件事，如果你有在renpy的設定中封裝檔案，像下列程式碼。
-# 在options.rpy中 build.classify(&#39;game/info/*.txt&#39;, &#39;data&#39;)  那麼在製作釋出版時，這些資料會很自然地被封裝到data.rpa的檔案中。如此一來。python原生函式所取得的路徑，自然就會抓不到任何東西。
-反過來說，只要你不封裝任何檔案，那你想使用任何python的函式都沒問題(ex: os.path.join / open / &amp;hellip;)</description>
+      <description>前言 renpy加入對話很簡單，不過想要加入文本就不是那麼容易了。有的時候想要在遊戲中閱讀長文本，還需要插入\n來作為換行，頗不方便。這個時候</description>
     </item>
     
     <item>
       <title>Android 利用gson解析json</title>
-      <link>https://cdfq152313.github.io/post/2017-04-01/</link>
+      <link>https://cdfq152313.github.io/post/2017-04-02/</link>
       <pubDate>Sun, 02 Apr 2017 15:23:51 +0800</pubDate>
       
-      <guid>https://cdfq152313.github.io/post/2017-04-01/</guid>
-      <description>Android 利用gson解析json 反射和序列化
-在開始前先貼篇文章暖暖身，讓大家了解Reflection(反射)和Serialization(序列化)的不同
-常常在串接API時，伺服器端傳過來的是json格式。
-我個人是很不相信自己的眼睛，所以直接用string get field的動作我是盡量不寫的。
-取而代之的是用Gson提供的Deserializatione(反序列化)工具來達成這個目標，反序列化底層的實作是依賴Reflection(反射)機制而達成，不過不是這篇的重點。
-如果有json data如下
-{ &amp;quot;fruit&amp;quot;: &amp;quot;apple&amp;quot;, &amp;quot;hello&amp;quot;: &amp;quot;world&amp;quot; }  我會用一個class，有著跟json檔一模一樣的field。
-class Data{ public String fruit; public String hello; }  然後利用Gson的fromJson函式
-Data jsonData(String jsonStr){ Gson gson = new Gson(); Data result = gson.fromJson(jsonStr, Data.class); return result; }  將檔案給解析出來，如果實際的json物件屬性跟class資料屬性對不上的話，就會拋擲異常。
-fromJson這個函式就是Gson的反序列化工具。</description>
+      <guid>https://cdfq152313.github.io/post/2017-04-02/</guid>
+      <description>Android 利用gson解析json 反射和序列化 在開始前先貼篇文章暖暖身，讓大家了解Reflection(反射)和Serialization(序列化)</description>
     </item>
     
     <item>
@@ -127,12 +62,7 @@ fromJson這個函式就是Gson的反序列化工具。</description>
       <pubDate>Mon, 27 Mar 2017 00:00:00 +0000</pubDate>
       
       <guid>https://cdfq152313.github.io/post/2017-03-27/</guid>
-      <description>使用AlertDialog時，當點在Dialog的外圍，Android會讓此Dialog消失，並且什麼動作都不執行。
-如果剛好positive和negative的按鈕都是有明確動作的，並不想被取消，可以透過setCancelable(boolean)這個函式來強制使用者不得取消。
-不過有時會希望使用者可以透過點擊按鈕或點擊Dialog外圍來執行取消動作(非null空動作)，但在AlertDialog的函式庫中是無能為力的，我查了
- setOnCancelListener setOnDismissListener  這兩個函式都會導致程式異常停止。最後查到應該使用DialogFragment當中的onCancel動作來解決這個問題。
-以下範例程式碼
-public class MyDialogFragment extends DialogFragment { private final static String TAG = &amp;quot;MyDialog&amp;quot;; @Override public Dialog onCreateDialog(Bundle savedInstanceState) { AlertDialog.Builder builder = new AlertDialog.Builder(getActivity()); builder.setTitle(&amp;quot;Hello&amp;quot;) .setPositiveButton(&amp;quot;YA&amp;quot;, new DialogInterface.OnClickListener() { @Override public void onClick(DialogInterface dialog, int which) { Log.i(TAG, &amp;quot;Positive&amp;quot;); } }) .setNegativeButton(&amp;quot;NO&amp;quot;, new DialogInterface.OnClickListener() { @Override public void onClick(DialogInterface dialog, int which) { Log.i(TAG, &amp;quot;Negative&amp;quot;); } }); return builder.create(); } @Override public void onCancel(DialogInterface dialog) { super.</description>
+      <description>使用AlertDialog時，當點在Dialog的外圍，Android會讓此Dialog消失，並且什麼動作都不執行。 如果剛好positive</description>
     </item>
     
     <item>
@@ -141,8 +71,7 @@ public class MyDialogFragment extends DialogFragment { private final static Stri
       <pubDate>Thu, 23 Feb 2017 00:00:00 +0000</pubDate>
       
       <guid>https://cdfq152313.github.io/post/2017-02-23/</guid>
-      <description>程式碼 為了易於保存，所有金鑰、向量、輸出結果都是以Base64編碼。
-from Crypto.Cipher import AES from Crypto import Random import base64 BS = AES.block_size pad = lambda s: s + (BS - len(s) % BS) * chr(BS - len(s) % BS) unpad = lambda s : s[0:-ord(s[-1])] class AES_HELPER(object): def __init__(self): print &#39;init&#39; def key_generator(self, bits=256): random = Random.new() key = random.read( bits/8 ) return base64.b64encode(key) def iv_generator(self): &#39;&#39;&#39; AES Initialization Vector is 128 bits(16 bytes). &#39;&#39;&#39; random = Random.</description>
+      <description>程式碼 為了易於保存，所有金鑰、向量、輸出結果都是以Base64編碼。 from Crypto.Cipher import AES from Crypto import Random import base64 BS = AES.block_size pad = lambda s: s + (BS - len(s) % BS) * chr(BS - len(s) % BS) unpad = lambda s : s[0:-ord(s[-1])]</description>
     </item>
     
     <item>
@@ -151,13 +80,7 @@ from Crypto.Cipher import AES from Crypto import Random import base64 BS = AES.b
       <pubDate>Wed, 22 Feb 2017 00:00:00 +0000</pubDate>
       
       <guid>https://cdfq152313.github.io/post/2017-02-22/</guid>
-      <description>最後編輯時間 2017/05/27
- 平台 Android Studio
- compileSdkVersion 25 buildToolsVersion &amp;ldquo;25.0.1&amp;rdquo;  Base64的轉換有使用到Android的函式庫，若是純Java的使用者必須自行搜尋替代方案。
-金鑰初始化 AES的金鑰為SecretKey類型，以下是產生範例。
-public SecretKey genAESKey() throws NoSuchAlgorithmException, NoSuchPaddingException, InvalidKeyException, UnsupportedEncodingException { // AES key KeyGenerator keyGen = KeyGenerator.getInstance(&amp;quot;AES&amp;quot;); keyGen.init(256, new SecureRandom()); return keyGen.generateKey(); }  初始向量初始化 相同的資料在相同的金鑰下會被加密成同樣結果，因此我們必須在每次加密使用不同初始化向量(被知道也無妨)，來避免同樣的加密結果。相當於灑鹽的功效。
-以下是初始化向量的產生方法。
-public IvParameterSpec genIV() throws NoSuchPaddingException, NoSuchAlgorithmException { Cipher cipher = Cipher.getInstance(&amp;quot;AES/CBC/PKCS5Padding&amp;quot;); byte [] iVAES = new byte[ cipher.getBlockSize() ]; new SecureRandom().nextBytes(iVAES); return new IvParameterSpec(iVAES); }  將字串加密 金鑰初始模式為 ENCRYPT_MODE，代表接下來要執行加密。</description>
+      <description>最後編輯時間 2017/05/27 平台 Android Studio compileSdkVersion 25 buildToolsVersion &amp;ldquo;25.0.1&amp;rdquo; Base64的轉換有使用到Android的函式庫，若是純Java的使用者必須自行搜尋替代方案。 金鑰初始化 AES</description>
     </item>
     
     <item>
@@ -166,7 +89,16 @@ public IvParameterSpec genIV() throws NoSuchPaddingException, NoSuchAlgorithmExc
       <pubDate>Wed, 08 Feb 2017 00:00:00 +0000</pubDate>
       
       <guid>https://cdfq152313.github.io/post/2017-02-08/</guid>
-      <description> Linearlayout  Android 对Layout_weight属性完全解析以及使用ListView来实现表格  fragment  官方API Guide Android Fragment 真正的完全解析（上） Android Fragment 真正的完全解析（下） Fragment Lifecycle中的onAttach  Toolbar  官方API Guide Toolbar左上方的返回鈕 加入新的圖示 Toolbar在Activity和Fragment下的使用情況  RecyclerView 和 ListView  RecyclerView 和 ListView的對比  UI/UX  List of Android UI/UX Libraries Fancy Button  Testing  Android单元测试（二）：再来谈谈为什么 Android单元测试（四）：Mock以及Mockito的使用 安卓单元测试(十一)：异步代码怎么测试  Library整合  整合1  Parcelable vs Serializable  Android Parcelable和Serializable的區別  權限管理  Android綠豆湯 - Android 6.0的Permission權限設計  檔案處理  Android developer - 儲存檔案  使用函式庫  Import Android Library 的各種方式  心得  Best practice  </description>
+      <description>Linearlayout Android 对Layout_weight属性完全解析以及使用ListView来实现表格 fragment 官方API Guide Android Fragment 真正的完全解析（上） Android Fragment 真正的完全解析（下）</description>
+    </item>
+    
+    <item>
+      <title>寫給朋友看的function與class</title>
+      <link>https://cdfq152313.github.io/post/2017-01-15/</link>
+      <pubDate>Sun, 15 Jan 2017 00:00:00 +0000</pubDate>
+      
+      <guid>https://cdfq152313.github.io/post/2017-01-15/</guid>
+      <description>今天有個簡易的app功能如下 只有一個ViewController 這個ViewController上只有兩個UITextView Input: &amp;ldquo;01/15&amp;rdquo; 代表1月1</description>
     </item>
     
     <item>
@@ -175,15 +107,16 @@ public IvParameterSpec genIV() throws NoSuchPaddingException, NoSuchAlgorithmExc
       <pubDate>Tue, 27 Dec 2016 00:00:00 +0000</pubDate>
       
       <guid>https://cdfq152313.github.io/post/2016-12-27/</guid>
-      <description>最近遇到一個問題，使用pyinstaller製作執行檔後，在本機運作上ok，但是一傳給別人使用就會出問題。可是用右鍵show packages裡面的Content/MacOS/執行檔，是可以正常使用的。
-這讓我非常困惑，後來才發現是Sierra權限設定更改。
-英文好的可以直接看下面就解決了：
-http://lapcatsoftware.com/articles/app-translocation.html
-英文不好的簡單翻譯就是：
-macos在Sierra的版本改變了對未知的應用程式的行為。如果你的應用程式是不明來源(Ex:網路下載)，那macos在執行這個程式的時候就會把程式挪進App Translocation這個唯讀空間再執行。
-這有可能出現兩個問題，第一是你的程式如果涉及資料儲存，唯讀空間是不能存的，程式就會失敗。第二個問題是被移動的只有程式本身，萬一你的程式必須仰賴資料夾中的其他的檔案才能執行，那也會失敗。
-解決方法是拖拉這個app到任意其他位置(ex:桌面)，OSX就不會再幫你把這個app放進唯讀資料夾執行。
-還記得幾乎所有的MAC app都需要拖拉到應用程式裡面才能使用嗎? MAC應該就是希望你對想使用的APP進行過此一確認才加上這個功能。</description>
+      <description>最近遇到一個問題，使用pyinstaller製作執行檔後，在本機運作上ok，但是一傳給別人使用就會出問題。可是用右鍵show packages</description>
+    </item>
+    
+    <item>
+      <title>[讀書心得] 圖解密碼學與比特幣原理</title>
+      <link>https://cdfq152313.github.io/post/2016-12-27/</link>
+      <pubDate>Tue, 27 Dec 2016 00:00:00 +0000</pubDate>
+      
+      <guid>https://cdfq152313.github.io/post/2016-12-27/</guid>
+      <description>圖解密碼學與比特幣原理 花了很久才斷斷續續的看完這本，覺得是一本很不錯的科普書，沒有太艱深的數學。 書中有系統的把目前密碼學的發展介紹了一遍，非</description>
     </item>
     
     <item>
@@ -192,11 +125,7 @@ macos在Sierra的版本改變了對未知的應用程式的行為。如果你的
       <pubDate>Thu, 24 Nov 2016 00:00:00 +0000</pubDate>
       
       <guid>https://cdfq152313.github.io/post/2016-11-24/</guid>
-      <description>來源網址：https://read01.com/J8P4L.html
-要注意最後一段說get比較不安全是錯的，你他媽的不轉成https通通都是不安全。
-Client端 分三區塊
- Request line Request header Body  Request line  有著方法描述，資源位置，協議版本 例如：GET http://www.cnblogs.com/ HTTP/1.1  Request header  Accept：client告知server可以接受的媒體類型(json, xml, html &amp;hellip;)，大部分使用*/*代表全部都接受。 Referer：告訴伺服器端我是從哪裡連過來 Accept-Language：瀏覽器端接受的語言  EX: 中文、英文&amp;hellip;  Accept-Charset：瀏覽器端接受的字符集  EX: BIG5, UTF-8, GBK &amp;hellip;  Content-Type  Body的檔案類型 補充資料，與Accept的差別 簡單的說，當client傳送檔案給server，content-type可以描述這個檔案的類型。當server吐response回給client，content-type一樣可以描述這個檔案的類型。 accept是請求對方返回的類型，content-type是實際一個request或response中夾帶的類型。  Accept-Encoding：client端的編碼(壓縮)方法 User-Agent：client端的作業系統，瀏覽器名稱 Connection  是否在接收完檔案後立刻斷開TCP [補充資料])(https://www.byvoid.com/zht/blog/http-keep-alive-header)  Content-length: 訊息長度 Host：該資源的domain Name 剩下一些懶得看  Pragma Cookie   Body 就是個Body
-Server端 一樣分三區塊 - Response line - Response header - Body</description>
+      <description>來源網址：https://read01.com/J8P4L.html 要注意最後一段說get比較不安全是錯的，你他媽的不轉成https通通都是</description>
     </item>
     
     <item>
@@ -205,11 +134,7 @@ Server端 一樣分三區塊 - Response line - Response header - Body</descripti
       <pubDate>Wed, 02 Nov 2016 00:00:00 +0000</pubDate>
       
       <guid>https://cdfq152313.github.io/post/2016-11-02/</guid>
-      <description>Mail 不能在模擬器上跑，會crash。
-簡單流程  初始化MFMailComposeViewController 設定標題以及收件者 推出MFMailComposeViewController  import MessageUI func sendMail(){ let mailController = MFMailComposeViewController() mailController.setSubject(&amp;quot;swift程式設計入門&amp;quot;) mailController.setToRecipients([&amp;quot;cdfq152313@gmail.com&amp;quot;]) self.present(mailController, animated: true, completion: nil) }  測試能不能使用Mail功能 像是在模擬器上就不能使用。
-if MFMailComposeViewController.canSendMail(){ // 可以寄信 } else{ // 不能寄信 }  mailComposeDelegate 設定mailComposeDelegate可以讓寄信完後，dismiss到原來畫面，這邊要注意的是不要設成一般delegate了。
-mailController.mailComposeDelegate = self func mailComposeController(_ controller: MFMailComposeViewController, didFinishWith result: MFMailComposeResult, error: Error?) { dismiss(animated: true, completion: nil) }  如果想知道寄信後的狀態可參考第二個參數didFinishWith result。按住command + 滑鼠左鍵在MFMailCompseResult可以知道有下列狀態。
-public enum MFMailComposeResult : Int { case cancelled case saved case sent case failed }  夾帶圖片 // 夾一張圖片 func mailCo var image = UIImage(named: &amp;quot;book1&amp;quot;) var data = UIImageJPEGRepresentation(image!</description>
+      <description>Mail 不能在模擬器上跑，會crash。 簡單流程 初始化MFMailComposeViewController 設定標題以及收件者 推出MFMailCo</description>
     </item>
     
     <item>
@@ -218,16 +143,7 @@ public enum MFMailComposeResult : Int { case cancelled case saved case sent case
       <pubDate>Tue, 25 Oct 2016 00:00:00 +0000</pubDate>
       
       <guid>https://cdfq152313.github.io/post/2016-10-25/</guid>
-      <description>TableView IndexPath: Section &amp;amp; Row 看圖應該可以明瞭Section和Row的含意，Apple把tableView劃分為section，每個section下又有row。
-在IOS中有一個叫做IndexPath的類別專門儲存這兩個值，在tableView以後要override的方法會經常看到。
-必定要override的method: 幾個section 幾個row 使用tableView必須指定DataSource和Delegate (若是TableViewController則已經指定好自己作為這兩個protocol的實作)
-其中有些function是必定要override的
- 總共有幾個section 每個section裡面有幾個row  在這個範例中，我指定兩個section，section 0有2 row，section 1有3 row。
-// 總共幾個section override func numberOfSections(in tableView: UITableView) -&amp;gt; Int { return 2 } // 每個section裡面有幾個row override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -&amp;gt; Int { if section == 0{ return 2 } else{ return 3 } }  某一列的內容 但是只有這樣，顯示出來會是空白一片，所以必須要回傳顯示的內容。
-在做這個項目之前，必須先到storyBoard，將tableView裏頭的cell指定一個identifier，否則會錯誤。
-在此我指定cell的identifier為myCell
-然後才可以在程式碼中使用myCell
-override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -&amp;gt; UITableViewCell { let cell = tableView.</description>
+      <description>TableView IndexPath: Section &amp;amp; Row 看圖應該可以明瞭Section和Row的含意，Apple把tableView劃分為section，每個section下又有row。</description>
     </item>
     
     <item>
@@ -236,14 +152,7 @@ override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexP
       <pubDate>Fri, 21 Oct 2016 00:00:00 +0000</pubDate>
       
       <guid>https://cdfq152313.github.io/post/2016-10-21/</guid>
-      <description>環境設定 權限 開啟地圖本身不需要權限，如果若需要GPS位置，請在info.plist中開啟
-StoryBoard &amp;amp; IBOutlet 在StoryBoard上地圖套件名稱叫做Map Kit View
-如果想要拉IBOutlet到自己的class中，會發現出現Error，這是因為Map class並不包含在UIKit當中。
-所以請import Mapkit
-import Mapkit  MKMapViewDelegate 最後就是記得設定mapView的delegate
-如果需要特殊效果的時候非常有用，例如：開始讀取map位置的時候要做什麼，結束讀取位置的時候要做什麼&amp;hellip;
-將地址解析為GPS 可以利用CLGeocoder這個class來達成，以下是一個簡單的範例
- 初始化CLGeocoder 使用geocodeAddressString此方法，傳入兩個參數  需解析之address (字串) 解析完後的動作(closure)，參數如下 [CLPlacemark]?: 一個地址有多個可能符合之GPS位置，所以是一個Array。 Error?: 若無則為nil  在closure當中，把經緯度印出來  我們可以從CLPlacemark的location屬性當中，找到經度和緯度。   // 初始化 let geoCoder = CLGeocoder() // 解析字串 geoCoder.geocodeAddressString(address) { (places, error) in // 如果解析失敗，直接回傳不做任何事 guard error == nil else { print (&amp;quot;Get position error&amp;quot;) return } // 印出位置 if(places?.count)! &amp;gt; 0 { let placeMark = places?</description>
+      <description>環境設定 權限 開啟地圖本身不需要權限，如果若需要GPS位置，請在info.plist中開啟 StoryBoard &amp;amp; IBOutlet 在StoryBoard上地圖套件名稱叫做Map</description>
     </item>
     
     <item>
@@ -252,13 +161,7 @@ import Mapkit  MKMapViewDelegate 最後就是記得設定mapView的delegate
       <pubDate>Tue, 18 Oct 2016 00:00:00 +0000</pubDate>
       
       <guid>https://cdfq152313.github.io/post/2016-10-18/</guid>
-      <description>前言牢騷 我是要在uwp下使用加密演算法並傳送到server去，由Server進行解密。於是在google中下關鍵字&amp;rdquo;.net rsa encrypt&amp;rdquo;，所以就找到了最舊也最多人討論的RSACryptoServiceProvider。我使用Visual studio 2015開command line，想在弄到uwp前先行測試，結果發現了許多與伺服器(python)的解密不相容之處，不管是金鑰格式，還是填補方法。等到把這些問題都搞定了，又發現不能在UWP中使用，真是想死的心都有了&amp;hellip;。再次google了&amp;rdquo;uwp encrpyt&amp;rdquo;後找到了CryptographicEngine + AsymmetricKeyAlgorithmProvider這組library，才終於搞定加解密問題。
-這篇文章會大概描述下列兩種加解密方法與金鑰格式。
- RSACryptoServiceProvider/RSACng CryptographicEngine + AsymmetricKeyAlgorithmProvider  .net RSA API概觀 在.net中RSA的加解密有三組。分別是
- RSACryptoServiceProvider RSACng CryptographicEngine + AsymmetricKeyAlgorithmProvider  以格式來說，1,2是同一組介面實作，有著類似的操作方式，AsymmetricKeyAlgorithmProvider則是另外的class.
-以新舊來說，RSACryptoServiceProvider是最舊的，提供的填補格式極少。RSACng是後繼更加完善的class，但是要在.net4.6後才能用，選擇版本時要注意。至於CryptographicEngine，只能在windows app(含uwp)當中使用。
-RSACryptoServiceProvider與RSACng 加密 步驟如下
- 先將字串轉換成Byte (可以用ASCIIEncoding或UTF8Encdoing，記得怎麼轉回來就好) 初始化RSACryptoServiceProvider (可用來加解密，在此只用來加密) 進行加密 對加密結果進行Base64(理由說明如下)  RSA對byte進行加密，結果也是byte。 將加密結果直接轉回string，看起來是亂碼，會涵蓋許多無法顯示的字元。 因此如果要進行傳輸，最好以Base64重新編碼過，出來的字串才會全部都是可顯示的文字。 Base64介紹   static String Encrypt(String _content) { // 先轉成Byte再加密 Encoding ByteConverter = new ASCIIEncoding(); var content = ByteConverter.GetBytes(_content); // 初始化RSACryptoServiceProvider RSACryptoServiceProvider rsa = getRSACrypto(); // 加密 var encrypt = rsa.</description>
+      <description>前言牢騷 我是要在uwp下使用加密演算法並傳送到server去，由Server進行解密。於是在google中下關鍵字&amp;rdquo;.net rsa e</description>
     </item>
     
     <item>
@@ -267,12 +170,7 @@ RSACryptoServiceProvider與RSACng 加密 步驟如下
       <pubDate>Fri, 14 Oct 2016 00:00:00 +0000</pubDate>
       
       <guid>https://cdfq152313.github.io/post/2016-10-14/</guid>
-      <description>Swift的執行緒分為主要和背景。 Main Queue / Concurrent Queue 主執行緒不能執行同步工作，只能執行非同步工作。
-主執行緒語法 let task1 = { for i in 1...5{ print (&amp;quot;Task1: (\i)&amp;quot;) } } // DispatchQueue.main.sync(execute: task1) DispatchQueue.main.async(execute: task1)  背景執行緒語法 不指定執行緒
-DispatchQueue.global().sync(execute: task1) DispatchQueue.global().async(execute: task1)  指定執行緒
-DispatchQueue.global(qos: .background).sync(execute:task1) DispatchQueue.global(qos: .background).async(execute:task1)  下載方法 NSData  利用url生出網址 利用Data Class下載(以前叫NSData) 把下載下來的資料指定給想要的檔案  記得要使用DispatchQueue.global().async使用此function，否則畫面會被block住。
-下載完畢後要更新UI時要使用ispatchQueue.main.async否則畫面不會即時更新。
-func download(){ if let url = URL(string: &amp;quot;http://www.carlosicaza.com/wp-content/uploads/2014/07/Swift-logo.png&amp;quot;){ do { let data = try Data(contentsOf:url) let image = UIImage(data:data) DispatchQueue.</description>
+      <description>Swift的執行緒分為主要和背景。 Main Queue / Concurrent Queue 主執行緒不能執行同步工作，只能執行非同步工作。 主執行緒語法 let task1 = { for i in 1...5{ print (&amp;quot;Task1: (\i)&amp;quot;) } } // DispatchQueue.main.sync(execute: task1) DispatchQueue.main.async(execute: task1) 背</description>
     </item>
     
     <item>
@@ -281,10 +179,7 @@ func download(){ if let url = URL(string: &amp;quot;http://www.carlosicaza.com/w
       <pubDate>Tue, 11 Oct 2016 00:00:00 +0000</pubDate>
       
       <guid>https://cdfq152313.github.io/post/2016-10-11/</guid>
-      <description>iOS的路徑 專案資料夾內的路徑 利用Bundle.main獲取 可以指定檔案名稱以及副檔名。
-// 得到url let url = Bundle.main.url(forResource: &amp;quot;myjson&amp;quot;, withExtension: &amp;quot;json&amp;quot;) // 得到path let path = Bundle.main.path(forResource: &amp;quot;myjson&amp;quot;, ofType: &amp;quot;json&amp;quot;)  一般App路徑 Document範例
-// 透過路徑尋找URL let path = NSHomeDirectory() + &amp;quot;/Document&amp;quot; let urlfrompath = URL(fileURLWithPath: path) // 直接拿取URL，陣列第0個是資料夾本身(雖然也只有一個url) let url = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]  Caches 範例
-// 透過路徑尋找URL let path = NSHomeDirectory() + &amp;quot;/Library/Caches&amp;quot; let urlfrompath = URL(fileURLWithPath: path) // 直接拿取URL let url = FileManager.default.urls(for: .</description>
+      <description>iOS的路徑 專案資料夾內的路徑 利用Bundle.main獲取 可以指定檔案名稱以及副檔名。 // 得到url let url = Bundle.main.url(forResource: &amp;quot;myjson&amp;quot;, withExtension: &amp;quot;json&amp;quot;) // 得到path let path = Bundle.main.path(forResource: &amp;quot;myjson&amp;quot;, ofType:</description>
     </item>
     
     <item>
@@ -293,10 +188,7 @@ func download(){ if let url = URL(string: &amp;quot;http://www.carlosicaza.com/w
       <pubDate>Thu, 06 Oct 2016 00:00:00 +0000</pubDate>
       
       <guid>https://cdfq152313.github.io/post/2016-10-06/</guid>
-      <description>播放系統音效 超簡單只需要兩行
-import AudioToolbox AudioServicesPlaySystemSound(1000)  播放自己放在app的音樂 先把自己的音效拖進Xcode，記得選擇&amp;rdquo;copy items if needed&amp;rdquo;，否則只會放入reference。
-可以開一個新的Group(資料夾圖示)來專門放置音檔。
-步驟  找到檔案在哪(用Bundle) 產生URL 產生AVAudioPlayer  // AVAudioPlayer初始化 func myPlayerInit()-&amp;gt;AVAudioPlayer?{ guard let path = Bundle.main.path(forResource: &amp;quot;Right&amp;quot;, ofType:&amp;quot;mp3&amp;quot;) else{ return nil } let audioURL = URL(fileURLWithPath: path) do{ return try AVAudioPlayer(contentsOf: audioURL) } catch{ print(&amp;quot;AVAudio Player Init failed&amp;quot;) return nil } }  // 利用button播放 每次按下都將聲音時間歸零 let myPlayer = myPlayerInit() myPlayer?.play()  其他好用的方法 myPlayer?.stop() // 停止 myPlayer?.currentTime = 0 // 把音檔時間歸零 myPlayer?</description>
+      <description>播放系統音效 超簡單只需要兩行 import AudioToolbox AudioServicesPlaySystemSound(1000) 播放自己放在app的音樂 先把自己的音效拖進Xcode，記得選擇&amp;rdquo;copy items if needed&amp;rd</description>
     </item>
     
     <item>
@@ -305,11 +197,7 @@ import AudioToolbox AudioServicesPlaySystemSound(1000)  播放自己放在app的
       <pubDate>Tue, 04 Oct 2016 00:00:00 +0000</pubDate>
       
       <guid>https://cdfq152313.github.io/post/2016-10-04/</guid>
-      <description>參考資料 感謝大大～～
-https://itisjoe.gitbooks.io/swiftgo/content/
-因應swift3，筆記內容與gitbook上略有不同
-struct和enum是value type, class是reference type  struct宣告為常數，就無法更改內部的值，但class可以。 struct和enum這種value type，內部member function不能修改member data的值 如果真的要修改要加上mutating修飾字  struct Apple{ var x = 0.0 mutating func add(num:Double){ x += num } } var x = Apple(x:1.2) x.add(1.5) print(x.x)   mutating 還可以替換掉本身的實體結構  struct Apple{ var x = 0.0 mutating func new(num:Double){ x = Apple() } }  function注意事項 call function時，參數後要指定參數名稱，不可以省略
-func plus(a :Int, b:Int){ print(a+b) } plus(a:1, b:3)  如果要省略要加上底線</description>
+      <description>參考資料 感謝大大～～ https://itisjoe.gitbooks.io/swiftgo/content/ 因應swift3，筆記內容與gitbook上略有不同 struct和enum是value type, class是reference</description>
     </item>
     
     <item>
@@ -318,18 +206,7 @@ func plus(a :Int, b:Int){ print(a+b) } plus(a:1, b:3)  如果要省略要加上�
       <pubDate>Mon, 03 Oct 2016 00:00:00 +0000</pubDate>
       
       <guid>https://cdfq152313.github.io/post/2016-10-03/</guid>
-      <description>Controller之間的呼叫 present 與 dismiss 想要跳轉頁面，我們可以靠storyBoard拉出present的線，也可以靠程式碼。
-在StoryBoard中只要按住ctrl，將button拉到另一個controller後再選present即可。
-在程式碼的話
-// 因為此ViewController什麼都沒設定，所以會是一片黑 present(ViewController(), animated: true, completion: nil)  有跳過去，就有返回，想返回時使用dismiss function。
-dismiss(animated: true, completion: nil)  dismiss的原理是，直接呼叫時，請求presentingViewController把你關掉。
-間接呼叫時，把後面的presentedViewController們關掉。
-至於這兩個是什麼意思請參看下節。
-presentingViewController 與 presentedViewController 每個controller皆有兩個重要的屬性，可以分辨這個controller是被誰present，或是present了誰。
- presentingViewController：present Controller的Controller presentedViewController：被present的Controller  假設ABC皆為Controller，A present B，B present C，那對於B來說。
- A為B之presentingViewController C為B之presentedViewController  Navigation bar push 與 pop 與present / dismiss相似，進到navigation controller後要使用 navigation屬性的push/pop方法，不然會跳出navigation controller的頁，失去Navigation Bar的效果。
-程式碼的形式如下
-// 推上下一個頁面 self.navigationController?.pushViewController(ViewController(), animated: true) // 回到上一頁 self.navigationController?.popViewController(animated: true) // 直接回到navigation最開頭 self.navigationController?.popToRootViewController(animated: true)  前後的controller 如同present / dismiss可以拿到前後關係一樣，navigation controller也是可以拿到前後關係的。</description>
+      <description>Controller之間的呼叫 present 與 dismiss 想要跳轉頁面，我們可以靠storyBoard拉出present的線，也可以靠程式碼。 在StoryBoar</description>
     </item>
     
     <item>
@@ -338,9 +215,25 @@ presentingViewController 與 presentedViewController 每個controller皆有兩�
       <pubDate>Tue, 13 Sep 2016 00:00:00 +0000</pubDate>
       
       <guid>https://cdfq152313.github.io/post/2016-09-13/</guid>
-      <description>AutoLayout 只要確定好下面的參數，autoLayout就不會跑警告
- x y width height  AlertController  新增AlertController  .ActionSheet可藉由點警告視窗外面而取消 .alert不可藉由點警告視窗外面而取消  如果需要&amp;rdquo;OK&amp;rdquo;等選項的話，新增UIAction (.alert必做，不然會回不去) 將UIAction放置到AlertController上 present  let myAlert = UIAlertController(title: &amp;quot;Please enter something&amp;quot;, message: nil, preferredStyle: .alert) let myAction = UIAlertAction(title: &amp;quot;OK&amp;quot;, style: .default, handler:nil) myAlert.addAction(myAction) present(myAlert, animated: true, completion: nil)  嘗試加入文字框
-let myAlert = UIAlertController(title: &amp;quot;Add New Task&amp;quot;, message: nil, preferredStyle: .alert) myAlert.addTextField { (textfield:UITextField) in textfield.placeholder = &amp;quot;Add New Task&#39;&amp;quot; }  嘗試對加入的UIAction執行一些動作</description>
+      <description>AutoLayout 只要確定好下面的參數，autoLayout就不會跑警告 x y width height AlertController 新增AlertController .ActionSheet可藉由點警告視窗</description>
+    </item>
+    
+    <item>
+      <title>產品開發的進展過程</title>
+      <link>https://cdfq152313.github.io/post/2016-09-06/</link>
+      <pubDate>Tue, 06 Sep 2016 00:00:00 +0000</pubDate>
+      
+      <guid>https://cdfq152313.github.io/post/2016-09-06/</guid>
+      <description>Brain Storming要想出的東西 服務對象(Target User) 想解決的問題 使用情境(User Scenario) 使用行為(User Story) 主詞動詞受詞，描述一個功能 工程師眼</description>
+    </item>
+    
+    <item>
+      <title>從0到1 與1到1億</title>
+      <link>https://cdfq152313.github.io/post/2016-09-05/</link>
+      <pubDate>Mon, 05 Sep 2016 00:00:00 +0000</pubDate>
+      
+      <guid>https://cdfq152313.github.io/post/2016-09-05/</guid>
+      <description>標題與內文不符～～ 小步快跑 最小的成本去除錯，最快的速度達成目標。 單週迭代 種類 Idea Code Data Build：IDEA =&amp;gt; Build 需求撰寫 交互 視覺設計 研發 測試 Pro</description>
     </item>
     
     <item>
@@ -349,19 +242,7 @@ let myAlert = UIAlertController(title: &amp;quot;Add New Task&amp;quot;, message
       <pubDate>Fri, 05 Aug 2016 00:00:00 +0000</pubDate>
       
       <guid>https://cdfq152313.github.io/post/2016-08-05/</guid>
-      <description>介紹 主要參考這篇：Android studio 1.5.1 NDK JNI環境安裝與執行原理
-不過Android 2.1.2上步驟稍有簡化，還是可以達到同樣效果。
- 載NDK 設定external tool (僅javah) 在java中增加native code，並利用javah產生JNI header 實作JNI 設定gradle (僅ndk區塊)  載NDK 開啟SDK Manager，選擇SDK Tools，將NDK之選項給打勾。
-設定external tool 與連結相同，不過只要設定javah即可，其他不需要。
-快速複製區 來源
-$JDKPath$/bin/javah -v -jni -d $ModuleFileDir$/src/main/jni $FileClass$ $SourcepathEntry$  Windows和Linux在第1行稍有分別，只有在Windows系統中，執行檔的副檔名才是.exe。Mac和Linux皆否。 個人是用linux系統，所以第1行javah後面並不接.exe，若是Windows系統則第1行變為。
-$JDKPath$/bin/javah.exe  JNI header 在想要使用JNI的class加入如下的程式碼。
- static { System.loadLibrary(&amp;quot;myJNI&amp;quot;); } public native String getMycstring(); public native void testLog();  static區塊中的myJNI會變成將來再build gradle當中的moduleName
-method加上native關鍵詞後，程式就會知道這是需要依靠JNI實作之程式碼。
-再來在該java檔上按右鍵，使用剛剛建置好的external library javah，自動的產生JNI header。
-此時在java目錄下，應該會多出一個jni的資料夾，裡頭放置著 OOXX.h
-打開.h檔，建置出來的code應該會如下形式
-/* DO NOT EDIT THIS FILE - it is machine generated */ #include &amp;lt;jni.</description>
+      <description>介紹 主要參考這篇：Android studio 1.5.1 NDK JNI環境安裝與執行原理 不過Android 2.1.2上步驟稍有簡化，還是可以達到同樣效果。 載NDK 設定</description>
     </item>
     
     <item>
@@ -370,13 +251,7 @@ method加上native關鍵詞後，程式就會知道這是需要依靠JNI實作�
       <pubDate>Sun, 24 Jul 2016 00:00:00 +0000</pubDate>
       
       <guid>https://cdfq152313.github.io/post/2016-07-24/</guid>
-      <description>在官網可以看到有很多可使用的Action。
-萬一想要的功能並不在裡面呢? 其實也有Function此一Action的存在，可自己撰寫Function傳進去使用。 這裡只是提點一些Function使用上的誤區。
-絕對要使用Function此Action  絕對要使用Function此Action 絕對不要直接把自己寫的function當Action  錯誤範例 python: def test(): pass textbutton &amp;quot;Click Me!!&amp;quot;: action test()  在renpy眼中，這是一個正常行為，他不會報錯。
-但是這會導致此button並非在點擊才觸發Action，而是在載入、textbutton出來的那瞬間，就執行了action。
-正確寫法 python: def test(): pass textbutton &amp;quot;Click Me!!&amp;quot;: action Function(test)  傳入參數 如果這個function需要支援參數傳遞呢? 一樣可以用Function達到
-python: def test(text): pass textbutton &amp;quot;Click Me!!&amp;quot;: action Function(test, text = &amp;quot;apple&amp;quot;)  Function在官方的文件上說支援args和kwargs的參數傳遞。
-但實際測試後發現，args的參數傳遞是壞的，並不能使用。所以請都用kwargs的參數傳遞法。</description>
+      <description>在官網可以看到有很多可使用的Action。 萬一想要的功能並不在裡面呢? 其實也有Function此一Action的存在，可自己撰寫Functi</description>
     </item>
     
     <item>
@@ -385,18 +260,7 @@ python: def test(text): pass textbutton &amp;quot;Click Me!!&amp;quot;: action F
       <pubDate>Sat, 23 Jul 2016 00:00:00 +0000</pubDate>
       
       <guid>https://cdfq152313.github.io/post/2016-07-23/</guid>
-      <description>當滑鼠移上按鈕，咻，按鈕變色了。當滑鼠離開按鈕，咻，按鈕又變回來了。
-藉由這樣的效果，可以讓玩家清楚感受到這是一個可點選的按鈕。
-要如何製作這樣的效果呢?
-imagebutton 難度：簡單
-Imagebutton: idle &amp;quot;滑鼠離開時照片&amp;quot; hover &amp;quot;滑鼠移上時照片&amp;quot; action NullAction()  參閱官網只要設定屬性idle及hover即可，要注意的一點是，必須要有任意Action，變色效果才會顯現出來。
-如果不打算有任何Action，則使用NullAction吧，此方法就是為了變色而設立的。
-textbutton 難度：中等 參閱官網在options.rpy當中，有欄位為
-widget_text = &amp;quot;滑鼠離開時顏色&amp;quot;, widget_selected = &amp;quot;滑鼠移上時顏色&amp;quot;,  設定好後，textbutton的變色就會依照此設定來做調整囉。
-缺點是不能在任意的textbutton指定變數顏色，如果今天有兩個textbutton，想指定為
- textbutton1 滑鼠移上紅色 滑鼠離開白色 textbutton2 滑鼠移上藍色 滑鼠離開白色  在此方法中是無能為力的。
-button 難度：困難，但textbutton或imagebutton也可用此方法來變色，最萬用。
-Screen button_test: default myhover = False button: action SetScreenVariable(&amp;quot;myhover&amp;quot;, False) hovered SetScreenVariable(&amp;quot;myhover&amp;quot;, True) unhovered SetScreenVariable(&amp;quot;myhover&amp;quot;, False) if myhover: image &amp;quot;滑鼠移上時照片&amp;quot; text (&amp;quot;YA&amp;quot;) color &amp;quot;滑鼠移上時顏色&amp;quot; else: image &amp;quot;滑鼠離開時圖片&amp;quot; text (&amp;quot;YA&amp;quot;) color &amp;quot;滑鼠離開時顏色&amp;quot;  在Screen Language當中，可以使用defalut這個字眼來定義專屬於某個Screen的變數，並且可使用SetScreenVariable此Action來指定變數值。</description>
+      <description>當滑鼠移上按鈕，咻，按鈕變色了。當滑鼠離開按鈕，咻，按鈕又變回來了。 藉由這樣的效果，可以讓玩家清楚感受到這是一個可點選的按鈕。 要如何製作這樣</description>
     </item>
     
     <item>
@@ -405,16 +269,7 @@ Screen button_test: default myhover = False button: action SetScreenVariable(&am
       <pubDate>Mon, 11 Jul 2016 00:00:00 +0000</pubDate>
       
       <guid>https://cdfq152313.github.io/post/2016-07-11/</guid>
-      <description>tooltip 所謂的tooltip，就是當你滑鼠移到一個button上後，可以顯示一些說明，讓使用者更了解這個button的功能。
-可以用以下的程式碼簡單的實作tootip
-screen tooltip(tip, positon): frame: text tip pos position  然後在button上的hovered和unhovered加上action即可
-button: hovered Show(tooltip, tip=&amp;quot;說明文字&amp;quot;, position = (10,20) ) unhovered Hide(tooltip)  出現在滑鼠的位置 目前這個簡陋的tooltip，它的位置是被固定死的。也就是說，每次有新的tooltip，都得自己先行想好tooltip的位置。
-能不能要tooltip直接顯示在滑鼠旁邊呢? 可行的，renpy有提供滑鼠位置的函式。
-screen tooltip(tip=None): frame: $ position = renpy.get_mouse_pos() text tip pos position  如此一來，不用輸入position也可以直接顯示在滑鼠上了，使用者想要自己加減pixel，讓tooltip出現在滑鼠的上下左右方也是非常輕而易舉。
-隨著滑鼠而移動 如果想要tooltip不僅僅只是閃現的那刻出現在滑鼠旁，而是無時無刻的跟著滑鼠移動呢?
-查閱官網，影響位置的參數有兩個。大部分的Screen物件都有兩種可調的位置屬性，第一個是Common Properties中的at，第二個是Position Style Properties。
-據我所知，Position Style Properties是無法動態調整的，所以我們只能依靠關鍵字at後面所接續的trnasform statement來解決這個問題了。
-具體步驟  新增一個transform執行function 此function內容為定時更新位置(範例為0.05秒) 在tooltip當中對frame加上at 步驟1的transform  範例 transform follow_mouse: function follow_mouse_func init python: def follow_mouse_func(trans, st, at): trans.</description>
+      <description>tooltip 所謂的tooltip，就是當你滑鼠移到一個button上後，可以顯示一些說明，讓使用者更了解這個button的功能。 可以用以下的程式碼簡單</description>
     </item>
     
     <item>
@@ -423,15 +278,7 @@ screen tooltip(tip=None): frame: $ position = renpy.get_mouse_pos() text tip pos
       <pubDate>Sun, 10 Jul 2016 00:00:00 +0000</pubDate>
       
       <guid>https://cdfq152313.github.io/post/2016-07-10/</guid>
-      <description>問題 在寫AVG遊戲的時候，常常遇到立繪需要變更的狀況。考量以下場景
- 人物A平常表情 人物A笑 人物A平常表情 人物A立繪從場上消失  程式碼可能會長這樣
-image a_normal = &amp;quot;a_normal.png&amp;quot; image a_laugh = &amp;quot;a_laugh.png&amp;quot; label start: show a_normal pause 2 hide a_normal show a_laugh puase 2 hide a_laugh show a_normal pause 2 hide a_normal  如果要人物A換動作，就得先記得他上次是哪個圖片，隱藏之後再show新的，想想就累。
-解法 renpy提供了一個方便的解法。在取變數名稱的時候可以用兩個識別字來描述。
-例如可以把立繪取叫
-image a normal = &amp;quot;a_normal.png&amp;quot; image a laugh = &amp;quot;a_laugh.png&amp;quot;  如此一來，renpy就會知道a normal和 a laugh為同一人的不同種表情，因為前識別字a都一樣。
-這樣show a normal時如果a laugh在場上就會自動隱藏了。
-最後若要將a隱藏起來的時候只需要hide前識別字即可。
-image a normal = &amp;quot;a_normal.png&amp;quot; image a laugh = &amp;quot;a_laugh.</description>
+      <description>問題 在寫AVG遊戲的時候，常常遇到立繪需要變更的狀況。考量以下場景 人物A平常表情 人物A笑 人物A平常表情 人物A立繪從場上消失 程式碼可能會長這樣</description>
     </item>
     
     <item>
@@ -440,19 +287,7 @@ image a normal = &amp;quot;a_normal.png&amp;quot; image a laugh = &amp;quot;a_la
       <pubDate>Wed, 06 Jul 2016 00:00:00 +0000</pubDate>
       
       <guid>https://cdfq152313.github.io/post/2016-07-06/</guid>
-      <description>緣起 其實很多內容在 雪凡與好朋友們的 Ren&amp;rsquo;Py 遊戲引擎初學心得提示 就有了，大概寫一些製作時的心得而已。
- 第一回 第二回 第三回 第四回 第五回 第六回 第七回 第八回 第九回  搭配renpy官網服用，妙不可言。
-檔案目錄 初學要知道的在renpy中有三個區段。我稱之為init區段，label區段以及python區段。這三個區段的語法都略有不同。
-而撰寫語法的檔案，只要在game目錄下新增.rpy檔即可，不管命名為何，renpy會預設載入game目錄下所有的.rpy檔作為renpy的語法輸入。
-接下來就分別說明三個區段的差異之處。
-init區段 新增一個.rpy檔，若無明確指定為label或python區段，那就可以視為init區段了。
-init區段通常做為定義變數、圖片、screen之用，會在遊戲啟動的瞬間先行載入。
-init區段可以透過下列語法來新增
-init -1: define abc = character(&amp;quot;abc&amp;quot;) image def = &amp;quot;def&amp;quot;  init旁邊接的數字的意義為載入順序(若沒寫則為0)，比如說，若有三個init區段
-init 1: image a = &amp;quot;a&amp;quot; init 2: image b = &amp;quot;b&amp;quot; init 3: image c = &amp;quot;c&amp;quot;  雖然撰寫順序為由上往下，但由於數字大的先載入，所以renpy會先讀取image c，接下來是b，最後才為a。 如果有載入順序的要求的話(雖然我還沒遇過)，可以嘗試看看這招。
-label區段 此處為遊戲運行之腳本，對於玩過avg遊戲的人應該很熟悉，就是讓你可以點一點繼續向下看對話的地方。
-可以運用show , call, with dissolve之類的語句來展現對話效果。
-這裡列出兩個極為重要的保留(reserved) label</description>
+      <description>緣起 其實很多內容在 雪凡與好朋友們的 Ren&amp;rsquo;Py 遊戲引擎初學心得提示 就有了，大概寫一些製作時的心得而已。 第一回 第二回 第三回 第四回 第五回 第六回 第七回 第八回</description>
     </item>
     
     <item>
@@ -461,18 +296,7 @@ label區段 此處為遊戲運行之腳本，對於玩過avg遊戲的人應該�
       <pubDate>Fri, 04 Mar 2016 00:00:00 +0000</pubDate>
       
       <guid>https://cdfq152313.github.io/post/2016-03-04/</guid>
-      <description>平台及環境設置 平台 實驗平台：Nexus 5
-Android版本：android-4.4_r1
-前置知識： [Howto Build Android KitKat (4.4) for the Google Nexus 5][6]
-環境設置 在AOSP資料夾中
-source build/envsetup.sh lunch aosp_hammerhead-userdebug  目標：利用Android Studio來新增APP (命名為World) 在上一篇文章中，說明了如何copy一份已有的project來改寫。但是寫Android App有許多煩雜的地方，有時候還是需要IDE來幫助比較快，這裡找了一個比較tricky的方法來使用IDE。
-新增Android Studio Project 我們直接從Android Studio中產生一個空的project，命名為World。
-新增project時記得選empty Activity，之後比較好做。
-建立soft link 在剛剛產生出來的Android Project路徑底下，World/app/src/main應該有java、res資料夾，以及AndroidManifest.xml。
-在AOSP/packages/apps建立新目錄World，並在其底下建立起上述3個檔案之軟連結(soft link)。
-mkdir $ANDROID_BUILD_TOP/packages/apps/World &amp;amp;&amp;amp; cd $_ ln -s AndroidProject目錄/World/app/src/main/java java ln -s AndroidProject目錄/World/app/src/main/res res ln -s AndroidProject目錄/World/app/src/main/AndroidManifest.xml AndroidManifest.xml  撰寫Android.mk 參考Secrets of Android.mk此份文件當中的Building a simple APK目錄。將其加到AOSP/packages/apps/World資料夾下。
-Android.mk
-LOCAL_PATH := $(call my-dir) include $(CLEAR_VARS) # Build all java files in the java subdirectory LOCAL_SRC_FILES := $(call all-subdir-java-files) # Name of the APK to build LOCAL_PACKAGE_NAME := LocalPackage # Tell it to build an APK include $(BUILD_PACKAGE)  修改掉所有appcompat的部份 再來使用mm在AOSP/packages/apps/World進行編譯，運氣不好的話，編譯會出現找不到某些命名的錯誤。這是因為Google為了讓各種app看起來更有一致性，將Android Studio的新Project皆使用Appcompat此library來協調視覺效果。可是此library並不存在於預設的編譯環境當中。為了為了節省麻煩，將其去掉。</description>
+      <description>平台及環境設置 平台 實驗平台：Nexus 5 Android版本：android-4.4_r1 前置知識： [Howto Build Android KitKat (4.4) for the Google Nexus 5][6] 環境設置 在AOSP資料</description>
     </item>
     
     <item>
@@ -481,19 +305,7 @@ LOCAL_PATH := $(call my-dir) include $(CLEAR_VARS) # Build all java files in the
       <pubDate>Sun, 28 Feb 2016 00:00:00 +0000</pubDate>
       
       <guid>https://cdfq152313.github.io/post/2016-02-28/</guid>
-      <description> 平台及環境設置 平台 實驗平台：Nexus 5
-Android版本：android-4.4_r1
-前置知識： [Howto Build Android KitKat (4.4) for the Google Nexus 5][6]
-環境設置 在AOSP資料夾中
-source build/envsetup.sh lunch aosp_hammerhead-userdebug  目標：加入一個需編譯的預設App到AOSP裡 在AOSP/development/samples裏面有許多可以借鑒的對象。
-這次學習的目錄為AOSP/development/samples/HelloActivity/
-複製資料夾 首先我們先把這個資料夾複製到packages/app/裏面
-cp $ANDROID_BUILD_TOP/development/samples/HelloActivity $ANDROID_BUILD_TOP/packages/apps/  使用mm進行編譯 在packages/apps/HelloActivity內進行mm編譯。
-cd $ANDROID_BUILD_TOP/packages/apps/HelloActivity mm  解析 原本想長篇大論，但是好像有人寫的比我好XD
-只好直接給連結，有空再來寫自己的版本吧。
-懂的HelloAcitivity的結構之後，就可以對其進行修改，以符合自己的需求。
-對於Android.mk若有什麼不懂的也可參考上次這篇。
-Reference  Android的應用程序結構分析 Secrets of Android.mk  </description>
+      <description>平台及環境設置 平台 實驗平台：Nexus 5 Android版本：android-4.4_r1 前置知識： [Howto Build Android KitKat (4.4) for the Google Nexus 5][6] 環境設置 在AOSP資料</description>
     </item>
     
     <item>
@@ -502,15 +314,7 @@ Reference  Android的應用程序結構分析 Secrets of Android.mk  </descripti
       <pubDate>Wed, 24 Feb 2016 00:00:00 +0000</pubDate>
       
       <guid>https://cdfq152313.github.io/post/2016-02-24/</guid>
-      <description>平台及環境設置 平台 實驗平台：Nexus 5
-Android版本：android-4.4_r1
-前置知識： Howto Build Android KitKat (4.4) for the Google Nexus 5
-環境設置 在AOSP資料夾中
-source build/envsetup.sh lunch aosp_hammerhead-userdebug  目標：在AOSP當中加入一個已經編譯好的apk檔，Hello.apk 手動編譯設置 預設的app放在 AOSP/packages/apps下，任意觀看此目錄下的資料夾，會發現皆有Android.mk此檔案，此為AOSP編譯規則。
-參看 Secrets of Android.mk此份文件中的Adding a prebuilt APK章節。
-依樣畫葫蘆，在AOSP/packages/apps目錄中手動創造Hello資料夾，放入Android.mk。
-Android.mk
-LOCAL_PATH := $(call my-dir) include $(CLEAR_VARS) # Module name should match apk name to be installed. LOCAL_MODULE := Hello LOCAL_SRC_FILES := $(LOCAL_MODULE).apk LOCAL_MODULE_CLASS := APPS LOCAL_MODULE_SUFFIX := $(COMMON_ANDROID_PACKAGE_SUFFIX) LOCAL_CERTIFICATE := PRESIGNED include $(BUILD_PREBUILT)  並使用Android Studio(或eclipse)隨便製造出一個Hello.</description>
+      <description>平台及環境設置 平台 實驗平台：Nexus 5 Android版本：android-4.4_r1 前置知識： Howto Build Android KitKat (4.4) for the Google Nexus 5 環境設置 在AOSP資料</description>
     </item>
     
     <item>
@@ -519,7 +323,7 @@ LOCAL_PATH := $(call my-dir) include $(CLEAR_VARS) # Module name should match ap
       <pubDate>Wed, 12 Aug 2015 00:00:00 +0000</pubDate>
       
       <guid>https://cdfq152313.github.io/post/2015-08-12/</guid>
-      <description>總設定 set editor = &amp;quot;vim&amp;quot; set send_charset=&amp;quot;us-ascii:utf-8&amp;quot; set from = &amp;quot;你的帳號@gmail.com&amp;quot; set realname = &amp;quot;你的名字 可隨便打&amp;quot; set imap_user = &amp;quot;你的帳號@gmail.com&amp;quot; set imap_pass = &amp;quot;你的密碼&amp;quot; set folder = &amp;quot;imaps://imap.gmail.com:993&amp;quot; set spoolfile = &amp;quot;+INBOX&amp;quot; set postponed =&amp;quot;+[Gmail]/Drafts&amp;quot; set header_cache =~/.mutt/cache/headers set message_cachedir =~/.mutt/cache/bodies set certificate_file =~/.mutt/certificates set smtp_url = &amp;quot;smtp://你的帳號@smtp.gmail.com:587/&amp;quot; set smtp_pass = &amp;quot;你的密碼&amp;quot; set move = no set imap_keepalive = 900 bind pager &amp;lt;up&amp;gt; previous-line #scroll inside the message rather than the index bind pager &amp;lt;down&amp;gt; next-line bind index &amp;lt;left&amp;gt; last-entry bind pager &amp;lt;left&amp;gt; exit bind index &amp;lt;right&amp;gt; display-message bind pager &amp;lt;right&amp;gt; next-page bind browser &amp;lt;right&amp;gt; select-entry  細部設定 編碼與編輯器 通常在Ubuntu底下的預設編輯器是nano而不是vim，所以需要調整。</description>
+      <description>總設定 set editor = &amp;quot;vim&amp;quot; set send_charset=&amp;quot;us-ascii:utf-8&amp;quot; set from = &amp;quot;你的帳號@gmail.com&amp;quot; set realname = &amp;quot;你的名字 可隨便打&amp;quot; set imap_user = &amp;quot;</description>
     </item>
     
     <item>
@@ -528,7 +332,7 @@ LOCAL_PATH := $(call my-dir) include $(CLEAR_VARS) # Module name should match ap
       <pubDate>Wed, 10 Jun 2015 00:00:00 +0000</pubDate>
       
       <guid>https://cdfq152313.github.io/post/2015-06-10/</guid>
-      <description>環境設置  ubuntu體系：sudo apt-get install llvm MAC: brew install llvm  makefile (MAC) BIN_PATH=/usr/local/Cellar/llvm/3.6.1/bin/ export PATH:=$(PATH):$(BIN_PATH) LLVM_CONFIG=llvm-config FLAGS= --cxxflags --ldflags --system-libs --libs core toy: toy.cpp clang++ -g -O3 toy.cpp `$(LLVM_CONFIG) $(FLAGS)` -o toy clean: rm -f toy  top module #include &amp;quot;llvm/LLVMContext.h&amp;quot; #include &amp;quot;llvm/Module.h&amp;quot; #include &amp;quot;llvm/Support/IRBuilder.h&amp;quot; int main() { llvm::LLVMContext&amp;amp; context = llvm::getGlobalContext(); llvm::Module* module = new llvm::Module(&amp;quot;top&amp;quot;, context); llvm::IRBuilder&amp;lt;&amp;gt; builder(context); module-&amp;gt;dump( ); }  function 宣告function 無參數 llvm::FunctionType *funcType = llvm::FunctionType::get(builder.</description>
+      <description>環境設置 ubuntu體系：sudo apt-get install llvm MAC: brew install llvm makefile (MAC) BIN_PATH=/usr/local/Cellar/llvm/3.6.1/bin/ export PATH:=$(PATH):$(BIN_PATH) LLVM_CONFIG=llvm-config FLAGS= --cxxflags --ldflags --system-libs --libs core toy: toy.cpp clang++ -g -O3 toy.cpp `$(LLVM_CONFIG) $(FLAGS)` -o toy clean: rm -f toy top module #include &amp;quot;llvm/LLVMContext.h&amp;quot; #include &amp;quot;llvm/Module.h&amp;quot; #include &amp;quot;llvm/Support/IRBuilder.h&amp;quot; int main() { llvm::LLVMContext&amp;amp; context = llvm::getGlobalContext(); llvm::Module* module = new llvm::Module(&amp;quot;top&amp;quot;,</description>
     </item>
     
     <item>
@@ -537,16 +341,7 @@ LOCAL_PATH := $(call my-dir) include $(CLEAR_VARS) # Module name should match ap
       <pubDate>Sun, 07 Jun 2015 00:00:00 +0000</pubDate>
       
       <guid>https://cdfq152313.github.io/post/2015-06-07/</guid>
-      <description>環境設定 系統: linux mint
-套件: sudo apt-get install openssh-server git
-基本操作 安裝完openssh-server和git後，即可開始嘗試創建remote repository。
-為了之後的安全性議題，創建一個新的帳號來管理git server
-sudo adduser git  下方指令新增project.git目錄做為remote repository
-(我新增在此帳號的家目錄下，而git官方文件則是放在 /opt/git/ 裡)
-su git mkdir /home/git/project.git cd /home/git/project.git git --bare init  remote repository已經建立，可以開始使用。 git@gitserver 代表 登入帳號@serverIP位置
-試著用ssh連線抓下git repository吧。
-git clone git@gitserver:/home/git/project.git git remote -v origin git@gitserver:/home/git/project.git (fetch) origin git@gitserver:/home/git/project.git (push)  當然push pull指令也沒問題囉~ 只要有該帳戶密碼即可。
-git push origin master git pull origin master  安全性議題 - SSH Public Key Authentication 上述推送git repository的流程中，只需要有帳號密碼即可登入。</description>
+      <description>環境設定 系統: linux mint 套件: sudo apt-get install openssh-server git 基本操作 安裝完openssh-server和git後，即可開始嘗試創建remote repository。 為</description>
     </item>
     
     <item>
@@ -555,10 +350,7 @@ git push origin master git pull origin master  安全性議題 - SSH Public Key 
       <pubDate>Sat, 06 Jun 2015 00:00:00 +0000</pubDate>
       
       <guid>https://cdfq152313.github.io/post/2015-06-06/</guid>
-      <description>Overview llvm 示意圖 通過front end後程式碼會被轉為中間碼( LLVM Intermediate Representation (IR) ) 紅色部分為llvm提供的功能。 出作業應該不會用到1 (要自己寫)，但可能會用到 2. IR interpreter (指令lli) 3. IR compiler (指令 llc)
-llvm 指令 v = operation type op1, op2 , opn %sum = add i32 %op1, %op2 運算結果 運算元 型態 運算子們  llvm function 宣告
-define i32 @add1 ( i32 %a, i32 %b ) define 回傳型態 @函數名稱( 參數列 )  回傳
-ret i32 5 ; 回傳integer ，值為5 ret void ; 回傳void ret { i32, i8 } { i32 4, i8 2 } ; 回傳結構 {int 32, int 8} , 值為 4 , 2  範例</description>
+      <description>Overview llvm 示意圖 通過front end後程式碼會被轉為中間碼( LLVM Intermediate Representation (IR) ) 紅色部分為llvm提供的功能。 出作業應該不會用到1 (要自己寫)，但可能會用到</description>
     </item>
     
     <item>
@@ -567,16 +359,7 @@ ret i32 5 ; 回傳integer ，值為5 ret void ; 回傳void ret { i32, i8 } { i32
       <pubDate>Fri, 05 Jun 2015 00:00:00 +0000</pubDate>
       
       <guid>https://cdfq152313.github.io/post/2015-06-05/</guid>
-      <description>初始化
-git init git config --global user.name &amp;quot;你的ID&amp;quot; git config --global user.email &amp;quot;你的信箱&amp;quot;  狀態 git status
-新增
-git add 檔名 git add -A git add -u  提交
-git commit -m &amp;quot;改動訊息&amp;quot;  歷史訊息
-git log  忽略
-.gitignore  比較不同
-git diff (工作和暫存) git diff 分支名稱 (工作和分支)  分支(版本)名稱 HEAD(目前頭分支) : HEAD HEAD^ HEAD^^ HEAD^^^ master(branch名) 695606fc5e31&amp;hellip;.. (commit hash名)
-重置
-git reset --hard 分支名稱(分支覆蓋暫存區和工作區，後悔藥，危險不可逆) git reset 分支名稱 (分支覆蓋暫存區，通常拿來撤銷git add操作) git checkout 分支名稱 (看以前的版本) git tag -m &amp;quot;wahaha version 1000&amp;quot; v_1000  在git中，為了吃後悔藥，完成一個小功能立刻commit 在git中，為了找尋方便，完成大改版記得tag</description>
+      <description>初始化 git init git config --global user.name &amp;quot;你的ID&amp;quot; git config --global user.email &amp;quot;你的信箱&amp;quot; 狀態 git status 新增 git add 檔名 git add -A git add -u 提交 git commit -m &amp;quo</description>
     </item>
     
   </channel>

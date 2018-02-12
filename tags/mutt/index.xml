@@ -5,6 +5,7 @@
     <link>https://cdfq152313.github.io/tags/mutt/</link>
     <description>Recent content in Mutt on Denny&#39;s Blog</description>
     <generator>Hugo -- gohugo.io</generator>
+    <language>zh-hant</language>
     <lastBuildDate>Wed, 12 Aug 2015 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="https://cdfq152313.github.io/tags/mutt/index.xml" rel="self" type="application/rss+xml" />
@@ -16,7 +17,7 @@
       <pubDate>Wed, 12 Aug 2015 00:00:00 +0000</pubDate>
       
       <guid>https://cdfq152313.github.io/post/2015-08-12/</guid>
-      <description>總設定 set editor = &amp;quot;vim&amp;quot; set send_charset=&amp;quot;us-ascii:utf-8&amp;quot; set from = &amp;quot;你的帳號@gmail.com&amp;quot; set realname = &amp;quot;你的名字 可隨便打&amp;quot; set imap_user = &amp;quot;你的帳號@gmail.com&amp;quot; set imap_pass = &amp;quot;你的密碼&amp;quot; set folder = &amp;quot;imaps://imap.gmail.com:993&amp;quot; set spoolfile = &amp;quot;+INBOX&amp;quot; set postponed =&amp;quot;+[Gmail]/Drafts&amp;quot; set header_cache =~/.mutt/cache/headers set message_cachedir =~/.mutt/cache/bodies set certificate_file =~/.mutt/certificates set smtp_url = &amp;quot;smtp://你的帳號@smtp.gmail.com:587/&amp;quot; set smtp_pass = &amp;quot;你的密碼&amp;quot; set move = no set imap_keepalive = 900 bind pager &amp;lt;up&amp;gt; previous-line #scroll inside the message rather than the index bind pager &amp;lt;down&amp;gt; next-line bind index &amp;lt;left&amp;gt; last-entry bind pager &amp;lt;left&amp;gt; exit bind index &amp;lt;right&amp;gt; display-message bind pager &amp;lt;right&amp;gt; next-page bind browser &amp;lt;right&amp;gt; select-entry  細部設定 編碼與編輯器 通常在Ubuntu底下的預設編輯器是nano而不是vim，所以需要調整。</description>
+      <description>總設定 set editor = &amp;quot;vim&amp;quot; set send_charset=&amp;quot;us-ascii:utf-8&amp;quot; set from = &amp;quot;你的帳號@gmail.com&amp;quot; set realname = &amp;quot;你的名字 可隨便打&amp;quot; set imap_user = &amp;quot;</description>
     </item>
     
   </channel>

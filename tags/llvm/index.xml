@@ -5,6 +5,7 @@
     <link>https://cdfq152313.github.io/tags/llvm/</link>
     <description>Recent content in Llvm on Denny&#39;s Blog</description>
     <generator>Hugo -- gohugo.io</generator>
+    <language>zh-hant</language>
     <lastBuildDate>Wed, 10 Jun 2015 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="https://cdfq152313.github.io/tags/llvm/index.xml" rel="self" type="application/rss+xml" />
@@ -16,7 +17,7 @@
       <pubDate>Wed, 10 Jun 2015 00:00:00 +0000</pubDate>
       
       <guid>https://cdfq152313.github.io/post/2015-06-10/</guid>
-      <description>環境設置  ubuntu體系：sudo apt-get install llvm MAC: brew install llvm  makefile (MAC) BIN_PATH=/usr/local/Cellar/llvm/3.6.1/bin/ export PATH:=$(PATH):$(BIN_PATH) LLVM_CONFIG=llvm-config FLAGS= --cxxflags --ldflags --system-libs --libs core toy: toy.cpp clang++ -g -O3 toy.cpp `$(LLVM_CONFIG) $(FLAGS)` -o toy clean: rm -f toy  top module #include &amp;quot;llvm/LLVMContext.h&amp;quot; #include &amp;quot;llvm/Module.h&amp;quot; #include &amp;quot;llvm/Support/IRBuilder.h&amp;quot; int main() { llvm::LLVMContext&amp;amp; context = llvm::getGlobalContext(); llvm::Module* module = new llvm::Module(&amp;quot;top&amp;quot;, context); llvm::IRBuilder&amp;lt;&amp;gt; builder(context); module-&amp;gt;dump( ); }  function 宣告function 無參數 llvm::FunctionType *funcType = llvm::FunctionType::get(builder.</description>
+      <description>環境設置 ubuntu體系：sudo apt-get install llvm MAC: brew install llvm makefile (MAC) BIN_PATH=/usr/local/Cellar/llvm/3.6.1/bin/ export PATH:=$(PATH):$(BIN_PATH) LLVM_CONFIG=llvm-config FLAGS= --cxxflags --ldflags --system-libs --libs core toy: toy.cpp clang++ -g -O3 toy.cpp `$(LLVM_CONFIG) $(FLAGS)` -o toy clean: rm -f toy top module #include &amp;quot;llvm/LLVMContext.h&amp;quot; #include &amp;quot;llvm/Module.h&amp;quot; #include &amp;quot;llvm/Support/IRBuilder.h&amp;quot; int main() { llvm::LLVMContext&amp;amp; context = llvm::getGlobalContext(); llvm::Module* module = new llvm::Module(&amp;quot;top&amp;quot;,</description>
     </item>
     
     <item>
@@ -25,10 +26,7 @@
       <pubDate>Sat, 06 Jun 2015 00:00:00 +0000</pubDate>
       
       <guid>https://cdfq152313.github.io/post/2015-06-06/</guid>
-      <description>Overview llvm 示意圖 通過front end後程式碼會被轉為中間碼( LLVM Intermediate Representation (IR) ) 紅色部分為llvm提供的功能。 出作業應該不會用到1 (要自己寫)，但可能會用到 2. IR interpreter (指令lli) 3. IR compiler (指令 llc)
-llvm 指令 v = operation type op1, op2 , opn %sum = add i32 %op1, %op2 運算結果 運算元 型態 運算子們  llvm function 宣告
-define i32 @add1 ( i32 %a, i32 %b ) define 回傳型態 @函數名稱( 參數列 )  回傳
-ret i32 5 ; 回傳integer ，值為5 ret void ; 回傳void ret { i32, i8 } { i32 4, i8 2 } ; 回傳結構 {int 32, int 8} , 值為 4 , 2  範例</description>
+      <description>Overview llvm 示意圖 通過front end後程式碼會被轉為中間碼( LLVM Intermediate Representation (IR) ) 紅色部分為llvm提供的功能。 出作業應該不會用到1 (要自己寫)，但可能會用到</description>
     </item>
     
   </channel>

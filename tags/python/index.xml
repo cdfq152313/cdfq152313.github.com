@@ -5,6 +5,7 @@
     <link>https://cdfq152313.github.io/tags/python/</link>
     <description>Recent content in Python on Denny&#39;s Blog</description>
     <generator>Hugo -- gohugo.io</generator>
+    <language>zh-hant</language>
     <lastBuildDate>Mon, 24 Apr 2017 04:25:31 +0000</lastBuildDate>
     
 	<atom:link href="https://cdfq152313.github.io/tags/python/index.xml" rel="self" type="application/rss+xml" />
@@ -16,17 +17,7 @@
       <pubDate>Mon, 24 Apr 2017 04:25:31 +0000</pubDate>
       
       <guid>https://cdfq152313.github.io/post/2017-04-24/</guid>
-      <description>前言 renpy加入對話很簡單，不過想要加入文本就不是那麼容易了。有的時候想要在遊戲中閱讀長文本，還需要插入\n來作為換行，頗不方便。這個時候讀檔功能就派上用場了。
-在這裡要注意，不能使用python原生的開檔函式，否則程式有一定可能出錯(詳情看最後一段)。
-Renpy讀檔函式 官方讀檔文件在這裡。
-不過在讀unicode檔案的時候，還需要做一些特別處理才行，否則讀出來的檔案都是亂碼。以下為範例程式碼，為python語法。
-def read_file(filepath): import codecs # 開檔 f = renpy.file(filepath) # 讀入檔案 data = f.read() # 轉換為unicode data = codecs.decode(data, &#39;utf-8&#39;) return data  如此一來，最後產生的data就會是unicode格式囉。
-另外，原本想使用官網上所提供的renpy.fsdecode(s)來做編碼轉換，但是失敗了，可能是沒搞懂用法。後來就使用python原生的codec來做轉換。運作得還算不錯。
-Renpy路徑問題 renpy的path一律是以game資料夾作為根目錄，往下一層目錄是使用&amp;rsquo;/&amp;lsquo;作為識別。所以不用自作聰明使用python原生地os.path.join函式來合成路徑。在windows合成出來的路徑反而會出錯，因為windows是用反斜線&amp;rsquo;\&amp;lsquo;來分割目錄的。
-以下為組合路徑的方法。
-# 假設路徑為game目錄底下的info資料夾裡面的info01.txt檔案 filepath = &#39;info/info01.txt&#39;  最後碎碎念 其實也並不是不能使用原生地python函式來做開檔，但是要記得一件事，如果你有在renpy的設定中封裝檔案，像下列程式碼。
-# 在options.rpy中 build.classify(&#39;game/info/*.txt&#39;, &#39;data&#39;)  那麼在製作釋出版時，這些資料會很自然地被封裝到data.rpa的檔案中。如此一來。python原生函式所取得的路徑，自然就會抓不到任何東西。
-反過來說，只要你不封裝任何檔案，那你想使用任何python的函式都沒問題(ex: os.path.join / open / &amp;hellip;)</description>
+      <description>前言 renpy加入對話很簡單，不過想要加入文本就不是那麼容易了。有的時候想要在遊戲中閱讀長文本，還需要插入\n來作為換行，頗不方便。這個時候</description>
     </item>
     
     <item>
@@ -35,8 +26,7 @@ Renpy路徑問題 renpy的path一律是以game資料夾作為根目錄，往下�
       <pubDate>Thu, 23 Feb 2017 00:00:00 +0000</pubDate>
       
       <guid>https://cdfq152313.github.io/post/2017-02-23/</guid>
-      <description>程式碼 為了易於保存，所有金鑰、向量、輸出結果都是以Base64編碼。
-from Crypto.Cipher import AES from Crypto import Random import base64 BS = AES.block_size pad = lambda s: s + (BS - len(s) % BS) * chr(BS - len(s) % BS) unpad = lambda s : s[0:-ord(s[-1])] class AES_HELPER(object): def __init__(self): print &#39;init&#39; def key_generator(self, bits=256): random = Random.new() key = random.read( bits/8 ) return base64.b64encode(key) def iv_generator(self): &#39;&#39;&#39; AES Initialization Vector is 128 bits(16 bytes). &#39;&#39;&#39; random = Random.</description>
+      <description>程式碼 為了易於保存，所有金鑰、向量、輸出結果都是以Base64編碼。 from Crypto.Cipher import AES from Crypto import Random import base64 BS = AES.block_size pad = lambda s: s + (BS - len(s) % BS) * chr(BS - len(s) % BS) unpad = lambda s : s[0:-ord(s[-1])]</description>
     </item>
     
     <item>
@@ -45,15 +35,7 @@ from Crypto.Cipher import AES from Crypto import Random import base64 BS = AES.b
       <pubDate>Tue, 27 Dec 2016 00:00:00 +0000</pubDate>
       
       <guid>https://cdfq152313.github.io/post/2016-12-27/</guid>
-      <description>最近遇到一個問題，使用pyinstaller製作執行檔後，在本機運作上ok，但是一傳給別人使用就會出問題。可是用右鍵show packages裡面的Content/MacOS/執行檔，是可以正常使用的。
-這讓我非常困惑，後來才發現是Sierra權限設定更改。
-英文好的可以直接看下面就解決了：
-http://lapcatsoftware.com/articles/app-translocation.html
-英文不好的簡單翻譯就是：
-macos在Sierra的版本改變了對未知的應用程式的行為。如果你的應用程式是不明來源(Ex:網路下載)，那macos在執行這個程式的時候就會把程式挪進App Translocation這個唯讀空間再執行。
-這有可能出現兩個問題，第一是你的程式如果涉及資料儲存，唯讀空間是不能存的，程式就會失敗。第二個問題是被移動的只有程式本身，萬一你的程式必須仰賴資料夾中的其他的檔案才能執行，那也會失敗。
-解決方法是拖拉這個app到任意其他位置(ex:桌面)，OSX就不會再幫你把這個app放進唯讀資料夾執行。
-還記得幾乎所有的MAC app都需要拖拉到應用程式裡面才能使用嗎? MAC應該就是希望你對想使用的APP進行過此一確認才加上這個功能。</description>
+      <description>最近遇到一個問題，使用pyinstaller製作執行檔後，在本機運作上ok，但是一傳給別人使用就會出問題。可是用右鍵show packages</description>
     </item>
     
   </channel>

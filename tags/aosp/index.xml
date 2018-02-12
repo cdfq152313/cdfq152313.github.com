@@ -5,6 +5,7 @@
     <link>https://cdfq152313.github.io/tags/aosp/</link>
     <description>Recent content in Aosp on Denny&#39;s Blog</description>
     <generator>Hugo -- gohugo.io</generator>
+    <language>zh-hant</language>
     <lastBuildDate>Fri, 04 Mar 2016 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="https://cdfq152313.github.io/tags/aosp/index.xml" rel="self" type="application/rss+xml" />
@@ -16,18 +17,7 @@
       <pubDate>Fri, 04 Mar 2016 00:00:00 +0000</pubDate>
       
       <guid>https://cdfq152313.github.io/post/2016-03-04/</guid>
-      <description>平台及環境設置 平台 實驗平台：Nexus 5
-Android版本：android-4.4_r1
-前置知識： [Howto Build Android KitKat (4.4) for the Google Nexus 5][6]
-環境設置 在AOSP資料夾中
-source build/envsetup.sh lunch aosp_hammerhead-userdebug  目標：利用Android Studio來新增APP (命名為World) 在上一篇文章中，說明了如何copy一份已有的project來改寫。但是寫Android App有許多煩雜的地方，有時候還是需要IDE來幫助比較快，這裡找了一個比較tricky的方法來使用IDE。
-新增Android Studio Project 我們直接從Android Studio中產生一個空的project，命名為World。
-新增project時記得選empty Activity，之後比較好做。
-建立soft link 在剛剛產生出來的Android Project路徑底下，World/app/src/main應該有java、res資料夾，以及AndroidManifest.xml。
-在AOSP/packages/apps建立新目錄World，並在其底下建立起上述3個檔案之軟連結(soft link)。
-mkdir $ANDROID_BUILD_TOP/packages/apps/World &amp;amp;&amp;amp; cd $_ ln -s AndroidProject目錄/World/app/src/main/java java ln -s AndroidProject目錄/World/app/src/main/res res ln -s AndroidProject目錄/World/app/src/main/AndroidManifest.xml AndroidManifest.xml  撰寫Android.mk 參考Secrets of Android.mk此份文件當中的Building a simple APK目錄。將其加到AOSP/packages/apps/World資料夾下。
-Android.mk
-LOCAL_PATH := $(call my-dir) include $(CLEAR_VARS) # Build all java files in the java subdirectory LOCAL_SRC_FILES := $(call all-subdir-java-files) # Name of the APK to build LOCAL_PACKAGE_NAME := LocalPackage # Tell it to build an APK include $(BUILD_PACKAGE)  修改掉所有appcompat的部份 再來使用mm在AOSP/packages/apps/World進行編譯，運氣不好的話，編譯會出現找不到某些命名的錯誤。這是因為Google為了讓各種app看起來更有一致性，將Android Studio的新Project皆使用Appcompat此library來協調視覺效果。可是此library並不存在於預設的編譯環境當中。為了為了節省麻煩，將其去掉。</description>
+      <description>平台及環境設置 平台 實驗平台：Nexus 5 Android版本：android-4.4_r1 前置知識： [Howto Build Android KitKat (4.4) for the Google Nexus 5][6] 環境設置 在AOSP資料</description>
     </item>
     
     <item>
@@ -36,19 +26,7 @@ LOCAL_PATH := $(call my-dir) include $(CLEAR_VARS) # Build all java files in the
       <pubDate>Sun, 28 Feb 2016 00:00:00 +0000</pubDate>
       
       <guid>https://cdfq152313.github.io/post/2016-02-28/</guid>
-      <description> 平台及環境設置 平台 實驗平台：Nexus 5
-Android版本：android-4.4_r1
-前置知識： [Howto Build Android KitKat (4.4) for the Google Nexus 5][6]
-環境設置 在AOSP資料夾中
-source build/envsetup.sh lunch aosp_hammerhead-userdebug  目標：加入一個需編譯的預設App到AOSP裡 在AOSP/development/samples裏面有許多可以借鑒的對象。
-這次學習的目錄為AOSP/development/samples/HelloActivity/
-複製資料夾 首先我們先把這個資料夾複製到packages/app/裏面
-cp $ANDROID_BUILD_TOP/development/samples/HelloActivity $ANDROID_BUILD_TOP/packages/apps/  使用mm進行編譯 在packages/apps/HelloActivity內進行mm編譯。
-cd $ANDROID_BUILD_TOP/packages/apps/HelloActivity mm  解析 原本想長篇大論，但是好像有人寫的比我好XD
-只好直接給連結，有空再來寫自己的版本吧。
-懂的HelloAcitivity的結構之後，就可以對其進行修改，以符合自己的需求。
-對於Android.mk若有什麼不懂的也可參考上次這篇。
-Reference  Android的應用程序結構分析 Secrets of Android.mk  </description>
+      <description>平台及環境設置 平台 實驗平台：Nexus 5 Android版本：android-4.4_r1 前置知識： [Howto Build Android KitKat (4.4) for the Google Nexus 5][6] 環境設置 在AOSP資料</description>
     </item>
     
     <item>
@@ -57,15 +35,7 @@ Reference  Android的應用程序結構分析 Secrets of Android.mk  </descripti
       <pubDate>Wed, 24 Feb 2016 00:00:00 +0000</pubDate>
       
       <guid>https://cdfq152313.github.io/post/2016-02-24/</guid>
-      <description>平台及環境設置 平台 實驗平台：Nexus 5
-Android版本：android-4.4_r1
-前置知識： Howto Build Android KitKat (4.4) for the Google Nexus 5
-環境設置 在AOSP資料夾中
-source build/envsetup.sh lunch aosp_hammerhead-userdebug  目標：在AOSP當中加入一個已經編譯好的apk檔，Hello.apk 手動編譯設置 預設的app放在 AOSP/packages/apps下，任意觀看此目錄下的資料夾，會發現皆有Android.mk此檔案，此為AOSP編譯規則。
-參看 Secrets of Android.mk此份文件中的Adding a prebuilt APK章節。
-依樣畫葫蘆，在AOSP/packages/apps目錄中手動創造Hello資料夾，放入Android.mk。
-Android.mk
-LOCAL_PATH := $(call my-dir) include $(CLEAR_VARS) # Module name should match apk name to be installed. LOCAL_MODULE := Hello LOCAL_SRC_FILES := $(LOCAL_MODULE).apk LOCAL_MODULE_CLASS := APPS LOCAL_MODULE_SUFFIX := $(COMMON_ANDROID_PACKAGE_SUFFIX) LOCAL_CERTIFICATE := PRESIGNED include $(BUILD_PREBUILT)  並使用Android Studio(或eclipse)隨便製造出一個Hello.</description>
+      <description>平台及環境設置 平台 實驗平台：Nexus 5 Android版本：android-4.4_r1 前置知識： Howto Build Android KitKat (4.4) for the Google Nexus 5 環境設置 在AOSP資料</description>
     </item>
     
   </channel>

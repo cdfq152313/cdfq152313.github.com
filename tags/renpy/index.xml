@@ -5,6 +5,7 @@
     <link>https://cdfq152313.github.io/tags/renpy/</link>
     <description>Recent content in Renpy on Denny&#39;s Blog</description>
     <generator>Hugo -- gohugo.io</generator>
+    <language>zh-hant</language>
     <lastBuildDate>Mon, 24 Apr 2017 04:25:31 +0000</lastBuildDate>
     
 	<atom:link href="https://cdfq152313.github.io/tags/renpy/index.xml" rel="self" type="application/rss+xml" />
@@ -16,17 +17,7 @@
       <pubDate>Mon, 24 Apr 2017 04:25:31 +0000</pubDate>
       
       <guid>https://cdfq152313.github.io/post/2017-04-24/</guid>
-      <description>前言 renpy加入對話很簡單，不過想要加入文本就不是那麼容易了。有的時候想要在遊戲中閱讀長文本，還需要插入\n來作為換行，頗不方便。這個時候讀檔功能就派上用場了。
-在這裡要注意，不能使用python原生的開檔函式，否則程式有一定可能出錯(詳情看最後一段)。
-Renpy讀檔函式 官方讀檔文件在這裡。
-不過在讀unicode檔案的時候，還需要做一些特別處理才行，否則讀出來的檔案都是亂碼。以下為範例程式碼，為python語法。
-def read_file(filepath): import codecs # 開檔 f = renpy.file(filepath) # 讀入檔案 data = f.read() # 轉換為unicode data = codecs.decode(data, &#39;utf-8&#39;) return data  如此一來，最後產生的data就會是unicode格式囉。
-另外，原本想使用官網上所提供的renpy.fsdecode(s)來做編碼轉換，但是失敗了，可能是沒搞懂用法。後來就使用python原生的codec來做轉換。運作得還算不錯。
-Renpy路徑問題 renpy的path一律是以game資料夾作為根目錄，往下一層目錄是使用&amp;rsquo;/&amp;lsquo;作為識別。所以不用自作聰明使用python原生地os.path.join函式來合成路徑。在windows合成出來的路徑反而會出錯，因為windows是用反斜線&amp;rsquo;\&amp;lsquo;來分割目錄的。
-以下為組合路徑的方法。
-# 假設路徑為game目錄底下的info資料夾裡面的info01.txt檔案 filepath = &#39;info/info01.txt&#39;  最後碎碎念 其實也並不是不能使用原生地python函式來做開檔，但是要記得一件事，如果你有在renpy的設定中封裝檔案，像下列程式碼。
-# 在options.rpy中 build.classify(&#39;game/info/*.txt&#39;, &#39;data&#39;)  那麼在製作釋出版時，這些資料會很自然地被封裝到data.rpa的檔案中。如此一來。python原生函式所取得的路徑，自然就會抓不到任何東西。
-反過來說，只要你不封裝任何檔案，那你想使用任何python的函式都沒問題(ex: os.path.join / open / &amp;hellip;)</description>
+      <description>前言 renpy加入對話很簡單，不過想要加入文本就不是那麼容易了。有的時候想要在遊戲中閱讀長文本，還需要插入\n來作為換行，頗不方便。這個時候</description>
     </item>
     
     <item>
@@ -35,13 +26,7 @@ Renpy路徑問題 renpy的path一律是以game資料夾作為根目錄，往下�
       <pubDate>Sun, 24 Jul 2016 00:00:00 +0000</pubDate>
       
       <guid>https://cdfq152313.github.io/post/2016-07-24/</guid>
-      <description>在官網可以看到有很多可使用的Action。
-萬一想要的功能並不在裡面呢? 其實也有Function此一Action的存在，可自己撰寫Function傳進去使用。 這裡只是提點一些Function使用上的誤區。
-絕對要使用Function此Action  絕對要使用Function此Action 絕對不要直接把自己寫的function當Action  錯誤範例 python: def test(): pass textbutton &amp;quot;Click Me!!&amp;quot;: action test()  在renpy眼中，這是一個正常行為，他不會報錯。
-但是這會導致此button並非在點擊才觸發Action，而是在載入、textbutton出來的那瞬間，就執行了action。
-正確寫法 python: def test(): pass textbutton &amp;quot;Click Me!!&amp;quot;: action Function(test)  傳入參數 如果這個function需要支援參數傳遞呢? 一樣可以用Function達到
-python: def test(text): pass textbutton &amp;quot;Click Me!!&amp;quot;: action Function(test, text = &amp;quot;apple&amp;quot;)  Function在官方的文件上說支援args和kwargs的參數傳遞。
-但實際測試後發現，args的參數傳遞是壞的，並不能使用。所以請都用kwargs的參數傳遞法。</description>
+      <description>在官網可以看到有很多可使用的Action。 萬一想要的功能並不在裡面呢? 其實也有Function此一Action的存在，可自己撰寫Functi</description>
     </item>
     
     <item>
@@ -50,18 +35,7 @@ python: def test(text): pass textbutton &amp;quot;Click Me!!&amp;quot;: action F
       <pubDate>Sat, 23 Jul 2016 00:00:00 +0000</pubDate>
       
       <guid>https://cdfq152313.github.io/post/2016-07-23/</guid>
-      <description>當滑鼠移上按鈕，咻，按鈕變色了。當滑鼠離開按鈕，咻，按鈕又變回來了。
-藉由這樣的效果，可以讓玩家清楚感受到這是一個可點選的按鈕。
-要如何製作這樣的效果呢?
-imagebutton 難度：簡單
-Imagebutton: idle &amp;quot;滑鼠離開時照片&amp;quot; hover &amp;quot;滑鼠移上時照片&amp;quot; action NullAction()  參閱官網只要設定屬性idle及hover即可，要注意的一點是，必須要有任意Action，變色效果才會顯現出來。
-如果不打算有任何Action，則使用NullAction吧，此方法就是為了變色而設立的。
-textbutton 難度：中等 參閱官網在options.rpy當中，有欄位為
-widget_text = &amp;quot;滑鼠離開時顏色&amp;quot;, widget_selected = &amp;quot;滑鼠移上時顏色&amp;quot;,  設定好後，textbutton的變色就會依照此設定來做調整囉。
-缺點是不能在任意的textbutton指定變數顏色，如果今天有兩個textbutton，想指定為
- textbutton1 滑鼠移上紅色 滑鼠離開白色 textbutton2 滑鼠移上藍色 滑鼠離開白色  在此方法中是無能為力的。
-button 難度：困難，但textbutton或imagebutton也可用此方法來變色，最萬用。
-Screen button_test: default myhover = False button: action SetScreenVariable(&amp;quot;myhover&amp;quot;, False) hovered SetScreenVariable(&amp;quot;myhover&amp;quot;, True) unhovered SetScreenVariable(&amp;quot;myhover&amp;quot;, False) if myhover: image &amp;quot;滑鼠移上時照片&amp;quot; text (&amp;quot;YA&amp;quot;) color &amp;quot;滑鼠移上時顏色&amp;quot; else: image &amp;quot;滑鼠離開時圖片&amp;quot; text (&amp;quot;YA&amp;quot;) color &amp;quot;滑鼠離開時顏色&amp;quot;  在Screen Language當中，可以使用defalut這個字眼來定義專屬於某個Screen的變數，並且可使用SetScreenVariable此Action來指定變數值。</description>
+      <description>當滑鼠移上按鈕，咻，按鈕變色了。當滑鼠離開按鈕，咻，按鈕又變回來了。 藉由這樣的效果，可以讓玩家清楚感受到這是一個可點選的按鈕。 要如何製作這樣</description>
     </item>
     
     <item>
@@ -70,16 +44,7 @@ Screen button_test: default myhover = False button: action SetScreenVariable(&am
       <pubDate>Mon, 11 Jul 2016 00:00:00 +0000</pubDate>
       
       <guid>https://cdfq152313.github.io/post/2016-07-11/</guid>
-      <description>tooltip 所謂的tooltip，就是當你滑鼠移到一個button上後，可以顯示一些說明，讓使用者更了解這個button的功能。
-可以用以下的程式碼簡單的實作tootip
-screen tooltip(tip, positon): frame: text tip pos position  然後在button上的hovered和unhovered加上action即可
-button: hovered Show(tooltip, tip=&amp;quot;說明文字&amp;quot;, position = (10,20) ) unhovered Hide(tooltip)  出現在滑鼠的位置 目前這個簡陋的tooltip，它的位置是被固定死的。也就是說，每次有新的tooltip，都得自己先行想好tooltip的位置。
-能不能要tooltip直接顯示在滑鼠旁邊呢? 可行的，renpy有提供滑鼠位置的函式。
-screen tooltip(tip=None): frame: $ position = renpy.get_mouse_pos() text tip pos position  如此一來，不用輸入position也可以直接顯示在滑鼠上了，使用者想要自己加減pixel，讓tooltip出現在滑鼠的上下左右方也是非常輕而易舉。
-隨著滑鼠而移動 如果想要tooltip不僅僅只是閃現的那刻出現在滑鼠旁，而是無時無刻的跟著滑鼠移動呢?
-查閱官網，影響位置的參數有兩個。大部分的Screen物件都有兩種可調的位置屬性，第一個是Common Properties中的at，第二個是Position Style Properties。
-據我所知，Position Style Properties是無法動態調整的，所以我們只能依靠關鍵字at後面所接續的trnasform statement來解決這個問題了。
-具體步驟  新增一個transform執行function 此function內容為定時更新位置(範例為0.05秒) 在tooltip當中對frame加上at 步驟1的transform  範例 transform follow_mouse: function follow_mouse_func init python: def follow_mouse_func(trans, st, at): trans.</description>
+      <description>tooltip 所謂的tooltip，就是當你滑鼠移到一個button上後，可以顯示一些說明，讓使用者更了解這個button的功能。 可以用以下的程式碼簡單</description>
     </item>
     
     <item>
@@ -88,15 +53,7 @@ screen tooltip(tip=None): frame: $ position = renpy.get_mouse_pos() text tip pos
       <pubDate>Sun, 10 Jul 2016 00:00:00 +0000</pubDate>
       
       <guid>https://cdfq152313.github.io/post/2016-07-10/</guid>
-      <description>問題 在寫AVG遊戲的時候，常常遇到立繪需要變更的狀況。考量以下場景
- 人物A平常表情 人物A笑 人物A平常表情 人物A立繪從場上消失  程式碼可能會長這樣
-image a_normal = &amp;quot;a_normal.png&amp;quot; image a_laugh = &amp;quot;a_laugh.png&amp;quot; label start: show a_normal pause 2 hide a_normal show a_laugh puase 2 hide a_laugh show a_normal pause 2 hide a_normal  如果要人物A換動作，就得先記得他上次是哪個圖片，隱藏之後再show新的，想想就累。
-解法 renpy提供了一個方便的解法。在取變數名稱的時候可以用兩個識別字來描述。
-例如可以把立繪取叫
-image a normal = &amp;quot;a_normal.png&amp;quot; image a laugh = &amp;quot;a_laugh.png&amp;quot;  如此一來，renpy就會知道a normal和 a laugh為同一人的不同種表情，因為前識別字a都一樣。
-這樣show a normal時如果a laugh在場上就會自動隱藏了。
-最後若要將a隱藏起來的時候只需要hide前識別字即可。
-image a normal = &amp;quot;a_normal.png&amp;quot; image a laugh = &amp;quot;a_laugh.</description>
+      <description>問題 在寫AVG遊戲的時候，常常遇到立繪需要變更的狀況。考量以下場景 人物A平常表情 人物A笑 人物A平常表情 人物A立繪從場上消失 程式碼可能會長這樣</description>
     </item>
     
     <item>
@@ -105,19 +62,7 @@ image a normal = &amp;quot;a_normal.png&amp;quot; image a laugh = &amp;quot;a_la
       <pubDate>Wed, 06 Jul 2016 00:00:00 +0000</pubDate>
       
       <guid>https://cdfq152313.github.io/post/2016-07-06/</guid>
-      <description>緣起 其實很多內容在 雪凡與好朋友們的 Ren&amp;rsquo;Py 遊戲引擎初學心得提示 就有了，大概寫一些製作時的心得而已。
- 第一回 第二回 第三回 第四回 第五回 第六回 第七回 第八回 第九回  搭配renpy官網服用，妙不可言。
-檔案目錄 初學要知道的在renpy中有三個區段。我稱之為init區段，label區段以及python區段。這三個區段的語法都略有不同。
-而撰寫語法的檔案，只要在game目錄下新增.rpy檔即可，不管命名為何，renpy會預設載入game目錄下所有的.rpy檔作為renpy的語法輸入。
-接下來就分別說明三個區段的差異之處。
-init區段 新增一個.rpy檔，若無明確指定為label或python區段，那就可以視為init區段了。
-init區段通常做為定義變數、圖片、screen之用，會在遊戲啟動的瞬間先行載入。
-init區段可以透過下列語法來新增
-init -1: define abc = character(&amp;quot;abc&amp;quot;) image def = &amp;quot;def&amp;quot;  init旁邊接的數字的意義為載入順序(若沒寫則為0)，比如說，若有三個init區段
-init 1: image a = &amp;quot;a&amp;quot; init 2: image b = &amp;quot;b&amp;quot; init 3: image c = &amp;quot;c&amp;quot;  雖然撰寫順序為由上往下，但由於數字大的先載入，所以renpy會先讀取image c，接下來是b，最後才為a。 如果有載入順序的要求的話(雖然我還沒遇過)，可以嘗試看看這招。
-label區段 此處為遊戲運行之腳本，對於玩過avg遊戲的人應該很熟悉，就是讓你可以點一點繼續向下看對話的地方。
-可以運用show , call, with dissolve之類的語句來展現對話效果。
-這裡列出兩個極為重要的保留(reserved) label</description>
+      <description>緣起 其實很多內容在 雪凡與好朋友們的 Ren&amp;rsquo;Py 遊戲引擎初學心得提示 就有了，大概寫一些製作時的心得而已。 第一回 第二回 第三回 第四回 第五回 第六回 第七回 第八回</description>
     </item>
     
   </channel>
