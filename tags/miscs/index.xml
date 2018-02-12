@@ -6,19 +6,10 @@
     <description>Recent content in Miscs on Denny&#39;s Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-hant</language>
-    <lastBuildDate>Sun, 15 Jan 2017 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Tue, 27 Dec 2016 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="https://cdfq152313.github.io/tags/miscs/index.xml" rel="self" type="application/rss+xml" />
     
-    
-    <item>
-      <title>寫給朋友看的function與class</title>
-      <link>https://cdfq152313.github.io/post/2017-01-15/</link>
-      <pubDate>Sun, 15 Jan 2017 00:00:00 +0000</pubDate>
-      
-      <guid>https://cdfq152313.github.io/post/2017-01-15/</guid>
-      <description>今天有個簡易的app功能如下 只有一個ViewController 這個ViewController上只有兩個UITextView Input: &amp;ldquo;01/15&amp;rdquo; 代表1月1</description>
-    </item>
     
     <item>
       <title>[讀書心得] 圖解密碼學與比特幣原理</title>
