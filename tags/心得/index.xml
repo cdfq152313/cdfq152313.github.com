@@ -6,17 +6,26 @@
     <description>Recent content in 心得 on Denny&#39;s Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-hant</language>
-    <lastBuildDate>Tue, 27 Dec 2016 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Thu, 29 Mar 2018 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="https://cdfq152313.github.io/tags/%E5%BF%83%E5%BE%97/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
-      <title>[讀書心得] 圖解密碼學與比特幣原理</title>
-      <link>https://cdfq152313.github.io/post/2016-12-27/</link>
-      <pubDate>Tue, 27 Dec 2016 00:00:00 +0000</pubDate>
+      <title>[讀書心得] 圖解Java多線程設計模式</title>
+      <link>https://cdfq152313.github.io/post/2018-03-29/</link>
+      <pubDate>Thu, 29 Mar 2018 00:00:00 +0000</pubDate>
       
-      <guid>https://cdfq152313.github.io/post/2016-12-27/</guid>
+      <guid>https://cdfq152313.github.io/post/2018-03-29/</guid>
+      <description>大要 圖解Java多線程設計模式 簡單條列心得如下。 他會假設你有Java的基礎知識，並假設你Java的執行緒相關函式還沒那麼熟，所以有一篇序章專</description>
+    </item>
+    
+    <item>
+      <title>[讀書心得] 圖解密碼學與比特幣原理</title>
+      <link>https://cdfq152313.github.io/post/2016-12-28/</link>
+      <pubDate>Wed, 28 Dec 2016 00:00:00 +0000</pubDate>
+      
+      <guid>https://cdfq152313.github.io/post/2016-12-28/</guid>
       <description>圖解密碼學與比特幣原理 花了很久才斷斷續續的看完這本，覺得是一本很不錯的科普書，沒有太艱深的數學。 書中有系統的把目前密碼學的發展介紹了一遍，非</description>
     </item>
     
