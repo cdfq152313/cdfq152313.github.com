@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+<html lang="zh-hant">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>Swift TableView 與 Collection View - Denny&#39;s Blog</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="Denny Cheng" /><meta name="description" content="TableView IndexPath: Section &amp;amp; Row 看圖應該可以明瞭Section和Row的含意，Apple把tableView劃分為section，每個section下又有row。" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.54.0 with even 4.0.0" />
+
+
+<link rel="canonical" href="https://cdfq152313.github.io/post/notes/2016/10-25/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+
+<link href="/dist/even.c2a46f00.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="Swift TableView 與 Collection View" />
+<meta property="og:description" content="TableView IndexPath: Section &amp; Row 看圖應該可以明瞭Section和Row的含意，Apple把tableView劃分為section，每個section下又有row。" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://cdfq152313.github.io/post/notes/2016/10-25/" />
+<meta property="article:published_time" content="2016-10-25T00:00:00&#43;00:00"/>
+<meta property="article:modified_time" content="2016-10-25T00:00:00&#43;00:00"/>
+
+<meta itemprop="name" content="Swift TableView 與 Collection View">
+<meta itemprop="description" content="TableView IndexPath: Section &amp; Row 看圖應該可以明瞭Section和Row的含意，Apple把tableView劃分為section，每個section下又有row。">
+
+
+<meta itemprop="datePublished" content="2016-10-25T00:00:00&#43;00:00" />
+<meta itemprop="dateModified" content="2016-10-25T00:00:00&#43;00:00" />
+<meta itemprop="wordCount" content="1729">
+
+
+
+<meta itemprop="keywords" content="ios,swift," />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Swift TableView 與 Collection View"/>
+<meta name="twitter:description" content="TableView IndexPath: Section &amp; Row 看圖應該可以明瞭Section和Row的含意，Apple把tableView劃分為section，每個section下又有row。"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">Denny&#39;s Blog</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">Home</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">Archives</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">Tags</li>
+      </a><a href="/about/">
+        <li class="mobile-menu-item">About</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">Denny&#39;s Blog</a>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">Home</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">Archives</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">Tags</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/about/">About</a>
+      </li>
+  </ul>
+</nav>
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">Swift TableView 與 Collection View</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2016-10-25 </span>
+        <div class="post-category">
+            <a href="/categories/notes/"> notes </a>
+            </div>
+        
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title"></h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+<ul>
+<li><a href="#tableview">TableView</a>
+<ul>
+<li><a href="#indexpath-section-row">IndexPath: Section &amp; Row</a></li>
+<li><a href="#必定要override的method-幾個section-幾個row">必定要override的method: 幾個section 幾個row</a></li>
+<li><a href="#某一列的內容">某一列的內容</a></li>
+<li><a href="#section-title">Section Title</a></li>
+<li><a href="#點擊某列跳轉到下一個controller-並傳值">點擊某列跳轉到下一個Controller，並傳值</a></li>
+<li><a href="#滑動刪除">滑動刪除</a></li>
+<li><a href="#自訂滑動選項">自訂滑動選項</a></li>
+<li><a href="#更新畫面的method">更新畫面的method</a></li>
+<li><a href="#更換位置">更換位置</a></li>
+<li><a href="#下拉更新">下拉更新</a></li>
+<li><a href="#搜尋">搜尋</a></li>
+</ul></li>
+<li><a href="#uicollectionview">UICollectionView</a>
+<ul>
+<li><a href="#uicollectionviewdelegateflowlayout">UICollectionViewDelegateFlowLayout</a></li>
+</ul></li>
+</ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      
+
+<h1 id="tableview">TableView</h1>
+
+<h2 id="indexpath-section-row">IndexPath: Section &amp; Row</h2>
+
+<p><img src="http://i.imgur.com/razNcl9.png" alt="Section and Row" /></p>
+
+<p>看圖應該可以明瞭Section和Row的含意，Apple把tableView劃分為section，每個section下又有row。<br />
+在IOS中有一個叫做IndexPath的類別專門儲存這兩個值，在tableView以後要override的方法會經常看到。</p>
+
+<h2 id="必定要override的method-幾個section-幾個row">必定要override的method: 幾個section 幾個row</h2>
+
+<p>使用tableView必須指定DataSource和Delegate (若是TableViewController則已經指定好自己作為這兩個protocol的實作)<br />
+其中有些function是必定要override的</p>
+
+<ol>
+<li>總共有幾個section</li>
+<li>每個section裡面有幾個row</li>
+</ol>
+
+<p>在這個範例中，我指定兩個section，section 0有2 row，section 1有3 row。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code class="language-swift" data-lang="swift"><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-swift" data-lang="swift"><span class="c1">// 總共幾個section</span>
+<span class="kr">override</span> <span class="kd">func</span> <span class="nf">numberOfSections</span><span class="p">(</span><span class="k">in</span> <span class="n">tableView</span><span class="p">:</span> <span class="n">UITableView</span><span class="p">)</span> <span class="p">-&gt;</span> <span class="nb">Int</span> <span class="p">{</span>
+  <span class="k">return</span> <span class="mi">2</span>
+<span class="p">}</span>
+
+<span class="c1">// 每個section裡面有幾個row</span>
+<span class="kr">override</span> <span class="kd">func</span> <span class="nf">tableView</span><span class="p">(</span><span class="kc">_</span> <span class="n">tableView</span><span class="p">:</span> <span class="n">UITableView</span><span class="p">,</span> <span class="n">numberOfRowsInSection</span> <span class="n">section</span><span class="p">:</span> <span class="nb">Int</span><span class="p">)</span> <span class="p">-&gt;</span> <span class="nb">Int</span> <span class="p">{</span>
+	<span class="k">if</span> <span class="n">section</span> <span class="p">==</span> <span class="mi">0</span><span class="p">{</span>
+  	<span class="k">return</span> <span class="mi">2</span>
+  <span class="p">}</span>
+  <span class="k">else</span><span class="p">{</span>
+  	<span class="k">return</span> <span class="mi">3</span>
+	<span class="p">}</span>
+<span class="p">}</span></code></pre></td></tr></table>
+</div>
+</div>
+<h2 id="某一列的內容">某一列的內容</h2>
+
+<p>但是只有這樣，顯示出來會是空白一片，所以必須要回傳顯示的內容。<br />
+在做這個項目之前，必須先到storyBoard，將tableView裏頭的cell指定一個identifier，否則會錯誤。<br />
+在此我指定cell的identifier為myCell<br />
+<img src="http://i.imgur.com/0mgnfd6.png" alt="Identifier" /></p>
+
+<p>然後才可以在程式碼中使用myCell</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code class="language-swift" data-lang="swift"><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-swift" data-lang="swift"><span class="kr">override</span> <span class="kd">func</span> <span class="nf">tableView</span><span class="p">(</span><span class="kc">_</span> <span class="n">tableView</span><span class="p">:</span> <span class="n">UITableView</span><span class="p">,</span> <span class="n">cellForRowAt</span> <span class="n">indexPath</span><span class="p">:</span> <span class="n">IndexPath</span><span class="p">)</span> <span class="p">-&gt;</span> <span class="n">UITableViewCell</span> <span class="p">{</span>
+  <span class="kd">let</span> <span class="nv">cell</span> <span class="p">=</span> <span class="n">tableView</span><span class="p">.</span><span class="n">dequeueReusableCell</span><span class="p">(</span><span class="n">withIdentifier</span><span class="p">:</span> <span class="s">&#34;myCell&#34;</span><span class="p">,</span> <span class="k">for</span><span class="p">:</span> <span class="n">indexPath</span><span class="p">)</span>
+
+  <span class="c1">// 顯示目前是第幾Row</span>
+  <span class="n">cell</span><span class="p">.</span><span class="n">textLabel</span><span class="p">?.</span><span class="n">text</span> <span class="p">=</span> <span class="s">&#34;Row &#34;</span> <span class="o">+</span> <span class="nb">String</span><span class="p">(</span><span class="n">indexPath</span><span class="p">.</span><span class="n">row</span><span class="p">)</span>
+  <span class="k">return</span> <span class="n">cell</span>
+<span class="p">}</span></code></pre></td></tr></table>
+</div>
+</div>
+<p><img src="http://i.imgur.com/MFz1Rhv.png" alt="目前畫面" /></p>
+
+<h2 id="section-title">Section Title</h2>
+
+<p>但是這樣少了每個section的title，沒有段落感，所以用以下的code加上。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code class="language-swift" data-lang="swift"><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-swift" data-lang="swift"><span class="kr">override</span> <span class="kd">func</span> <span class="nf">tableView</span><span class="p">(</span><span class="kc">_</span> <span class="n">tableView</span><span class="p">:</span> <span class="n">UITableView</span><span class="p">,</span> <span class="n">titleForHeaderInSection</span> <span class="n">section</span><span class="p">:</span> <span class="nb">Int</span><span class="p">)</span> <span class="p">-&gt;</span> <span class="nb">String</span><span class="p">?</span> <span class="p">{</span>
+  <span class="k">if</span> <span class="n">section</span> <span class="p">==</span> <span class="mi">0</span><span class="p">{</span>
+  	<span class="k">return</span> <span class="s">&#34;Section 0&#34;</span>
+  <span class="p">}</span>
+  <span class="k">else</span><span class="p">{</span>
+  	<span class="k">return</span> <span class="s">&#34;Section 1&#34;</span>
+  <span class="p">}</span>
+<span class="p">}</span></code></pre></td></tr></table>
+</div>
+</div>
+<p><img src="http://i.imgur.com/razNcl9.png" alt="目前畫面" /></p>
+
+<h2 id="點擊某列跳轉到下一個controller-並傳值">點擊某列跳轉到下一個Controller，並傳值</h2>
+
+<p><a href="http://dennycheng-blog.logdown.com/posts/946492-controller-interaction">請參閱之前的傳值方法</a>，我們選用方法一。這邊要補充的是：可以藉由tableview中的indexPathForselectedRow屬性來得知哪一列被選中。</p>
+
+<ol>
+<li>在prepare裡裡面進行傳值的預備動作。</li>
+<li>轉型Controller，這樣才可以塞property
+
+<ul>
+<li>在此我們假設SecondViewController中有selectedIndexPath這個屬性。</li>
+</ul></li>
+<li>可以藉由tableView中的indexPathForselectedRow來判定哪個Row被選中。</li>
+</ol>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code class="language-swift" data-lang="swift"><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-swift" data-lang="swift"><span class="kr">override</span> <span class="kd">func</span> <span class="nf">prepare</span><span class="p">(</span><span class="k">for</span> <span class="n">segue</span><span class="p">:</span> <span class="n">UIStoryboardSegue</span><span class="p">,</span> <span class="n">sender</span><span class="p">:</span> <span class="nb">Any</span><span class="p">?)</span> <span class="p">{</span>
+  <span class="k">if</span> <span class="kd">let</span> <span class="nv">indexPath</span> <span class="p">=</span> <span class="n">tableView</span><span class="p">.</span><span class="n">indexPathForSelectedRow</span><span class="p">{</span>
+    <span class="kd">let</span> <span class="nv">controller</span> <span class="p">=</span> <span class="n">segue</span><span class="p">.</span><span class="n">destination</span> <span class="k">as</span><span class="o">!</span> <span class="n">SecondViewController</span>
+    <span class="n">controller</span><span class="p">.</span><span class="n">selectedIndexPath</span> <span class="p">=</span> <span class="n">indexPath</span>
+  <span class="p">}</span>
+<span class="p">}</span></code></pre></td></tr></table>
+</div>
+</div>
+<h2 id="滑動刪除">滑動刪除</h2>
+
+<p>只要複寫方法即可，記得必須同時刪除實際的Array以及畫面上的元件，否則會造成畫面與實際資料不同步的問題。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code class="language-swift" data-lang="swift"><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-swift" data-lang="swift"><span class="kr">override</span> <span class="kd">func</span> <span class="nf">tableView</span><span class="p">(</span><span class="kc">_</span> <span class="n">tableView</span><span class="p">:</span> <span class="n">UITableView</span><span class="p">,</span> <span class="n">commit</span> <span class="n">editingStyle</span><span class="p">:</span> <span class="n">UITableViewCellEditingStyle</span><span class="p">,</span> <span class="n">forRowAt</span> <span class="n">indexPath</span><span class="p">:</span> <span class="n">IndexPath</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">if</span> <span class="n">editingStyle</span> <span class="p">==</span> <span class="p">.</span><span class="n">delete</span> <span class="p">{</span>
+    <span class="c1">// 刪除元素</span>
+    <span class="n">myArray</span><span class="p">.</span><span class="n">remove</span><span class="p">(</span><span class="n">at</span><span class="p">:</span> <span class="n">indexPath</span><span class="p">.</span><span class="n">row</span><span class="p">)</span>
+    <span class="c1">// 刪除畫面上的元素</span>
+    <span class="n">tableView</span><span class="p">.</span><span class="n">deleteRows</span><span class="p">(</span><span class="n">at</span><span class="p">:</span> <span class="p">[</span><span class="n">indexPath</span><span class="p">],</span> <span class="n">with</span><span class="p">:</span> <span class="p">.</span><span class="n">fade</span><span class="p">)</span>
+  <span class="p">}</span> 
+<span class="p">}</span></code></pre></td></tr></table>
+</div>
+</div>
+<p>但使用這個方法，只能滑出一個按鈕。如果想滑動時有多個按鈕可以選擇請看下節。</p>
+
+<h2 id="自訂滑動選項">自訂滑動選項</h2>
+
+<p>如果想要自訂滑動按鈕的文字樣式，或是想指定多個滑動按鈕，那就不能使用上述的複寫方法。而必須改用下面這個。</p>
+
+<ol>
+<li>複寫方法</li>
+<li>自訂UITableViewRowAction</li>
+<li>回傳UITableViewRowAction陣列</li>
+</ol>
+
+<p>因為此方法回傳陣列，所以可以塞進多個按鈕。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code class="language-swift" data-lang="swift"><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-swift" data-lang="swift"><span class="kr">override</span> <span class="kd">func</span> <span class="nf">tableView</span><span class="p">(</span><span class="kc">_</span> <span class="n">tableView</span><span class="p">:</span> <span class="n">UITableView</span><span class="p">,</span> <span class="n">editActionsForRowAt</span> <span class="n">indexPath</span><span class="p">:</span> <span class="n">IndexPath</span><span class="p">)</span> <span class="p">-&gt;</span> <span class="p">[</span><span class="n">UITableViewRowAction</span><span class="p">]?</span> <span class="p">{</span>
+        <span class="kd">let</span> <span class="nv">addAction</span> <span class="p">=</span> <span class="n">UITableViewRowAction</span><span class="p">(</span><span class="n">style</span><span class="p">:</span> <span class="p">.</span><span class="n">normal</span><span class="p">,</span> <span class="n">title</span><span class="p">:</span> <span class="s">&#34;insert&#34;</span><span class="p">)</span> <span class="p">{</span> 
+        	<span class="p">(</span><span class="n">action</span><span class="p">,</span> <span class="n">indexPath</span><span class="p">)</span> <span class="k">in</span>
+          <span class="c1">// 下面可寫插入元素的動作  </span>
+        <span class="p">}</span>
+        
+        <span class="kd">let</span> <span class="nv">deleteAction</span> <span class="p">=</span> <span class="n">UITableViewRowAction</span><span class="p">(</span><span class="n">style</span><span class="p">:</span> <span class="p">.</span><span class="k">default</span><span class="p">,</span> <span class="n">title</span><span class="p">:</span> <span class="s">&#34;delete&#34;</span><span class="p">)</span> <span class="p">{</span> 
+        	<span class="p">(</span><span class="n">action</span><span class="p">,</span> <span class="n">indexPath</span><span class="p">)</span> <span class="k">in</span>
+          <span class="c1">// 下面可寫刪除元素的動作  </span>
+        <span class="p">}</span>
+        <span class="k">return</span> <span class="p">[</span><span class="n">deleteAction</span><span class="p">,</span> <span class="n">addAction</span><span class="p">]</span>
+    <span class="p">}</span></code></pre></td></tr></table>
+</div>
+</div>
+<h2 id="更新畫面的method">更新畫面的method</h2>
+
+<p>TableView裡面有三個method可以更新畫面。列表如下</p>
+
+<ul>
+<li>刪除：需提供IndexPath的陣列，一次可以刪一串。</li>
+<li>插入：需提供IndexPath的陣列，一次可以加入一串。</li>
+<li>重新整理</li>
+</ul>
+
+<p>程式碼如下</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code class="language-swift" data-lang="swift"><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-swift" data-lang="swift"><span class="n">tableView</span><span class="p">.</span><span class="n">deleteRows</span><span class="p">(</span><span class="n">at</span><span class="p">:</span> <span class="p">[</span><span class="n">indexPath</span><span class="p">],</span> <span class="n">with</span><span class="p">:</span> <span class="p">.</span><span class="n">fade</span><span class="p">)</span>
+<span class="n">tableView</span><span class="p">.</span><span class="n">insertRows</span><span class="p">(</span><span class="n">at</span><span class="p">:</span> <span class="p">[</span><span class="n">indexPath</span><span class="p">],</span> <span class="n">with</span><span class="p">:</span> <span class="p">.</span><span class="n">fade</span><span class="p">)</span>
+<span class="n">tableView</span><span class="p">.</span><span class="n">reloadData</span><span class="p">()</span></code></pre></td></tr></table>
+</div>
+</div>
+<h2 id="更換位置">更換位置</h2>
+
+<h2 id="下拉更新">下拉更新</h2>
+
+<p>常常會看到有APP在tableView下拉時畫面會開始轉圈圈，然後更新，現在試著製作這個效果。
+1. 在StoryBoard中點選TableViewController。
+2. 將Refreshing設定成enable
+3. 此時左方會出現一個Refresh Control，將其拉到程式碼中，選擇Action，動作為value changed。
+    - <img src="http://i.imgur.com/QYt5WVC.png" alt="設定" />
+4. 接下來就可以對剛剛拉出的action做一些事，做完後使用self.refreshControl?.endRefreshing()，就可以結束轉圈圈的畫面。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code class="language-swift" data-lang="swift"><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-swift" data-lang="swift">  <span class="kr">@IBAction</span> <span class="kd">func</span> <span class="nf">reload</span><span class="p">(</span><span class="kc">_</span> <span class="n">sender</span><span class="p">:</span> <span class="nb">AnyObject</span><span class="p">)</span> <span class="p">{</span>
+      <span class="c1">// do something</span>
+      <span class="kc">self</span><span class="p">.</span><span class="n">refreshControl</span><span class="p">?.</span><span class="n">endRefreshing</span><span class="p">()</span>
+  <span class="p">}</span></code></pre></td></tr></table>
+</div>
+</div>
+<h2 id="搜尋">搜尋</h2>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code class="language-swift" data-lang="swift"><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-swift" data-lang="swift"><span class="kd">let</span> <span class="nv">searchController</span> <span class="p">=</span> <span class="n">UISearchController</span><span class="p">(</span><span class="n">searchResultsController</span><span class="p">:</span> <span class="kc">nil</span><span class="p">)</span>
+<span class="n">searchController</span><span class="p">.</span><span class="n">searchResultsUpdater</span> <span class="p">=</span> <span class="kc">self</span>
+<span class="kc">self</span><span class="p">.</span><span class="n">tableView</span><span class="p">.</span><span class="n">tableHeaderView</span> <span class="p">=</span> <span class="n">searchController</span><span class="p">.</span><span class="n">searchBar</span>
+<span class="n">searchController</span><span class="p">.</span><span class="n">dimsBackgroundDuringPresentation</span> <span class="p">=</span> <span class="kc">false</span></code></pre></td></tr></table>
+</div>
+</div>
+<h1 id="uicollectionview">UICollectionView</h1>
+
+<h2 id="uicollectionviewdelegateflowlayout">UICollectionViewDelegateFlowLayout</h2>
+
+<p>可以調整cell的大小</p>
+
+    </div>
+
+    
+<footer class="post-footer">
+      <div class="post-tags">
+          <a href="/tags/ios/">ios</a>
+          <a href="/tags/swift/">swift</a>
+          </div>
+      <nav class="post-nav">
+        <a class="prev" href="/post/notes/2016/11-02/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">Swift Mail &amp; Message</span>
+            <span class="prev-text nav-mobile"></span>
+          </a>
+        <a class="next" href="/post/notes/2016/10-21/">
+            <span class="next-text nav-default">Swift Map 地圖功能</span>
+            <span class="next-text nav-mobile"></span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        <div id="disqus_thread"></div>
+    <script type="text/javascript">
+    (function() {
+      
+      
+      if (window.location.hostname === 'localhost') return;
+
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      var disqus_shortname = 'blog-vygy2ifrxm';
+      dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="cdfq152313@gmail.com" class="iconfont icon-email" title="email"></a>
+      <a href="https://www.facebook.com/AddweupDennyCheng" class="iconfont icon-facebook" title="facebook"></a>
+      <a href="https://github.com/cdfq152313/" class="iconfont icon-github" title="github"></a>
+  <a href="https://cdfq152313.github.io/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    %!(EXTRA string=<a class="hexo-link" href="https://gohugo.io">Hugo</a>)
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+     - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  
+
+  <span class="copyright-year">
+    &copy; 
+    2015 - 
+    2019
+    <span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">Denny Cheng</span>
+  </span>
+</div>
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+<script type="text/javascript" src="/dist/even.26188efa.min.js"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>

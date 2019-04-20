@@ -1,0 +1,727 @@
+<!DOCTYPE html>
+<html lang="zh-hant">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>Swift 不同Controller互動 與 Navigation Bar - Denny&#39;s Blog</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="Denny Cheng" /><meta name="description" content="Controller之間的呼叫 present 與 dismiss 想要跳轉頁面，我們可以靠storyBoard拉出present的線，也可以靠程式碼。 在StoryBoar" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.54.0 with even 4.0.0" />
+
+
+<link rel="canonical" href="https://cdfq152313.github.io/post/notes/2016/10-03/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+
+<link href="/dist/even.c2a46f00.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="Swift 不同Controller互動 與 Navigation Bar" />
+<meta property="og:description" content="Controller之間的呼叫 present 與 dismiss 想要跳轉頁面，我們可以靠storyBoard拉出present的線，也可以靠程式碼。 在StoryBoar" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://cdfq152313.github.io/post/notes/2016/10-03/" />
+<meta property="article:published_time" content="2016-10-03T00:00:00&#43;00:00"/>
+<meta property="article:modified_time" content="2016-10-03T00:00:00&#43;00:00"/>
+
+<meta itemprop="name" content="Swift 不同Controller互動 與 Navigation Bar">
+<meta itemprop="description" content="Controller之間的呼叫 present 與 dismiss 想要跳轉頁面，我們可以靠storyBoard拉出present的線，也可以靠程式碼。 在StoryBoar">
+
+
+<meta itemprop="datePublished" content="2016-10-03T00:00:00&#43;00:00" />
+<meta itemprop="dateModified" content="2016-10-03T00:00:00&#43;00:00" />
+<meta itemprop="wordCount" content="3875">
+
+
+
+<meta itemprop="keywords" content="ios,swift," />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Swift 不同Controller互動 與 Navigation Bar"/>
+<meta name="twitter:description" content="Controller之間的呼叫 present 與 dismiss 想要跳轉頁面，我們可以靠storyBoard拉出present的線，也可以靠程式碼。 在StoryBoar"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">Denny&#39;s Blog</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">Home</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">Archives</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">Tags</li>
+      </a><a href="/about/">
+        <li class="mobile-menu-item">About</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">Denny&#39;s Blog</a>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">Home</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">Archives</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">Tags</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/about/">About</a>
+      </li>
+  </ul>
+</nav>
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">Swift 不同Controller互動 與 Navigation Bar</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2016-10-03 </span>
+        <div class="post-category">
+            <a href="/categories/notes/"> notes </a>
+            </div>
+        
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title"></h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+<ul>
+<li><a href="#controller之間的呼叫">Controller之間的呼叫</a>
+<ul>
+<li><a href="#present-與-dismiss">present 與 dismiss</a></li>
+<li><a href="#presentingviewcontroller-與-presentedviewcontroller">presentingViewController 與 presentedViewController</a></li>
+</ul></li>
+<li><a href="#navigation-bar">Navigation bar</a>
+<ul>
+<li><a href="#push-與-pop">push 與 pop</a></li>
+<li><a href="#前後的controller">前後的controller</a></li>
+<li><a href="#navigation-controller的建立">Navigation Controller的建立</a></li>
+<li><a href="#上面的title和向右鈕">上面的title和向右鈕</a></li>
+</ul></li>
+<li><a href="#tab-bar-controller">Tab Bar Controller</a>
+<ul>
+<li><a href="#tab-bar-controller下的controller們">tab bar controller下的controller們</a></li>
+<li><a href="#切換tab">切換tab</a></li>
+<li><a href="#隱藏tab">隱藏tab</a></li>
+</ul></li>
+<li><a href="#在不同的controller之間跳轉">在不同的Controller之間跳轉</a>
+<ul>
+<li><a href="#方法1-直接拖拉">方法1 直接拖拉</a></li>
+<li><a href="#方法2-利用segue">方法2 利用segue</a></li>
+<li><a href="#方法3-指定storyboard以及controller-通常用在更換story-board的時候">方法3 指定StoryBoard以及Controller (通常用在更換Story Board的時候)</a></li>
+<li><a href="#方法4-storyboard-reference-通常用在更換story-board的時候">方法4 StoryBoard Reference (通常用在更換Story Board的時候)</a></li>
+<li><a href="#方法5-逃生門-通常用在要返回前一個controller的時候">方法5 逃生門 (通常用在要返回前一個Controller的時候)</a>
+<ul>
+<li><a href="#情況">情況</a></li>
+<li><a href="#作法">作法</a></li>
+</ul></li>
+</ul></li>
+<li><a href="#controller之間傳遞訊息">Controller之間傳遞訊息</a>
+<ul>
+<li><a href="#方法1-利用destination-controller的property-呼叫下一個controller時">方法1. 利用destination controller的property (呼叫下一個Controller時)</a></li>
+<li><a href="#方法2-利用前後階層關係-僅適用於返回controller時">方法2. 利用前後階層關係(僅適用於返回controller時)</a></li>
+<li><a href="#方法3-protocol-返回前一個controller時">方法3. protocol (返回前一個controller時)</a></li>
+<li><a href="#方法4-notification-返回前一個controller時">方法4. notification (返回前一個controller時)</a></li>
+<li><a href="#方法5-全域變數">方法5. 全域變數</a></li>
+</ul></li>
+</ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      
+
+<h1 id="controller之間的呼叫">Controller之間的呼叫</h1>
+
+<h2 id="present-與-dismiss">present 與 dismiss</h2>
+
+<p>想要跳轉頁面，我們可以靠storyBoard拉出present的線，也可以靠程式碼。<br />
+在StoryBoard中只要按住ctrl，將button拉到另一個controller後再選present即可。<br />
+在程式碼的話</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code class="language-swift" data-lang="swift"><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-swift" data-lang="swift"><span class="c1">// 因為此ViewController什麼都沒設定，所以會是一片黑</span>
+<span class="n">present</span><span class="p">(</span><span class="n">ViewController</span><span class="p">(),</span> <span class="n">animated</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span> <span class="n">completion</span><span class="p">:</span> <span class="kc">nil</span><span class="p">)</span></code></pre></td></tr></table>
+</div>
+</div>
+<p>有跳過去，就有返回，想返回時使用dismiss function。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code class="language-swift" data-lang="swift"><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-swift" data-lang="swift"><span class="n">dismiss</span><span class="p">(</span><span class="n">animated</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span> <span class="n">completion</span><span class="p">:</span> <span class="kc">nil</span><span class="p">)</span></code></pre></td></tr></table>
+</div>
+</div>
+<p>dismiss的原理是，直接呼叫時，請求presentingViewController把你關掉。<br />
+間接呼叫時，把後面的presentedViewController們關掉。<br />
+至於這兩個是什麼意思請參看下節。</p>
+
+<h2 id="presentingviewcontroller-與-presentedviewcontroller">presentingViewController 與 presentedViewController</h2>
+
+<p>每個controller皆有兩個重要的屬性，可以分辨這個controller是被誰present，或是present了誰。</p>
+
+<ul>
+<li>presentingViewController：present Controller的Controller</li>
+<li>presentedViewController：被present的Controller</li>
+</ul>
+
+<p>假設ABC皆為Controller，A present B，B present C，那對於B來說。</p>
+
+<ul>
+<li>A為B之presentingViewController</li>
+<li>C為B之presentedViewController</li>
+</ul>
+
+<h1 id="navigation-bar">Navigation bar</h1>
+
+<h2 id="push-與-pop">push 與 pop</h2>
+
+<p>與present / dismiss相似，進到navigation controller後要使用 navigation屬性的push/pop方法，不然會跳出navigation controller的頁，失去Navigation Bar的效果。</p>
+
+<p>程式碼的形式如下</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code class="language-swift" data-lang="swift"><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-swift" data-lang="swift"><span class="c1">// 推上下一個頁面</span>
+<span class="kc">self</span><span class="p">.</span><span class="n">navigationController</span><span class="p">?.</span><span class="n">pushViewController</span><span class="p">(</span><span class="n">ViewController</span><span class="p">(),</span> <span class="n">animated</span><span class="p">:</span> <span class="kc">true</span><span class="p">)</span>
+<span class="c1">// 回到上一頁</span>
+<span class="kc">self</span><span class="p">.</span><span class="n">navigationController</span><span class="p">?.</span><span class="n">popViewController</span><span class="p">(</span><span class="n">animated</span><span class="p">:</span> <span class="kc">true</span><span class="p">)</span>
+<span class="c1">// 直接回到navigation最開頭</span>
+<span class="kc">self</span><span class="p">.</span><span class="n">navigationController</span><span class="p">?.</span><span class="n">popToRootViewController</span><span class="p">(</span><span class="n">animated</span><span class="p">:</span> <span class="kc">true</span><span class="p">)</span></code></pre></td></tr></table>
+</div>
+</div>
+<h2 id="前後的controller">前後的controller</h2>
+
+<p>如同present / dismiss可以拿到前後關係一樣，navigation controller也是可以拿到前後關係的。<br />
+所有經過的controller都放在self.navigationController?.viewControllers這個array裡可以拿取。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code class="language-swift" data-lang="swift"><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-swift" data-lang="swift"><span class="kc">self</span><span class="p">.</span><span class="n">navigationController</span><span class="p">?.</span><span class="n">viewControllers</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="kc">self</span><span class="p">.</span><span class="n">navigationController</span><span class="p">?.</span><span class="n">viewControllers</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+<span class="p">...</span></code></pre></td></tr></table>
+</div>
+</div>
+<h2 id="navigation-controller的建立">Navigation Controller的建立</h2>
+
+<p>Navigation Contrller本身並不帶有頁面資訊，而是在Navigation Controller的下一個Controller才會開始顯示。<br />
+那兩者之間要建立連線，必須要指定Navigation Controller當中的Root View Controller才行。</p>
+
+<ul>
+<li>方法1: Navigation綁定Root Controller，有兩種做法
+
+<ul>
+<li>按住Ctrl並將Navigation Controller拉到想要顯示的第一個Controller，鬆開後選擇Root view Controller</li>
+<li>在Navigation Controller的Triggered Segue中，指定Root view Controller</li>
+</ul></li>
+<li>方法2: 在StoryBoard中，點擊已經存在的Controller。並從上方選單Editor =&gt; Embed in =&gt; NavigatioController即可</li>
+</ul>
+
+<h2 id="上面的title和向右鈕">上面的title和向右鈕</h2>
+
+<p>預設只有Navigation Controller後第一個Bar可以編輯Title，若要加入新title則要從StoryBoard中拉入<strong>Navigation item</strong><br />
+預設上方並無向右鍵，只有返回鍵，若要加入則拉入<strong>Bar Button Item</strong></p>
+
+<h1 id="tab-bar-controller">Tab Bar Controller</h1>
+
+<p>與Navigation View許多做法類似，想加上新的tab可以</p>
+
+<ul>
+<li>方法1: TabViewController綁定View Controllers，有兩種做法
+
+<ul>
+<li>按住Ctrl並將TabViewController拉到想要加上的Controller，鬆開後選擇View Controllers</li>
+<li>在TabViewController的Triggered Segue中，指定新的View Controllers</li>
+</ul></li>
+<li>方法2: 在StoryBoard中，點擊已經存在的Controller。並從上方選單Editor =&gt; Embed in =&gt; TabViewController即可</li>
+</ul>
+
+<h2 id="tab-bar-controller下的controller們">tab bar controller下的controller們</h2>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code class="language-swift" data-lang="swift"><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-swift" data-lang="swift"><span class="kc">self</span><span class="p">.</span><span class="n">tabBarController</span><span class="p">?.</span><span class="n">viewControllers</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="kc">self</span><span class="p">.</span><span class="n">tabBarController</span><span class="p">?.</span><span class="n">viewControllers</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+<span class="p">...</span></code></pre></td></tr></table>
+</div>
+</div>
+<p>要注意的是，如果是tab bar controller下包著navigation controller，在存取時要先轉型成navigation controller，再取用navigation controller裡面的controller，才不會錯誤。</p>
+
+<h2 id="切換tab">切換tab</h2>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code class="language-swift" data-lang="swift"><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-swift" data-lang="swift"><span class="kc">self</span><span class="p">.</span><span class="n">tabBarController</span><span class="p">?.</span><span class="n">selectedIndex</span> <span class="p">=</span> <span class="mi">0</span></code></pre></td></tr></table>
+</div>
+</div>
+<h2 id="隱藏tab">隱藏tab</h2>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code class="language-swift" data-lang="swift"><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-swift" data-lang="swift"><span class="kc">self</span><span class="p">.</span><span class="n">tabBarController</span><span class="p">?.</span><span class="n">tabBar</span><span class="p">.</span><span class="n">isHidden</span> <span class="p">=</span> <span class="kc">true</span></code></pre></td></tr></table>
+</div>
+</div>
+<h1 id="在不同的controller之間跳轉">在不同的Controller之間跳轉</h1>
+
+<h2 id="方法1-直接拖拉">方法1 直接拖拉</h2>
+
+<p>在storyboard上<br />
+按住ctrl點下來源Controller之button拉到要呈現的Controller後鬆開，選擇show或present即可。<br />
+show會在啟用navigation bar的時候自動使用navigation.push，若無navigation bar則是使用present。</p>
+
+<h2 id="方法2-利用segue">方法2 利用segue</h2>
+
+<p>在storyboard上<br />
+按住ctrl點下來源Controller，拉到要呈現的Controller，會多一條segue連線，幫此條連線取名字(identifer)<br />
+接下來在想切換的情況下使用performSegue即可(參數為剛剛取的identifer)</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code class="language-swift" data-lang="swift"><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-swift" data-lang="swift"><span class="n">performSegue</span><span class="p">(</span><span class="n">withIdentifier</span><span class="p">:</span> <span class="s">&#34;goToView2&#34;</span><span class="p">,</span> <span class="n">sender</span><span class="p">:</span> <span class="kc">nil</span><span class="p">)</span></code></pre></td></tr></table>
+</div>
+</div>
+<h2 id="方法3-指定storyboard以及controller-通常用在更換story-board的時候">方法3 指定StoryBoard以及Controller (通常用在更換Story Board的時候)</h2>
+
+<p>將要呈現的Controller取名字(StoryBoardID)<br />
+並在程式碼中指定</p>
+
+<ol>
+<li>位於哪個StoryBoard</li>
+<li>Controller的StoryBoardID</li>
+</ol>
+
+<p>最後present或push即可</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code class="language-swift" data-lang="swift"><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-swift" data-lang="swift"><span class="kd">let</span> <span class="nv">myStoryBoard</span> <span class="p">=</span> <span class="n">UIStoryboard</span><span class="p">(</span><span class="n">name</span><span class="p">:</span> <span class="s">&#34;Main&#34;</span><span class="p">,</span> <span class="n">bundle</span><span class="p">:</span> <span class="kc">nil</span><span class="p">)</span>
+<span class="kd">let</span> <span class="nv">whiteViewController</span> <span class="p">=</span> <span class="n">myStoryBoard</span><span class="p">.</span><span class="n">instantiateViewController</span><span class="p">(</span><span class="n">withIdentifier</span><span class="p">:</span> <span class="s">&#34;whiteView&#34;</span><span class="p">)</span>
+<span class="n">present</span><span class="p">(</span><span class="n">whiteViewController</span><span class="p">,</span> <span class="n">animated</span><span class="p">:</span><span class="kc">true</span><span class="p">,</span> <span class="n">completion</span><span class="p">:</span><span class="kc">nil</span><span class="p">)</span></code></pre></td></tr></table>
+</div>
+</div>
+<p>如果是位於同一個storyboard，也可以拿到自己的storyboard</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code class="language-swift" data-lang="swift"><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-swift" data-lang="swift"><span class="kd">let</span> <span class="nv">myStoryBoard</span> <span class="p">=</span> <span class="kc">self</span><span class="p">.</span><span class="n">storyboard</span><span class="o">!</span>
+<span class="kd">let</span> <span class="nv">whiteViewController</span> <span class="p">=</span> <span class="n">myStoryBoard</span><span class="p">.</span><span class="n">instantiateInitialViewController</span><span class="p">(</span><span class="n">withIdentifier</span><span class="p">:</span> <span class="s">&#34;whiteView&#34;</span><span class="p">)</span>
+<span class="n">present</span><span class="p">(</span><span class="n">whiteViewController</span><span class="p">,</span> <span class="n">animated</span><span class="p">:</span><span class="kc">true</span><span class="p">,</span> <span class="n">completion</span><span class="p">:</span><span class="kc">nil</span><span class="p">)</span></code></pre></td></tr></table>
+</div>
+</div>
+<h2 id="方法4-storyboard-reference-通常用在更換story-board的時候">方法4 StoryBoard Reference (通常用在更換Story Board的時候)</h2>
+
+<p>在StoryBoard中，將StoryBoard Reference<br />
+拖到畫面上，指定StoryBoard Reference上的StoryBoard和ControllerID<br />
+接下來利用方法1或2拖拉即可成功</p>
+
+<h2 id="方法5-逃生門-通常用在要返回前一個controller的時候">方法5 逃生門 (通常用在要返回前一個Controller的時候)</h2>
+
+<h3 id="情況">情況</h3>
+
+<p>假設最初的controller取名叫parent controller<br />
+parent controller可以連到許多child controller<br />
+當child controller想返回parent controller的時候</p>
+
+<h3 id="作法">作法</h3>
+
+<p>先寫在parent controller</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code class="language-swift" data-lang="swift"><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-swift" data-lang="swift"><span class="kr">@IBAction</span> <span class="kd">func</span> <span class="nf">backToMain</span><span class="p">(</span><span class="kc">_</span> <span class="n">segue</span><span class="p">:</span><span class="n">UIStoryboardSegue</span><span class="p">){</span>
+	<span class="bp">print</span><span class="p">(</span><span class="s">&#34;back to main&#34;</span><span class="p">)</span>
+<span class="p">}</span></code></pre></td></tr></table>
+</div>
+</div>
+<p>再用StoryBoard選擇child controller<br />
+按鈕按住ctrl往該controller的逃生門拉 (上方最右邊的圖示)<br />
+即會出現backToMain的方法<br />
+如果parent controller在child controller返回後想執行什麼動作也可在此function中填入</p>
+
+<h1 id="controller之間傳遞訊息">Controller之間傳遞訊息</h1>
+
+<h2 id="方法1-利用destination-controller的property-呼叫下一個controller時">方法1. 利用destination controller的property (呼叫下一個Controller時)</h2>
+
+<ol>
+<li>複寫Source Controller的prepare Function</li>
+<li>參數segue之屬性destionation即為destination controller</li>
+<li>強制轉型為destination controller</li>
+<li>將其塞入數值</li>
+</ol>
+
+<p>這裡要注意的是，不能把值塞進destination controller的UI元件內(Ex: Label)，因為這個時候畫面元件還沒生成。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code class="language-swift" data-lang="swift"><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-swift" data-lang="swift"><span class="c1">// Source Controller</span>
+<span class="kr">override</span> <span class="kd">func</span> <span class="nf">prepare</span><span class="p">(</span><span class="k">for</span> <span class="n">segue</span><span class="p">:</span> <span class="n">UIStoryboardSegue</span><span class="p">,</span> <span class="n">sender</span><span class="p">:</span> <span class="nb">Any</span><span class="p">?)</span> <span class="p">{</span>
+	<span class="k">if</span> <span class="n">segue</span><span class="p">.</span><span class="n">destination</span> <span class="k">is</span> <span class="n">SecondViewController</span><span class="p">{</span>
+    <span class="kd">let</span> <span class="nv">des</span> <span class="p">=</span> <span class="n">segue</span><span class="p">.</span><span class="n">destination</span> <span class="k">as</span><span class="o">!</span> <span class="n">SecondViewController</span>
+  	<span class="n">des</span><span class="p">.</span><span class="n">textFromFirstView</span> <span class="p">=</span> <span class="s">&#34;Hello World&#34;</span>
+	<span class="p">}</span>
+<span class="p">}</span></code></pre></td></tr></table>
+</div>
+</div>
+<h2 id="方法2-利用前後階層關係-僅適用於返回controller時">方法2. 利用前後階層關係(僅適用於返回controller時)</h2>
+
+<p>前面有說過present可以靠</p>
+
+<ul>
+<li>presentingViewController</li>
+<li>presentedViewController</li>
+</ul>
+
+<p>navigation bar可以靠</p>
+
+<ul>
+<li>self.navigationController?.viewControllers[0]</li>
+<li>self.navigationController?.viewControllers[1]</li>
+<li>&hellip;</li>
+</ul>
+
+<p>來獲得前面的controller元件
+取得controller後再參考方法1塞入值</p>
+
+<h2 id="方法3-protocol-返回前一個controller時">方法3. protocol (返回前一個controller時)</h2>
+
+<p>將前一個controller名為FirstViewController<br />
+現在這個controller名為SecondViewController<br />
+令一個protocol叫做SecondViewControllerDelegate</p>
+
+<ol>
+<li>將SecondViewControllerDelegate當作SecondViewController的屬性</li>
+<li>在FirstViewController跳轉到SecondViewController前，通過方法1塞進自己實作的SecondViewControllerDelegate</li>
+<li>SecondViewController消失前，執行該protocol的method (透過複寫viewWillDisapear來達成)</li>
+</ol>
+
+<p>SecondController</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code class="language-swift" data-lang="swift"><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-swift" data-lang="swift"><span class="kd">var</span> <span class="nv">delegate</span><span class="p">:</span><span class="n">SecondViewControllerDelegate</span><span class="p">?</span>
+<span class="kr">@IBAction</span> <span class="kd">func</span> <span class="nf">goBack</span><span class="p">(</span><span class="kc">_</span> <span class="n">sender</span><span class="p">:</span> <span class="n">UIButton</span><span class="p">)</span> <span class="p">{</span>
+	<span class="kd">let</span> <span class="nv">_</span> <span class="p">=</span> <span class="n">navigationController</span><span class="p">?.</span><span class="n">popViewController</span><span class="p">(</span><span class="n">animated</span><span class="p">:</span> <span class="kc">true</span><span class="p">)</span>
+<span class="p">}</span>
+
+<span class="kr">override</span> <span class="kd">func</span> <span class="nf">viewWillDisappear</span><span class="p">(</span><span class="kc">_</span> <span class="n">animated</span><span class="p">:</span> <span class="nb">Bool</span><span class="p">)</span> <span class="p">{</span>
+  <span class="kc">super</span><span class="p">.</span><span class="n">viewWillDisappear</span><span class="p">(</span><span class="n">animated</span><span class="p">)</span>
+  <span class="k">if</span> <span class="kc">self</span><span class="p">.</span><span class="n">isMovingFromParentViewController</span><span class="p">{</span>
+		<span class="n">delegate</span><span class="p">?.</span><span class="n">setColor</span><span class="p">(</span><span class="n">colorType</span><span class="p">:</span> <span class="s">&#34;red&#34;</span><span class="p">)</span>
+	<span class="p">}</span>
+<span class="p">}</span></code></pre></td></tr></table>
+</div>
+</div>
+<p><code>hint: 可以靠 self.isMovingFromParentViewController來測試是否為返回到前一個Controller</code></p>
+
+<p>SecondViewControllerDelegate</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code class="language-swift" data-lang="swift"><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-swift" data-lang="swift"><span class="kd">protocol</span> <span class="nc">SecondViewControllerDelegate</span><span class="p">{</span>
+	<span class="kd">func</span> <span class="nf">setColor</span><span class="p">(</span><span class="n">colorType</span><span class="p">:</span><span class="nb">String</span><span class="p">)</span>
+<span class="p">}</span></code></pre></td></tr></table>
+</div>
+</div>
+<p>FirstViewController (實作SecondViewControllerDelegate)</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code class="language-swift" data-lang="swift"><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-swift" data-lang="swift"><span class="kr">override</span> <span class="kd">func</span> <span class="nf">prepare</span><span class="p">(</span><span class="k">for</span> <span class="n">segue</span><span class="p">:</span> <span class="n">UIStoryboardSegue</span><span class="p">,</span> <span class="n">sender</span><span class="p">:</span> <span class="nb">Any</span><span class="p">?)</span> <span class="p">{</span>
+  <span class="k">if</span> <span class="kd">let</span> <span class="nv">des</span> <span class="p">=</span> <span class="n">segue</span><span class="p">.</span><span class="n">destination</span> <span class="k">as</span><span class="p">?</span> <span class="n">SecondViewController</span><span class="p">{</span>
+    <span class="n">des</span><span class="p">.</span><span class="n">delegate</span> <span class="p">=</span> <span class="kc">self</span>
+  <span class="p">}</span>
+<span class="p">}</span></code></pre></td></tr></table>
+</div>
+</div>
+<h2 id="方法4-notification-返回前一個controller時">方法4. notification (返回前一個controller時)</h2>
+
+<ol>
+<li>parent controller先監聽事件
+
+<ul>
+<li>撰寫接收到監聽後要執行的function</li>
+<li>註冊監聽事件</li>
+</ul></li>
+<li>child controller發送notification</li>
+</ol>
+
+<p>ParentController</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code class="language-swift" data-lang="swift"><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-swift" data-lang="swift"><span class="c1">// 接收到事件後要執行的任務</span>
+<span class="kd">func</span> <span class="nf">getUpdateNoti</span><span class="p">(</span><span class="n">noti</span><span class="p">:</span><span class="n">Notification</span><span class="p">)</span> <span class="p">{</span>
+	<span class="kd">let</span> <span class="nv">data</span> <span class="p">=</span> <span class="n">noti</span><span class="p">.</span><span class="n">userInfo</span><span class="o">!</span><span class="p">[</span><span class="s">&#34;data&#34;</span><span class="p">]</span> <span class="k">as</span><span class="o">!</span> <span class="nb">String</span>
+	<span class="bp">print</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+<span class="p">}</span>
+
+<span class="kr">override</span> <span class="kd">func</span> <span class="nf">viewDidLoad</span><span class="p">()</span> <span class="p">{</span>
+  <span class="kc">super</span><span class="p">.</span><span class="n">viewDidLoad</span><span class="p">()</span>
+	
+  <span class="c1">// 註冊事件</span>
+  <span class="kd">let</span> <span class="nv">notificationName</span> <span class="p">=</span> <span class="n">Notification</span><span class="p">.</span><span class="n">Name</span><span class="p">(</span><span class="s">&#34;GetUpdateNoti&#34;</span><span class="p">)</span>
+  <span class="n">NotificationCenter</span><span class="p">.</span><span class="k">default</span><span class="p">.</span><span class="n">addObserver</span><span class="p">(</span><span class="kc">self</span><span class="p">,</span> <span class="n">selector</span><span class="p">:</span> <span class="k">#selector</span><span class="p">(</span><span class="n">ViewController</span><span class="p">.</span><span class="n">getUpdateNoti</span><span class="p">(</span><span class="n">noti</span><span class="p">:)),</span> <span class="n">name</span><span class="p">:</span> <span class="n">notificationName</span><span class="p">,</span> <span class="n">object</span><span class="p">:</span> <span class="kc">nil</span><span class="p">)</span>
+<span class="p">}</span></code></pre></td></tr></table>
+</div>
+</div>
+<p>ChildController</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code class="language-swift" data-lang="swift"><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-swift" data-lang="swift"><span class="c1">// 發送事件</span>
+<span class="kd">let</span> <span class="nv">notificationName</span> <span class="p">=</span> <span class="n">Notification</span><span class="p">.</span><span class="n">Name</span><span class="p">(</span><span class="s">&#34;GetUpdateNoti&#34;</span><span class="p">)</span>
+<span class="n">NotificationCenter</span><span class="p">.</span><span class="k">default</span><span class="p">().</span><span class="n">post</span><span class="p">(</span><span class="n">name</span><span class="p">:</span> <span class="n">notificationName</span><span class="p">,</span><span class="n">object</span><span class="p">:</span> <span class="kc">nil</span><span class="p">,</span> <span class="n">userInfo</span><span class="p">:</span> <span class="p">[</span><span class="s">&#34;data&#34;</span><span class="p">:</span><span class="s">&#34;Hello World&#34;</span><span class="p">])</span></code></pre></td></tr></table>
+</div>
+</div>
+<h2 id="方法5-全域變數">方法5. 全域變數</h2>
+
+<p>在AppDelegate增加property<br />
+並在想要使用的class裡面，將UIApplication.shared.delegate轉型為AppDelegate<br />
+即可使用裡面的property</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code class="language-swift" data-lang="swift"><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-swift" data-lang="swift"><span class="k">if</span> <span class="kd">let</span> <span class="nv">appDelegate</span> <span class="p">=</span> <span class="n">UIApplication</span><span class="p">.</span><span class="n">shared</span><span class="p">.</span><span class="n">delegate</span> <span class="k">as</span><span class="p">?</span> <span class="n">AppDelegate</span><span class="p">{</span>
+	<span class="k">if</span> <span class="kd">let</span> <span class="nv">colorName</span> <span class="p">=</span> <span class="n">appDelegate</span><span class="p">.</span><span class="n">color</span><span class="p">{</span>
+    <span class="n">setColor</span><span class="p">(</span><span class="n">colorType</span><span class="p">:</span> <span class="n">colorName</span><span class="p">)</span>
+  <span class="p">}</span>
+<span class="p">}</span></code></pre></td></tr></table>
+</div>
+</div>
+<p>全域變數還有很多做法，像是singleton或是寫在class之外，有機會再開一篇講。</p>
+
+    </div>
+
+    
+<footer class="post-footer">
+      <div class="post-tags">
+          <a href="/tags/ios/">ios</a>
+          <a href="/tags/swift/">swift</a>
+          </div>
+      <nav class="post-nav">
+        <a class="prev" href="/post/notes/2016/10-04/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">Swift 基礎語法筆記</span>
+            <span class="prev-text nav-mobile"></span>
+          </a>
+        <a class="next" href="/post/notes/2016/09-13/">
+            <span class="next-text nav-default">Swift 快速筆記</span>
+            <span class="next-text nav-mobile"></span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        <div id="disqus_thread"></div>
+    <script type="text/javascript">
+    (function() {
+      
+      
+      if (window.location.hostname === 'localhost') return;
+
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      var disqus_shortname = 'blog-vygy2ifrxm';
+      dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="cdfq152313@gmail.com" class="iconfont icon-email" title="email"></a>
+      <a href="https://www.facebook.com/AddweupDennyCheng" class="iconfont icon-facebook" title="facebook"></a>
+      <a href="https://github.com/cdfq152313/" class="iconfont icon-github" title="github"></a>
+  <a href="https://cdfq152313.github.io/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    %!(EXTRA string=<a class="hexo-link" href="https://gohugo.io">Hugo</a>)
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+     - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  
+
+  <span class="copyright-year">
+    &copy; 
+    2015 - 
+    2019
+    <span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">Denny Cheng</span>
+  </span>
+</div>
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+<script type="text/javascript" src="/dist/even.26188efa.min.js"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>

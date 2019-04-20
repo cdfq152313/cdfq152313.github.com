@@ -6,12 +6,13 @@
     <description>Recent content in Categories on Denny&#39;s Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-hant</language>
+    <copyright>Denny Cheng</copyright>
     
 	<atom:link href="https://cdfq152313.github.io/categories/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
-      <title>Miscs</title>
+      <title>miscs</title>
       <link>https://cdfq152313.github.io/categories/miscs/</link>
       <pubDate>Tue, 06 Sep 2016 00:00:00 +0000</pubDate>
       
@@ -20,7 +21,7 @@
     </item>
     
     <item>
-      <title>Notes</title>
+      <title>notes</title>
       <link>https://cdfq152313.github.io/categories/notes/</link>
       <pubDate>Thu, 18 May 2017 00:34:00 +0800</pubDate>
       
@@ -29,7 +30,7 @@
     </item>
     
     <item>
-      <title>Review</title>
+      <title>review</title>
       <link>https://cdfq152313.github.io/categories/review/</link>
       <pubDate>Thu, 29 Mar 2018 00:00:00 +0000</pubDate>
       
@@ -38,7 +39,7 @@
     </item>
     
     <item>
-      <title>Tags</title>
+      <title>tags</title>
       <link>https://cdfq152313.github.io/categories/tags/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       

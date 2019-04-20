@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Android on Denny&#39;s Blog</title>
+    <title>android on Denny&#39;s Blog</title>
     <link>https://cdfq152313.github.io/tags/android/</link>
-    <description>Recent content in Android on Denny&#39;s Blog</description>
+    <description>Recent content in android on Denny&#39;s Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-hant</language>
+    <copyright>Denny Cheng</copyright>
     <lastBuildDate>Sun, 02 Apr 2017 15:23:51 +0800</lastBuildDate>
     
 	<atom:link href="https://cdfq152313.github.io/tags/android/index.xml" rel="self" type="application/rss+xml" />
@@ -13,73 +14,73 @@
     
     <item>
       <title>Android 利用gson解析json</title>
-      <link>https://cdfq152313.github.io/post/2017-04-02/</link>
+      <link>https://cdfq152313.github.io/post/notes/2017/04-01/</link>
       <pubDate>Sun, 02 Apr 2017 15:23:51 +0800</pubDate>
       
-      <guid>https://cdfq152313.github.io/post/2017-04-02/</guid>
+      <guid>https://cdfq152313.github.io/post/notes/2017/04-01/</guid>
       <description>Android 利用gson解析json 反射和序列化 在開始前先貼篇文章暖暖身，讓大家了解Reflection(反射)和Serialization(序列化)</description>
     </item>
     
     <item>
       <title>Android Dialog取消動作</title>
-      <link>https://cdfq152313.github.io/post/2017-03-27/</link>
+      <link>https://cdfq152313.github.io/post/notes/2017/03-27/</link>
       <pubDate>Mon, 27 Mar 2017 00:00:00 +0000</pubDate>
       
-      <guid>https://cdfq152313.github.io/post/2017-03-27/</guid>
+      <guid>https://cdfq152313.github.io/post/notes/2017/03-27/</guid>
       <description>使用AlertDialog時，當點在Dialog的外圍，Android會讓此Dialog消失，並且什麼動作都不執行。 如果剛好positive</description>
     </item>
     
     <item>
       <title>Java (Android) AES</title>
-      <link>https://cdfq152313.github.io/post/2017-02-22/</link>
+      <link>https://cdfq152313.github.io/post/notes/2017/02-22/</link>
       <pubDate>Wed, 22 Feb 2017 00:00:00 +0000</pubDate>
       
-      <guid>https://cdfq152313.github.io/post/2017-02-22/</guid>
+      <guid>https://cdfq152313.github.io/post/notes/2017/02-22/</guid>
       <description>最後編輯時間 2017/05/27 平台 Android Studio compileSdkVersion 25 buildToolsVersion &amp;ldquo;25.0.1&amp;rdquo; Base64的轉換有使用到Android的函式庫，若是純Java的使用者必須自行搜尋替代方案。 金鑰初始化 AES</description>
     </item>
     
     <item>
       <title>Android 文章整理</title>
-      <link>https://cdfq152313.github.io/post/2017-02-08/</link>
+      <link>https://cdfq152313.github.io/post/notes/2017/02-08/</link>
       <pubDate>Wed, 08 Feb 2017 00:00:00 +0000</pubDate>
       
-      <guid>https://cdfq152313.github.io/post/2017-02-08/</guid>
+      <guid>https://cdfq152313.github.io/post/notes/2017/02-08/</guid>
       <description>Linearlayout Android 对Layout_weight属性完全解析以及使用ListView来实现表格 fragment 官方API Guide Android Fragment 真正的完全解析（上） Android Fragment 真正的完全解析（下）</description>
     </item>
     
     <item>
       <title>Android JNI 環境建置</title>
-      <link>https://cdfq152313.github.io/post/2016-08-05/</link>
+      <link>https://cdfq152313.github.io/post/notes/2016/08-05/</link>
       <pubDate>Fri, 05 Aug 2016 00:00:00 +0000</pubDate>
       
-      <guid>https://cdfq152313.github.io/post/2016-08-05/</guid>
+      <guid>https://cdfq152313.github.io/post/notes/2016/08-05/</guid>
       <description>介紹 主要參考這篇：Android studio 1.5.1 NDK JNI環境安裝與執行原理 不過Android 2.1.2上步驟稍有簡化，還是可以達到同樣效果。 載NDK 設定</description>
     </item>
     
     <item>
       <title>在AOSP中增加預設app (3) : 利用Android Studio來進行編輯</title>
-      <link>https://cdfq152313.github.io/post/2016-03-04/</link>
+      <link>https://cdfq152313.github.io/post/notes/2016/03-04/</link>
       <pubDate>Fri, 04 Mar 2016 00:00:00 +0000</pubDate>
       
-      <guid>https://cdfq152313.github.io/post/2016-03-04/</guid>
+      <guid>https://cdfq152313.github.io/post/notes/2016/03-04/</guid>
       <description>平台及環境設置 平台 實驗平台：Nexus 5 Android版本：android-4.4_r1 前置知識： [Howto Build Android KitKat (4.4) for the Google Nexus 5][6] 環境設置 在AOSP資料</description>
     </item>
     
     <item>
       <title>在AOSP中增加預設app (2) : 自行編譯</title>
-      <link>https://cdfq152313.github.io/post/2016-02-28/</link>
+      <link>https://cdfq152313.github.io/post/notes/2016/02-28/</link>
       <pubDate>Sun, 28 Feb 2016 00:00:00 +0000</pubDate>
       
-      <guid>https://cdfq152313.github.io/post/2016-02-28/</guid>
+      <guid>https://cdfq152313.github.io/post/notes/2016/02-28/</guid>
       <description>平台及環境設置 平台 實驗平台：Nexus 5 Android版本：android-4.4_r1 前置知識： [Howto Build Android KitKat (4.4) for the Google Nexus 5][6] 環境設置 在AOSP資料</description>
     </item>
     
     <item>
       <title>在AOSP中增加預設app (1) : prebuilt apk</title>
-      <link>https://cdfq152313.github.io/post/2016-02-24/</link>
+      <link>https://cdfq152313.github.io/post/notes/2016/02-24/</link>
       <pubDate>Wed, 24 Feb 2016 00:00:00 +0000</pubDate>
       
-      <guid>https://cdfq152313.github.io/post/2016-02-24/</guid>
+      <guid>https://cdfq152313.github.io/post/notes/2016/02-24/</guid>
       <description>平台及環境設置 平台 實驗平台：Nexus 5 Android版本：android-4.4_r1 前置知識： Howto Build Android KitKat (4.4) for the Google Nexus 5 環境設置 在AOSP資料</description>
     </item>
     

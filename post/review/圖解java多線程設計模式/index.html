@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="zh-hant">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>[讀書心得] 圖解Java多線程設計模式 - Denny&#39;s Blog</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="Denny Cheng" /><meta name="description" content="[天瓏連結] 圖解Java多線程設計模式 大要 簡單條列心得如下。 他會假設你有Java的基礎知識，並假設你Java的執行緒相關函式還沒那麼熟，所以" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.54.0 with even 4.0.0" />
+
+
+<link rel="canonical" href="https://cdfq152313.github.io/post/review/%E5%9C%96%E8%A7%A3java%E5%A4%9A%E7%B7%9A%E7%A8%8B%E8%A8%AD%E8%A8%88%E6%A8%A1%E5%BC%8F/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+
+<link href="/dist/even.c2a46f00.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="[讀書心得] 圖解Java多線程設計模式" />
+<meta property="og:description" content="[天瓏連結] 圖解Java多線程設計模式 大要 簡單條列心得如下。 他會假設你有Java的基礎知識，並假設你Java的執行緒相關函式還沒那麼熟，所以" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://cdfq152313.github.io/post/review/%E5%9C%96%E8%A7%A3java%E5%A4%9A%E7%B7%9A%E7%A8%8B%E8%A8%AD%E8%A8%88%E6%A8%A1%E5%BC%8F/" />
+<meta property="article:published_time" content="2018-03-29T00:00:00&#43;00:00"/>
+<meta property="article:modified_time" content="2018-03-29T00:00:00&#43;00:00"/>
+
+<meta itemprop="name" content="[讀書心得] 圖解Java多線程設計模式">
+<meta itemprop="description" content="[天瓏連結] 圖解Java多線程設計模式 大要 簡單條列心得如下。 他會假設你有Java的基礎知識，並假設你Java的執行緒相關函式還沒那麼熟，所以">
+
+
+<meta itemprop="datePublished" content="2018-03-29T00:00:00&#43;00:00" />
+<meta itemprop="dateModified" content="2018-03-29T00:00:00&#43;00:00" />
+<meta itemprop="wordCount" content="1638">
+
+
+
+<meta itemprop="keywords" content="java,讀書心得," />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="[讀書心得] 圖解Java多線程設計模式"/>
+<meta name="twitter:description" content="[天瓏連結] 圖解Java多線程設計模式 大要 簡單條列心得如下。 他會假設你有Java的基礎知識，並假設你Java的執行緒相關函式還沒那麼熟，所以"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">Denny&#39;s Blog</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">Home</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">Archives</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">Tags</li>
+      </a><a href="/about/">
+        <li class="mobile-menu-item">About</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">Denny&#39;s Blog</a>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">Home</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">Archives</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">Tags</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/about/">About</a>
+      </li>
+  </ul>
+</nav>
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">[讀書心得] 圖解Java多線程設計模式</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2018-03-29 </span>
+        <div class="post-category">
+            <a href="/categories/review/"> review </a>
+            </div>
+        
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title"></h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+<ul>
+<li><a href="#大要">大要</a></li>
+<li><a href="#特點">特點</a></li>
+<li><a href="#缺點">缺點</a>
+<ul>
+<li><a href="#十二種設計模式">十二種設計模式</a></li>
+<li><a href="#沒有細緻介紹java函式庫">沒有細緻介紹Java函式庫</a></li>
+</ul></li>
+<li><a href="#總結">總結</a></li>
+</ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      
+
+<p><a href="https://www.tenlong.com.tw/products/9787115462749">[天瓏連結] 圖解Java多線程設計模式</a></p>
+
+<p><img src="https://i.imgur.com/KPmbZjP.jpg" alt="封面" /></p>
+
+<h1 id="大要">大要</h1>
+
+<p>簡單條列心得如下。</p>
+
+<ol>
+<li>他會假設你有Java的基礎知識，並假設你Java的執行緒相關函式還沒那麼熟，所以有一篇序章專門講這個。</li>
+<li>序章結束後會開始介紹多執行緒下的設計模式，除了最後第十二個Active Object模式以外，其他的範例都蠻精簡短小，一目瞭然讓讀者知道設計模式的重點。</li>
+<li>本書注重在&rdquo;使用基本的API做出多執行緒設計模式&rdquo;，而非&rdquo;JAVA執行緒安全函式庫一覽&rdquo;，所以不管轉換到任何語言，還是能夠沿用。</li>
+<li>附錄還介紹了Java編譯的一些最佳化行為，這會告訴你為什麼理論上不會出錯的程式碼後來會出錯(不過對其他程式語言的實用性可能就略低。)</li>
+</ol>
+
+<h1 id="特點">特點</h1>
+
+<p>我個人非常喜歡這本書，尤其是第二、三點，作者幾乎上只使用Thread(wait/sleep/notify/join)synchronized/Lock，就實作出所有模式。而且藉由不同的範例(模式)，讓讀者了解在多執行緒的時候，什麼東西該鎖，什麼東西不用鎖，要注意什麼事情才不會讓程式陷入死結。</p>
+
+<p>書中的模式如下：</p>
+
+<ul>
+<li>Single Threaded Execution
+
+<ul>
+<li>多執行緒存取同一資料的基本守則。</li>
+</ul></li>
+<li>Immutable
+
+<ul>
+<li>資料不給寫就不用擔心同時讀取了。</li>
+</ul></li>
+<li>Guarded Suspension/Balking
+
+<ul>
+<li>多執行緒下的存取同一資料的條件判斷，該立刻返回結果還是等待。</li>
+</ul></li>
+<li>Producer—Consumer/Worker Thread/Thread—Per—Message
+
+<ul>
+<li>一個執行緒塞資料/命令、一個(或多個)執行緒使用資料/執行命令。藉由分離這兩者來提高Response Time.</li>
+</ul></li>
+<li>Read—Write Lock
+
+<ul>
+<li>可以多個執行緒讀，但是有執行緒要寫就會block住。通常用在寫比讀少很多的情況。</li>
+</ul></li>
+<li>Future
+
+<ul>
+<li>如何從執行緒得到回傳值。</li>
+</ul></li>
+<li>Two—Phase Termination
+
+<ul>
+<li>將執行緒停止階段分為&rdquo;停止中&rdquo;跟&rdquo;已停止&rdquo;。</li>
+</ul></li>
+<li>Thread—Specific Storage
+
+<ul>
+<li>每個執行緒有自己的儲存空間，所以就不用擔心資料共用的問題了。</li>
+</ul></li>
+<li>Active Object
+
+<ul>
+<li>把Producer-Counsmer和Futrue模式摻再一起做爆漿撒尿牛丸。</li>
+</ul></li>
+</ul>
+
+<h1 id="缺點">缺點</h1>
+
+<h2 id="十二種設計模式">十二種設計模式</h2>
+
+<p>本書說的&rdquo;12種設計模式&rdquo;，似乎有一點點誇大其詞，我覺得Guarded Suspension跟Balking都是多執行緒的條件判斷，只是一個是循環等待，一個是直接跳出而已。作者可能也覺得再這樣寫有點騙$，就沒有再加上一個Timeout模式，而是把Timeout當作是Balking的一種變種寫在該章節後面。</p>
+
+<p>另外就是Producer—Consumer/Worker Thread/Thread—Per—Message，我也覺得根本是同一種，幾乎只差在Producer和Counsumer的關係是一對一、一對多還是一對無限。</p>
+
+<p>Active Object模式看起來像是把Producer-Counsmer和Futrue模式摻再一起做爆漿撒尿牛丸，也因此那個章節的複雜度變得特別高，偏偏看起來又像是前面章節已經學過的東西，我就沒有認真看了。</p>
+
+<h2 id="沒有細緻介紹java函式庫">沒有細緻介紹Java函式庫</h2>
+
+<p>雖然<strong>我不覺得這是缺點</strong>，不過由於本書是&rdquo;使用基本的API做出多執行緒設計模式&rdquo;，所以絕大部分範例並不使用Executors/Callable/Future等&rdquo;新&rdquo;(其實也蠻老的)函式庫，而是手動自己刻一個。這會不會導致有人看了之後，很興奮的想在專案上自己造輪子啊？</p>
+
+<h1 id="總結">總結</h1>
+
+<p>雖然現代多半只要使用執行緒安全的函式庫，就能保證執行緒安全問題。不過還是可能會有少數情況是需要自己處理互斥條件的。這種情況下，藉由體會前人怎麼刻輪子的過程，能大大減少自己犯同樣錯誤的情況，因此我是蠻推薦這本書的。</p>
+
+<p>另外這本書買來比想像中厚(當初是網路上訂)，可是看起來比想像中薄。因為除了正文外，大概有三分之一的篇幅是習題解答XD。我認為多數習題也設計的蠻有意義，除了Active Object以外的章節我應該都做完了！</p>
+
+<p>附帶一提，這本跟之前的<a href="/post/2016-12-28/">圖解密碼學與比特幣原理</a>是同一作者，不過我是看完才發現的。</p>
+
+    </div>
+
+    
+<footer class="post-footer">
+      <div class="post-tags">
+          <a href="/tags/java/">java</a>
+          <a href="/tags/%E8%AE%80%E6%9B%B8%E5%BF%83%E5%BE%97/">讀書心得</a>
+          </div>
+      <nav class="post-nav">
+        
+        <a class="next" href="/post/notes/2017/05-18/">
+            <span class="next-text nav-default">Mac/Linux的Bash主題(theme)設定</span>
+            <span class="next-text nav-mobile"></span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        <div id="disqus_thread"></div>
+    <script type="text/javascript">
+    (function() {
+      
+      
+      if (window.location.hostname === 'localhost') return;
+
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      var disqus_shortname = 'blog-vygy2ifrxm';
+      dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="cdfq152313@gmail.com" class="iconfont icon-email" title="email"></a>
+      <a href="https://www.facebook.com/AddweupDennyCheng" class="iconfont icon-facebook" title="facebook"></a>
+      <a href="https://github.com/cdfq152313/" class="iconfont icon-github" title="github"></a>
+  <a href="https://cdfq152313.github.io/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    %!(EXTRA string=<a class="hexo-link" href="https://gohugo.io">Hugo</a>)
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+     - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  
+
+  <span class="copyright-year">
+    &copy; 
+    2015 - 
+    2019
+    <span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">Denny Cheng</span>
+  </span>
+</div>
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+<script type="text/javascript" src="/dist/even.26188efa.min.js"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>

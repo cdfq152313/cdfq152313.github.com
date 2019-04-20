@@ -1,0 +1,759 @@
+<!DOCTYPE html>
+<html lang="zh-hant">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>Swift 快速筆記 - Denny&#39;s Blog</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="Denny Cheng" /><meta name="description" content="AutoLayout 只要確定好下面的參數，autoLayout就不會跑警告 x y width height AlertController 新增AlertController .ActionSheet可藉由點警告視窗" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.54.0 with even 4.0.0" />
+
+
+<link rel="canonical" href="https://cdfq152313.github.io/post/notes/2016/09-13/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+
+<link href="/dist/even.c2a46f00.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="Swift 快速筆記" />
+<meta property="og:description" content="AutoLayout 只要確定好下面的參數，autoLayout就不會跑警告 x y width height AlertController 新增AlertController .ActionSheet可藉由點警告視窗" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://cdfq152313.github.io/post/notes/2016/09-13/" />
+<meta property="article:published_time" content="2016-09-13T00:00:00&#43;00:00"/>
+<meta property="article:modified_time" content="2016-09-13T00:00:00&#43;00:00"/>
+
+<meta itemprop="name" content="Swift 快速筆記">
+<meta itemprop="description" content="AutoLayout 只要確定好下面的參數，autoLayout就不會跑警告 x y width height AlertController 新增AlertController .ActionSheet可藉由點警告視窗">
+
+
+<meta itemprop="datePublished" content="2016-09-13T00:00:00&#43;00:00" />
+<meta itemprop="dateModified" content="2016-09-13T00:00:00&#43;00:00" />
+<meta itemprop="wordCount" content="1986">
+
+
+
+<meta itemprop="keywords" content="ios,swift," />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Swift 快速筆記"/>
+<meta name="twitter:description" content="AutoLayout 只要確定好下面的參數，autoLayout就不會跑警告 x y width height AlertController 新增AlertController .ActionSheet可藉由點警告視窗"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">Denny&#39;s Blog</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">Home</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">Archives</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">Tags</li>
+      </a><a href="/about/">
+        <li class="mobile-menu-item">About</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">Denny&#39;s Blog</a>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">Home</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">Archives</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">Tags</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/about/">About</a>
+      </li>
+  </ul>
+</nav>
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">Swift 快速筆記</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2016-09-13 </span>
+        <div class="post-category">
+            <a href="/categories/notes/"> notes </a>
+            </div>
+        
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title"></h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+<ul>
+<li><a href="#autolayout">AutoLayout</a></li>
+<li><a href="#alertcontroller">AlertController</a></li>
+<li><a href="#讓鍵盤自動彈出">讓鍵盤自動彈出</a></li>
+<li><a href="#pickerview">PickerView</a>
+<ul>
+<li><a href="#選中某一列後立刻執行某動作">選中某一列後立刻執行某動作</a></li>
+<li><a href="#得知目前是選中哪一列">得知目前是選中哪一列</a></li>
+<li><a href="#更為簡單的datepickerview">更為簡單的DatePickerView</a></li>
+</ul></li>
+<li><a href="#播放影片">播放影片</a>
+<ul>
+<li><a href="#流程">流程</a></li>
+<li><a href="#重複播放">重複播放</a></li>
+</ul></li>
+<li><a href="#錄影">錄影</a></li>
+<li><a href="#照相">照相</a>
+<ul>
+<li><a href="#其他實用方法">其他實用方法</a></li>
+</ul></li>
+<li><a href="#使用資源">使用資源</a></li>
+<li><a href="#存資料-物件">存資料(物件)</a></li>
+<li><a href="#property-list-plist">Property List (Plist)</a></li>
+<li><a href="#activity-indicator">Activity Indicator</a></li>
+<li><a href="#cocoapods">COCOAPODS</a></li>
+<li><a href="#reachability-測試有無連網">Reachability 測試有無連網</a></li>
+<li><a href="#xml">XML</a></li>
+<li><a href="#值得用的app">值得用的APP</a></li>
+<li><a href="#登入與非登入狀態用不同的controller">登入與非登入狀態用不同的Controller</a></li>
+<li><a href="#keyboard">keyboard</a></li>
+<li><a href="#彈出來時畫面自動向上">彈出來時畫面自動向上</a></li>
+<li><a href="#點旁邊畫面自動縮回去">點旁邊畫面自動縮回去</a></li>
+</ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      
+
+<h1 id="autolayout">AutoLayout</h1>
+
+<p>只要確定好下面的參數，autoLayout就不會跑警告</p>
+
+<ol>
+<li>x</li>
+<li>y</li>
+<li>width</li>
+<li>height</li>
+</ol>
+
+<h1 id="alertcontroller">AlertController</h1>
+
+<ol>
+<li>新增AlertController
+
+<ul>
+<li>.ActionSheet可藉由點警告視窗外面而取消</li>
+<li>.alert不可藉由點警告視窗外面而取消</li>
+</ul></li>
+<li>如果需要&rdquo;OK&rdquo;等選項的話，新增UIAction (.alert必做，不然會回不去)</li>
+<li>將UIAction放置到AlertController上</li>
+<li>present</li>
+</ol>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code class="language-swift" data-lang="swift"><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-swift" data-lang="swift"><span class="kd">let</span> <span class="nv">myAlert</span> <span class="p">=</span> <span class="n">UIAlertController</span><span class="p">(</span><span class="n">title</span><span class="p">:</span> <span class="s">&#34;Please enter something&#34;</span><span class="p">,</span> <span class="n">message</span><span class="p">:</span> <span class="kc">nil</span><span class="p">,</span> <span class="n">preferredStyle</span><span class="p">:</span> <span class="p">.</span><span class="n">alert</span><span class="p">)</span>
+<span class="kd">let</span> <span class="nv">myAction</span> <span class="p">=</span> <span class="n">UIAlertAction</span><span class="p">(</span><span class="n">title</span><span class="p">:</span> <span class="s">&#34;OK&#34;</span><span class="p">,</span> <span class="n">style</span><span class="p">:</span> <span class="p">.</span><span class="k">default</span><span class="p">,</span> <span class="n">handler</span><span class="p">:</span><span class="kc">nil</span><span class="p">)</span>
+<span class="n">myAlert</span><span class="p">.</span><span class="n">addAction</span><span class="p">(</span><span class="n">myAction</span><span class="p">)</span>
+<span class="n">present</span><span class="p">(</span><span class="n">myAlert</span><span class="p">,</span> <span class="n">animated</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span> <span class="n">completion</span><span class="p">:</span> <span class="kc">nil</span><span class="p">)</span></code></pre></td></tr></table>
+</div>
+</div>
+<p>嘗試加入文字框</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code class="language-swift" data-lang="swift"><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-swift" data-lang="swift"><span class="kd">let</span> <span class="nv">myAlert</span> <span class="p">=</span> <span class="n">UIAlertController</span><span class="p">(</span><span class="n">title</span><span class="p">:</span> <span class="s">&#34;Add New Task&#34;</span><span class="p">,</span> <span class="n">message</span><span class="p">:</span> <span class="kc">nil</span><span class="p">,</span> <span class="n">preferredStyle</span><span class="p">:</span> <span class="p">.</span><span class="n">alert</span><span class="p">)</span>
+<span class="n">myAlert</span><span class="p">.</span><span class="n">addTextField</span> <span class="p">{</span>
+  <span class="p">(</span><span class="n">textfield</span><span class="p">:</span><span class="n">UITextField</span><span class="p">)</span> <span class="k">in</span>
+  <span class="n">textfield</span><span class="p">.</span><span class="n">placeholder</span> <span class="p">=</span> <span class="s">&#34;Add New Task&#39;&#34;</span>
+<span class="p">}</span></code></pre></td></tr></table>
+</div>
+</div>
+<p>嘗試對加入的UIAction執行一些動作</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code class="language-swift" data-lang="swift"><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-swift" data-lang="swift"><span class="kd">let</span> <span class="nv">ok</span> <span class="p">=</span> <span class="n">UIAlertAction</span><span class="p">(</span><span class="n">title</span><span class="p">:</span> <span class="s">&#34;OK&#34;</span><span class="p">,</span> <span class="n">style</span><span class="p">:</span> <span class="p">.</span><span class="k">default</span><span class="p">){</span>
+	<span class="p">(</span><span class="n">action</span><span class="p">)</span> <span class="k">in</span>
+  <span class="c1">// action是UIAlertAction</span>
+  <span class="c1">// 在下面填入想要執行的動作</span>
+  <span class="p">...</span>
+  <span class="p">...</span>
+<span class="p">}</span></code></pre></td></tr></table>
+</div>
+</div>
+<h1 id="讓鍵盤自動彈出">讓鍵盤自動彈出</h1>
+
+<p>在可輸入的View中(Ex: textfield)，會有<code>becomeFirstResponder()</code>方法</p>
+
+<h1 id="pickerview">PickerView</h1>
+
+<h2 id="選中某一列後立刻執行某動作">選中某一列後立刻執行某動作</h2>
+
+<p>複寫</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code class="language-swift" data-lang="swift"><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-swift" data-lang="swift"><span class="kd">func</span> <span class="nf">pickerView</span><span class="p">(</span><span class="kc">_</span> <span class="n">pickerView</span><span class="p">:</span> <span class="n">UIPickerView</span><span class="p">,</span> <span class="n">didSelectRow</span> <span class="n">row</span><span class="p">:</span> <span class="nb">Int</span><span class="p">,</span> <span class="n">inComponent</span> <span class="n">component</span><span class="p">:</span> <span class="nb">Int</span><span class="p">)</span> <span class="p">{</span>
+	<span class="n">chooseColor</span> <span class="p">=</span> <span class="n">colorArray</span><span class="p">[</span><span class="n">row</span><span class="p">]</span>
+<span class="p">}</span></code></pre></td></tr></table>
+</div>
+</div>
+<h2 id="得知目前是選中哪一列">得知目前是選中哪一列</h2>
+
+<p>call function，並指定是哪個Component</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code class="language-swift" data-lang="swift"><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-swift" data-lang="swift"><span class="n">myPickerView</span><span class="p">.</span><span class="n">selectedRow</span><span class="p">(</span><span class="n">inComponent</span><span class="p">:</span> <span class="mi">0</span><span class="p">)</span></code></pre></td></tr></table>
+</div>
+</div>
+<h2 id="更為簡單的datepickerview">更為簡單的DatePickerView</h2>
+
+<p>若想得知DatePickerView所擷取到的日期或時間只要使用</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code class="language-swift" data-lang="swift"><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-swift" data-lang="swift"><span class="kd">let</span> <span class="nv">date</span> <span class="p">=</span> <span class="n">myDatePicker</span><span class="p">.</span><span class="n">date</span></code></pre></td></tr></table>
+</div>
+</div>
+<p>一行即可，其他的都是date格式的問題。<br />
+DatePickerView的樣式可以從storyBoard中選擇。</p>
+
+<h1 id="播放影片">播放影片</h1>
+
+<h2 id="流程">流程</h2>
+
+<ol>
+<li>找到播放影片URL</li>
+<li>初始化AVPlayer(將URL放進去)</li>
+<li>初始化AVPlayerViewController</li>
+<li>將AVPlayerController的player設成剛剛的AVPlayer</li>
+<li>present並播放</li>
+</ol>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code class="language-swift" data-lang="swift"><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span><span class="lnt">9
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-swift" data-lang="swift"><span class="k">guard</span> <span class="kd">let</span> <span class="nv">path</span> <span class="p">=</span> <span class="n">Bundle</span><span class="p">.</span><span class="n">main</span><span class="p">.</span><span class="n">url</span><span class="p">(</span><span class="n">forResource</span><span class="p">:</span> <span class="s">&#34;HipHop&#34;</span><span class="p">,</span> <span class="n">withExtension</span><span class="p">:</span> <span class="s">&#34;mp4&#34;</span><span class="p">)</span> <span class="k">else</span> <span class="p">{</span>
+	<span class="k">return</span>
+<span class="p">}</span>
+
+<span class="kd">let</span> <span class="nv">videoPlayer</span> <span class="p">=</span> <span class="n">AVPlayer</span><span class="p">(</span><span class="n">url</span><span class="p">:</span> <span class="n">path</span><span class="p">)</span>
+<span class="kd">let</span> <span class="nv">videoPlayerController</span> <span class="p">=</span> <span class="n">AVPlayerViewController</span><span class="p">()</span>
+<span class="n">videoPlayerController</span><span class="p">.</span><span class="n">player</span> <span class="p">=</span> <span class="n">videoPlayer</span>
+<span class="n">present</span><span class="p">(</span><span class="n">videoPlayerController</span><span class="p">,</span> <span class="n">animated</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span> <span class="n">completion</span><span class="p">:</span> <span class="kc">nil</span><span class="p">)</span>
+<span class="n">videoPlayer</span><span class="p">.</span><span class="n">play</span><span class="p">()</span></code></pre></td></tr></table>
+</div>
+</div>
+<h2 id="重複播放">重複播放</h2>
+
+<p>不同於播放音樂可以簡單設置loop，重複播放影片是要傾聽影片播完後所發送的notification。</p>
+
+<p>監聽播放完成notification</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code class="language-swift" data-lang="swift"><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-swift" data-lang="swift"><span class="n">NotificationCenter</span><span class="p">.</span><span class="k">default</span><span class="p">.</span><span class="n">addObserver</span><span class="p">(</span><span class="kc">self</span><span class="p">,</span> <span class="n">selector</span><span class="p">:</span> <span class="k">#selector</span><span class="p">(</span><span class="n">ViewController</span><span class="p">.</span><span class="n">playerDidReachEnd</span><span class="p">(</span><span class="n">notification</span><span class="p">:)),</span> <span class="n">name</span><span class="p">:</span> <span class="n">Notification</span><span class="p">.</span><span class="n">Name</span><span class="p">.</span><span class="n">AVPlayerItemDidPlayToEndTime</span><span class="p">,</span> <span class="n">object</span><span class="p">:</span> <span class="kc">nil</span><span class="p">)</span>
+
+<span class="c1">// 監聽function</span>
+<span class="kd">func</span> <span class="nf">playerDidReachEnd</span><span class="p">(</span><span class="n">notification</span><span class="p">:</span><span class="n">Notification</span><span class="p">){</span>
+    <span class="n">videoPlayer</span><span class="p">?.</span><span class="n">currentItem</span><span class="p">?.</span><span class="n">seek</span><span class="p">(</span><span class="n">to</span><span class="p">:</span> <span class="n">kCMTimeZero</span><span class="p">)</span>
+    <span class="n">videoPlayer</span><span class="p">?.</span><span class="n">play</span><span class="p">()</span>
+<span class="p">}</span></code></pre></td></tr></table>
+</div>
+</div>
+<h1 id="錄影">錄影</h1>
+
+<h1 id="照相">照相</h1>
+
+<ol>
+<li>在info.plist設定照相權限</li>
+<li>產生image picker Controller</li>
+<li>設定 sourceType</li>
+<li>設定delegate屬性，決定照相完畢後要做什麼</li>
+<li>推出image Picker</li>
+</ol>
+
+<p>這邊要特別注意，模擬器是沒有camera的，所以若要用模擬器最好先檢查。</p>
+
+<p>照相權限</p>
+
+<p><img src="http://i.imgur.com/Yf8lCmd.png" alt="照相權限" /></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code class="language-swift" data-lang="swift"><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-swift" data-lang="swift"><span class="kd">let</span> <span class="nv">imagePicker</span> <span class="p">=</span> <span class="n">UIImagePickerController</span><span class="p">()</span>
+<span class="n">imagePicker</span><span class="p">.</span><span class="n">sourceType</span> <span class="p">=</span> <span class="p">.</span><span class="n">camera</span>
+<span class="n">imagePicker</span><span class="p">.</span><span class="n">delegate</span> <span class="p">=</span> <span class="kc">self</span>
+<span class="n">present</span><span class="p">(</span><span class="n">imagePicker</span><span class="p">,</span> <span class="n">animated</span><span class="p">:</span><span class="kc">true</span><span class="p">,</span> <span class="n">completion</span><span class="p">:</span><span class="kc">nil</span><span class="p">)</span></code></pre></td></tr></table>
+</div>
+</div>
+<p>delegate寫法</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code class="language-swift" data-lang="swift"><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-swift" data-lang="swift"><span class="kd">func</span> <span class="nf">imagePickerController</span><span class="p">(</span><span class="kc">_</span> <span class="n">picker</span><span class="p">:</span> <span class="n">UIImagePickerController</span><span class="p">,</span> <span class="n">didFinishPickingMediaWithInfo</span> <span class="n">info</span><span class="p">:</span> <span class="p">[</span><span class="nb">String</span> <span class="p">:</span> <span class="nb">Any</span><span class="p">])</span> <span class="p">{</span>
+  <span class="k">guard</span> <span class="kd">let</span> <span class="nv">image</span> <span class="p">=</span> <span class="n">info</span><span class="p">[</span><span class="n">UIImagePickerControllerMediaURL</span><span class="p">]</span> <span class="k">as</span><span class="p">?</span> <span class="n">UIImage</span><span class="p">{</span>
+    <span class="bp">print</span><span class="p">(</span><span class="s">&#34;Cannot get picture url&#34;</span><span class="p">)</span>
+    <span class="k">return</span>
+  <span class="p">}</span>
+  <span class="n">myImageView</span><span class="p">.</span><span class="n">image</span> <span class="p">=</span> <span class="n">image</span>
+  <span class="n">dismiss</span><span class="p">(</span><span class="n">animated</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span> <span class="n">completion</span><span class="p">:</span> <span class="kc">nil</span><span class="p">)</span>
+<span class="p">}</span></code></pre></td></tr></table>
+</div>
+</div>
+<h2 id="其他實用方法">其他實用方法</h2>
+
+<p>若想存檔可使用下方程式碼</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><span class="lnt">1
+</span></pre></td>
+<td class="lntd">
+<pre class="chroma">UIImageWriteToSavedPhotosAlbum(image, nil, nil, nil)</pre></td></tr></table>
+</div>
+</div>
+<p>若想直接從已拍照圖庫裡面選擇圖片，可以透過更改sourcetype來完成</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><span class="lnt">1
+</span></pre></td>
+<td class="lntd">
+<pre class="chroma">imagePicker.sourceType = .photoLibrary</pre></td></tr></table>
+</div>
+</div>
+<h1 id="使用資源">使用資源</h1>
+
+<ul>
+<li>先找路徑再找URL</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code class="language-swift" data-lang="swift"><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-swift" data-lang="swift"><span class="kd">let</span> <span class="nv">path</span> <span class="p">=</span> <span class="n">Bundle</span><span class="p">.</span><span class="n">main</span><span class="p">.</span><span class="n">path</span><span class="p">(</span><span class="n">forResource</span><span class="p">:</span> <span class="s">&#34;Right&#34;</span><span class="p">,</span> <span class="n">ofType</span><span class="p">:</span><span class="s">&#34;mp3&#34;</span><span class="p">)</span>
+<span class="kd">let</span> <span class="nv">audioURL</span> <span class="p">=</span> <span class="n">URL</span><span class="p">(</span><span class="n">fileURLWithPath</span><span class="p">:</span> <span class="n">path</span><span class="p">)</span></code></pre></td></tr></table>
+</div>
+</div>
+<ul>
+<li>直接找URL</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code class="language-swift" data-lang="swift"><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-swift" data-lang="swift"><span class="kd">let</span> <span class="nv">path</span> <span class="p">=</span> <span class="n">Bundle</span><span class="p">.</span><span class="n">main</span><span class="p">.</span><span class="n">url</span><span class="p">(</span><span class="n">forResource</span><span class="p">:</span> <span class="s">&#34;HipHop&#34;</span><span class="p">,</span> <span class="n">withExtension</span><span class="p">:</span> <span class="s">&#34;mp4&#34;</span><span class="p">)</span></code></pre></td></tr></table>
+</div>
+</div>
+<h1 id="存資料-物件">存資料(物件)</h1>
+
+<p>使用UserDefaults.standard.set和UserDefaults.standard.synchronize</p>
+
+<ol>
+<li>用set並給一個key</li>
+<li>synchronize</li>
+</ol>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code class="language-swift" data-lang="swift"><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-swift" data-lang="swift"><span class="kd">var</span> <span class="nv">toDo</span> <span class="p">=</span> <span class="p">[</span><span class="s">&#34;Buy milk&#34;</span><span class="p">,</span> <span class="s">&#34;iOS exam&#34;</span><span class="p">,</span> <span class="s">&#34;Sleep&#34;</span><span class="p">,</span> <span class="s">&#34;Make money&#34;</span><span class="p">]</span>
+<span class="n">UserDefaults</span><span class="p">.</span><span class="n">standard</span><span class="p">.</span><span class="kr">set</span><span class="p">(</span><span class="n">toDo</span><span class="p">,</span> <span class="n">forKey</span><span class="p">:</span><span class="s">&#34;todo&#34;</span><span class="p">)</span>
+<span class="n">UserDefaults</span><span class="p">.</span><span class="n">standard</span><span class="p">.</span><span class="n">synchronize</span><span class="p">()</span></code></pre></td></tr></table>
+</div>
+</div>
+<p>取值，要記得取出來是anyObject，必須轉型，而且可能為nil(key不存在)。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code class="language-swift" data-lang="swift"><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-swift" data-lang="swift"><span class="k">guard</span> <span class="kd">let</span> <span class="nv">loaded</span> <span class="p">=</span> <span class="n">UserDefaults</span><span class="p">.</span><span class="n">standard</span><span class="p">.</span><span class="n">object</span><span class="p">(</span><span class="n">forKey</span><span class="p">:</span> <span class="s">&#34;toDo&#34;</span><span class="p">)</span> <span class="k">as</span><span class="p">?</span> <span class="p">[</span><span class="nb">String</span><span class="p">]</span> <span class="k">else</span><span class="p">{</span>
+  <span class="bp">print</span><span class="p">(</span><span class="s">&#34;No such key&#34;</span><span class="p">)</span>
+  <span class="k">return</span>
+<span class="p">}</span>
+<span class="bp">print</span><span class="p">(</span><span class="n">loaded</span><span class="p">)</span></code></pre></td></tr></table>
+</div>
+</div>
+<p>如果存的是預設型別(像是Int)，取值方法可以不用轉型</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code class="language-swift" data-lang="swift"><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-swift" data-lang="swift"><span class="k">guard</span> <span class="kd">let</span> <span class="nv">loaded</span> <span class="p">=</span> <span class="n">UserDefaults</span><span class="p">.</span><span class="n">standard</span><span class="p">.</span><span class="n">integer</span><span class="p">(</span><span class="n">forKey</span><span class="p">:</span> <span class="s">&#34;toDo&#34;</span><span class="p">)</span> <span class="k">else</span><span class="p">{</span>
+  <span class="bp">print</span><span class="p">(</span><span class="s">&#34;No such key&#34;</span><span class="p">)</span>
+  <span class="k">return</span>
+<span class="p">}</span>
+<span class="bp">print</span><span class="p">(</span><span class="n">loaded</span><span class="p">)</span></code></pre></td></tr></table>
+</div>
+</div>
+<h1 id="property-list-plist">Property List (Plist)</h1>
+
+<p>Info.plist就是一種Property List的檔案。<br />
+plist可以很方便地幫你用Array或dictionary的形式存取資訊(String, Int &hellip;)，個人覺得跟json沒兩樣。<br />
+使用的步驟如下</p>
+
+<ol>
+<li>新增一個Property List檔案</li>
+<li>在上面加上一些資訊(假設是一串Array)</li>
+<li>使用Bundle.main.path拿到資源(檔案型態是plist)</li>
+<li>利用NSArray將檔案轉成Array，或是NSDictionary檔案轉成dict</li>
+</ol>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code class="language-swift" data-lang="swift"><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-swift" data-lang="swift"><span class="k">guard</span> <span class="kd">let</span> <span class="nv">scorePlist</span> <span class="p">=</span> <span class="n">Bundle</span><span class="p">.</span><span class="n">main</span><span class="p">.</span><span class="n">path</span><span class="p">(</span><span class="n">forResource</span><span class="p">:</span> <span class="s">&#34;Score&#34;</span><span class="p">,</span> <span class="n">ofType</span><span class="p">:</span> <span class="s">&#34;plist&#34;</span><span class="p">),</span>
+  <span class="kd">let</span> <span class="nv">scoreArray</span> <span class="p">=</span> <span class="n">NSArray</span><span class="p">(</span><span class="n">contentsOfFile</span><span class="p">:</span> <span class="n">scorePlist</span><span class="p">)</span> <span class="k">else</span><span class="p">{</span>
+    <span class="bp">print</span><span class="p">(</span><span class="s">&#34;Get Plist Error&#34;</span><span class="p">)</span>
+    <span class="k">return</span>
+<span class="p">}</span>
+<span class="bp">print</span><span class="p">(</span><span class="n">scoreArray</span><span class="p">)</span></code></pre></td></tr></table>
+</div>
+</div>
+<h1 id="activity-indicator">Activity Indicator</h1>
+
+<ul>
+<li>用StoryBoard直接拉</li>
+<li>記得把Hides when stop打勾，不然圖案一直都在</li>
+<li>startAnimating()開始轉</li>
+<li>stopAnimationg()停止轉</li>
+</ul>
+
+<h1 id="cocoapods">COCOAPODS</h1>
+
+<p>先安裝 <a href="https://cocoapods.org/">https://cocoapods.org/</a></p>
+
+<p>在Xcode專案底下</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash"><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash">pod init</code></pre></td></tr></table>
+</div>
+</div>
+<p>編輯生出來podfile<br />
+加入需要的pod 專案</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code class="language-Podfile" data-lang="Podfile"><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-Podfile" data-lang="Podfile"># Uncomment the next line to define a global platform for your project
+# platform :ios, &#39;9.0&#39;
+
+target &#39;HelloCoCoaPods&#39; do
+  # Comment the next line if you&#39;re not using Swift and don&#39;t want to use dynamic frameworks
+  use_frameworks!
+
+  # Pods for HelloCoCoaPods
+  pod &#39;Firebase/Database&#39;
+
+end</code></pre></td></tr></table>
+</div>
+</div>
+<p>安裝專案</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash"><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash">pod install</code></pre></td></tr></table>
+</div>
+</div>
+<h1 id="reachability-測試有無連網">Reachability 測試有無連網</h1>
+
+<ol>
+<li>下載<a href="https://developer.apple.com/library/content/samplecode/Reachability/Introduction/Intro.html">reachability</a></li>
+<li>將Reachablility.h 及.m一起拖到專案，選擇新增Bridge</li>
+<li>Bridege中寫入<code>#import &quot;Reachability.h&quot;</code></li>
+<li>初始化<code>Reachability(hostName: &quot;www.apple.com&quot;)</code>
+
+<ul>
+<li>必須指定一個可連線的網址</li>
+</ul></li>
+<li>使用方法startNotifier</li>
+<li>addObserver</li>
+<li>接收notification</li>
+</ol>
+
+<h1 id="xml">XML</h1>
+
+<p>解析XML XML delegate</p>
+
+<h1 id="值得用的app">值得用的APP</h1>
+
+<p>figure</p>
+
+<h1 id="登入與非登入狀態用不同的controller">登入與非登入狀態用不同的Controller</h1>
+
+<p>在Appdelegate裡面</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code class="language-swift" data-lang="swift"><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-swift" data-lang="swift"><span class="kd">func</span> <span class="nf">application</span><span class="p">(</span><span class="kc">_</span> <span class="n">application</span><span class="p">:</span> <span class="n">UIApplication</span><span class="p">,</span> <span class="n">didFinishLaunchingWithOptions</span> <span class="n">launchOptions</span><span class="p">:</span> <span class="p">[</span><span class="n">UIApplicationLaunchOptionsKey</span><span class="p">:</span> <span class="nb">Any</span><span class="p">]?)</span> <span class="p">-&gt;</span> <span class="nb">Bool</span> <span class="p">{</span>
+  <span class="k">if</span> <span class="n">check</span> <span class="o">!=</span> <span class="mi">1</span> <span class="p">{</span>
+  	<span class="kd">let</span> <span class="nv">controller</span> <span class="p">=</span> <span class="n">UIStoryboard</span><span class="p">(</span><span class="n">name</span><span class="p">:</span> <span class="s">&#34;LogIn&#34;</span><span class="p">,</span> <span class="n">bundle</span><span class="p">:</span> <span class="kc">nil</span><span class="p">).</span><span class="n">instantiateViewController</span><span class="p">(</span><span class="n">withIdentifier</span><span class="p">:</span> <span class="s">&#34;logIn&#34;</span><span class="p">)</span>
+  	<span class="kc">self</span><span class="p">.</span><span class="n">window</span><span class="p">?.</span><span class="n">rootViewController</span> <span class="p">=</span> <span class="n">controller</span>
+  <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+  	<span class="kd">let</span> <span class="nv">controller</span> <span class="p">=</span> <span class="n">UIStoryboard</span><span class="p">(</span><span class="n">name</span><span class="p">:</span> <span class="s">&#34;Main&#34;</span><span class="p">,</span> <span class="n">bundle</span><span class="p">:</span> <span class="kc">nil</span><span class="p">).</span><span class="n">instantiateViewController</span><span class="p">(</span><span class="n">withIdentifier</span><span class="p">:</span> <span class="s">&#34;tab&#34;</span><span class="p">)</span>
+  	<span class="kc">self</span><span class="p">.</span><span class="n">window</span><span class="p">?.</span><span class="n">rootViewController</span> <span class="p">=</span> <span class="n">controller</span>
+  <span class="p">}</span>
+	<span class="k">return</span> <span class="kc">true</span>
+<span class="p">}</span></code></pre></td></tr></table>
+</div>
+</div>
+<h1 id="keyboard">keyboard</h1>
+
+<h1 id="彈出來時畫面自動向上">彈出來時畫面自動向上</h1>
+
+<p><a href="http://stackoverflow.com/questions/25693130/move-textfield-when-keyboard-appears-swift">http://stackoverflow.com/questions/25693130/move-textfield-when-keyboard-appears-swift</a></p>
+
+<h1 id="點旁邊畫面自動縮回去">點旁邊畫面自動縮回去</h1>
+
+<p><a href="http://stackoverflow.com/questions/24126678/close-ios-keyboard-by-touching-anywhere-using-swift">http://stackoverflow.com/questions/24126678/close-ios-keyboard-by-touching-anywhere-using-swift</a></p>
+
+    </div>
+
+    
+<footer class="post-footer">
+      <div class="post-tags">
+          <a href="/tags/ios/">ios</a>
+          <a href="/tags/swift/">swift</a>
+          </div>
+      <nav class="post-nav">
+        <a class="prev" href="/post/notes/2016/10-03/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">Swift 不同Controller互動 與 Navigation Bar</span>
+            <span class="prev-text nav-mobile"></span>
+          </a>
+        <a class="next" href="/post/miscs/2016-09-06/">
+            <span class="next-text nav-default">產品開發的進展過程</span>
+            <span class="next-text nav-mobile"></span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        <div id="disqus_thread"></div>
+    <script type="text/javascript">
+    (function() {
+      
+      
+      if (window.location.hostname === 'localhost') return;
+
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      var disqus_shortname = 'blog-vygy2ifrxm';
+      dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="cdfq152313@gmail.com" class="iconfont icon-email" title="email"></a>
+      <a href="https://www.facebook.com/AddweupDennyCheng" class="iconfont icon-facebook" title="facebook"></a>
+      <a href="https://github.com/cdfq152313/" class="iconfont icon-github" title="github"></a>
+  <a href="https://cdfq152313.github.io/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    %!(EXTRA string=<a class="hexo-link" href="https://gohugo.io">Hugo</a>)
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+     - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  
+
+  <span class="copyright-year">
+    &copy; 
+    2015 - 
+    2019
+    <span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">Denny Cheng</span>
+  </span>
+</div>
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+<script type="text/javascript" src="/dist/even.26188efa.min.js"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>

@@ -1,0 +1,739 @@
+<!DOCTYPE html>
+<html lang="zh-hant">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>Swift 檔案路徑與讀寫檔 - Denny&#39;s Blog</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="Denny Cheng" /><meta name="description" content="iOS的路徑 專案資料夾內的路徑 利用Bundle.main獲取 可以指定檔案名稱以及副檔名。 1 2 3 4 // 得到url let url = Bundle.main.url(forResource: &amp;#34;myjson&amp;#34;, withExtension: &amp;#34;json&amp;#34;) // 得到path let path" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.54.0 with even 4.0.0" />
+
+
+<link rel="canonical" href="https://cdfq152313.github.io/post/notes/2016/10-11/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+
+<link href="/dist/even.c2a46f00.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="Swift 檔案路徑與讀寫檔" />
+<meta property="og:description" content="iOS的路徑 專案資料夾內的路徑 利用Bundle.main獲取 可以指定檔案名稱以及副檔名。 1 2 3 4 // 得到url let url = Bundle.main.url(forResource: &#34;myjson&#34;, withExtension: &#34;json&#34;) // 得到path let path" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://cdfq152313.github.io/post/notes/2016/10-11/" />
+<meta property="article:published_time" content="2016-10-11T00:00:00&#43;00:00"/>
+<meta property="article:modified_time" content="2016-10-11T00:00:00&#43;00:00"/>
+
+<meta itemprop="name" content="Swift 檔案路徑與讀寫檔">
+<meta itemprop="description" content="iOS的路徑 專案資料夾內的路徑 利用Bundle.main獲取 可以指定檔案名稱以及副檔名。 1 2 3 4 // 得到url let url = Bundle.main.url(forResource: &#34;myjson&#34;, withExtension: &#34;json&#34;) // 得到path let path">
+
+
+<meta itemprop="datePublished" content="2016-10-11T00:00:00&#43;00:00" />
+<meta itemprop="dateModified" content="2016-10-11T00:00:00&#43;00:00" />
+<meta itemprop="wordCount" content="1523">
+
+
+
+<meta itemprop="keywords" content="ios,swift," />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Swift 檔案路徑與讀寫檔"/>
+<meta name="twitter:description" content="iOS的路徑 專案資料夾內的路徑 利用Bundle.main獲取 可以指定檔案名稱以及副檔名。 1 2 3 4 // 得到url let url = Bundle.main.url(forResource: &#34;myjson&#34;, withExtension: &#34;json&#34;) // 得到path let path"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">Denny&#39;s Blog</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">Home</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">Archives</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">Tags</li>
+      </a><a href="/about/">
+        <li class="mobile-menu-item">About</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">Denny&#39;s Blog</a>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">Home</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">Archives</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">Tags</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/about/">About</a>
+      </li>
+  </ul>
+</nav>
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">Swift 檔案路徑與讀寫檔</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2016-10-11 </span>
+        <div class="post-category">
+            <a href="/categories/notes/"> notes </a>
+            </div>
+        
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title"></h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+<ul>
+<li><a href="#ios的路徑">iOS的路徑</a>
+<ul>
+<li><a href="#專案資料夾內的路徑">專案資料夾內的路徑</a></li>
+<li><a href="#一般app路徑">一般App路徑</a></li>
+<li><a href="#新增路徑">新增路徑</a></li>
+<li><a href="#列出某個路徑下的所有檔案">列出某個路徑下的所有檔案</a></li>
+<li><a href="#查看路徑資訊">查看路徑資訊</a></li>
+<li><a href="#複製貼上刪除檔案">複製貼上刪除檔案</a></li>
+</ul></li>
+<li><a href="#一般型別寫檔讀檔">一般型別寫檔讀檔</a>
+<ul>
+<li><a href="#讀寫string">讀寫String</a></li>
+<li><a href="#讀寫array">讀寫Array</a></li>
+<li><a href="#讀寫dict">讀寫Dict</a></li>
+</ul></li>
+<li><a href="#多媒體寫檔讀檔">多媒體寫檔讀檔</a>
+<ul>
+<li><a href="#圖檔">圖檔</a></li>
+</ul></li>
+<li><a href="#自定義class讀寫檔">自定義class讀寫檔</a></li>
+</ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      
+
+<h1 id="ios的路徑">iOS的路徑</h1>
+
+<h2 id="專案資料夾內的路徑">專案資料夾內的路徑</h2>
+
+<p>利用Bundle.main獲取
+可以指定檔案名稱以及副檔名。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code class="language-swift" data-lang="swift"><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-swift" data-lang="swift"><span class="c1">// 得到url</span>
+<span class="kd">let</span> <span class="nv">url</span> <span class="p">=</span> <span class="n">Bundle</span><span class="p">.</span><span class="n">main</span><span class="p">.</span><span class="n">url</span><span class="p">(</span><span class="n">forResource</span><span class="p">:</span> <span class="s">&#34;myjson&#34;</span><span class="p">,</span> <span class="n">withExtension</span><span class="p">:</span> <span class="s">&#34;json&#34;</span><span class="p">)</span>
+<span class="c1">// 得到path</span>
+<span class="kd">let</span> <span class="nv">path</span> <span class="p">=</span> <span class="n">Bundle</span><span class="p">.</span><span class="n">main</span><span class="p">.</span><span class="n">path</span><span class="p">(</span><span class="n">forResource</span><span class="p">:</span> <span class="s">&#34;myjson&#34;</span><span class="p">,</span> <span class="n">ofType</span><span class="p">:</span> <span class="s">&#34;json&#34;</span><span class="p">)</span></code></pre></td></tr></table>
+</div>
+</div>
+<h2 id="一般app路徑">一般App路徑</h2>
+
+<p>Document範例</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code class="language-swift" data-lang="swift"><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-swift" data-lang="swift"><span class="c1">// 透過路徑尋找URL</span>
+<span class="kd">let</span> <span class="nv">path</span> <span class="p">=</span> <span class="n">NSHomeDirectory</span><span class="p">()</span> <span class="o">+</span> <span class="s">&#34;/Document&#34;</span>
+<span class="kd">let</span> <span class="nv">urlfrompath</span> <span class="p">=</span> <span class="n">URL</span><span class="p">(</span><span class="n">fileURLWithPath</span><span class="p">:</span> <span class="n">path</span><span class="p">)</span>
+
+<span class="c1">// 直接拿取URL，陣列第0個是資料夾本身(雖然也只有一個url)</span>
+<span class="kd">let</span> <span class="nv">url</span> <span class="p">=</span> <span class="n">FileManager</span><span class="p">.</span><span class="k">default</span><span class="p">.</span><span class="n">urls</span><span class="p">(</span><span class="k">for</span><span class="p">:</span> <span class="p">.</span><span class="n">documentDirectory</span><span class="p">,</span> <span class="k">in</span><span class="p">:</span> <span class="p">.</span><span class="n">userDomainMask</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span></code></pre></td></tr></table>
+</div>
+</div>
+<p>Caches 範例</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code class="language-swift" data-lang="swift"><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-swift" data-lang="swift"><span class="c1">// 透過路徑尋找URL</span>
+<span class="kd">let</span> <span class="nv">path</span> <span class="p">=</span> <span class="n">NSHomeDirectory</span><span class="p">()</span> <span class="o">+</span> <span class="s">&#34;/Library/Caches&#34;</span>
+<span class="kd">let</span> <span class="nv">urlfrompath</span> <span class="p">=</span> <span class="n">URL</span><span class="p">(</span><span class="n">fileURLWithPath</span><span class="p">:</span> <span class="n">path</span><span class="p">)</span>
+
+<span class="c1">// 直接拿取URL</span>
+<span class="kd">let</span> <span class="nv">url</span> <span class="p">=</span> <span class="n">FileManager</span><span class="p">.</span><span class="k">default</span><span class="p">.</span><span class="n">urls</span><span class="p">(</span><span class="k">for</span><span class="p">:</span> <span class="p">.</span><span class="n">cachesDirectory</span><span class="p">,</span> <span class="k">in</span><span class="p">:</span> <span class="p">.</span><span class="n">userDomainMask</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span></code></pre></td></tr></table>
+</div>
+</div>
+<p>Temp 範例</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code class="language-swift" data-lang="swift"><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-swift" data-lang="swift"><span class="c1">// 兩種路徑取得的方法</span>
+<span class="kd">let</span> <span class="nv">pathFromNSHome</span> <span class="p">=</span> <span class="n">NSHomeDirectory</span><span class="p">()</span> <span class="o">+</span> <span class="s">&#34;/tmp&#34;</span>
+<span class="kd">let</span> <span class="nv">pathFromLibrary</span> <span class="p">=</span> <span class="n">NSTemporaryDirectory</span><span class="p">()</span>
+
+<span class="c1">// URL</span>
+<span class="kd">let</span> <span class="nv">urlfrompath</span> <span class="p">=</span> <span class="n">URL</span><span class="p">(</span><span class="n">fileURLWithPath</span><span class="p">:</span> <span class="n">pathFromNSHome</span><span class="p">)</span></code></pre></td></tr></table>
+</div>
+</div>
+<h2 id="新增路徑">新增路徑</h2>
+
+<ol>
+<li>將想要新增的路徑名稱寫出來</li>
+<li>利用FileManager.default.createDirectory新增路徑
+
+<ul>
+<li>此方法的withIntermediateDirctories參數若設成true，可以幫你遞迴建立不存在的資料夾</li>
+</ul></li>
+</ol>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code class="language-swift" data-lang="swift"><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-swift" data-lang="swift"><span class="kd">let</span> <span class="nv">directoryPath</span> <span class="p">=</span> <span class="n">NSTemporaryDirectory</span><span class="p">()</span> <span class="o">+</span> <span class="s">&#34;/images&#34;</span>
+<span class="k">do</span><span class="p">{</span>
+	<span class="k">try</span> <span class="n">FileManager</span><span class="p">.</span><span class="k">default</span><span class="p">.</span><span class="n">createDirectory</span><span class="p">(</span><span class="n">atPath</span><span class="p">:</span> <span class="n">directoryPath</span><span class="p">,</span> <span class="n">withIntermediateDirectories</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span> <span class="n">attributes</span><span class="p">:</span> <span class="kc">nil</span><span class="p">)</span>
+<span class="p">}</span><span class="k">catch</span><span class="p">{</span>
+	<span class="bp">print</span><span class="p">(</span><span class="s">&#34;Cannot create directory&#34;</span><span class="p">)</span>
+<span class="p">}</span></code></pre></td></tr></table>
+</div>
+</div>
+<h2 id="列出某個路徑下的所有檔案">列出某個路徑下的所有檔案</h2>
+
+<ol>
+<li>先找到想列出檔案的路徑</li>
+<li>利用 FileManager.default.contentsOfDirectory來列出此資料夾底下的檔案</li>
+</ol>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code class="language-swift" data-lang="swift"><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-swift" data-lang="swift"><span class="kd">let</span> <span class="nv">tempPath</span> <span class="p">=</span> <span class="n">NSTemporaryDirectory</span><span class="p">()</span>
+<span class="k">do</span><span class="p">{</span>
+  <span class="kd">let</span> <span class="nv">fileList</span> <span class="p">=</span> <span class="k">try</span> <span class="n">FileManager</span><span class="p">.</span><span class="k">default</span><span class="p">.</span><span class="n">contentsOfDirectory</span><span class="p">(</span><span class="n">atPath</span><span class="p">:</span> <span class="n">tempPath</span><span class="p">)</span>
+  <span class="k">for</span> <span class="n">file</span> <span class="k">in</span> <span class="n">fileList</span><span class="p">{</span>
+  	<span class="bp">print</span><span class="p">(</span><span class="n">file</span><span class="p">)</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+<span class="k">catch</span><span class="p">{</span>
+	<span class="bp">print</span><span class="p">(</span><span class="s">&#34;Cannot list directory&#34;</span><span class="p">)</span>
+<span class="p">}</span></code></pre></td></tr></table>
+</div>
+</div>
+<h2 id="查看路徑資訊">查看路徑資訊</h2>
+
+<p>FileManager.default.fileExists 可以幫你查看這個檔案是否存在，以及該檔案是否為一個Directory。<br />
+需要特別注意的是OBJCBool的使用</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code class="language-swift" data-lang="swift"><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-swift" data-lang="swift"><span class="kd">let</span> <span class="nv">path</span> <span class="p">=</span> <span class="n">NSTemporaryDirectory</span><span class="p">()</span> <span class="o">+</span> <span class="s">&#34;/images&#34;</span>
+<span class="kd">var</span> <span class="nv">isDirectory</span><span class="p">:</span><span class="n">ObjCBool</span> <span class="p">=</span> <span class="kc">false</span>
+<span class="kd">let</span> <span class="nv">isExist</span> <span class="p">=</span> <span class="n">FileManager</span><span class="p">.</span><span class="k">default</span><span class="p">.</span><span class="n">fileExists</span><span class="p">(</span><span class="n">atPath</span><span class="p">:</span> <span class="n">path</span><span class="p">,</span> <span class="n">isDirectory</span><span class="p">:</span> <span class="p">&amp;</span><span class="n">isDirectory</span><span class="p">)</span>
+<span class="k">if</span> <span class="n">isExist</span> <span class="p">==</span> <span class="kc">true</span> <span class="o">&amp;&amp;</span> <span class="n">isDirectory</span><span class="p">.</span><span class="n">boolValue</span> <span class="p">==</span> <span class="kc">true</span><span class="p">{</span>
+	<span class="bp">print</span><span class="p">(</span><span class="s">&#34;File exist and it is a direcotry&#34;</span><span class="p">)</span>
+<span class="p">}</span>
+<span class="k">else</span> <span class="k">if</span> <span class="n">isExist</span> <span class="p">==</span> <span class="kc">true</span> <span class="o">&amp;&amp;</span> <span class="n">isDirectory</span><span class="p">.</span><span class="n">boolValue</span> <span class="p">==</span> <span class="kc">false</span><span class="p">{</span>
+	<span class="bp">print</span><span class="p">(</span><span class="s">&#34;File exist but it is not a direcotry&#34;</span><span class="p">)</span>
+<span class="p">}</span>
+<span class="k">else</span><span class="p">{</span>
+	<span class="bp">print</span><span class="p">(</span><span class="s">&#34;File isn&#39;t exist&#34;</span><span class="p">)</span>
+<span class="p">}</span></code></pre></td></tr></table>
+</div>
+</div>
+<h2 id="複製貼上刪除檔案">複製貼上刪除檔案</h2>
+
+<p>使用下方函式，記得加上do try catch。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code class="language-swift" data-lang="swift"><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-swift" data-lang="swift"><span class="n">FileManager</span><span class="p">.</span><span class="k">default</span><span class="p">.</span><span class="n">copyItem</span><span class="p">(</span><span class="n">atPath</span><span class="p">:</span> <span class="n">path</span><span class="p">,</span> <span class="n">toPath</span><span class="p">:</span> <span class="n">cpPath</span><span class="p">)</span>
+<span class="n">FileManager</span><span class="p">.</span><span class="k">default</span><span class="p">.</span><span class="n">moveItem</span><span class="p">(</span><span class="n">atPath</span><span class="p">:</span> <span class="n">path</span><span class="p">,</span> <span class="n">toPath</span><span class="p">:</span> <span class="n">mvPath</span><span class="p">)</span>
+<span class="n">FileManager</span><span class="p">.</span><span class="k">default</span><span class="p">.</span><span class="n">removeItem</span><span class="p">(</span><span class="n">atPath</span><span class="p">:</span> <span class="n">path</span><span class="p">)</span></code></pre></td></tr></table>
+</div>
+</div>
+<h1 id="一般型別寫檔讀檔">一般型別寫檔讀檔</h1>
+
+<h2 id="讀寫string">讀寫String</h2>
+
+<p>寫檔要呼叫String的方法</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code class="language-swift" data-lang="swift"><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-swift" data-lang="swift"><span class="kd">let</span> <span class="nv">text</span> <span class="p">=</span> <span class="s">&#34;Hello World&#34;</span>
+<span class="kd">let</span> <span class="nv">filePath</span> <span class="p">=</span> <span class="n">NSTemporaryDirectory</span><span class="p">()</span> <span class="o">+</span> <span class="s">&#34;Text.txt&#34;</span>
+<span class="k">do</span><span class="p">{</span>
+	<span class="k">try</span> <span class="n">text</span><span class="p">.</span><span class="n">write</span><span class="p">(</span><span class="n">toFile</span><span class="p">:</span> <span class="n">filePath</span><span class="p">,</span> <span class="n">atomically</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span> <span class="n">encoding</span><span class="p">:</span> <span class="p">.</span><span class="n">utf8</span><span class="p">)</span>
+<span class="p">}</span><span class="k">catch</span><span class="p">{</span>
+	<span class="bp">print</span><span class="p">(</span><span class="s">&#34;Not save correctly&#34;</span><span class="p">)</span>
+<span class="p">}</span></code></pre></td></tr></table>
+</div>
+</div>
+<p>讀檔要使用NSString</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code class="language-swift" data-lang="swift"><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-swift" data-lang="swift"><span class="kd">let</span> <span class="nv">filePath</span> <span class="p">=</span> <span class="n">NSTemporaryDirectory</span><span class="p">()</span> <span class="o">+</span> <span class="s">&#34;Text.txt&#34;</span>
+<span class="k">do</span><span class="p">{</span>
+  <span class="kd">let</span> <span class="nv">loading</span> <span class="p">=</span> <span class="k">try</span> <span class="n">NSString</span><span class="p">(</span><span class="n">contentsOfFile</span><span class="p">:</span> <span class="n">filePath</span><span class="p">,</span> <span class="n">encoding</span><span class="p">:</span> <span class="nb">String</span><span class="p">.</span><span class="n">Encoding</span><span class="p">.</span><span class="n">utf8</span><span class="p">.</span><span class="n">rawValue</span><span class="p">)</span>
+  <span class="bp">print</span><span class="p">(</span><span class="n">loading</span><span class="p">)</span>
+<span class="p">}</span><span class="k">catch</span><span class="p">{</span>
+	<span class="bp">print</span><span class="p">(</span><span class="s">&#34;No save file&#34;</span><span class="p">)</span>
+<span class="p">}</span></code></pre></td></tr></table>
+</div>
+</div>
+<h2 id="讀寫array">讀寫Array</h2>
+
+<p>利用NSArray做寫入</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code class="language-swift" data-lang="swift"><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-swift" data-lang="swift"><span class="kd">let</span> <span class="nv">originalArray</span> <span class="p">=</span> <span class="p">[</span><span class="s">&#34;Apple&#34;</span><span class="p">,</span> <span class="s">&#34;Banana&#34;</span><span class="p">,</span> <span class="s">&#34;MAngo&#34;</span><span class="p">]</span>
+<span class="kd">let</span> <span class="nv">arrayToSave</span> <span class="p">=</span> <span class="n">NSArray</span><span class="p">(</span><span class="n">array</span><span class="p">:</span> <span class="n">originalArray</span><span class="p">)</span>
+<span class="kd">let</span> <span class="nv">filePath</span> <span class="p">=</span> <span class="n">NSTemporaryDirectory</span><span class="p">()</span> <span class="o">+</span> <span class="s">&#34;saveArray.txt&#34;</span>
+<span class="n">arrayToSave</span><span class="p">.</span><span class="n">write</span><span class="p">(</span><span class="n">toFile</span><span class="p">:</span> <span class="n">filePath</span><span class="p">,</span> <span class="n">atomically</span><span class="p">:</span> <span class="kc">true</span><span class="p">)</span></code></pre></td></tr></table>
+</div>
+</div>
+<p>利用NSArray做讀出</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code class="language-swift" data-lang="swift"><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-swift" data-lang="swift"><span class="kd">let</span> <span class="nv">filePath</span> <span class="p">=</span> <span class="n">NSTemporaryDirectory</span><span class="p">()</span> <span class="o">+</span> <span class="s">&#34;saveArray.txt&#34;</span>
+<span class="k">if</span> <span class="kd">let</span> <span class="nv">loadArray</span> <span class="p">=</span> <span class="n">NSArray</span><span class="p">(</span><span class="n">contentsOfFile</span><span class="p">:</span> <span class="n">filePath</span><span class="p">)</span> <span class="k">as</span><span class="p">?</span> <span class="p">[</span><span class="nb">String</span><span class="p">]{</span>
+	<span class="bp">print</span><span class="p">(</span><span class="n">loadArray</span><span class="p">)</span>
+<span class="p">}</span></code></pre></td></tr></table>
+</div>
+</div>
+<h2 id="讀寫dict">讀寫Dict</h2>
+
+<p>寫入靠NSDictionary</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code class="language-swift" data-lang="swift"><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-swift" data-lang="swift"><span class="kd">let</span> <span class="nv">originalDict</span> <span class="p">=</span> <span class="p">[</span><span class="s">&#34;1&#34;</span><span class="p">:</span><span class="s">&#34;apple&#34;</span><span class="p">,</span> <span class="s">&#34;2&#34;</span><span class="p">:</span><span class="s">&#34;banana&#34;</span><span class="p">,</span> <span class="s">&#34;3&#34;</span><span class="p">:</span><span class="s">&#34;orange&#34;</span><span class="p">]</span>
+<span class="kd">let</span> <span class="nv">dictToSave</span> <span class="p">=</span> <span class="n">NSDictionary</span><span class="p">(</span><span class="n">dictionary</span><span class="p">:</span> <span class="n">originalDict</span><span class="p">)</span>
+<span class="kd">let</span> <span class="nv">filePath</span> <span class="p">=</span> <span class="n">NSTemporaryDirectory</span><span class="p">()</span> <span class="o">+</span> <span class="s">&#34;saveDict.txt&#34;</span>
+<span class="n">dictToSave</span><span class="p">.</span><span class="n">write</span><span class="p">(</span><span class="n">toFile</span><span class="p">:</span> <span class="n">filePath</span><span class="p">,</span> <span class="n">atomically</span><span class="p">:</span> <span class="kc">true</span><span class="p">)</span></code></pre></td></tr></table>
+</div>
+</div>
+<p>讀取靠NSDictionary</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code class="language-swift" data-lang="swift"><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-swift" data-lang="swift"><span class="kd">let</span> <span class="nv">filePath</span> <span class="p">=</span> <span class="n">NSTemporaryDirectory</span><span class="p">()</span> <span class="o">+</span> <span class="s">&#34;saveDict.txt&#34;</span>
+  <span class="k">if</span> <span class="kd">let</span> <span class="nv">loadDict</span> <span class="p">=</span> <span class="n">NSDictionary</span><span class="p">(</span><span class="n">contentsOfFile</span><span class="p">:</span> <span class="n">filePath</span><span class="p">)</span> <span class="k">as</span><span class="p">?</span> <span class="p">[</span><span class="nb">String</span><span class="p">:</span><span class="nb">String</span><span class="p">]{</span>
+  <span class="bp">print</span><span class="p">(</span><span class="n">loadDict</span><span class="p">)</span>
+<span class="p">}</span></code></pre></td></tr></table>
+</div>
+</div>
+<h1 id="多媒體寫檔讀檔">多媒體寫檔讀檔</h1>
+
+<h2 id="圖檔">圖檔</h2>
+
+<p>存檔<br />
+多媒體的寫檔只能依靠URL而不能靠檔案路徑。</p>
+
+<ol>
+<li>先拿到要儲存的UIImage (可靠照相機或手機已有的圖片)</li>
+<li>以指定格式載入圖片 (UIImagePNGRepresentation或UIImageJPGRepresentation)</li>
+<li>產生路徑及URL</li>
+<li>在指定URL下存檔</li>
+</ol>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code class="language-swift" data-lang="swift"><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-swift" data-lang="swift"><span class="c1">// 拿到UIImage</span>
+<span class="k">guard</span> <span class="kd">let</span> <span class="nv">image</span> <span class="p">=</span> <span class="n">UIImage</span><span class="p">(</span><span class="n">named</span><span class="p">:</span> <span class="s">&#34;Tails&#34;</span><span class="p">)</span> <span class="k">else</span> <span class="p">{</span>
+  <span class="bp">print</span> <span class="p">(</span><span class="s">&#34;Cannot find image&#34;</span><span class="p">)</span>
+  <span class="k">return</span>
+<span class="p">}</span>
+
+<span class="k">if</span> <span class="kd">let</span> <span class="nv">dataToSave</span> <span class="p">=</span> <span class="n">UIImagePNGRepresentation</span><span class="p">(</span><span class="n">image</span><span class="p">){</span>
+	<span class="c1">// 產生路徑</span>
+  <span class="kd">let</span> <span class="nv">filePath</span> <span class="p">=</span> <span class="n">NSTemporaryDirectory</span><span class="p">()</span> <span class="o">+</span> <span class="s">&#34;savedImage.png&#34;</span>
+  <span class="kd">let</span> <span class="nv">fileURL</span> <span class="p">=</span> <span class="n">URL</span><span class="p">(</span><span class="n">fileURLWithPath</span><span class="p">:</span> <span class="n">filePath</span><span class="p">)</span>
+  <span class="c1">// 寫入</span>
+  <span class="k">do</span><span class="p">{</span>
+  	<span class="k">try</span> <span class="n">dataToSave</span><span class="p">.</span><span class="n">write</span><span class="p">(</span><span class="n">to</span><span class="p">:</span> <span class="n">fileURL</span><span class="p">)</span>
+  <span class="p">}</span><span class="k">catch</span><span class="p">{</span>
+  	<span class="bp">print</span><span class="p">(</span><span class="s">&#34;Can not save Image&#34;</span><span class="p">)</span>
+  <span class="p">}</span>
+<span class="p">}</span></code></pre></td></tr></table>
+</div>
+</div>
+<p>讀檔</p>
+
+<ol>
+<li>先用UIImage載入</li>
+<li>把載入圖片放在UIImageView上面</li>
+</ol>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code class="language-swift" data-lang="swift"><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-swift" data-lang="swift"><span class="kd">let</span> <span class="nv">filePath</span> <span class="p">=</span> <span class="n">NSTemporaryDirectory</span><span class="p">()</span> <span class="o">+</span> <span class="s">&#34;savedImage.png&#34;</span>
+<span class="kd">let</span> <span class="nv">image</span> <span class="p">=</span> <span class="n">UIImage</span><span class="p">(</span><span class="n">contentsOfFile</span><span class="p">:</span> <span class="n">filePath</span><span class="p">)</span>
+<span class="n">myImageView</span><span class="p">.</span><span class="n">image</span> <span class="p">=</span> <span class="n">image</span></code></pre></td></tr></table>
+</div>
+</div>
+<h1 id="自定義class讀寫檔">自定義class讀寫檔</h1>
+
+<p>要寫檔的class必須繼承</p>
+
+<ul>
+<li>NSObject</li>
+<li>NSCoding</li>
+</ul>
+
+<p>並複寫相關function</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code class="language-swift" data-lang="swift"><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-swift" data-lang="swift"><span class="kd">class</span> <span class="nc">Item</span> <span class="p">:</span> <span class="n">NSObject</span><span class="p">,</span> <span class="n">NSCoding</span><span class="p">{</span>
+    <span class="kd">var</span> <span class="nv">name</span><span class="p">:</span><span class="nb">String</span><span class="p">?</span>
+    <span class="kd">var</span> <span class="nv">detail</span><span class="p">:</span><span class="nb">String</span><span class="p">?</span>
+    
+    <span class="kd">init</span><span class="p">(</span><span class="n">name</span><span class="p">:</span><span class="nb">String</span><span class="p">,</span> <span class="n">detail</span><span class="p">:</span><span class="nb">String</span><span class="p">)</span> <span class="p">{</span>
+        <span class="kc">self</span><span class="p">.</span><span class="n">name</span> <span class="p">=</span> <span class="n">name</span>
+        <span class="kc">self</span><span class="p">.</span><span class="n">detail</span> <span class="p">=</span> <span class="n">detail</span>
+    <span class="p">}</span>
+    
+    <span class="kr">required</span> <span class="kd">init</span><span class="p">?(</span><span class="n">coder</span> <span class="n">aDecoder</span><span class="p">:</span> <span class="n">NSCoder</span><span class="p">)</span> <span class="p">{</span>       
+        <span class="n">name</span> <span class="p">=</span> <span class="n">aDecoder</span><span class="p">.</span><span class="n">decodeObject</span><span class="p">(</span><span class="n">forKey</span><span class="p">:</span> <span class="s">&#34;name&#34;</span><span class="p">)</span> <span class="k">as</span><span class="o">!</span> <span class="nb">String</span>
+        <span class="n">detail</span> <span class="p">=</span> <span class="n">aDecoder</span><span class="p">.</span><span class="n">decodeObject</span><span class="p">(</span><span class="n">forKey</span><span class="p">:</span> <span class="s">&#34;detail&#34;</span><span class="p">)</span> <span class="k">as</span><span class="o">!</span> <span class="nb">String</span>
+    <span class="p">}</span>
+    
+    <span class="kd">func</span> <span class="nf">encode</span><span class="p">(</span><span class="n">with</span> <span class="n">aCoder</span><span class="p">:</span> <span class="n">NSCoder</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">aCoder</span><span class="p">.</span><span class="n">encode</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">forKey</span><span class="p">:</span> <span class="s">&#34;name&#34;</span><span class="p">)</span>
+        <span class="n">aCoder</span><span class="p">.</span><span class="n">encode</span><span class="p">(</span><span class="n">detail</span><span class="p">,</span> <span class="n">forKey</span><span class="p">:</span> <span class="s">&#34;detail&#34;</span><span class="p">)</span>
+    <span class="p">}</span>
+<span class="p">}</span></code></pre></td></tr></table>
+</div>
+</div>
+<p>可以來試著測試了<br />
+寫檔</p>
+
+<ol>
+<li>產生物件</li>
+<li>利用NSKeyedArchiver.archivedData包裹物件，產生data</li>
+<li>找到寫檔路徑</li>
+<li>將data寫入指定路徑</li>
+</ol>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code class="language-swift" data-lang="swift"><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-swift" data-lang="swift"><span class="kd">let</span> <span class="nv">item</span> <span class="p">=</span> <span class="n">Item</span><span class="p">(</span><span class="n">name</span><span class="p">:</span> <span class="s">&#34;危城&#34;</span><span class="p">,</span> <span class="n">detail</span><span class="p">:</span> <span class="s">&#34;動作&#34;</span><span class="p">)</span>
+<span class="kd">let</span> <span class="nv">data</span> <span class="p">=</span> <span class="n">NSKeyedArchiver</span><span class="p">.</span><span class="n">archivedData</span><span class="p">(</span><span class="n">withRootObject</span><span class="p">:</span> <span class="n">item</span><span class="p">)</span>
+<span class="kd">let</span> <span class="nv">docUrl</span> <span class="p">=</span> <span class="n">FileManager</span><span class="p">.</span><span class="k">default</span><span class="p">.</span><span class="n">urls</span><span class="p">(</span><span class="k">for</span><span class="p">:</span> <span class="p">.</span><span class="n">documentDirectory</span><span class="p">,</span> <span class="k">in</span><span class="p">:</span> <span class="p">.</span><span class="n">userDomainMask</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+<span class="kd">let</span> <span class="nv">url</span> <span class="p">=</span> <span class="n">docUrl</span><span class="p">.</span><span class="n">appendingPathComponent</span><span class="p">(</span><span class="s">&#34;myfile.txt&#34;</span><span class="p">)</span>
+<span class="k">try</span><span class="o">!</span> <span class="n">data</span><span class="p">.</span><span class="n">write</span><span class="p">(</span><span class="n">to</span><span class="p">:</span> <span class="n">url</span><span class="p">)</span></code></pre></td></tr></table>
+</div>
+</div>
+<p>讀檔</p>
+
+<ol>
+<li>找到讀檔路徑</li>
+<li>獲取Data</li>
+<li>利用NSKeyedUnarchiver.unarchiveObject，將data轉換成指定物件</li>
+</ol>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code class="language-swift" data-lang="swift"><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-swift" data-lang="swift"><span class="kd">let</span> <span class="nv">docUrl</span> <span class="p">=</span> <span class="n">FileManager</span><span class="p">.</span><span class="k">default</span><span class="p">.</span><span class="n">urls</span><span class="p">(</span><span class="k">for</span><span class="p">:</span> <span class="p">.</span><span class="n">documentDirectory</span><span class="p">,</span> <span class="k">in</span><span class="p">:</span> <span class="p">.</span><span class="n">userDomainMask</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+<span class="kd">let</span> <span class="nv">url</span> <span class="p">=</span> <span class="n">docUrl</span><span class="p">.</span><span class="n">appendingPathComponent</span><span class="p">(</span><span class="s">&#34;myfile.txt&#34;</span><span class="p">)</span>
+<span class="kd">let</span> <span class="nv">data</span> <span class="p">=</span> <span class="k">try</span><span class="p">?</span> <span class="n">Data</span><span class="p">(</span><span class="n">contentsOf</span><span class="p">:</span> <span class="n">url</span><span class="p">)</span>
+
+<span class="k">if</span> <span class="kd">let</span> <span class="nv">data</span> <span class="p">=</span> <span class="n">data</span> <span class="p">{</span>
+	<span class="kd">let</span> <span class="nv">item</span> <span class="p">=</span> <span class="n">NSKeyedUnarchiver</span><span class="p">.</span><span class="n">unarchiveObject</span><span class="p">(</span><span class="n">with</span><span class="p">:</span> <span class="n">data</span><span class="p">)</span> <span class="k">as</span><span class="o">!</span> <span class="n">Item</span>
+	<span class="bp">print</span><span class="p">(</span><span class="s">&#34;=== Read ===&#34;</span><span class="p">)</span>
+	<span class="bp">print</span><span class="p">(</span><span class="n">item</span><span class="p">.</span><span class="n">name</span><span class="p">)</span>
+	<span class="bp">print</span><span class="p">(</span><span class="n">item</span><span class="p">.</span><span class="n">detail</span><span class="p">)</span>
+<span class="p">}</span></code></pre></td></tr></table>
+</div>
+</div>
+    </div>
+
+    
+<footer class="post-footer">
+      <div class="post-tags">
+          <a href="/tags/ios/">ios</a>
+          <a href="/tags/swift/">swift</a>
+          </div>
+      <nav class="post-nav">
+        <a class="prev" href="/post/notes/2016/10-14/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">Swift 多執行緒與檔案下載</span>
+            <span class="prev-text nav-mobile"></span>
+          </a>
+        <a class="next" href="/post/notes/2016/10-06/">
+            <span class="next-text nav-default">Swift 聲音播放與錄製</span>
+            <span class="next-text nav-mobile"></span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        <div id="disqus_thread"></div>
+    <script type="text/javascript">
+    (function() {
+      
+      
+      if (window.location.hostname === 'localhost') return;
+
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      var disqus_shortname = 'blog-vygy2ifrxm';
+      dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="cdfq152313@gmail.com" class="iconfont icon-email" title="email"></a>
+      <a href="https://www.facebook.com/AddweupDennyCheng" class="iconfont icon-facebook" title="facebook"></a>
+      <a href="https://github.com/cdfq152313/" class="iconfont icon-github" title="github"></a>
+  <a href="https://cdfq152313.github.io/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    %!(EXTRA string=<a class="hexo-link" href="https://gohugo.io">Hugo</a>)
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+     - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  
+
+  <span class="copyright-year">
+    &copy; 
+    2015 - 
+    2019
+    <span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">Denny Cheng</span>
+  </span>
+</div>
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+<script type="text/javascript" src="/dist/even.26188efa.min.js"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>

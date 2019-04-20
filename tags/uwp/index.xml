@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Uwp on Denny&#39;s Blog</title>
+    <title>uwp on Denny&#39;s Blog</title>
     <link>https://cdfq152313.github.io/tags/uwp/</link>
-    <description>Recent content in Uwp on Denny&#39;s Blog</description>
+    <description>Recent content in uwp on Denny&#39;s Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-hant</language>
+    <copyright>Denny Cheng</copyright>
     <lastBuildDate>Tue, 18 Oct 2016 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="https://cdfq152313.github.io/tags/uwp/index.xml" rel="self" type="application/rss+xml" />
@@ -13,10 +14,10 @@
     
     <item>
       <title>.net的RSA加解密與UWP</title>
-      <link>https://cdfq152313.github.io/post/2016-10-18/</link>
+      <link>https://cdfq152313.github.io/post/notes/2016/10-18/</link>
       <pubDate>Tue, 18 Oct 2016 00:00:00 +0000</pubDate>
       
-      <guid>https://cdfq152313.github.io/post/2016-10-18/</guid>
+      <guid>https://cdfq152313.github.io/post/notes/2016/10-18/</guid>
       <description>前言牢騷 我是要在uwp下使用加密演算法並傳送到server去，由Server進行解密。於是在google中下關鍵字&amp;rdquo;.net rsa e</description>
     </item>
     

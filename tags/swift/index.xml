@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Swift on Denny&#39;s Blog</title>
+    <title>swift on Denny&#39;s Blog</title>
     <link>https://cdfq152313.github.io/tags/swift/</link>
-    <description>Recent content in Swift on Denny&#39;s Blog</description>
+    <description>Recent content in swift on Denny&#39;s Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-hant</language>
+    <copyright>Denny Cheng</copyright>
     <lastBuildDate>Wed, 02 Nov 2016 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="https://cdfq152313.github.io/tags/swift/index.xml" rel="self" type="application/rss+xml" />
@@ -13,82 +14,82 @@
     
     <item>
       <title>Swift Mail &amp; Message</title>
-      <link>https://cdfq152313.github.io/post/2016-11-02/</link>
+      <link>https://cdfq152313.github.io/post/notes/2016/11-02/</link>
       <pubDate>Wed, 02 Nov 2016 00:00:00 +0000</pubDate>
       
-      <guid>https://cdfq152313.github.io/post/2016-11-02/</guid>
+      <guid>https://cdfq152313.github.io/post/notes/2016/11-02/</guid>
       <description>Mail 不能在模擬器上跑，會crash。 簡單流程 初始化MFMailComposeViewController 設定標題以及收件者 推出MFMailCo</description>
     </item>
     
     <item>
       <title>Swift TableView 與 Collection View</title>
-      <link>https://cdfq152313.github.io/post/2016-10-25/</link>
+      <link>https://cdfq152313.github.io/post/notes/2016/10-25/</link>
       <pubDate>Tue, 25 Oct 2016 00:00:00 +0000</pubDate>
       
-      <guid>https://cdfq152313.github.io/post/2016-10-25/</guid>
+      <guid>https://cdfq152313.github.io/post/notes/2016/10-25/</guid>
       <description>TableView IndexPath: Section &amp;amp; Row 看圖應該可以明瞭Section和Row的含意，Apple把tableView劃分為section，每個section下又有row。</description>
     </item>
     
     <item>
       <title>Swift Map 地圖功能</title>
-      <link>https://cdfq152313.github.io/post/2016-10-21/</link>
+      <link>https://cdfq152313.github.io/post/notes/2016/10-21/</link>
       <pubDate>Fri, 21 Oct 2016 00:00:00 +0000</pubDate>
       
-      <guid>https://cdfq152313.github.io/post/2016-10-21/</guid>
+      <guid>https://cdfq152313.github.io/post/notes/2016/10-21/</guid>
       <description>環境設定 權限 開啟地圖本身不需要權限，如果若需要GPS位置，請在info.plist中開啟 StoryBoard &amp;amp; IBOutlet 在StoryBoard上地圖套件名稱叫做Map</description>
     </item>
     
     <item>
       <title>Swift 多執行緒與檔案下載</title>
-      <link>https://cdfq152313.github.io/post/2016-10-14/</link>
+      <link>https://cdfq152313.github.io/post/notes/2016/10-14/</link>
       <pubDate>Fri, 14 Oct 2016 00:00:00 +0000</pubDate>
       
-      <guid>https://cdfq152313.github.io/post/2016-10-14/</guid>
-      <description>Swift的執行緒分為主要和背景。 Main Queue / Concurrent Queue 主執行緒不能執行同步工作，只能執行非同步工作。 主執行緒語法 let task1 = { for i in 1...5{ print (&amp;quot;Task1: (\i)&amp;quot;) } } // DispatchQueue.main.sync(execute: task1) DispatchQueue.main.async(execute: task1) 背</description>
+      <guid>https://cdfq152313.github.io/post/notes/2016/10-14/</guid>
+      <description>Swift的執行緒分為主要和背景。 Main Queue / Concurrent Queue 主執行緒不能執行同步工作，只能執行非同步工作。 主執行緒語法 1 2 3 4 5 6 7 8 let task1 = { for i in 1...5{ print (&amp;#34;Task1: (\i)&amp;#34;)</description>
     </item>
     
     <item>
       <title>Swift 檔案路徑與讀寫檔</title>
-      <link>https://cdfq152313.github.io/post/2016-10-11/</link>
+      <link>https://cdfq152313.github.io/post/notes/2016/10-11/</link>
       <pubDate>Tue, 11 Oct 2016 00:00:00 +0000</pubDate>
       
-      <guid>https://cdfq152313.github.io/post/2016-10-11/</guid>
-      <description>iOS的路徑 專案資料夾內的路徑 利用Bundle.main獲取 可以指定檔案名稱以及副檔名。 // 得到url let url = Bundle.main.url(forResource: &amp;quot;myjson&amp;quot;, withExtension: &amp;quot;json&amp;quot;) // 得到path let path = Bundle.main.path(forResource: &amp;quot;myjson&amp;quot;, ofType:</description>
+      <guid>https://cdfq152313.github.io/post/notes/2016/10-11/</guid>
+      <description>iOS的路徑 專案資料夾內的路徑 利用Bundle.main獲取 可以指定檔案名稱以及副檔名。 1 2 3 4 // 得到url let url = Bundle.main.url(forResource: &amp;#34;myjson&amp;#34;, withExtension: &amp;#34;json&amp;#34;) // 得到path let path</description>
     </item>
     
     <item>
       <title>Swift 聲音播放與錄製</title>
-      <link>https://cdfq152313.github.io/post/2016-10-06/</link>
+      <link>https://cdfq152313.github.io/post/notes/2016/10-06/</link>
       <pubDate>Thu, 06 Oct 2016 00:00:00 +0000</pubDate>
       
-      <guid>https://cdfq152313.github.io/post/2016-10-06/</guid>
-      <description>播放系統音效 超簡單只需要兩行 import AudioToolbox AudioServicesPlaySystemSound(1000) 播放自己放在app的音樂 先把自己的音效拖進Xcode，記得選擇&amp;rdquo;copy items if needed&amp;rd</description>
+      <guid>https://cdfq152313.github.io/post/notes/2016/10-06/</guid>
+      <description>播放系統音效 超簡單只需要兩行 1 2 import AudioToolbox AudioServicesPlaySystemSound(1000) 播放自己放在app的音樂 先把自己的音效拖進Xcode，記得選擇&amp;rdquo;copy items if needed&amp;</description>
     </item>
     
     <item>
       <title>Swift 基礎語法筆記</title>
-      <link>https://cdfq152313.github.io/post/2016-10-04/</link>
+      <link>https://cdfq152313.github.io/post/notes/2016/10-04/</link>
       <pubDate>Tue, 04 Oct 2016 00:00:00 +0000</pubDate>
       
-      <guid>https://cdfq152313.github.io/post/2016-10-04/</guid>
+      <guid>https://cdfq152313.github.io/post/notes/2016/10-04/</guid>
       <description>參考資料 感謝大大～～ https://itisjoe.gitbooks.io/swiftgo/content/ 因應swift3，筆記內容與gitbook上略有不同 struct和enum是value type, class是reference</description>
     </item>
     
     <item>
       <title>Swift 不同Controller互動 與 Navigation Bar</title>
-      <link>https://cdfq152313.github.io/post/2016-10-03/</link>
+      <link>https://cdfq152313.github.io/post/notes/2016/10-03/</link>
       <pubDate>Mon, 03 Oct 2016 00:00:00 +0000</pubDate>
       
-      <guid>https://cdfq152313.github.io/post/2016-10-03/</guid>
+      <guid>https://cdfq152313.github.io/post/notes/2016/10-03/</guid>
       <description>Controller之間的呼叫 present 與 dismiss 想要跳轉頁面，我們可以靠storyBoard拉出present的線，也可以靠程式碼。 在StoryBoar</description>
     </item>
     
     <item>
       <title>Swift 快速筆記</title>
-      <link>https://cdfq152313.github.io/post/2016-09-13/</link>
+      <link>https://cdfq152313.github.io/post/notes/2016/09-13/</link>
       <pubDate>Tue, 13 Sep 2016 00:00:00 +0000</pubDate>
       
-      <guid>https://cdfq152313.github.io/post/2016-09-13/</guid>
+      <guid>https://cdfq152313.github.io/post/notes/2016/09-13/</guid>
       <description>AutoLayout 只要確定好下面的參數，autoLayout就不會跑警告 x y width height AlertController 新增AlertController .ActionSheet可藉由點警告視窗</description>
     </item>
     

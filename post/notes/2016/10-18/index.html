@@ -1,0 +1,542 @@
+<!DOCTYPE html>
+<html lang="zh-hant">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>.net的RSA加解密與UWP - Denny&#39;s Blog</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="Denny Cheng" /><meta name="description" content="前言牢騷 我是要在uwp下使用加密演算法並傳送到server去，由Server進行解密。於是在google中下關鍵字&amp;rdquo;.net rsa e" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.54.0 with even 4.0.0" />
+
+
+<link rel="canonical" href="https://cdfq152313.github.io/post/notes/2016/10-18/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+
+<link href="/dist/even.c2a46f00.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content=".net的RSA加解密與UWP" />
+<meta property="og:description" content="前言牢騷 我是要在uwp下使用加密演算法並傳送到server去，由Server進行解密。於是在google中下關鍵字&rdquo;.net rsa e" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://cdfq152313.github.io/post/notes/2016/10-18/" />
+<meta property="article:published_time" content="2016-10-18T00:00:00&#43;00:00"/>
+<meta property="article:modified_time" content="2016-10-18T00:00:00&#43;00:00"/>
+
+<meta itemprop="name" content=".net的RSA加解密與UWP">
+<meta itemprop="description" content="前言牢騷 我是要在uwp下使用加密演算法並傳送到server去，由Server進行解密。於是在google中下關鍵字&rdquo;.net rsa e">
+
+
+<meta itemprop="datePublished" content="2016-10-18T00:00:00&#43;00:00" />
+<meta itemprop="dateModified" content="2016-10-18T00:00:00&#43;00:00" />
+<meta itemprop="wordCount" content="2500">
+
+
+
+<meta itemprop="keywords" content="uwp,密碼學," />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content=".net的RSA加解密與UWP"/>
+<meta name="twitter:description" content="前言牢騷 我是要在uwp下使用加密演算法並傳送到server去，由Server進行解密。於是在google中下關鍵字&rdquo;.net rsa e"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">Denny&#39;s Blog</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">Home</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">Archives</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">Tags</li>
+      </a><a href="/about/">
+        <li class="mobile-menu-item">About</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">Denny&#39;s Blog</a>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">Home</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">Archives</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">Tags</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/about/">About</a>
+      </li>
+  </ul>
+</nav>
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">.net的RSA加解密與UWP</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2016-10-18 </span>
+        <div class="post-category">
+            <a href="/categories/notes/"> notes </a>
+            </div>
+        
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title"></h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+<ul>
+<li><a href="#前言牢騷">前言牢騷</a></li>
+<li><a href="#net-rsa-api概觀">.net RSA API概觀</a></li>
+<li><a href="#rsacryptoserviceprovider與rsacng">RSACryptoServiceProvider與RSACng</a>
+<ul>
+<li><a href="#加密">加密</a></li>
+<li><a href="#匯入金鑰">匯入金鑰</a></li>
+<li><a href="#pem-to-xml">PEM to XML</a></li>
+<li><a href="#rsacng與填補">RSACng與填補</a></li>
+</ul></li>
+<li><a href="#cryptographicengine-asymmetrickeyalgorithmprovider">CryptographicEngine + AsymmetricKeyAlgorithmProvider</a>
+<ul>
+<li><a href="#加密-1">加密</a></li>
+<li><a href="#cryptographickey的初始化">CryptographicKey的初始化</a></li>
+</ul></li>
+<li><a href="#與python共舞">與python共舞</a></li>
+</ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      
+
+<h1 id="前言牢騷">前言牢騷</h1>
+
+<p>我是要在uwp下使用加密演算法並傳送到server去，由Server進行解密。於是在google中下關鍵字&rdquo;.net rsa encrypt&rdquo;，所以就找到了最舊也最多人討論的RSACryptoServiceProvider。我使用Visual studio 2015開command line，想在弄到uwp前先行測試，結果發現了許多與伺服器(python)的解密不相容之處，不管是金鑰格式，還是填補方法。等到把這些問題都搞定了，又發現不能在UWP中使用，真是想死的心都有了&hellip;。再次google了&rdquo;uwp encrpyt&rdquo;後找到了CryptographicEngine + AsymmetricKeyAlgorithmProvider這組library，才終於搞定加解密問題。</p>
+
+<p>這篇文章會大概描述下列兩種加解密方法與金鑰格式。</p>
+
+<ol>
+<li>RSACryptoServiceProvider/RSACng</li>
+<li>CryptographicEngine + AsymmetricKeyAlgorithmProvider</li>
+</ol>
+
+<h1 id="net-rsa-api概觀">.net RSA API概觀</h1>
+
+<p>在.net中RSA的加解密有三組。分別是</p>
+
+<ol>
+<li><a href="https://msdn.microsoft.com/zh-tw/library/system.security.cryptography.rsacryptoserviceprovider(v=vs.110).aspx">RSACryptoServiceProvider</a></li>
+<li><a href="https://msdn.microsoft.com/zh-tw/library/system.security.cryptography.rsacng(v=vs.110).aspx">RSACng</a></li>
+<li><a href="https://msdn.microsoft.com/library/windows/apps/br241490">CryptographicEngine</a> + <a href="https://msdn.microsoft.com/library/windows/apps/br241478">AsymmetricKeyAlgorithmProvider</a></li>
+</ol>
+
+<p>以格式來說，1,2是同一組介面實作，有著類似的操作方式，AsymmetricKeyAlgorithmProvider則是另外的class.<br />
+以新舊來說，RSACryptoServiceProvider是最舊的，提供的填補格式極少。RSACng是後繼更加完善的class，但是要在.net4.6後才能用，選擇版本時要注意。至於CryptographicEngine，只能在windows app(含uwp)當中使用。</p>
+
+<h1 id="rsacryptoserviceprovider與rsacng">RSACryptoServiceProvider與RSACng</h1>
+
+<h2 id="加密">加密</h2>
+
+<p>步驟如下</p>
+
+<ol>
+<li>先將字串轉換成Byte (可以用ASCIIEncoding或UTF8Encdoing，記得怎麼轉回來就好)</li>
+<li>初始化RSACryptoServiceProvider (可用來加解密，在此只用來加密)</li>
+<li>進行加密</li>
+<li>對加密結果進行Base64(理由說明如下)
+
+<ul>
+<li>RSA對byte進行加密，結果也是byte。</li>
+<li>將加密結果直接轉回string，看起來是亂碼，會涵蓋許多無法顯示的字元。</li>
+<li>因此如果要進行傳輸，最好以Base64重新編碼過，出來的字串才會全部都是可顯示的文字。</li>
+<li><a href="https://zh.wikipedia.org/wiki/Base64">Base64介紹</a></li>
+</ul></li>
+</ol>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code class="language-csharp" data-lang="csharp"><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-csharp" data-lang="csharp"><span class="k">static</span> <span class="n">String</span> <span class="n">Encrypt</span><span class="p">(</span><span class="n">String</span> <span class="n">_content</span><span class="p">)</span>
+<span class="p">{</span>
+	<span class="c1">// 先轉成Byte再加密
+</span><span class="c1"></span>  <span class="n">Encoding</span> <span class="n">ByteConverter</span> <span class="p">=</span> <span class="k">new</span> <span class="n">ASCIIEncoding</span><span class="p">();</span>
+  <span class="kt">var</span> <span class="n">content</span> <span class="p">=</span> <span class="n">ByteConverter</span><span class="p">.</span><span class="n">GetBytes</span><span class="p">(</span><span class="n">_content</span><span class="p">);</span>
+
+  <span class="c1">// 初始化RSACryptoServiceProvider
+</span><span class="c1"></span>  <span class="n">RSACryptoServiceProvider</span> <span class="n">rsa</span> <span class="p">=</span> <span class="n">getRSACrypto</span><span class="p">();</span>
+
+  <span class="c1">// 加密
+</span><span class="c1"></span>  <span class="kt">var</span> <span class="n">encrypt</span> <span class="p">=</span> <span class="n">rsa</span><span class="p">.</span><span class="n">Encrypt</span><span class="p">(</span><span class="n">content</span><span class="p">,</span> <span class="k">false</span><span class="p">);</span>
+  <span class="c1">// 轉成base64
+</span><span class="c1"></span>  <span class="kt">var</span> <span class="n">encryptStr</span> <span class="p">=</span> <span class="n">System</span><span class="p">.</span><span class="n">Convert</span><span class="p">.</span><span class="n">ToBase64String</span><span class="p">(</span><span class="n">encrypt</span><span class="p">);</span>
+  <span class="k">return</span> <span class="n">encryptStr</span><span class="p">;</span>
+<span class="p">}</span></code></pre></td></tr></table>
+</div>
+</div>
+<p>在步驟2的時候，我使用了自己撰寫的getRSACrypto，透過匯入金鑰來產生實體，在下一小節會說明。<br />
+不過從來沒有產生過金鑰的人，可能會需要自己先行產生。程式碼如下。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code class="language-csharp" data-lang="csharp"><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-csharp" data-lang="csharp"><span class="c1">// 指定金鑰長度在2048以上比較安全
+</span><span class="c1"></span><span class="n">RSACryptoServiceProvider</span> <span class="n">rsa</span> <span class="p">=</span> <span class="n">RSACryptoServiceProvider</span> <span class="p">(</span><span class="m">2048</span><span class="p">);</span>
+<span class="n">String</span> <span class="n">publickey</span> <span class="p">=</span> <span class="n">rsa</span><span class="p">.</span><span class="n">ToXmlString</span><span class="p">(</span><span class="k">false</span><span class="p">)</span>
+<span class="n">String</span> <span class="n">privatekey</span> <span class="p">=</span> <span class="n">rsa</span><span class="p">.</span><span class="n">ToXmlString</span><span class="p">(</span><span class="k">true</span><span class="p">)</span></code></pre></td></tr></table>
+</div>
+</div>
+<p>再將這兩個key儲存起來即可。</p>
+
+<h2 id="匯入金鑰">匯入金鑰</h2>
+
+<p>那來看看要如何匯入金鑰，其實只要引用FromXmlString即可。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code class="language-csharp" data-lang="csharp"><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-csharp" data-lang="csharp"><span class="k">static</span> <span class="n">RSACryptoServiceProvider</span> <span class="n">getRSACrypto</span><span class="p">()</span>
+<span class="p">{</span>
+  <span class="n">RSACryptoServiceProvider</span> <span class="n">rsa</span> <span class="p">=</span> <span class="k">new</span> <span class="n">RSACryptoServiceProvider</span><span class="p">();</span>
+  <span class="kt">var</span> <span class="n">pubkey</span> <span class="p">=</span> <span class="s">&#34;&lt;RSAKeyValue&gt;&lt;Modulus&gt;w3XOM8su/sXvgAIhwlNhpihgVIjWQUhW9zoocwCNWGI8b4YtU/qfOlX3bsWzqw6IqRF/Ncmkbs6Rr5uiDzhHwt7cz/+vgZ9Hm346OM6K2N70a7Lbzr/LlDDb4Yt/PzBEOHEffCkKnpy31KL6Xkfg2a0OkZiF8dny9PbKQaYbXQUJIhCx9YcZ4JZ5cRGMvpNKpS+Wx2q22GV5akKVZ6jVcIgotAgp+MtMJoSr8av61eX6sOl0JborsuuX8Cao278MGKCkUldU1hUDTJtH6IOQfeeJhWolEUS6KXj0FAReWR76aYXBDQ3xJAQHvB/mjMLSiB4mpfk0JETz9Bh0o9FvXw==&lt;/Modulus&gt;&lt;Exponent&gt;AQAB&lt;/Exponent&gt;&lt;/RSAKeyValue&gt;&#34;</span><span class="p">;</span>
+  <span class="n">rsa</span><span class="p">.</span><span class="n">FromXmlString</span><span class="p">(</span><span class="n">pubkey</span><span class="p">);</span>
+  <span class="k">return</span> <span class="n">rsa</span><span class="p">;</span>
+<span class="p">}</span></code></pre></td></tr></table>
+</div>
+</div>
+<p>特別將金鑰的地方提出來看看，是一個XML</p>
+
+<p>publickey.xml</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code class="language-xml" data-lang="xml"><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-xml" data-lang="xml"><span class="nt">&lt;RSAKeyValue&gt;</span>
+<span class="nt">&lt;Modulus&gt;</span>
+w3XOM8su/sXvgAIhwlNhpihgVIjWQUhW9zoocwCNWGI8b4YtU/qfOlX3bsWzqw6IqRF/Ncmkbs6Rr5uiDzhHwt7cz/+vgZ9Hm346OM6K2N70a7Lbzr/LlDDb4Yt/PzBEOHEffCkKnpy31KL6Xkfg2a0OkZiF8dny9PbKQaYbXQUJIhCx9YcZ4JZ5cRGMvpNKpS+Wx2q22GV5akKVZ6jVcIgotAgp+MtMJoSr8av61eX6sOl0JborsuuX8Cao278MGKCkUldU1hUDTJtH6IOQfeeJhWolEUS6KXj0FAReWR76aYXBDQ3xJAQHvB/mjMLSiB4mpfk0JETz9Bh0o9FvXw==
+<span class="nt">&lt;/Modulus&gt;</span>
+<span class="nt">&lt;Exponent&gt;</span>AQAB<span class="nt">&lt;/Exponent&gt;</span>
+<span class="nt">&lt;/RSAKeyValue&gt;</span></code></pre></td></tr></table>
+</div>
+</div>
+<h2 id="pem-to-xml">PEM to XML</h2>
+
+<p>上述的金鑰有一個問題，目前大多數的linux server產出的金鑰都是PEM格式，頂多是base64後的PEM格式，根本沒辦法匯入RSACryptoServiceProvider。<br />
+幸好網路上有人幫忙解決這個問題<a href="https://superdry.apphb.com/tools/online-rsa-key-converter">RSA Key Converter</a>，不過美中不足的是XML to PEM似乎有BUG。以server產key來說，應該還堪用就是。</p>
+
+<h2 id="rsacng與填補">RSACng與填補</h2>
+
+<p>RSACng的使用方法與RSACryptoServiceProvider幾乎一模一樣，只在加密的時候，可以選擇更多種類的填補。<br />
+關於填補的種類可以參閱<a href="https://msdn.microsoft.com/zh-tw/library/system.security.cryptography.rsaencryptionpadding(v=vs.110).aspx">RSAEncryptionPadding</a>此一class。注意，只有.net4.6以上才支援此class。</p>
+
+<p>RSACryptoServiceProvider的Encrypt只有</p>
+
+<ul>
+<li>OaepSHA1</li>
+<li>Pkcs1</li>
+</ul>
+
+<p>RASCng除了上述兩種外還有</p>
+
+<ul>
+<li>OaepSHA256</li>
+<li>OaepSHA384</li>
+<li>OaepSHA512</li>
+</ul>
+
+<h1 id="cryptographicengine-asymmetrickeyalgorithmprovider">CryptographicEngine + AsymmetricKeyAlgorithmProvider</h1>
+
+<p>CryptographicEngine和AsymmetricKeyAlgorithmProvider是用在<strong>Windows app(UWP)</strong>上的Library，在<strong>一般的.net中似乎無法使用</strong>。</p>
+
+<h2 id="加密-1">加密</h2>
+
+<p>大致流程如下</p>
+
+<ol>
+<li>先將字串轉換成IBuffer，可藉由先轉成Byte，再使用AsBuffer來轉換</li>
+<li>初始化CryptographicKey，此key包含指定的加密之演算法與金鑰</li>
+<li>利用CryptographicEngine進行加密，需匯入步驟2的key與想加密的內容</li>
+<li>對加密結果進行Base64(理由剛剛已經說明過了)</li>
+</ol>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code class="language-csharp" data-lang="csharp"><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-csharp" data-lang="csharp"><span class="k">public</span> <span class="n">String</span> <span class="n">Encrypt</span><span class="p">(</span><span class="kt">string</span> <span class="n">_content</span><span class="p">)</span>
+<span class="p">{</span>
+  <span class="c1">// 將字串轉換成IBuffer
+</span><span class="c1"></span>  <span class="n">Encoding</span> <span class="n">ByteConverter</span> <span class="p">=</span> <span class="k">new</span> <span class="n">ASCIIEncoding</span><span class="p">();</span>
+  <span class="kt">byte</span><span class="na">[]</span> <span class="n">contentByte</span> <span class="p">=</span> <span class="n">ByteConverter</span><span class="p">.</span><span class="n">GetBytes</span><span class="p">(</span><span class="n">_content</span><span class="p">);</span>
+  <span class="n">IBuffer</span> <span class="n">content</span> <span class="p">=</span> <span class="n">contentByte</span><span class="p">.</span><span class="n">AsBuffer</span><span class="p">();</span>
+
+	<span class="n">CryptographicKey</span> <span class="n">key</span> <span class="p">=</span> <span class="n">getCryptographicKey</span><span class="p">();</span>
+  <span class="c1">// 加密
+</span><span class="c1"></span>  <span class="n">IBuffer</span> <span class="n">encrypt</span> <span class="p">=</span> <span class="n">CryptographicEngine</span><span class="p">.</span><span class="n">Encrypt</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">content</span><span class="p">,</span> <span class="k">null</span><span class="p">);</span>
+
+  <span class="c1">// 轉換成Base64
+</span><span class="c1"></span>  <span class="n">String</span> <span class="n">encryptStr</span> <span class="p">=</span> <span class="n">CryptographicBuffer</span><span class="p">.</span><span class="n">EncodeToBase64String</span><span class="p">(</span><span class="n">encrypt</span><span class="p">);</span>
+
+  <span class="k">return</span> <span class="n">encryptStr</span><span class="p">;</span>
+<span class="p">}</span></code></pre></td></tr></table>
+</div>
+</div>
+<p>在步驟2的時候，我使用了自己撰寫的getCryptographicKey，透過選擇演算法和匯入金鑰來產生實體，在下一小節會說明。</p>
+
+<h2 id="cryptographickey的初始化">CryptographicKey的初始化</h2>
+
+<ol>
+<li>使用AsymmetricKeyAlgorithmProvider.OpenAlgorithm選擇加密演算法，返回一個實體
+
+<ul>
+<li>演算法種類可以上<a href="https://msdn.microsoft.com/en-us/library/windows/apps/windows.security.cryptography.core.asymmetricalgorithmnames.aspx">MSDN</a>查詢</li>
+</ul></li>
+<li>使用此實體指定金鑰(ImportKeyPair / ImportPublicKey)，會產生一個CryptographicKey實體
+
+<ul>
+<li>值得注意的是，這次的金鑰不再是XML格式，而是大部分通用之pem格式</li>
+<li>ImportPublicKey這個method似乎還可以讀取更多的格式，詳請請參閱<a href="https://msdn.microsoft.com/en-us/library/windows/apps/hh967858.aspx">MSDN</a></li>
+</ul></li>
+</ol>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code class="language-csharp" data-lang="csharp"><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-csharp" data-lang="csharp"><span class="k">public</span> <span class="n">Encrypter</span> <span class="n">getCryptographicKey</span><span class="p">()</span>
+<span class="p">{</span>
+	<span class="n">String</span> <span class="n">publickey</span> <span class="p">=</span> <span class="s">&#34;MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAw3XOM8su/sXvgAIhwlNhpihgVIjWQUhW9zoocwCNWGI8b4YtU/qfOlX3bsWzqw6IqRF/Ncmkbs6Rr5uiDzhHwt7cz/+vgZ9Hm346OM6K2N70a7Lbzr/LlDDb4Yt/PzBEOHEffCkKnpy31KL6Xkfg2a0OkZiF8dny9PbKQaYbXQUJIhCx9YcZ4JZ5cRGMvpNKpS+Wx2q22GV5akKVZ6jVcIgotAgp+MtMJoSr8av61eX6sOl0JborsuuX8Cao278MGKCkUldU1hUDTJtH6IOQfeeJhWolEUS6KXj0FAReWR76aYXBDQ3xJAQHvB/mjMLSiB4mpfk0JETz9Bh0o9FvXwIDAQAB&#34;</span><span class="p">;</span>
+  <span class="n">AsymmetricKeyAlgorithmProvider</span> <span class="n">asymmAlg</span> <span class="p">=</span> <span class="n">AsymmetricKeyAlgorithmProvider</span><span class="p">.</span><span class="n">OpenAlgorithm</span><span class="p">(</span><span class="n">AsymmetricAlgorithmNames</span><span class="p">.</span><span class="n">RsaPkcs1</span><span class="p">);</span>
+  <span class="n">CryptographicKey</span> <span class="n">key</span> <span class="p">=</span> <span class="n">asymmAlg</span><span class="p">.</span><span class="n">ImportPublicKey</span><span class="p">(</span><span class="n">CryptographicBuffer</span><span class="p">.</span><span class="n">DecodeFromBase64String</span><span class="p">(</span><span class="n">publickey</span><span class="p">),</span> <span class="n">CryptographicPublicKeyBlobType</span><span class="p">.</span><span class="n">X509SubjectPublicKeyInfo</span><span class="p">);</span>
+  <span class="k">return</span> <span class="n">key</span><span class="p">;</span>
+<span class="p">}</span></code></pre></td></tr></table>
+</div>
+</div>
+<p>單獨把pulbic key拿出來看，是一個pem格式的金鑰。</p>
+
+<p>publickey</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code class="language-pem" data-lang="pem"><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-pem" data-lang="pem">MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAw3XOM8su/sXvgAIhwlNhpihgVIjWQUhW9zoocwCNWGI8b4YtU/qfOlX3bsWzqw6IqRF/Ncmkbs6Rr5uiDzhHwt7cz/+vgZ9Hm346OM6K2N70a7Lbzr/LlDDb4Yt/PzBEOHEffCkKnpy31KL6Xkfg2a0OkZiF8dny9PbKQaYbXQUJIhCx9YcZ4JZ5cRGMvpNKpS+Wx2q22GV5akKVZ6jVcIgotAgp+MtMJoSr8av61eX6sOl0JborsuuX8Cao278MGKCkUldU1hUDTJtH6IOQfeeJhWolEUS6KXj0FAReWR76aYXBDQ3xJAQHvB/mjMLSiB4mpfk0JETz9Bh0o9FvXwIDAQAB</code></pre></td></tr></table>
+</div>
+</div>
+<h1 id="與python共舞">與python共舞</h1>
+
+<p>如果安裝pycrypto並使用</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code class="language-python" data-lang="python"><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-python" data-lang="python"><span class="kn">from</span> <span class="nn">Crypto.PublicKey</span> <span class="kn">import</span> <span class="n">RSA</span>
+<span class="kn">from</span> <span class="nn">Crypto.Cipher</span> <span class="kn">import</span> <span class="n">PKCS1_v1_5</span></code></pre></td></tr></table>
+</div>
+</div>
+<p>Crypto.Cipher裡似乎有很多不同Module，我目前測試只有PKCS1_v1_5可以和.net的三個library互通。</p>
+
+<ol>
+<li>RSACryptoServiceProvider：Encrypt時選Pkcs1(或false)</li>
+<li>RSACng：Encrypt時選Pkcs1</li>
+<li>AsymmetricKeyAlgorithmProvider：OpenAlgorithm時選RsaPkcs1</li>
+</ol>
+
+<p>如果有其他種類可以互通請務必留言給我知道XD</p>
+
+    </div>
+
+    
+<footer class="post-footer">
+      <div class="post-tags">
+          <a href="/tags/uwp/">uwp</a>
+          <a href="/tags/%E5%AF%86%E7%A2%BC%E5%AD%B8/">密碼學</a>
+          </div>
+      <nav class="post-nav">
+        <a class="prev" href="/post/notes/2016/10-21/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">Swift Map 地圖功能</span>
+            <span class="prev-text nav-mobile"></span>
+          </a>
+        <a class="next" href="/post/notes/2016/10-14/">
+            <span class="next-text nav-default">Swift 多執行緒與檔案下載</span>
+            <span class="next-text nav-mobile"></span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        <div id="disqus_thread"></div>
+    <script type="text/javascript">
+    (function() {
+      
+      
+      if (window.location.hostname === 'localhost') return;
+
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      var disqus_shortname = 'blog-vygy2ifrxm';
+      dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="cdfq152313@gmail.com" class="iconfont icon-email" title="email"></a>
+      <a href="https://www.facebook.com/AddweupDennyCheng" class="iconfont icon-facebook" title="facebook"></a>
+      <a href="https://github.com/cdfq152313/" class="iconfont icon-github" title="github"></a>
+  <a href="https://cdfq152313.github.io/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    %!(EXTRA string=<a class="hexo-link" href="https://gohugo.io">Hugo</a>)
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+     - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  
+
+  <span class="copyright-year">
+    &copy; 
+    2015 - 
+    2019
+    <span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">Denny Cheng</span>
+  </span>
+</div>
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+<script type="text/javascript" src="/dist/even.26188efa.min.js"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>

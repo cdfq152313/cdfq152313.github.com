@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Tags on Denny&#39;s Blog</title>
+    <title>tags on Denny&#39;s Blog</title>
     <link>https://cdfq152313.github.io/categories/tags/</link>
-    <description>Recent content in Tags on Denny&#39;s Blog</description>
+    <description>Recent content in tags on Denny&#39;s Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-hant</language>
+    <copyright>Denny Cheng</copyright>
     
 	<atom:link href="https://cdfq152313.github.io/categories/tags/index.xml" rel="self" type="application/rss+xml" />
     
@@ -16,7 +17,7 @@
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>https://cdfq152313.github.io/mytags/</guid>
-      <description> general linux mac bash design android java jni AOSP iOS Swift UWP compiler LLVM git python renpy Cryptography mutt  </description>
+      <description>general linux mac bash design android java jni AOSP iOS Swift UWP compiler LLVM git python renpy Cryptography mutt</description>
     </item>
     
   </channel>

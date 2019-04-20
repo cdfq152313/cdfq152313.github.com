@@ -6,6 +6,7 @@
     <description>Recent content in Posts on Denny&#39;s Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-hant</language>
+    <copyright>Denny Cheng</copyright>
     <lastBuildDate>Thu, 29 Mar 2018 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="https://cdfq152313.github.io/post/index.xml" rel="self" type="application/rss+xml" />
@@ -13,362 +14,362 @@
     
     <item>
       <title>[讀書心得] 圖解Java多線程設計模式</title>
-      <link>https://cdfq152313.github.io/post/2018-03-29/</link>
+      <link>https://cdfq152313.github.io/post/review/%E5%9C%96%E8%A7%A3java%E5%A4%9A%E7%B7%9A%E7%A8%8B%E8%A8%AD%E8%A8%88%E6%A8%A1%E5%BC%8F/</link>
       <pubDate>Thu, 29 Mar 2018 00:00:00 +0000</pubDate>
       
-      <guid>https://cdfq152313.github.io/post/2018-03-29/</guid>
+      <guid>https://cdfq152313.github.io/post/review/%E5%9C%96%E8%A7%A3java%E5%A4%9A%E7%B7%9A%E7%A8%8B%E8%A8%AD%E8%A8%88%E6%A8%A1%E5%BC%8F/</guid>
       <description>[天瓏連結] 圖解Java多線程設計模式 大要 簡單條列心得如下。 他會假設你有Java的基礎知識，並假設你Java的執行緒相關函式還沒那麼熟，所以</description>
     </item>
     
     <item>
       <title>Mac/Linux的Bash主題(theme)設定</title>
-      <link>https://cdfq152313.github.io/post/2017-05-18/</link>
+      <link>https://cdfq152313.github.io/post/notes/2017/05-18/</link>
       <pubDate>Thu, 18 May 2017 00:34:00 +0800</pubDate>
       
-      <guid>https://cdfq152313.github.io/post/2017-05-18/</guid>
+      <guid>https://cdfq152313.github.io/post/notes/2017/05-18/</guid>
       <description>緣起 MAC和Linux初始的Bash設定有兩個讓我不滿意的地方 資料夾位置後緊接著指令輸入區 進入git repository時不會顯示目前的br</description>
     </item>
     
     <item>
       <title>[Design] SocketIO與Queue</title>
-      <link>https://cdfq152313.github.io/post/2017-05-01/</link>
+      <link>https://cdfq152313.github.io/post/notes/2017/05-01/</link>
       <pubDate>Mon, 01 May 2017 12:44:55 +0800</pubDate>
       
-      <guid>https://cdfq152313.github.io/post/2017-05-01/</guid>
+      <guid>https://cdfq152313.github.io/post/notes/2017/05-01/</guid>
       <description>問題 今天才發現應該要有的一個小小設計，在使用SocketIO(或其他強連線函式庫)時，可能會希望連線後，立刻執行某條指令。 舉例來說，如果現在</description>
     </item>
     
     <item>
       <title>[Java] Date SimpleDateFormat Calendar之轉換與時區(UTC/GMT)問題</title>
-      <link>https://cdfq152313.github.io/post/2017-04-27/</link>
+      <link>https://cdfq152313.github.io/post/notes/2017/04-27/</link>
       <pubDate>Thu, 27 Apr 2017 12:44:55 +0800</pubDate>
       
-      <guid>https://cdfq152313.github.io/post/2017-04-27/</guid>
+      <guid>https://cdfq152313.github.io/post/notes/2017/04-27/</guid>
       <description>簡介 這篇主要探討怎麼把當地時間轉換成GMT(UTC)時間，不在意一秒誤差的話這兩者基本上是一樣的。 主要用到下列三個元件 Date： 最基礎的時間</description>
     </item>
     
     <item>
       <title>renpy (6) 讀檔</title>
-      <link>https://cdfq152313.github.io/post/2017-04-24/</link>
+      <link>https://cdfq152313.github.io/post/notes/2017/04-24/</link>
       <pubDate>Mon, 24 Apr 2017 04:25:31 +0000</pubDate>
       
-      <guid>https://cdfq152313.github.io/post/2017-04-24/</guid>
+      <guid>https://cdfq152313.github.io/post/notes/2017/04-24/</guid>
       <description>前言 renpy加入對話很簡單，不過想要加入文本就不是那麼容易了。有的時候想要在遊戲中閱讀長文本，還需要插入\n來作為換行，頗不方便。這個時候</description>
     </item>
     
     <item>
       <title>Android 利用gson解析json</title>
-      <link>https://cdfq152313.github.io/post/2017-04-02/</link>
+      <link>https://cdfq152313.github.io/post/notes/2017/04-01/</link>
       <pubDate>Sun, 02 Apr 2017 15:23:51 +0800</pubDate>
       
-      <guid>https://cdfq152313.github.io/post/2017-04-02/</guid>
+      <guid>https://cdfq152313.github.io/post/notes/2017/04-01/</guid>
       <description>Android 利用gson解析json 反射和序列化 在開始前先貼篇文章暖暖身，讓大家了解Reflection(反射)和Serialization(序列化)</description>
     </item>
     
     <item>
       <title>Android Dialog取消動作</title>
-      <link>https://cdfq152313.github.io/post/2017-03-27/</link>
+      <link>https://cdfq152313.github.io/post/notes/2017/03-27/</link>
       <pubDate>Mon, 27 Mar 2017 00:00:00 +0000</pubDate>
       
-      <guid>https://cdfq152313.github.io/post/2017-03-27/</guid>
+      <guid>https://cdfq152313.github.io/post/notes/2017/03-27/</guid>
       <description>使用AlertDialog時，當點在Dialog的外圍，Android會讓此Dialog消失，並且什麼動作都不執行。 如果剛好positive</description>
     </item>
     
     <item>
       <title>Python AES (PyCrypto)</title>
-      <link>https://cdfq152313.github.io/post/2017-02-23/</link>
+      <link>https://cdfq152313.github.io/post/notes/2017/02-23/</link>
       <pubDate>Thu, 23 Feb 2017 00:00:00 +0000</pubDate>
       
-      <guid>https://cdfq152313.github.io/post/2017-02-23/</guid>
-      <description>程式碼 為了易於保存，所有金鑰、向量、輸出結果都是以Base64編碼。 from Crypto.Cipher import AES from Crypto import Random import base64 BS = AES.block_size pad = lambda s: s + (BS - len(s) % BS) * chr(BS - len(s) % BS) unpad = lambda s : s[0:-ord(s[-1])]</description>
+      <guid>https://cdfq152313.github.io/post/notes/2017/02-23/</guid>
+      <description>程式碼 為了易於保存，所有金鑰、向量、輸出結果都是以Base64編碼。 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36</description>
     </item>
     
     <item>
       <title>Java (Android) AES</title>
-      <link>https://cdfq152313.github.io/post/2017-02-22/</link>
+      <link>https://cdfq152313.github.io/post/notes/2017/02-22/</link>
       <pubDate>Wed, 22 Feb 2017 00:00:00 +0000</pubDate>
       
-      <guid>https://cdfq152313.github.io/post/2017-02-22/</guid>
+      <guid>https://cdfq152313.github.io/post/notes/2017/02-22/</guid>
       <description>最後編輯時間 2017/05/27 平台 Android Studio compileSdkVersion 25 buildToolsVersion &amp;ldquo;25.0.1&amp;rdquo; Base64的轉換有使用到Android的函式庫，若是純Java的使用者必須自行搜尋替代方案。 金鑰初始化 AES</description>
     </item>
     
     <item>
       <title>Android 文章整理</title>
-      <link>https://cdfq152313.github.io/post/2017-02-08/</link>
+      <link>https://cdfq152313.github.io/post/notes/2017/02-08/</link>
       <pubDate>Wed, 08 Feb 2017 00:00:00 +0000</pubDate>
       
-      <guid>https://cdfq152313.github.io/post/2017-02-08/</guid>
+      <guid>https://cdfq152313.github.io/post/notes/2017/02-08/</guid>
       <description>Linearlayout Android 对Layout_weight属性完全解析以及使用ListView来实现表格 fragment 官方API Guide Android Fragment 真正的完全解析（上） Android Fragment 真正的完全解析（下）</description>
     </item>
     
     <item>
       <title>寫給朋友看的function與class</title>
-      <link>https://cdfq152313.github.io/post/2017-01-15/</link>
+      <link>https://cdfq152313.github.io/post/notes/2017/01-15/</link>
       <pubDate>Sun, 15 Jan 2017 00:00:00 +0000</pubDate>
       
-      <guid>https://cdfq152313.github.io/post/2017-01-15/</guid>
+      <guid>https://cdfq152313.github.io/post/notes/2017/01-15/</guid>
       <description>今天有個簡易的app功能如下 只有一個ViewController 這個ViewController上只有兩個UITextView Input: &amp;ldquo;01/15&amp;rdquo; 代表1月1</description>
     </item>
     
     <item>
       <title>[讀書心得] 圖解密碼學與比特幣原理</title>
-      <link>https://cdfq152313.github.io/post/2016-12-28/</link>
+      <link>https://cdfq152313.github.io/post/review/%E5%9C%96%E8%A7%A3%E5%AF%86%E7%A2%BC%E5%AD%B8%E8%88%87%E6%AF%94%E7%89%B9%E5%B9%A3%E5%8E%9F%E7%90%86/</link>
       <pubDate>Wed, 28 Dec 2016 00:00:00 +0000</pubDate>
       
-      <guid>https://cdfq152313.github.io/post/2016-12-28/</guid>
+      <guid>https://cdfq152313.github.io/post/review/%E5%9C%96%E8%A7%A3%E5%AF%86%E7%A2%BC%E5%AD%B8%E8%88%87%E6%AF%94%E7%89%B9%E5%B9%A3%E5%8E%9F%E7%90%86/</guid>
       <description>[天瓏連結] 圖解密碼學與比特幣原理 花了很久才斷斷續續的看完這本，覺得是一本很不錯的科普書，沒有太艱深的數學。 書中有系統的把目前密碼學的發展介</description>
     </item>
     
     <item>
       <title>Python Mac Sierra pyinstaller py2app 的權限問題</title>
-      <link>https://cdfq152313.github.io/post/2016-12-27/</link>
+      <link>https://cdfq152313.github.io/post/notes/2016/12-27/</link>
       <pubDate>Tue, 27 Dec 2016 00:00:00 +0000</pubDate>
       
-      <guid>https://cdfq152313.github.io/post/2016-12-27/</guid>
+      <guid>https://cdfq152313.github.io/post/notes/2016/12-27/</guid>
       <description>最近遇到一個問題，使用pyinstaller製作執行檔後，在本機運作上ok，但是一傳給別人使用就會出問題。可是用右鍵show packages</description>
     </item>
     
     <item>
       <title>基礎知識惡補 - Http協定</title>
-      <link>https://cdfq152313.github.io/post/2016-11-24/</link>
+      <link>https://cdfq152313.github.io/post/notes/2016/11-24/</link>
       <pubDate>Thu, 24 Nov 2016 00:00:00 +0000</pubDate>
       
-      <guid>https://cdfq152313.github.io/post/2016-11-24/</guid>
+      <guid>https://cdfq152313.github.io/post/notes/2016/11-24/</guid>
       <description>來源網址：https://read01.com/J8P4L.html 要注意最後一段說get比較不安全是錯的，你他媽的不轉成https通通都是</description>
     </item>
     
     <item>
       <title>Swift Mail &amp; Message</title>
-      <link>https://cdfq152313.github.io/post/2016-11-02/</link>
+      <link>https://cdfq152313.github.io/post/notes/2016/11-02/</link>
       <pubDate>Wed, 02 Nov 2016 00:00:00 +0000</pubDate>
       
-      <guid>https://cdfq152313.github.io/post/2016-11-02/</guid>
+      <guid>https://cdfq152313.github.io/post/notes/2016/11-02/</guid>
       <description>Mail 不能在模擬器上跑，會crash。 簡單流程 初始化MFMailComposeViewController 設定標題以及收件者 推出MFMailCo</description>
     </item>
     
     <item>
       <title>Swift TableView 與 Collection View</title>
-      <link>https://cdfq152313.github.io/post/2016-10-25/</link>
+      <link>https://cdfq152313.github.io/post/notes/2016/10-25/</link>
       <pubDate>Tue, 25 Oct 2016 00:00:00 +0000</pubDate>
       
-      <guid>https://cdfq152313.github.io/post/2016-10-25/</guid>
+      <guid>https://cdfq152313.github.io/post/notes/2016/10-25/</guid>
       <description>TableView IndexPath: Section &amp;amp; Row 看圖應該可以明瞭Section和Row的含意，Apple把tableView劃分為section，每個section下又有row。</description>
     </item>
     
     <item>
       <title>Swift Map 地圖功能</title>
-      <link>https://cdfq152313.github.io/post/2016-10-21/</link>
+      <link>https://cdfq152313.github.io/post/notes/2016/10-21/</link>
       <pubDate>Fri, 21 Oct 2016 00:00:00 +0000</pubDate>
       
-      <guid>https://cdfq152313.github.io/post/2016-10-21/</guid>
+      <guid>https://cdfq152313.github.io/post/notes/2016/10-21/</guid>
       <description>環境設定 權限 開啟地圖本身不需要權限，如果若需要GPS位置，請在info.plist中開啟 StoryBoard &amp;amp; IBOutlet 在StoryBoard上地圖套件名稱叫做Map</description>
     </item>
     
     <item>
       <title>.net的RSA加解密與UWP</title>
-      <link>https://cdfq152313.github.io/post/2016-10-18/</link>
+      <link>https://cdfq152313.github.io/post/notes/2016/10-18/</link>
       <pubDate>Tue, 18 Oct 2016 00:00:00 +0000</pubDate>
       
-      <guid>https://cdfq152313.github.io/post/2016-10-18/</guid>
+      <guid>https://cdfq152313.github.io/post/notes/2016/10-18/</guid>
       <description>前言牢騷 我是要在uwp下使用加密演算法並傳送到server去，由Server進行解密。於是在google中下關鍵字&amp;rdquo;.net rsa e</description>
     </item>
     
     <item>
       <title>Swift 多執行緒與檔案下載</title>
-      <link>https://cdfq152313.github.io/post/2016-10-14/</link>
+      <link>https://cdfq152313.github.io/post/notes/2016/10-14/</link>
       <pubDate>Fri, 14 Oct 2016 00:00:00 +0000</pubDate>
       
-      <guid>https://cdfq152313.github.io/post/2016-10-14/</guid>
-      <description>Swift的執行緒分為主要和背景。 Main Queue / Concurrent Queue 主執行緒不能執行同步工作，只能執行非同步工作。 主執行緒語法 let task1 = { for i in 1...5{ print (&amp;quot;Task1: (\i)&amp;quot;) } } // DispatchQueue.main.sync(execute: task1) DispatchQueue.main.async(execute: task1) 背</description>
+      <guid>https://cdfq152313.github.io/post/notes/2016/10-14/</guid>
+      <description>Swift的執行緒分為主要和背景。 Main Queue / Concurrent Queue 主執行緒不能執行同步工作，只能執行非同步工作。 主執行緒語法 1 2 3 4 5 6 7 8 let task1 = { for i in 1...5{ print (&amp;#34;Task1: (\i)&amp;#34;)</description>
     </item>
     
     <item>
       <title>Swift 檔案路徑與讀寫檔</title>
-      <link>https://cdfq152313.github.io/post/2016-10-11/</link>
+      <link>https://cdfq152313.github.io/post/notes/2016/10-11/</link>
       <pubDate>Tue, 11 Oct 2016 00:00:00 +0000</pubDate>
       
-      <guid>https://cdfq152313.github.io/post/2016-10-11/</guid>
-      <description>iOS的路徑 專案資料夾內的路徑 利用Bundle.main獲取 可以指定檔案名稱以及副檔名。 // 得到url let url = Bundle.main.url(forResource: &amp;quot;myjson&amp;quot;, withExtension: &amp;quot;json&amp;quot;) // 得到path let path = Bundle.main.path(forResource: &amp;quot;myjson&amp;quot;, ofType:</description>
+      <guid>https://cdfq152313.github.io/post/notes/2016/10-11/</guid>
+      <description>iOS的路徑 專案資料夾內的路徑 利用Bundle.main獲取 可以指定檔案名稱以及副檔名。 1 2 3 4 // 得到url let url = Bundle.main.url(forResource: &amp;#34;myjson&amp;#34;, withExtension: &amp;#34;json&amp;#34;) // 得到path let path</description>
     </item>
     
     <item>
       <title>Swift 聲音播放與錄製</title>
-      <link>https://cdfq152313.github.io/post/2016-10-06/</link>
+      <link>https://cdfq152313.github.io/post/notes/2016/10-06/</link>
       <pubDate>Thu, 06 Oct 2016 00:00:00 +0000</pubDate>
       
-      <guid>https://cdfq152313.github.io/post/2016-10-06/</guid>
-      <description>播放系統音效 超簡單只需要兩行 import AudioToolbox AudioServicesPlaySystemSound(1000) 播放自己放在app的音樂 先把自己的音效拖進Xcode，記得選擇&amp;rdquo;copy items if needed&amp;rd</description>
+      <guid>https://cdfq152313.github.io/post/notes/2016/10-06/</guid>
+      <description>播放系統音效 超簡單只需要兩行 1 2 import AudioToolbox AudioServicesPlaySystemSound(1000) 播放自己放在app的音樂 先把自己的音效拖進Xcode，記得選擇&amp;rdquo;copy items if needed&amp;</description>
     </item>
     
     <item>
       <title>Swift 基礎語法筆記</title>
-      <link>https://cdfq152313.github.io/post/2016-10-04/</link>
+      <link>https://cdfq152313.github.io/post/notes/2016/10-04/</link>
       <pubDate>Tue, 04 Oct 2016 00:00:00 +0000</pubDate>
       
-      <guid>https://cdfq152313.github.io/post/2016-10-04/</guid>
+      <guid>https://cdfq152313.github.io/post/notes/2016/10-04/</guid>
       <description>參考資料 感謝大大～～ https://itisjoe.gitbooks.io/swiftgo/content/ 因應swift3，筆記內容與gitbook上略有不同 struct和enum是value type, class是reference</description>
     </item>
     
     <item>
       <title>Swift 不同Controller互動 與 Navigation Bar</title>
-      <link>https://cdfq152313.github.io/post/2016-10-03/</link>
+      <link>https://cdfq152313.github.io/post/notes/2016/10-03/</link>
       <pubDate>Mon, 03 Oct 2016 00:00:00 +0000</pubDate>
       
-      <guid>https://cdfq152313.github.io/post/2016-10-03/</guid>
+      <guid>https://cdfq152313.github.io/post/notes/2016/10-03/</guid>
       <description>Controller之間的呼叫 present 與 dismiss 想要跳轉頁面，我們可以靠storyBoard拉出present的線，也可以靠程式碼。 在StoryBoar</description>
     </item>
     
     <item>
       <title>Swift 快速筆記</title>
-      <link>https://cdfq152313.github.io/post/2016-09-13/</link>
+      <link>https://cdfq152313.github.io/post/notes/2016/09-13/</link>
       <pubDate>Tue, 13 Sep 2016 00:00:00 +0000</pubDate>
       
-      <guid>https://cdfq152313.github.io/post/2016-09-13/</guid>
+      <guid>https://cdfq152313.github.io/post/notes/2016/09-13/</guid>
       <description>AutoLayout 只要確定好下面的參數，autoLayout就不會跑警告 x y width height AlertController 新增AlertController .ActionSheet可藉由點警告視窗</description>
     </item>
     
     <item>
       <title>產品開發的進展過程</title>
-      <link>https://cdfq152313.github.io/post/2016-09-06/</link>
+      <link>https://cdfq152313.github.io/post/miscs/2016-09-06/</link>
       <pubDate>Tue, 06 Sep 2016 00:00:00 +0000</pubDate>
       
-      <guid>https://cdfq152313.github.io/post/2016-09-06/</guid>
+      <guid>https://cdfq152313.github.io/post/miscs/2016-09-06/</guid>
       <description>Brain Storming要想出的東西 服務對象(Target User) 想解決的問題 使用情境(User Scenario) 使用行為(User Story) 主詞動詞受詞，描述一個功能 工程師眼</description>
     </item>
     
     <item>
       <title>從0到1 與1到1億</title>
-      <link>https://cdfq152313.github.io/post/2016-09-05/</link>
+      <link>https://cdfq152313.github.io/post/miscs/2016-09-05/</link>
       <pubDate>Mon, 05 Sep 2016 00:00:00 +0000</pubDate>
       
-      <guid>https://cdfq152313.github.io/post/2016-09-05/</guid>
+      <guid>https://cdfq152313.github.io/post/miscs/2016-09-05/</guid>
       <description>標題與內文不符～～ 小步快跑 最小的成本去除錯，最快的速度達成目標。 單週迭代 種類 Idea Code Data Build：IDEA =&amp;gt; Build 需求撰寫 交互 視覺設計 研發 測試 Pro</description>
     </item>
     
     <item>
       <title>Android JNI 環境建置</title>
-      <link>https://cdfq152313.github.io/post/2016-08-05/</link>
+      <link>https://cdfq152313.github.io/post/notes/2016/08-05/</link>
       <pubDate>Fri, 05 Aug 2016 00:00:00 +0000</pubDate>
       
-      <guid>https://cdfq152313.github.io/post/2016-08-05/</guid>
+      <guid>https://cdfq152313.github.io/post/notes/2016/08-05/</guid>
       <description>介紹 主要參考這篇：Android studio 1.5.1 NDK JNI環境安裝與執行原理 不過Android 2.1.2上步驟稍有簡化，還是可以達到同樣效果。 載NDK 設定</description>
     </item>
     
     <item>
       <title>renpy (5) 自己撰寫button的Action</title>
-      <link>https://cdfq152313.github.io/post/2016-07-24/</link>
+      <link>https://cdfq152313.github.io/post/notes/2016/07-24/</link>
       <pubDate>Sun, 24 Jul 2016 00:00:00 +0000</pubDate>
       
-      <guid>https://cdfq152313.github.io/post/2016-07-24/</guid>
+      <guid>https://cdfq152313.github.io/post/notes/2016/07-24/</guid>
       <description>在官網可以看到有很多可使用的Action。 萬一想要的功能並不在裡面呢? 其實也有Function此一Action的存在，可自己撰寫Functi</description>
     </item>
     
     <item>
       <title>renpy (4) button / imagebutton / textbutton 按鈕變色效果 (hover / unhover)</title>
-      <link>https://cdfq152313.github.io/post/2016-07-23/</link>
+      <link>https://cdfq152313.github.io/post/notes/2016/07-23/</link>
       <pubDate>Sat, 23 Jul 2016 00:00:00 +0000</pubDate>
       
-      <guid>https://cdfq152313.github.io/post/2016-07-23/</guid>
+      <guid>https://cdfq152313.github.io/post/notes/2016/07-23/</guid>
       <description>當滑鼠移上按鈕，咻，按鈕變色了。當滑鼠離開按鈕，咻，按鈕又變回來了。 藉由這樣的效果，可以讓玩家清楚感受到這是一個可點選的按鈕。 要如何製作這樣</description>
     </item>
     
     <item>
       <title>renpy (3) 改良tooltip的方法</title>
-      <link>https://cdfq152313.github.io/post/2016-07-11/</link>
+      <link>https://cdfq152313.github.io/post/notes/2016/07-11/</link>
       <pubDate>Mon, 11 Jul 2016 00:00:00 +0000</pubDate>
       
-      <guid>https://cdfq152313.github.io/post/2016-07-11/</guid>
+      <guid>https://cdfq152313.github.io/post/notes/2016/07-11/</guid>
       <description>tooltip 所謂的tooltip，就是當你滑鼠移到一個button上後，可以顯示一些說明，讓使用者更了解這個button的功能。 可以用以下的程式碼簡單</description>
     </item>
     
     <item>
       <title>renpy (2) show 立繪 image 變數的妙用</title>
-      <link>https://cdfq152313.github.io/post/2016-07-10/</link>
+      <link>https://cdfq152313.github.io/post/notes/2016/07-10/</link>
       <pubDate>Sun, 10 Jul 2016 00:00:00 +0000</pubDate>
       
-      <guid>https://cdfq152313.github.io/post/2016-07-10/</guid>
+      <guid>https://cdfq152313.github.io/post/notes/2016/07-10/</guid>
       <description>問題 在寫AVG遊戲的時候，常常遇到立繪需要變更的狀況。考量以下場景 人物A平常表情 人物A笑 人物A平常表情 人物A立繪從場上消失 程式碼可能會長這樣</description>
     </item>
     
     <item>
       <title>renpy (1) 基礎語句</title>
-      <link>https://cdfq152313.github.io/post/2016-07-06/</link>
+      <link>https://cdfq152313.github.io/post/notes/2016/07-06/</link>
       <pubDate>Wed, 06 Jul 2016 00:00:00 +0000</pubDate>
       
-      <guid>https://cdfq152313.github.io/post/2016-07-06/</guid>
+      <guid>https://cdfq152313.github.io/post/notes/2016/07-06/</guid>
       <description>緣起 其實很多內容在 雪凡與好朋友們的 Ren&amp;rsquo;Py 遊戲引擎初學心得提示 就有了，大概寫一些製作時的心得而已。 第一回 第二回 第三回 第四回 第五回 第六回 第七回 第八回</description>
     </item>
     
     <item>
       <title>在AOSP中增加預設app (3) : 利用Android Studio來進行編輯</title>
-      <link>https://cdfq152313.github.io/post/2016-03-04/</link>
+      <link>https://cdfq152313.github.io/post/notes/2016/03-04/</link>
       <pubDate>Fri, 04 Mar 2016 00:00:00 +0000</pubDate>
       
-      <guid>https://cdfq152313.github.io/post/2016-03-04/</guid>
+      <guid>https://cdfq152313.github.io/post/notes/2016/03-04/</guid>
       <description>平台及環境設置 平台 實驗平台：Nexus 5 Android版本：android-4.4_r1 前置知識： [Howto Build Android KitKat (4.4) for the Google Nexus 5][6] 環境設置 在AOSP資料</description>
     </item>
     
     <item>
       <title>在AOSP中增加預設app (2) : 自行編譯</title>
-      <link>https://cdfq152313.github.io/post/2016-02-28/</link>
+      <link>https://cdfq152313.github.io/post/notes/2016/02-28/</link>
       <pubDate>Sun, 28 Feb 2016 00:00:00 +0000</pubDate>
       
-      <guid>https://cdfq152313.github.io/post/2016-02-28/</guid>
+      <guid>https://cdfq152313.github.io/post/notes/2016/02-28/</guid>
       <description>平台及環境設置 平台 實驗平台：Nexus 5 Android版本：android-4.4_r1 前置知識： [Howto Build Android KitKat (4.4) for the Google Nexus 5][6] 環境設置 在AOSP資料</description>
     </item>
     
     <item>
       <title>在AOSP中增加預設app (1) : prebuilt apk</title>
-      <link>https://cdfq152313.github.io/post/2016-02-24/</link>
+      <link>https://cdfq152313.github.io/post/notes/2016/02-24/</link>
       <pubDate>Wed, 24 Feb 2016 00:00:00 +0000</pubDate>
       
-      <guid>https://cdfq152313.github.io/post/2016-02-24/</guid>
+      <guid>https://cdfq152313.github.io/post/notes/2016/02-24/</guid>
       <description>平台及環境設置 平台 實驗平台：Nexus 5 Android版本：android-4.4_r1 前置知識： Howto Build Android KitKat (4.4) for the Google Nexus 5 環境設置 在AOSP資料</description>
     </item>
     
     <item>
       <title>在mutt設定gmail</title>
-      <link>https://cdfq152313.github.io/post/2015-08-12/</link>
+      <link>https://cdfq152313.github.io/post/notes/2015/08-12/</link>
       <pubDate>Wed, 12 Aug 2015 00:00:00 +0000</pubDate>
       
-      <guid>https://cdfq152313.github.io/post/2015-08-12/</guid>
-      <description>總設定 set editor = &amp;quot;vim&amp;quot; set send_charset=&amp;quot;us-ascii:utf-8&amp;quot; set from = &amp;quot;你的帳號@gmail.com&amp;quot; set realname = &amp;quot;你的名字 可隨便打&amp;quot; set imap_user = &amp;quot;</description>
+      <guid>https://cdfq152313.github.io/post/notes/2015/08-12/</guid>
+      <description>總設定 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 set editor = &amp;#34;vim&amp;#34; set send_charset=&amp;#34;us-ascii:utf-8&amp;#34; set from = &amp;#34;你的帳號@gmail.com&amp;#34; set realname = &amp;#34;你的</description>
     </item>
     
     <item>
       <title>llvm - helloworld</title>
-      <link>https://cdfq152313.github.io/post/2015-06-10/</link>
+      <link>https://cdfq152313.github.io/post/notes/2015/06-10/</link>
       <pubDate>Wed, 10 Jun 2015 00:00:00 +0000</pubDate>
       
-      <guid>https://cdfq152313.github.io/post/2015-06-10/</guid>
-      <description>環境設置 ubuntu體系：sudo apt-get install llvm MAC: brew install llvm makefile (MAC) BIN_PATH=/usr/local/Cellar/llvm/3.6.1/bin/ export PATH:=$(PATH):$(BIN_PATH) LLVM_CONFIG=llvm-config FLAGS= --cxxflags --ldflags --system-libs --libs core toy: toy.cpp clang++ -g -O3 toy.cpp `$(LLVM_CONFIG) $(FLAGS)` -o toy clean: rm -f toy top module #include &amp;quot;llvm/LLVMContext.h&amp;quot; #include &amp;quot;llvm/Module.h&amp;quot; #include &amp;quot;llvm/Support/IRBuilder.h&amp;quot; int main() { llvm::LLVMContext&amp;amp; context = llvm::getGlobalContext(); llvm::Module* module = new llvm::Module(&amp;quot;top&amp;quot;,</description>
+      <guid>https://cdfq152313.github.io/post/notes/2015/06-10/</guid>
+      <description>環境設置 ubuntu體系：sudo apt-get install llvm MAC: brew install llvm makefile (MAC) 1 2 3 4 5 6 7 8 9 BIN_PATH=/usr/local/Cellar/llvm/3.6.1/bin/ export PATH:=$(PATH):$(BIN_PATH) LLVM_CONFIG=llvm-config FLAGS= --cxxflags --ldflags --system-libs --libs core toy: toy.cpp clang++ -g -O3 toy.cpp `$(LLVM_CONFIG) $(FLAGS)` -o toy clean: rm -f toy top module 1 2 3 4 5 6 7 8 9</description>
     </item>
     
     <item>
       <title>在linux上跑git server</title>
-      <link>https://cdfq152313.github.io/post/2015-06-07/</link>
+      <link>https://cdfq152313.github.io/post/notes/2015/06-07/</link>
       <pubDate>Sun, 07 Jun 2015 00:00:00 +0000</pubDate>
       
-      <guid>https://cdfq152313.github.io/post/2015-06-07/</guid>
+      <guid>https://cdfq152313.github.io/post/notes/2015/06-07/</guid>
       <description>環境設定 系統: linux mint 套件: sudo apt-get install openssh-server git 基本操作 安裝完openssh-server和git後，即可開始嘗試創建remote repository。 為</description>
     </item>
     
     <item>
       <title>llvm study</title>
-      <link>https://cdfq152313.github.io/post/2015-06-06/</link>
+      <link>https://cdfq152313.github.io/post/notes/2015/06-06/</link>
       <pubDate>Sat, 06 Jun 2015 00:00:00 +0000</pubDate>
       
-      <guid>https://cdfq152313.github.io/post/2015-06-06/</guid>
+      <guid>https://cdfq152313.github.io/post/notes/2015/06-06/</guid>
       <description>Overview llvm 示意圖 通過front end後程式碼會被轉為中間碼( LLVM Intermediate Representation (IR) ) 紅色部分為llvm提供的功能。 出作業應該不會用到1 (要自己寫)，但可能會用到</description>
     </item>
     
     <item>
       <title>git 基本指令</title>
-      <link>https://cdfq152313.github.io/post/2015-06-05/</link>
+      <link>https://cdfq152313.github.io/post/notes/2015/06-05/</link>
       <pubDate>Fri, 05 Jun 2015 00:00:00 +0000</pubDate>
       
-      <guid>https://cdfq152313.github.io/post/2015-06-05/</guid>
-      <description>初始化 git init git config --global user.name &amp;quot;你的ID&amp;quot; git config --global user.email &amp;quot;你的信箱&amp;quot; 狀態 git status 新增 git add 檔名 git add -A git add -u 提交 git commit -m &amp;quo</description>
+      <guid>https://cdfq152313.github.io/post/notes/2015/06-05/</guid>
+      <description>初始化 1 2 3 git init git config --global user.name &amp;#34;你的ID&amp;#34; git config --global user.email &amp;#34;你的信箱&amp;#34; 狀態 git status 新增 1 2 3 git add 檔名 git add -A git add -u 提交 1 git commit -m &amp;</description>
     </item>
     
   </channel>

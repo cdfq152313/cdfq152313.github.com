@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Git on Denny&#39;s Blog</title>
+    <title>git on Denny&#39;s Blog</title>
     <link>https://cdfq152313.github.io/tags/git/</link>
-    <description>Recent content in Git on Denny&#39;s Blog</description>
+    <description>Recent content in git on Denny&#39;s Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-hant</language>
+    <copyright>Denny Cheng</copyright>
     <lastBuildDate>Sun, 07 Jun 2015 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="https://cdfq152313.github.io/tags/git/index.xml" rel="self" type="application/rss+xml" />
@@ -13,20 +14,20 @@
     
     <item>
       <title>在linux上跑git server</title>
-      <link>https://cdfq152313.github.io/post/2015-06-07/</link>
+      <link>https://cdfq152313.github.io/post/notes/2015/06-07/</link>
       <pubDate>Sun, 07 Jun 2015 00:00:00 +0000</pubDate>
       
-      <guid>https://cdfq152313.github.io/post/2015-06-07/</guid>
+      <guid>https://cdfq152313.github.io/post/notes/2015/06-07/</guid>
       <description>環境設定 系統: linux mint 套件: sudo apt-get install openssh-server git 基本操作 安裝完openssh-server和git後，即可開始嘗試創建remote repository。 為</description>
     </item>
     
     <item>
       <title>git 基本指令</title>
-      <link>https://cdfq152313.github.io/post/2015-06-05/</link>
+      <link>https://cdfq152313.github.io/post/notes/2015/06-05/</link>
       <pubDate>Fri, 05 Jun 2015 00:00:00 +0000</pubDate>
       
-      <guid>https://cdfq152313.github.io/post/2015-06-05/</guid>
-      <description>初始化 git init git config --global user.name &amp;quot;你的ID&amp;quot; git config --global user.email &amp;quot;你的信箱&amp;quot; 狀態 git status 新增 git add 檔名 git add -A git add -u 提交 git commit -m &amp;quo</description>
+      <guid>https://cdfq152313.github.io/post/notes/2015/06-05/</guid>
+      <description>初始化 1 2 3 git init git config --global user.name &amp;#34;你的ID&amp;#34; git config --global user.email &amp;#34;你的信箱&amp;#34; 狀態 git status 新增 1 2 3 git add 檔名 git add -A git add -u 提交 1 git commit -m &amp;</description>
     </item>
     
   </channel>

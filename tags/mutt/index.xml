@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Mutt on Denny&#39;s Blog</title>
+    <title>mutt on Denny&#39;s Blog</title>
     <link>https://cdfq152313.github.io/tags/mutt/</link>
-    <description>Recent content in Mutt on Denny&#39;s Blog</description>
+    <description>Recent content in mutt on Denny&#39;s Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-hant</language>
+    <copyright>Denny Cheng</copyright>
     <lastBuildDate>Wed, 12 Aug 2015 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="https://cdfq152313.github.io/tags/mutt/index.xml" rel="self" type="application/rss+xml" />
@@ -13,11 +14,11 @@
     
     <item>
       <title>在mutt設定gmail</title>
-      <link>https://cdfq152313.github.io/post/2015-08-12/</link>
+      <link>https://cdfq152313.github.io/post/notes/2015/08-12/</link>
       <pubDate>Wed, 12 Aug 2015 00:00:00 +0000</pubDate>
       
-      <guid>https://cdfq152313.github.io/post/2015-08-12/</guid>
-      <description>總設定 set editor = &amp;quot;vim&amp;quot; set send_charset=&amp;quot;us-ascii:utf-8&amp;quot; set from = &amp;quot;你的帳號@gmail.com&amp;quot; set realname = &amp;quot;你的名字 可隨便打&amp;quot; set imap_user = &amp;quot;</description>
+      <guid>https://cdfq152313.github.io/post/notes/2015/08-12/</guid>
+      <description>總設定 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 set editor = &amp;#34;vim&amp;#34; set send_charset=&amp;#34;us-ascii:utf-8&amp;#34; set from = &amp;#34;你的帳號@gmail.com&amp;#34; set realname = &amp;#34;你的</description>
     </item>
     
   </channel>

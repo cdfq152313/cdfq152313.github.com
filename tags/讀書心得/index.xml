@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>讀書心得 on Denny&#39;s Blog</title>
+    <link>https://cdfq152313.github.io/tags/%E8%AE%80%E6%9B%B8%E5%BF%83%E5%BE%97/</link>
+    <description>Recent content in 讀書心得 on Denny&#39;s Blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-hant</language>
+    <copyright>Denny Cheng</copyright>
+    <lastBuildDate>Thu, 29 Mar 2018 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="https://cdfq152313.github.io/tags/%E8%AE%80%E6%9B%B8%E5%BF%83%E5%BE%97/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>[讀書心得] 圖解Java多線程設計模式</title>
+      <link>https://cdfq152313.github.io/post/review/%E5%9C%96%E8%A7%A3java%E5%A4%9A%E7%B7%9A%E7%A8%8B%E8%A8%AD%E8%A8%88%E6%A8%A1%E5%BC%8F/</link>
+      <pubDate>Thu, 29 Mar 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://cdfq152313.github.io/post/review/%E5%9C%96%E8%A7%A3java%E5%A4%9A%E7%B7%9A%E7%A8%8B%E8%A8%AD%E8%A8%88%E6%A8%A1%E5%BC%8F/</guid>
+      <description>[天瓏連結] 圖解Java多線程設計模式 大要 簡單條列心得如下。 他會假設你有Java的基礎知識，並假設你Java的執行緒相關函式還沒那麼熟，所以</description>
+    </item>
+    
+    <item>
+      <title>[讀書心得] 圖解密碼學與比特幣原理</title>
+      <link>https://cdfq152313.github.io/post/review/%E5%9C%96%E8%A7%A3%E5%AF%86%E7%A2%BC%E5%AD%B8%E8%88%87%E6%AF%94%E7%89%B9%E5%B9%A3%E5%8E%9F%E7%90%86/</link>
+      <pubDate>Wed, 28 Dec 2016 00:00:00 +0000</pubDate>
+      
+      <guid>https://cdfq152313.github.io/post/review/%E5%9C%96%E8%A7%A3%E5%AF%86%E7%A2%BC%E5%AD%B8%E8%88%87%E6%AF%94%E7%89%B9%E5%B9%A3%E5%8E%9F%E7%90%86/</guid>
+      <description>[天瓏連結] 圖解密碼學與比特幣原理 花了很久才斷斷續續的看完這本，覺得是一本很不錯的科普書，沒有太艱深的數學。 書中有系統的把目前密碼學的發展介</description>
+    </item>
+    
+  </channel>
+</rss>

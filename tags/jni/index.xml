@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Jni on Denny&#39;s Blog</title>
+    <title>jni on Denny&#39;s Blog</title>
     <link>https://cdfq152313.github.io/tags/jni/</link>
-    <description>Recent content in Jni on Denny&#39;s Blog</description>
+    <description>Recent content in jni on Denny&#39;s Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-hant</language>
+    <copyright>Denny Cheng</copyright>
     <lastBuildDate>Fri, 05 Aug 2016 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="https://cdfq152313.github.io/tags/jni/index.xml" rel="self" type="application/rss+xml" />
@@ -13,10 +14,10 @@
     
     <item>
       <title>Android JNI 環境建置</title>
-      <link>https://cdfq152313.github.io/post/2016-08-05/</link>
+      <link>https://cdfq152313.github.io/post/notes/2016/08-05/</link>
       <pubDate>Fri, 05 Aug 2016 00:00:00 +0000</pubDate>
       
-      <guid>https://cdfq152313.github.io/post/2016-08-05/</guid>
+      <guid>https://cdfq152313.github.io/post/notes/2016/08-05/</guid>
       <description>介紹 主要參考這篇：Android studio 1.5.1 NDK JNI環境安裝與執行原理 不過Android 2.1.2上步驟稍有簡化，還是可以達到同樣效果。 載NDK 設定</description>
     </item>
     

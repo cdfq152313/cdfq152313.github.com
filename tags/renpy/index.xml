@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Renpy on Denny&#39;s Blog</title>
+    <title>renpy on Denny&#39;s Blog</title>
     <link>https://cdfq152313.github.io/tags/renpy/</link>
-    <description>Recent content in Renpy on Denny&#39;s Blog</description>
+    <description>Recent content in renpy on Denny&#39;s Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-hant</language>
+    <copyright>Denny Cheng</copyright>
     <lastBuildDate>Mon, 24 Apr 2017 04:25:31 +0000</lastBuildDate>
     
 	<atom:link href="https://cdfq152313.github.io/tags/renpy/index.xml" rel="self" type="application/rss+xml" />
@@ -13,55 +14,55 @@
     
     <item>
       <title>renpy (6) 讀檔</title>
-      <link>https://cdfq152313.github.io/post/2017-04-24/</link>
+      <link>https://cdfq152313.github.io/post/notes/2017/04-24/</link>
       <pubDate>Mon, 24 Apr 2017 04:25:31 +0000</pubDate>
       
-      <guid>https://cdfq152313.github.io/post/2017-04-24/</guid>
+      <guid>https://cdfq152313.github.io/post/notes/2017/04-24/</guid>
       <description>前言 renpy加入對話很簡單，不過想要加入文本就不是那麼容易了。有的時候想要在遊戲中閱讀長文本，還需要插入\n來作為換行，頗不方便。這個時候</description>
     </item>
     
     <item>
       <title>renpy (5) 自己撰寫button的Action</title>
-      <link>https://cdfq152313.github.io/post/2016-07-24/</link>
+      <link>https://cdfq152313.github.io/post/notes/2016/07-24/</link>
       <pubDate>Sun, 24 Jul 2016 00:00:00 +0000</pubDate>
       
-      <guid>https://cdfq152313.github.io/post/2016-07-24/</guid>
+      <guid>https://cdfq152313.github.io/post/notes/2016/07-24/</guid>
       <description>在官網可以看到有很多可使用的Action。 萬一想要的功能並不在裡面呢? 其實也有Function此一Action的存在，可自己撰寫Functi</description>
     </item>
     
     <item>
       <title>renpy (4) button / imagebutton / textbutton 按鈕變色效果 (hover / unhover)</title>
-      <link>https://cdfq152313.github.io/post/2016-07-23/</link>
+      <link>https://cdfq152313.github.io/post/notes/2016/07-23/</link>
       <pubDate>Sat, 23 Jul 2016 00:00:00 +0000</pubDate>
       
-      <guid>https://cdfq152313.github.io/post/2016-07-23/</guid>
+      <guid>https://cdfq152313.github.io/post/notes/2016/07-23/</guid>
       <description>當滑鼠移上按鈕，咻，按鈕變色了。當滑鼠離開按鈕，咻，按鈕又變回來了。 藉由這樣的效果，可以讓玩家清楚感受到這是一個可點選的按鈕。 要如何製作這樣</description>
     </item>
     
     <item>
       <title>renpy (3) 改良tooltip的方法</title>
-      <link>https://cdfq152313.github.io/post/2016-07-11/</link>
+      <link>https://cdfq152313.github.io/post/notes/2016/07-11/</link>
       <pubDate>Mon, 11 Jul 2016 00:00:00 +0000</pubDate>
       
-      <guid>https://cdfq152313.github.io/post/2016-07-11/</guid>
+      <guid>https://cdfq152313.github.io/post/notes/2016/07-11/</guid>
       <description>tooltip 所謂的tooltip，就是當你滑鼠移到一個button上後，可以顯示一些說明，讓使用者更了解這個button的功能。 可以用以下的程式碼簡單</description>
     </item>
     
     <item>
       <title>renpy (2) show 立繪 image 變數的妙用</title>
-      <link>https://cdfq152313.github.io/post/2016-07-10/</link>
+      <link>https://cdfq152313.github.io/post/notes/2016/07-10/</link>
       <pubDate>Sun, 10 Jul 2016 00:00:00 +0000</pubDate>
       
-      <guid>https://cdfq152313.github.io/post/2016-07-10/</guid>
+      <guid>https://cdfq152313.github.io/post/notes/2016/07-10/</guid>
       <description>問題 在寫AVG遊戲的時候，常常遇到立繪需要變更的狀況。考量以下場景 人物A平常表情 人物A笑 人物A平常表情 人物A立繪從場上消失 程式碼可能會長這樣</description>
     </item>
     
     <item>
       <title>renpy (1) 基礎語句</title>
-      <link>https://cdfq152313.github.io/post/2016-07-06/</link>
+      <link>https://cdfq152313.github.io/post/notes/2016/07-06/</link>
       <pubDate>Wed, 06 Jul 2016 00:00:00 +0000</pubDate>
       
-      <guid>https://cdfq152313.github.io/post/2016-07-06/</guid>
+      <guid>https://cdfq152313.github.io/post/notes/2016/07-06/</guid>
       <description>緣起 其實很多內容在 雪凡與好朋友們的 Ren&amp;rsquo;Py 遊戲引擎初學心得提示 就有了，大概寫一些製作時的心得而已。 第一回 第二回 第三回 第四回 第五回 第六回 第七回 第八回</description>
     </item>
     

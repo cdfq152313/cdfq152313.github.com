@@ -6,13 +6,13 @@
     <description>Recent content in Tags on Denny&#39;s Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-hant</language>
-    <lastBuildDate>Sun, 02 Apr 2017 15:23:51 +0800</lastBuildDate>
+    <copyright>Denny Cheng</copyright>
     
 	<atom:link href="https://cdfq152313.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
-      <title>Android</title>
+      <title>android</title>
       <link>https://cdfq152313.github.io/tags/android/</link>
       <pubDate>Sun, 02 Apr 2017 15:23:51 +0800</pubDate>
       
@@ -21,7 +21,7 @@
     </item>
     
     <item>
-      <title>Aosp</title>
+      <title>aosp</title>
       <link>https://cdfq152313.github.io/tags/aosp/</link>
       <pubDate>Fri, 04 Mar 2016 00:00:00 +0000</pubDate>
       
@@ -30,7 +30,7 @@
     </item>
     
     <item>
-      <title>Bash</title>
+      <title>bash</title>
       <link>https://cdfq152313.github.io/tags/bash/</link>
       <pubDate>Thu, 18 May 2017 00:34:00 +0800</pubDate>
       
@@ -39,7 +39,7 @@
     </item>
     
     <item>
-      <title>Compiler</title>
+      <title>compiler</title>
       <link>https://cdfq152313.github.io/tags/compiler/</link>
       <pubDate>Wed, 10 Jun 2015 00:00:00 +0000</pubDate>
       
@@ -48,7 +48,7 @@
     </item>
     
     <item>
-      <title>Git</title>
+      <title>git</title>
       <link>https://cdfq152313.github.io/tags/git/</link>
       <pubDate>Sun, 07 Jun 2015 00:00:00 +0000</pubDate>
       
@@ -57,7 +57,7 @@
     </item>
     
     <item>
-      <title>Http</title>
+      <title>http</title>
       <link>https://cdfq152313.github.io/tags/http/</link>
       <pubDate>Thu, 24 Nov 2016 00:00:00 +0000</pubDate>
       
@@ -66,7 +66,7 @@
     </item>
     
     <item>
-      <title>Ios</title>
+      <title>ios</title>
       <link>https://cdfq152313.github.io/tags/ios/</link>
       <pubDate>Wed, 02 Nov 2016 00:00:00 +0000</pubDate>
       
@@ -75,7 +75,7 @@
     </item>
     
     <item>
-      <title>Java</title>
+      <title>java</title>
       <link>https://cdfq152313.github.io/tags/java/</link>
       <pubDate>Thu, 29 Mar 2018 00:00:00 +0000</pubDate>
       
@@ -84,7 +84,7 @@
     </item>
     
     <item>
-      <title>Jni</title>
+      <title>jni</title>
       <link>https://cdfq152313.github.io/tags/jni/</link>
       <pubDate>Fri, 05 Aug 2016 00:00:00 +0000</pubDate>
       
@@ -93,7 +93,7 @@
     </item>
     
     <item>
-      <title>Llvm</title>
+      <title>llvm</title>
       <link>https://cdfq152313.github.io/tags/llvm/</link>
       <pubDate>Wed, 10 Jun 2015 00:00:00 +0000</pubDate>
       
@@ -102,7 +102,7 @@
     </item>
     
     <item>
-      <title>Miscs</title>
+      <title>miscs</title>
       <link>https://cdfq152313.github.io/tags/miscs/</link>
       <pubDate>Tue, 06 Sep 2016 00:00:00 +0000</pubDate>
       
@@ -111,7 +111,7 @@
     </item>
     
     <item>
-      <title>Mutt</title>
+      <title>mutt</title>
       <link>https://cdfq152313.github.io/tags/mutt/</link>
       <pubDate>Wed, 12 Aug 2015 00:00:00 +0000</pubDate>
       
@@ -120,7 +120,7 @@
     </item>
     
     <item>
-      <title>Python</title>
+      <title>python</title>
       <link>https://cdfq152313.github.io/tags/python/</link>
       <pubDate>Mon, 24 Apr 2017 04:25:31 +0000</pubDate>
       
@@ -129,7 +129,7 @@
     </item>
     
     <item>
-      <title>Renpy</title>
+      <title>renpy</title>
       <link>https://cdfq152313.github.io/tags/renpy/</link>
       <pubDate>Mon, 24 Apr 2017 04:25:31 +0000</pubDate>
       
@@ -138,7 +138,7 @@
     </item>
     
     <item>
-      <title>Swift</title>
+      <title>swift</title>
       <link>https://cdfq152313.github.io/tags/swift/</link>
       <pubDate>Wed, 02 Nov 2016 00:00:00 +0000</pubDate>
       
@@ -147,7 +147,7 @@
     </item>
     
     <item>
-      <title>Uwp</title>
+      <title>uwp</title>
       <link>https://cdfq152313.github.io/tags/uwp/</link>
       <pubDate>Tue, 18 Oct 2016 00:00:00 +0000</pubDate>
       
@@ -165,20 +165,20 @@
     </item>
     
     <item>
-      <title>心得</title>
-      <link>https://cdfq152313.github.io/tags/%E5%BF%83%E5%BE%97/</link>
-      <pubDate>Thu, 29 Mar 2018 00:00:00 +0000</pubDate>
-      
-      <guid>https://cdfq152313.github.io/tags/%E5%BF%83%E5%BE%97/</guid>
-      <description></description>
-    </item>
-    
-    <item>
       <title>設計模式</title>
       <link>https://cdfq152313.github.io/tags/%E8%A8%AD%E8%A8%88%E6%A8%A1%E5%BC%8F/</link>
       <pubDate>Mon, 01 May 2017 12:44:55 +0800</pubDate>
       
       <guid>https://cdfq152313.github.io/tags/%E8%A8%AD%E8%A8%88%E6%A8%A1%E5%BC%8F/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>讀書心得</title>
+      <link>https://cdfq152313.github.io/tags/%E8%AE%80%E6%9B%B8%E5%BF%83%E5%BE%97/</link>
+      <pubDate>Thu, 29 Mar 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://cdfq152313.github.io/tags/%E8%AE%80%E6%9B%B8%E5%BF%83%E5%BE%97/</guid>
       <description></description>
     </item>
     

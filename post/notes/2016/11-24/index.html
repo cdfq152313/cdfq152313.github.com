@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="zh-hant">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>基礎知識惡補 - Http協定 - Denny&#39;s Blog</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="Denny Cheng" /><meta name="description" content="來源網址：https://read01.com/J8P4L.html 要注意最後一段說get比較不安全是錯的，你他媽的不轉成https通通都是" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.54.0 with even 4.0.0" />
+
+
+<link rel="canonical" href="https://cdfq152313.github.io/post/notes/2016/11-24/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+
+<link href="/dist/even.c2a46f00.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="基礎知識惡補 - Http協定" />
+<meta property="og:description" content="來源網址：https://read01.com/J8P4L.html 要注意最後一段說get比較不安全是錯的，你他媽的不轉成https通通都是" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://cdfq152313.github.io/post/notes/2016/11-24/" />
+<meta property="article:published_time" content="2016-11-24T00:00:00&#43;00:00"/>
+<meta property="article:modified_time" content="2016-11-24T00:00:00&#43;00:00"/>
+
+<meta itemprop="name" content="基礎知識惡補 - Http協定">
+<meta itemprop="description" content="來源網址：https://read01.com/J8P4L.html 要注意最後一段說get比較不安全是錯的，你他媽的不轉成https通通都是">
+
+
+<meta itemprop="datePublished" content="2016-11-24T00:00:00&#43;00:00" />
+<meta itemprop="dateModified" content="2016-11-24T00:00:00&#43;00:00" />
+<meta itemprop="wordCount" content="757">
+
+
+
+<meta itemprop="keywords" content="http," />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="基礎知識惡補 - Http協定"/>
+<meta name="twitter:description" content="來源網址：https://read01.com/J8P4L.html 要注意最後一段說get比較不安全是錯的，你他媽的不轉成https通通都是"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">Denny&#39;s Blog</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">Home</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">Archives</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">Tags</li>
+      </a><a href="/about/">
+        <li class="mobile-menu-item">About</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">Denny&#39;s Blog</a>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">Home</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">Archives</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">Tags</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/about/">About</a>
+      </li>
+  </ul>
+</nav>
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">基礎知識惡補 - Http協定</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2016-11-24 </span>
+        <div class="post-category">
+            <a href="/categories/notes/"> notes </a>
+            </div>
+        
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title"></h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+<ul>
+<li><a href="#client端">Client端</a>
+<ul>
+<li><a href="#request-line">Request line</a></li>
+<li><a href="#request-header">Request header</a></li>
+<li><a href="#body">Body</a></li>
+</ul></li>
+<li><a href="#server端">Server端</a>
+<ul>
+<li><a href="#response-line">Response line</a></li>
+<li><a href="#response-header">Response header</a></li>
+<li><a href="#body-1">Body</a></li>
+</ul></li>
+</ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      
+
+<p>來源網址：<a href="https://read01.com/J8P4L.html">https://read01.com/J8P4L.html</a><br />
+要注意最後一段說get比較不安全是錯的，你他媽的不轉成https通通都是不安全。</p>
+
+<h1 id="client端">Client端</h1>
+
+<p>分三區塊</p>
+
+<ul>
+<li>Request line</li>
+<li>Request header</li>
+<li>Body</li>
+</ul>
+
+<h2 id="request-line">Request line</h2>
+
+<ul>
+<li>有著方法描述，資源位置，協議版本</li>
+<li>例如：GET <a href="http://www.cnblogs.com/">http://www.cnblogs.com/</a> HTTP/1.1</li>
+</ul>
+
+<h2 id="request-header">Request header</h2>
+
+<ul>
+<li>Accept：client告知server可以接受的媒體類型(json, xml, html &hellip;)，大部分使用*/*代表全部都接受。</li>
+<li>Referer：告訴伺服器端我是從哪裡連過來</li>
+<li>Accept-Language：瀏覽器端接受的語言
+
+<ul>
+<li>EX: 中文、英文&hellip;</li>
+</ul></li>
+<li>Accept-Charset：瀏覽器端接受的字符集
+
+<ul>
+<li>EX: BIG5, UTF-8, GBK &hellip;</li>
+</ul></li>
+<li>Content-Type
+
+<ul>
+<li>Body的檔案類型</li>
+<li><a href="http://webmasters.stackexchange.com/questions/31212/difference-between-the-accept-and-content-type-http-headers">補充資料</a>，與Accept的差別</li>
+<li>簡單的說，當client傳送檔案給server，content-type可以描述這個檔案的類型。當server吐response回給client，content-type一樣可以描述這個檔案的類型。</li>
+<li>accept是請求對方返回的類型，content-type是實際一個request或response中夾帶的類型。</li>
+</ul></li>
+<li>Accept-Encoding：client端的編碼(壓縮)方法</li>
+<li>User-Agent：client端的作業系統，瀏覽器名稱</li>
+<li>Connection
+
+<ul>
+<li>是否在接收完檔案後立刻斷開TCP</li>
+<li>[補充資料])(<a href="https://www.byvoid.com/zht/blog/http-keep-alive-header">https://www.byvoid.com/zht/blog/http-keep-alive-header</a>)</li>
+</ul></li>
+<li>Content-length: 訊息長度</li>
+<li>Host：該資源的domain Name</li>
+<li>剩下一些懶得看
+
+<ul>
+<li>Pragma</li>
+<li>Cookie</li>
+</ul></li>
+</ul>
+
+<h2 id="body">Body</h2>
+
+<p>就是個Body</p>
+
+<h1 id="server端">Server端</h1>
+
+<p>一樣分三區塊
+- Response line
+- Response header
+- Body</p>
+
+<h2 id="response-line">Response line</h2>
+
+<ul>
+<li>協議版本及狀態碼</li>
+<li>例如：HTTP/1.1 200 OK</li>
+</ul>
+
+<h2 id="response-header">Response header</h2>
+
+<p>有些部分跟request一樣，少部分懶得看。</p>
+
+<p>Content-Type：回傳資料的型態
+Expired：回傳資料過期時間</p>
+
+<ul>
+<li>懶得看
+
+<ul>
+<li>Cache-Control</li>
+<li>Last-Modified:</li>
+<li>Server</li>
+<li>X-AspNet-Version:</li>
+<li>X-Powered-By:</li>
+<li>Connection</li>
+<li>Content-Length</li>
+<li>Date</li>
+</ul></li>
+</ul>
+
+<h2 id="body-1">Body</h2>
+
+<p>就只是個Body</p>
+
+    </div>
+
+    
+<footer class="post-footer">
+      <div class="post-tags">
+          <a href="/tags/http/">http</a>
+          </div>
+      <nav class="post-nav">
+        <a class="prev" href="/post/notes/2016/12-27/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">Python Mac Sierra pyinstaller py2app 的權限問題</span>
+            <span class="prev-text nav-mobile"></span>
+          </a>
+        <a class="next" href="/post/notes/2016/11-02/">
+            <span class="next-text nav-default">Swift Mail &amp; Message</span>
+            <span class="next-text nav-mobile"></span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        <div id="disqus_thread"></div>
+    <script type="text/javascript">
+    (function() {
+      
+      
+      if (window.location.hostname === 'localhost') return;
+
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      var disqus_shortname = 'blog-vygy2ifrxm';
+      dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="cdfq152313@gmail.com" class="iconfont icon-email" title="email"></a>
+      <a href="https://www.facebook.com/AddweupDennyCheng" class="iconfont icon-facebook" title="facebook"></a>
+      <a href="https://github.com/cdfq152313/" class="iconfont icon-github" title="github"></a>
+  <a href="https://cdfq152313.github.io/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    %!(EXTRA string=<a class="hexo-link" href="https://gohugo.io">Hugo</a>)
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+     - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  
+
+  <span class="copyright-year">
+    &copy; 
+    2015 - 
+    2019
+    <span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">Denny Cheng</span>
+  </span>
+</div>
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+<script type="text/javascript" src="/dist/even.26188efa.min.js"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>

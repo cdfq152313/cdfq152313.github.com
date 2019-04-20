@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="zh-hant">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>寫給朋友看的function與class - Denny&#39;s Blog</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="Denny Cheng" /><meta name="description" content="今天有個簡易的app功能如下 只有一個ViewController 這個ViewController上只有兩個UITextView Input: &amp;ldquo;01/15&amp;rdquo; 代表1月1" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.54.0 with even 4.0.0" />
+
+
+<link rel="canonical" href="https://cdfq152313.github.io/post/notes/2017/01-15/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+
+<link href="/dist/even.c2a46f00.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="寫給朋友看的function與class" />
+<meta property="og:description" content="今天有個簡易的app功能如下 只有一個ViewController 這個ViewController上只有兩個UITextView Input: &ldquo;01/15&rdquo; 代表1月1" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://cdfq152313.github.io/post/notes/2017/01-15/" />
+<meta property="article:published_time" content="2017-01-15T00:00:00&#43;00:00"/>
+<meta property="article:modified_time" content="2017-01-15T00:00:00&#43;00:00"/>
+
+<meta itemprop="name" content="寫給朋友看的function與class">
+<meta itemprop="description" content="今天有個簡易的app功能如下 只有一個ViewController 這個ViewController上只有兩個UITextView Input: &ldquo;01/15&rdquo; 代表1月1">
+
+
+<meta itemprop="datePublished" content="2017-01-15T00:00:00&#43;00:00" />
+<meta itemprop="dateModified" content="2017-01-15T00:00:00&#43;00:00" />
+<meta itemprop="wordCount" content="1364">
+
+
+
+<meta itemprop="keywords" content="設計模式," />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="寫給朋友看的function與class"/>
+<meta name="twitter:description" content="今天有個簡易的app功能如下 只有一個ViewController 這個ViewController上只有兩個UITextView Input: &ldquo;01/15&rdquo; 代表1月1"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">Denny&#39;s Blog</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">Home</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">Archives</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">Tags</li>
+      </a><a href="/about/">
+        <li class="mobile-menu-item">About</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">Denny&#39;s Blog</a>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">Home</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">Archives</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">Tags</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/about/">About</a>
+      </li>
+  </ul>
+</nav>
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">寫給朋友看的function與class</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2017-01-15 </span>
+        
+        
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title"></h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+<ul>
+<li><a href="#今天有個簡易的app功能如下">今天有個簡易的app功能如下</a></li>
+<li><a href="#接下來追加規格">接下來追加規格</a></li>
+<li><a href="#再度追加規格">再度追加規格</a></li>
+<li><a href="#再再度追加規格">再再度追加規格</a></li>
+<li><a href="#反思">反思</a></li>
+<li><a href="#總結">總結</a></li>
+</ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      
+
+<h1 id="今天有個簡易的app功能如下">今天有個簡易的app功能如下</h1>
+
+<ol>
+<li>只有一個ViewController</li>
+<li>這個ViewController上只有兩個UITextView</li>
+<li>Input: &ldquo;01/15&rdquo; 代表1月15日</li>
+<li>想要結果: 在第一個UITextView上呈現 &ldquo;1 月&rdquo;，在第二個UITextView上呈現&rdquo;15日&rdquo;</li>
+</ol>
+
+<p>這時候可能會寫一個function在Controller裡頭，叫做split，input為字串，output為陣列。<br />
+input為&rdquo;01/15&rdquo;的話，會出現output [&ldquo;01&rdquo;, &ldquo;15&rdquo;]<br />
+然後call一下這個function，分別把兩個UITextView給賦值陣列0和陣列1，就可以運作得很完美了。</p>
+
+<h1 id="接下來追加規格">接下來追加規格</h1>
+
+<ol>
+<li>多了兩三個ViewController，同樣需要展示日期。</li>
+</ol>
+
+<p>這時候笨方法是把剛剛的function複製到四個不同的ViewController，然後再一一呼叫。<br />
+聰明一點的方法是放到全域變數，這樣不用重寫function，但是每一個Controller都能呼叫。</p>
+
+<h1 id="再度追加規格">再度追加規格</h1>
+
+<ol>
+<li>除了顯示月日的function，我還想要展示年分。</li>
+</ol>
+
+<p>這次可能會依樣畫葫蘆，寫個叫做splityearmonthday的function，放在全域變數裡面，讓所有Controller都能使用。</p>
+
+<h1 id="再再度追加規格">再再度追加規格</h1>
+
+<ol>
+<li>這個APP多了付款功能所以需要展示金額。</li>
+<li>這個展示金額靠著另外兩個UITextView，第一個UITextView展現整數，第二個UITextView展現小數。</li>
+<li>假設input &ldquo;23.7&rdquo;，那會在第一個UITextView出現23 第二個UITextView出現.7</li>
+</ol>
+
+<p>於是又寫了一個splitmoney的funcion，放在全域變數裡。</p>
+
+<h1 id="反思">反思</h1>
+
+<p>到了這裡可以開始反思這是不是一個良好的設計了，起初APP的功能的確很簡單，但是隨著需求的擴張，分割日期的function就出現了兩種。後期更出現了分割金額的function。我們假設需求繼續擴張下去，接下來有</p>
+
+<ol>
+<li>10個分割日期的function</li>
+<li>5個分割金額的function</li>
+<li>8個分割OOXX的function</li>
+</ol>
+
+<p>你光看全域變數上的function頭就要昏了，而且還得注意名稱不得重複，每個名稱都取的又臭又長，即使這都是一些小小的function，依然會對開發人員帶來負擔。</p>
+
+<p>此時，如果你用class將分割日期、分割金額、分割OOXX的職責區分開來，程式碼或許會變得清晰? 舉例來說</p>
+
+<p>func splityearmonthday()<br />
+func splitmonthday()<br />
+改為<br />
+class DateSplit{<br />
+    func yearmonth()<br />
+    func monthday()<br />
+}</p>
+
+<h1 id="總結">總結</h1>
+
+<p>class的作用在於區分職責，不同功能的function盡可能的放在不同的class，這是為了可讀性。<br />
+程式規模小的時候，可以不必花太多心力把每個功能都丟一個class，但是當程式開始漸漸擴張，就要開始思考，我這些function之間是否有類似的職責，能夠被包成一個class來執行?<br />
+再來就是，其實並不是每件事情都可以靠function的input output就解決，有時候你可能會想記錄狀態。<br />
+舉例來說，如果你寫了一個計算機的程式，那你會希望計算機記得你上次按了什麼按鈕，這時候如果你再使用全域變數和全域function來解決問題，等老闆要求你&rdquo;我今天要兩個計算機，不要一個&rdquo;，的時候就尷尬了，因為你的狀態是靠全域變數來記，兩個計算機參考到同一個全域變數，就G_G惹。<br />
+希望有幫助到你。</p>
+
+    </div>
+
+    
+<footer class="post-footer">
+      <div class="post-tags">
+          <a href="/tags/%E8%A8%AD%E8%A8%88%E6%A8%A1%E5%BC%8F/">設計模式</a>
+          </div>
+      <nav class="post-nav">
+        <a class="prev" href="/post/notes/2017/02-08/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">Android 文章整理</span>
+            <span class="prev-text nav-mobile"></span>
+          </a>
+        <a class="next" href="/post/review/%E5%9C%96%E8%A7%A3%E5%AF%86%E7%A2%BC%E5%AD%B8%E8%88%87%E6%AF%94%E7%89%B9%E5%B9%A3%E5%8E%9F%E7%90%86/">
+            <span class="next-text nav-default">[讀書心得] 圖解密碼學與比特幣原理</span>
+            <span class="next-text nav-mobile"></span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        <div id="disqus_thread"></div>
+    <script type="text/javascript">
+    (function() {
+      
+      
+      if (window.location.hostname === 'localhost') return;
+
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      var disqus_shortname = 'blog-vygy2ifrxm';
+      dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="cdfq152313@gmail.com" class="iconfont icon-email" title="email"></a>
+      <a href="https://www.facebook.com/AddweupDennyCheng" class="iconfont icon-facebook" title="facebook"></a>
+      <a href="https://github.com/cdfq152313/" class="iconfont icon-github" title="github"></a>
+  <a href="https://cdfq152313.github.io/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    %!(EXTRA string=<a class="hexo-link" href="https://gohugo.io">Hugo</a>)
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+     - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  
+
+  <span class="copyright-year">
+    &copy; 
+    2015 - 
+    2019
+    <span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">Denny Cheng</span>
+  </span>
+</div>
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+<script type="text/javascript" src="/dist/even.26188efa.min.js"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>
