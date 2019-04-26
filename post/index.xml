@@ -7,10 +7,19 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-hant</language>
     <copyright>Denny Cheng</copyright>
-    <lastBuildDate>Thu, 29 Mar 2018 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Fri, 26 Apr 2019 23:50:00 +0800</lastBuildDate>
     
 	<atom:link href="https://cdfq152313.github.io/post/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Dart Class Constructor</title>
+      <link>https://cdfq152313.github.io/post/dart/class-constructor/</link>
+      <pubDate>Fri, 26 Apr 2019 23:50:00 +0800</pubDate>
+      
+      <guid>https://cdfq152313.github.io/post/dart/class-constructor/</guid>
+      <description>基礎型 先來最簡易的版本，不管從任何語言背景來的人都能看懂。 另外要注意在dart 2.0以後，new變成了可選字眼，所以為了程式簡潔，個人建議不</description>
+    </item>
     
     <item>
       <title>[讀書心得] 圖解Java多線程設計模式</title>

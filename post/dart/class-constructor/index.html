@@ -1,0 +1,512 @@
+<!DOCTYPE html>
+<html lang="zh-hant">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>Dart Class Constructor - Denny&#39;s Blog</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="Denny Cheng" /><meta name="description" content="基礎型 先來最簡易的版本，不管從任何語言背景來的人都能看懂。 另外要注意在dart 2.0以後，new變成了可選字眼，所以為了程式簡潔，個人建議不" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.54.0 with even 4.0.0" />
+
+
+<link rel="canonical" href="https://cdfq152313.github.io/post/dart/class-constructor/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+
+<link href="/dist/even.c2a46f00.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="Dart Class Constructor" />
+<meta property="og:description" content="基礎型 先來最簡易的版本，不管從任何語言背景來的人都能看懂。 另外要注意在dart 2.0以後，new變成了可選字眼，所以為了程式簡潔，個人建議不" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://cdfq152313.github.io/post/dart/class-constructor/" />
+<meta property="article:published_time" content="2019-04-26T23:50:00&#43;08:00"/>
+<meta property="article:modified_time" content="2019-04-26T23:50:00&#43;08:00"/>
+
+<meta itemprop="name" content="Dart Class Constructor">
+<meta itemprop="description" content="基礎型 先來最簡易的版本，不管從任何語言背景來的人都能看懂。 另外要注意在dart 2.0以後，new變成了可選字眼，所以為了程式簡潔，個人建議不">
+
+
+<meta itemprop="datePublished" content="2019-04-26T23:50:00&#43;08:00" />
+<meta itemprop="dateModified" content="2019-04-26T23:50:00&#43;08:00" />
+<meta itemprop="wordCount" content="1677">
+
+
+
+<meta itemprop="keywords" content="dart," />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Dart Class Constructor"/>
+<meta name="twitter:description" content="基礎型 先來最簡易的版本，不管從任何語言背景來的人都能看懂。 另外要注意在dart 2.0以後，new變成了可選字眼，所以為了程式簡潔，個人建議不"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">Denny&#39;s Blog</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">Home</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">Archives</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">Tags</li>
+      </a><a href="/about/">
+        <li class="mobile-menu-item">About</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">Denny&#39;s Blog</a>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">Home</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">Archives</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">Tags</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/about/">About</a>
+      </li>
+  </ul>
+</nav>
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">Dart Class Constructor</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2019-04-26 </span>
+        <div class="post-category">
+            <a href="/categories/dart/"> dart </a>
+            </div>
+        
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title"></h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+<ul>
+<li><a href="#基礎型">基礎型</a></li>
+<li><a href="#named-constructors">Named constructors</a></li>
+<li><a href="#const-constructor">const constructor</a></li>
+<li><a href="#factory-constructor">factory constructor</a></li>
+</ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      
+
+<h1 id="基礎型">基礎型</h1>
+
+<p>先來最簡易的版本，不管從任何語言背景來的人都能看懂。<br />
+另外要注意在dart 2.0以後，new變成了可選字眼，所以為了程式簡潔，個人建議不要再加new。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code class="language-dart" data-lang="dart"><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-dart" data-lang="dart"><span class="kd">class</span> <span class="nc">Cat</span><span class="p">{</span>
+  <span class="kt">int</span> <span class="n">age</span><span class="p">;</span>
+  <span class="n">Cat</span><span class="p">(</span><span class="kt">int</span> <span class="n">age</span><span class="p">){</span>
+    <span class="k">this</span><span class="p">.</span><span class="n">age</span> <span class="o">=</span> <span class="n">age</span><span class="p">;</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+<span class="c1">// 使用時
+</span><span class="c1"></span><span class="kd">var</span> <span class="n">cat</span> <span class="o">=</span> <span class="n">Cat</span><span class="p">(</span><span class="m">1</span><span class="p">);</span>
+<span class="c1">// or 舊版寫法，2.0後亦相容。
+</span><span class="c1"></span><span class="kd">var</span> <span class="n">cat</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Cat</span><span class="p">(</span><span class="m">1</span><span class="p">);</span></code></pre></td></tr></table>
+</div>
+</div>
+<p>延伸一點，其實參數可以直接使用this.fieldName來進行初始化。<br />
+可以減少許多冗餘的程式碼。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code class="language-dart" data-lang="dart"><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-dart" data-lang="dart"><span class="kd">class</span> <span class="nc">Cat</span><span class="p">{</span>
+  <span class="kt">int</span> <span class="n">age</span><span class="p">;</span>
+  <span class="n">Cat</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="n">age</span><span class="p">);</span>
+<span class="p">}</span>
+<span class="c1">// 使用時
+</span><span class="c1"></span><span class="kd">var</span> <span class="n">cat</span> <span class="o">=</span> <span class="n">Cat</span><span class="p">(</span><span class="m">1</span><span class="p">);</span></code></pre></td></tr></table>
+</div>
+</div>
+<p>如果想在填參數時能夠直接參照fieldName，可以將參數用大括弧括起。<br />
+這種做法叫做 Optional named parameters，顧名思義，在初始化時甚至可以不給值。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code class="language-dart" data-lang="dart"><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span><span class="lnt">9
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-dart" data-lang="dart"><span class="kd">class</span> <span class="nc">Cat</span><span class="p">{</span>
+  <span class="kt">int</span> <span class="n">age</span><span class="p">;</span>
+  <span class="n">Cat</span><span class="p">({</span><span class="k">this</span><span class="p">.</span><span class="n">age</span><span class="p">});</span>
+<span class="p">}</span>
+
+<span class="c1">// 使用時
+</span><span class="c1"></span><span class="kd">var</span> <span class="n">cat</span> <span class="o">=</span> <span class="n">Cat</span><span class="p">(</span><span class="n">age</span><span class="o">=</span><span class="m">1</span><span class="p">);</span>
+<span class="c1">// or 可以不給值
+</span><span class="c1"></span><span class="kd">var</span> <span class="n">cat</span> <span class="o">=</span> <span class="n">Cat</span><span class="p">();</span></code></pre></td></tr></table>
+</div>
+</div>
+<p>另外要注意constructor是不會繼承的，也就是繼承後的物件僅有default constructor。</p>
+
+<h1 id="named-constructors">Named constructors</h1>
+
+<p>Dart是沒有function overloading的，所以若想擁有不同constructor，就需要對這些constructor進行命名。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code class="language-dart" data-lang="dart"><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span><span class="lnt">9
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-dart" data-lang="dart"><span class="kd">class</span> <span class="nc">Cat</span><span class="p">{</span>
+  <span class="kt">int</span> <span class="n">age</span><span class="p">;</span>
+  <span class="n">Cat</span><span class="p">.</span><span class="n">baby</span><span class="p">(){</span>
+    <span class="n">age</span> <span class="o">=</span> <span class="m">0</span><span class="p">;</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="c1">// 使用時
+</span><span class="c1"></span><span class="kd">var</span> <span class="n">babyCat</span> <span class="o">=</span> <span class="n">Cat</span><span class="p">.</span><span class="n">baby</span><span class="p">();</span></code></pre></td></tr></table>
+</div>
+</div>
+<p>另外如果想要給class field初始值，還有以下幾種方法</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code class="language-dart" data-lang="dart"><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-dart" data-lang="dart"><span class="kd">class</span> <span class="nc">Cat</span><span class="p">{</span>
+  <span class="c1">// 適用於有多個constructor又想指定為同一個初始值時
+</span><span class="c1"></span>  <span class="kt">int</span> <span class="n">age</span> <span class="o">=</span> <span class="m">0</span><span class="p">;</span>
+  <span class="n">Cat</span><span class="p">.</span><span class="n">baby</span><span class="p">();</span>
+<span class="p">}</span>
+
+<span class="kd">class</span> <span class="nc">Cat</span><span class="p">{</span>
+  <span class="c1">// 適用於有多個constructor但想指定不同初始值時
+</span><span class="c1"></span>  <span class="kt">int</span> <span class="n">age</span><span class="p">;</span>
+  <span class="n">Cat</span><span class="p">.</span><span class="n">baby</span><span class="p">()</span><span class="o">:</span> <span class="n">age</span><span class="o">=</span><span class="m">0</span><span class="p">;</span>
+  <span class="n">Cat</span><span class="p">.</span><span class="n">baby2</span><span class="p">()</span><span class="o">:</span> <span class="n">age</span><span class="o">=</span><span class="m">0</span> <span class="p">{</span>
+    <span class="c1">//這裡還可以再加寫東西
+</span><span class="c1"></span>  <span class="p">};</span>
+<span class="p">}</span>
+
+<span class="kd">class</span> <span class="nc">Cat</span><span class="p">{</span>
+  <span class="c1">// 適用於Optional named parameters
+</span><span class="c1"></span>  <span class="kt">int</span> <span class="n">age</span><span class="p">;</span>
+  <span class="n">Cat</span><span class="p">.</span><span class="n">baby</span><span class="p">({</span><span class="k">this</span><span class="p">.</span><span class="n">age</span><span class="o">=</span><span class="m">0</span><span class="p">});</span>
+  <span class="c1">// 或是
+</span><span class="c1"></span>  <span class="n">Cat</span><span class="p">.</span><span class="n">baby2</span><span class="p">({</span><span class="k">this</span><span class="p">.</span><span class="nl">age:</span><span class="m">0</span><span class="p">});</span>
+  <span class="c1">// 備註: 完全搞不懂為什麼要有兩種寫法 ?_?
+</span><span class="c1"></span><span class="p">}</span></code></pre></td></tr></table>
+</div>
+</div>
+<p>值得注意的是，如果field為final，則第一種(在大括號內初始化)的方法就不再適用，編譯器會報出錯誤訊息。<br />
+另外這些初始化方法不管是基礎型constructor或是Named constructor皆適用。</p>
+
+<h1 id="const-constructor">const constructor</h1>
+
+<p>這是一個比較難懂的概念，可以先參看下列的範例。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code class="language-dart" data-lang="dart"><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-dart" data-lang="dart"><span class="kd">class</span> <span class="nc">Cat</span><span class="p">{</span>
+  <span class="kd">final</span> <span class="kt">int</span> <span class="n">age</span><span class="p">;</span>
+  <span class="kd">const</span> <span class="n">Cat</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="n">age</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="c1">// 使用時
+</span><span class="c1"></span><span class="kd">var</span> <span class="n">a</span> <span class="o">=</span> <span class="kd">const</span> <span class="n">Cat</span><span class="p">(</span><span class="m">1</span><span class="p">);</span>
+<span class="kd">var</span> <span class="n">b</span> <span class="o">=</span> <span class="kd">const</span> <span class="n">Cat</span><span class="p">(</span><span class="m">1</span><span class="p">);</span>
+<span class="k">assert</span><span class="p">(</span><span class="n">a</span> <span class="o">==</span> <span class="n">b</span><span class="p">);</span> <span class="c1">// true
+</span><span class="c1"></span>
+<span class="c1">// 錯誤使用
+</span><span class="c1"></span><span class="kd">var</span> <span class="n">c</span> <span class="o">=</span> <span class="n">Cat</span><span class="p">(</span><span class="m">1</span><span class="p">);</span>
+<span class="kd">var</span> <span class="n">d</span> <span class="o">=</span> <span class="n">Cat</span><span class="p">(</span><span class="m">1</span><span class="p">);</span>
+<span class="k">assert</span><span class="p">(</span><span class="n">c</span> <span class="o">==</span> <span class="n">d</span><span class="p">);</span> <span class="o">//</span> <span class="n">error</span></code></pre></td></tr></table>
+</div>
+</div>
+<p>簡單的說，a跟b為同樣的instance，所以在進行==比較時回傳結果為true。而c跟d為不同的instance，在進行比較時回傳結果為false。<br />
+a跟b明明都是由constructor所產生，但卻產生了一樣的instance，因此這個constructor被稱為const constructor。</p>
+
+<p>現在我們來看一下要使用const constructor的規則。</p>
+
+<ol>
+<li>class內的所有成員皆為final。</li>
+<li>被宣告為const的constructor一定要初始化所有變數。</li>
+<li>要使用const constructor時，必須明確的在constructor前再次加上const。(e.g. <code>var cat = const Cat(1);</code>)</li>
+<li>使用const constructor時，所有傳入的參數必須要是常數(constant)，否則編譯器會報錯。</li>
+<li>若使用const constructor時沒加上const前綴，也可以當作一般的constructor用。(e.g. <code>var cat = Cat(1);</code>)</li>
+</ol>
+
+<p>因此宣告ㄧ個const constructor，並不代表使用這個constructor的結果都為const constructor，這是最大的陷阱。<br />
+下面再多給幾個範例。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code class="language-dart" data-lang="dart"><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-dart" data-lang="dart"><span class="c1">// 可行，傳入變數為constant
+</span><span class="c1"></span><span class="kd">const</span> <span class="n">a</span> <span class="o">=</span> <span class="m">1</span><span class="p">;</span>
+<span class="kd">var</span> <span class="n">cat</span> <span class="o">=</span> <span class="kd">const</span> <span class="n">Cat</span><span class="p">(</span><span class="n">a</span><span class="p">);</span>
+
+<span class="c1">// 不可行，final並非constant
+</span><span class="c1"></span><span class="kd">final</span> <span class="n">a</span> <span class="o">=</span> <span class="m">1</span><span class="p">;</span>
+<span class="kd">var</span> <span class="n">cat</span> <span class="o">=</span> <span class="kd">const</span> <span class="n">Cat</span><span class="p">(</span><span class="n">a</span><span class="p">);</span> <span class="c1">// error
+</span><span class="c1"></span>
+<span class="c1">// 可行，不加上const前綴則當作一般的constructor
+</span><span class="c1"></span><span class="kd">final</span> <span class="n">a</span> <span class="o">=</span> <span class="m">1</span><span class="p">;</span>
+<span class="kd">var</span> <span class="n">cat</span> <span class="o">=</span> <span class="n">Cat</span><span class="p">(</span><span class="n">a</span><span class="p">);</span></code></pre></td></tr></table>
+</div>
+</div>
+<h1 id="factory-constructor">factory constructor</h1>
+
+<p>最後一個要提的constructor是factory constructor，顧名思義，此為factory pattern的語法糖。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code class="language-dart" data-lang="dart"><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-dart" data-lang="dart"><span class="kd">class</span> <span class="nc">Cat</span><span class="p">{</span>
+  <span class="kt">int</span> <span class="n">age</span><span class="p">;</span>
+  <span class="kd">factory</span> <span class="n">Cat</span><span class="p">.</span><span class="n">baby</span><span class="p">(){</span>
+    <span class="kd">final</span> <span class="n">cat</span> <span class="o">=</span> <span class="n">Cat</span><span class="p">();</span>
+    <span class="n">cat</span><span class="p">.</span><span class="n">age</span> <span class="o">=</span> <span class="m">0</span><span class="p">;</span>
+    <span class="k">return</span> <span class="n">cat</span><span class="p">;</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="c1">// 使用時
+</span><span class="c1"></span><span class="kd">var</span> <span class="n">cat</span> <span class="o">=</span> <span class="n">Cat</span><span class="p">.</span><span class="n">baby</span><span class="p">();</span></code></pre></td></tr></table>
+</div>
+</div>
+<p>這個範例可以很清楚的看到，factory constructor的instance製造是仰賴其他constructor，而且最後還必須return instance。<br />
+所以factory constructor根本不是constructor，而是一個factory，只是用個語法糖讓他看起來像constructor罷了。</p>
+
+    </div>
+
+    
+<footer class="post-footer">
+      <div class="post-tags">
+          <a href="/tags/dart/">dart</a>
+          </div>
+      <nav class="post-nav">
+        
+        <a class="next" href="/post/review/%E5%9C%96%E8%A7%A3java%E5%A4%9A%E7%B7%9A%E7%A8%8B%E8%A8%AD%E8%A8%88%E6%A8%A1%E5%BC%8F/">
+            <span class="next-text nav-default">[讀書心得] 圖解Java多線程設計模式</span>
+            <span class="next-text nav-mobile"></span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        <div id="disqus_thread"></div>
+    <script type="text/javascript">
+    (function() {
+      
+      
+      if (window.location.hostname === 'localhost') return;
+
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      var disqus_shortname = 'blog-vygy2ifrxm';
+      dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="cdfq152313@gmail.com" class="iconfont icon-email" title="email"></a>
+      <a href="https://www.facebook.com/AddweupDennyCheng" class="iconfont icon-facebook" title="facebook"></a>
+      <a href="https://github.com/cdfq152313/" class="iconfont icon-github" title="github"></a>
+  <a href="https://cdfq152313.github.io/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    %!(EXTRA string=<a class="hexo-link" href="https://gohugo.io">Hugo</a>)
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+     - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  
+
+  <span class="copyright-year">
+    &copy; 
+    2015 - 
+    2019
+    <span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">Denny Cheng</span>
+  </span>
+</div>
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+<script type="text/javascript" src="/dist/even.26188efa.min.js"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>

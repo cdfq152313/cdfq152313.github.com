@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>dart on Denny&#39;s Blog</title>
+    <link>https://cdfq152313.github.io/tags/dart/</link>
+    <description>Recent content in dart on Denny&#39;s Blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-hant</language>
+    <copyright>Denny Cheng</copyright>
+    <lastBuildDate>Fri, 26 Apr 2019 23:50:00 +0800</lastBuildDate>
+    
+	<atom:link href="https://cdfq152313.github.io/tags/dart/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Dart Class Constructor</title>
+      <link>https://cdfq152313.github.io/post/dart/class-constructor/</link>
+      <pubDate>Fri, 26 Apr 2019 23:50:00 +0800</pubDate>
+      
+      <guid>https://cdfq152313.github.io/post/dart/class-constructor/</guid>
+      <description>基礎型 先來最簡易的版本，不管從任何語言背景來的人都能看懂。 另外要注意在dart 2.0以後，new變成了可選字眼，所以為了程式簡潔，個人建議不</description>
+    </item>
+    
+  </channel>
+</rss>
