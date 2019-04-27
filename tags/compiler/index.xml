@@ -14,19 +14,19 @@
     
     <item>
       <title>llvm - helloworld</title>
-      <link>https://cdfq152313.github.io/post/notes/2015/06-10/</link>
+      <link>https://cdfq152313.github.io/2015-06-10/</link>
       <pubDate>Wed, 10 Jun 2015 00:00:00 +0000</pubDate>
       
-      <guid>https://cdfq152313.github.io/post/notes/2015/06-10/</guid>
+      <guid>https://cdfq152313.github.io/2015-06-10/</guid>
       <description>環境設置 ubuntu體系：sudo apt-get install llvm MAC: brew install llvm makefile (MAC) 1 2 3 4 5 6 7 8 9 BIN_PATH=/usr/local/Cellar/llvm/3.6.1/bin/ export PATH:=$(PATH):$(BIN_PATH) LLVM_CONFIG=llvm-config FLAGS= --cxxflags --ldflags --system-libs --libs core toy: toy.cpp clang++ -g -O3 toy.cpp `$(LLVM_CONFIG) $(FLAGS)` -o toy clean: rm -f toy top module 1 2 3 4 5 6 7 8 9</description>
     </item>
     
     <item>
       <title>llvm study</title>
-      <link>https://cdfq152313.github.io/post/notes/2015/06-06/</link>
+      <link>https://cdfq152313.github.io/2015-06-06/</link>
       <pubDate>Sat, 06 Jun 2015 00:00:00 +0000</pubDate>
       
-      <guid>https://cdfq152313.github.io/post/notes/2015/06-06/</guid>
+      <guid>https://cdfq152313.github.io/2015-06-06/</guid>
       <description>Overview llvm 示意圖 通過front end後程式碼會被轉為中間碼( LLVM Intermediate Representation (IR) ) 紅色部分為llvm提供的功能。 出作業應該不會用到1 (要自己寫)，但可能會用到</description>
     </item>
     

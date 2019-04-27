@@ -14,28 +14,28 @@
     
     <item>
       <title>在AOSP中增加預設app (3) : 利用Android Studio來進行編輯</title>
-      <link>https://cdfq152313.github.io/post/notes/2016/03-04/</link>
+      <link>https://cdfq152313.github.io/2016-03-04/</link>
       <pubDate>Fri, 04 Mar 2016 00:00:00 +0000</pubDate>
       
-      <guid>https://cdfq152313.github.io/post/notes/2016/03-04/</guid>
+      <guid>https://cdfq152313.github.io/2016-03-04/</guid>
       <description>平台及環境設置 平台 實驗平台：Nexus 5 Android版本：android-4.4_r1 前置知識： [Howto Build Android KitKat (4.4) for the Google Nexus 5][6] 環境設置 在AOSP資料</description>
     </item>
     
     <item>
       <title>在AOSP中增加預設app (2) : 自行編譯</title>
-      <link>https://cdfq152313.github.io/post/notes/2016/02-28/</link>
+      <link>https://cdfq152313.github.io/2016-02-28/</link>
       <pubDate>Sun, 28 Feb 2016 00:00:00 +0000</pubDate>
       
-      <guid>https://cdfq152313.github.io/post/notes/2016/02-28/</guid>
+      <guid>https://cdfq152313.github.io/2016-02-28/</guid>
       <description>平台及環境設置 平台 實驗平台：Nexus 5 Android版本：android-4.4_r1 前置知識： [Howto Build Android KitKat (4.4) for the Google Nexus 5][6] 環境設置 在AOSP資料</description>
     </item>
     
     <item>
       <title>在AOSP中增加預設app (1) : prebuilt apk</title>
-      <link>https://cdfq152313.github.io/post/notes/2016/02-24/</link>
+      <link>https://cdfq152313.github.io/2016-02-24/</link>
       <pubDate>Wed, 24 Feb 2016 00:00:00 +0000</pubDate>
       
-      <guid>https://cdfq152313.github.io/post/notes/2016/02-24/</guid>
+      <guid>https://cdfq152313.github.io/2016-02-24/</guid>
       <description>平台及環境設置 平台 實驗平台：Nexus 5 Android版本：android-4.4_r1 前置知識： Howto Build Android KitKat (4.4) for the Google Nexus 5 環境設置 在AOSP資料</description>
     </item>
     

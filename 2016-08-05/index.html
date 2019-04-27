@@ -1,0 +1,585 @@
+<!DOCTYPE html>
+<html lang="zh-hant">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>Android JNI 環境建置 - Denny&#39;s Blog</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="Denny Cheng" /><meta name="description" content="介紹 主要參考這篇：Android studio 1.5.1 NDK JNI環境安裝與執行原理 不過Android 2.1.2上步驟稍有簡化，還是可以達到同樣效果。 載NDK 設定" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.54.0 with even 4.0.0" />
+
+
+<link rel="canonical" href="https://cdfq152313.github.io/2016-08-05/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+
+<link href="/dist/even.c2a46f00.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="Android JNI 環境建置" />
+<meta property="og:description" content="介紹 主要參考這篇：Android studio 1.5.1 NDK JNI環境安裝與執行原理 不過Android 2.1.2上步驟稍有簡化，還是可以達到同樣效果。 載NDK 設定" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://cdfq152313.github.io/2016-08-05/" />
+<meta property="article:published_time" content="2016-08-05T00:00:00&#43;00:00"/>
+<meta property="article:modified_time" content="2016-08-05T00:00:00&#43;00:00"/>
+
+<meta itemprop="name" content="Android JNI 環境建置">
+<meta itemprop="description" content="介紹 主要參考這篇：Android studio 1.5.1 NDK JNI環境安裝與執行原理 不過Android 2.1.2上步驟稍有簡化，還是可以達到同樣效果。 載NDK 設定">
+
+
+<meta itemprop="datePublished" content="2016-08-05T00:00:00&#43;00:00" />
+<meta itemprop="dateModified" content="2016-08-05T00:00:00&#43;00:00" />
+<meta itemprop="wordCount" content="1311">
+
+
+
+<meta itemprop="keywords" content="android,jni," />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Android JNI 環境建置"/>
+<meta name="twitter:description" content="介紹 主要參考這篇：Android studio 1.5.1 NDK JNI環境安裝與執行原理 不過Android 2.1.2上步驟稍有簡化，還是可以達到同樣效果。 載NDK 設定"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">Denny&#39;s Blog</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">Home</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">Archives</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">Tags</li>
+      </a><a href="/about/">
+        <li class="mobile-menu-item">About</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">Denny&#39;s Blog</a>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">Home</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">Archives</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">Tags</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/about/">About</a>
+      </li>
+  </ul>
+</nav>
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">Android JNI 環境建置</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2016-08-05 </span>
+        <div class="post-category">
+            <a href="/categories/notes/"> notes </a>
+            </div>
+        
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title"></h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+<ul>
+<li><a href="#介紹">介紹</a></li>
+<li><a href="#載ndk">載NDK</a></li>
+<li><a href="#設定external-tool">設定external tool</a></li>
+<li><a href="#jni-header">JNI header</a></li>
+<li><a href="#實作jni">實作JNI</a>
+<ul>
+<li><a href="#新增myjni-cpp">新增myJNI.cpp</a></li>
+<li><a href="#include剛剛自動產生的header">include剛剛自動產生的header</a></li>
+<li><a href="#實作剛剛只宣告未實作的程式碼">實作剛剛只宣告未實作的程式碼</a></li>
+<li><a href="#細節注意">細節注意</a></li>
+</ul></li>
+<li><a href="#設定gradle">設定gradle</a></li>
+<li><a href="#參考資料">參考資料</a></li>
+</ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      
+
+<h1 id="介紹">介紹</h1>
+
+<p>主要參考這篇：<a href="http://blog.xuite.net/lwchafter30/blog/373974237-Android+studio+1.5.1+NDK+JNI%E7%92%B0%E5%A2%83%E5%AE%89%E8A3%9D%E8%88%87%E5%9F%B7%E8%A1%8C%E5%8E%9F%E7%90%86" title="Android studio 1.5.1 NDK JNI環境安裝與執行原理">Android studio 1.5.1 NDK JNI環境安裝與執行原理</a><br />
+不過Android 2.1.2上步驟稍有簡化，還是可以達到同樣效果。</p>
+
+<ol>
+<li>載NDK</li>
+<li>設定external tool (僅javah)</li>
+<li>在java中增加native code，並利用javah產生JNI header</li>
+<li>實作JNI</li>
+<li>設定gradle (僅ndk區塊)</li>
+</ol>
+
+<h1 id="載ndk">載NDK</h1>
+
+<p>開啟SDK Manager，選擇SDK Tools，將NDK之選項給打勾。<br />
+<img src="http://i.imgur.com/nsDiPAi.png" alt="SDK Manager" /></p>
+
+<h1 id="設定external-tool">設定external tool</h1>
+
+<p>與連結相同，不過只要設定javah即可，其他不需要。</p>
+
+<p><img src="http://i.imgur.com/m4s02Gt.png" alt="javah設定" /></p>
+
+<p>快速複製區 <a href="http://blog.xuite.net/lwchafter30/blog/373974237-Android+studio+1.5.1+NDK+JNI%E7%92%B0%E5%A2%83%E5%AE%89%E8A3%9D%E8%88%87%E5%9F%B7%E8%A1%8C%E5%8E%9F%E7%90%86" title="Android studio 1.5.1 NDK JNI環境安裝與執行原理">來源</a></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></pre></td>
+<td class="lntd">
+<pre class="chroma">$JDKPath$/bin/javah
+
+-v -jni -d $ModuleFileDir$/src/main/jni $FileClass$
+
+$SourcepathEntry$</pre></td></tr></table>
+</div>
+</div>
+<p>Windows和Linux在第1行稍有分別，只有在Windows系統中，執行檔的副檔名才是.exe。Mac和Linux皆否。
+個人是用linux系統，所以第1行javah後面並不接.exe，若是Windows系統則第1行變為。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><span class="lnt">1
+</span></pre></td>
+<td class="lntd">
+<pre class="chroma">$JDKPath$/bin/javah.exe</pre></td></tr></table>
+</div>
+</div>
+<h1 id="jni-header">JNI header</h1>
+
+<p>在想要使用JNI的class加入如下的程式碼。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></pre></td>
+<td class="lntd">
+<pre class="chroma">    static {
+            System.loadLibrary(&#34;myJNI&#34;);
+    }
+    public native String getMycstring();
+    public native void testLog();</pre></td></tr></table>
+</div>
+</div>
+<p>static區塊中的myJNI會變成將來再build gradle當中的moduleName<br />
+method加上native關鍵詞後，程式就會知道這是需要依靠JNI實作之程式碼。</p>
+
+<p>再來在該java檔上按右鍵，使用剛剛建置好的external library javah，自動的產生JNI header。<br />
+<img src="http://i.imgur.com/ag5rJ6c.png" alt="使用javah" /></p>
+
+<p>此時在java目錄下，應該會多出一個jni的資料夾，裡頭放置著 OOXX.h<br />
+打開.h檔，建置出來的code應該會如下形式</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code class="language-c++" data-lang="c++"><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-c++" data-lang="c++"><span class="cm">/* DO NOT EDIT THIS FILE - it is machine generated */</span>
+<span class="cp">#include</span> <span class="cpf">&lt;jni.h&gt;</span><span class="cp">
+</span><span class="cp"></span><span class="cm">/* Header for class com_example_isa_myapplication_MainActivity */</span>
+
+<span class="cp">#ifndef _Included_com_example_isa_myapplication_MainActivity
+</span><span class="cp">#define _Included_com_example_isa_myapplication_MainActivity
+</span><span class="cp">#ifdef __cplusplus
+</span><span class="cp"></span><span class="k">extern</span> <span class="s">&#34;C&#34;</span> <span class="p">{</span>
+<span class="cp">#endif
+</span><span class="cp"></span><span class="cm">/*
+</span><span class="cm"> * Class:     com_example_isa_myapplication_MainActivity
+</span><span class="cm"> * Method:    getMycstring
+</span><span class="cm"> * Signature: ()Ljava/lang/String;
+</span><span class="cm"> */</span>
+<span class="n">JNIEXPORT</span> <span class="n">jstring</span> <span class="n">JNICALL</span> <span class="n">Java_com_example_isa_myapplication_MainActivity_getMycstring</span>
+  <span class="p">(</span><span class="n">JNIEnv</span> <span class="o">*</span><span class="p">,</span> <span class="n">jobject</span><span class="p">);</span>
+
+<span class="cm">/*
+</span><span class="cm"> * Class:     com_example_isa_myapplication_MainActivity
+</span><span class="cm"> * Method:    testLog
+</span><span class="cm"> * Signature: ()V
+</span><span class="cm"> */</span>
+<span class="n">JNIEXPORT</span> <span class="kt">void</span> <span class="n">JNICALL</span> <span class="nf">Java_com_example_isa_myapplication_MainActivity_testLog</span>
+  <span class="p">(</span><span class="n">JNIEnv</span> <span class="o">*</span><span class="p">,</span> <span class="n">jobject</span><span class="p">);</span>
+
+<span class="cp">#ifdef __cplusplus
+</span><span class="cp"></span><span class="p">}</span>
+<span class="cp">#endif
+</span><span class="cp">#endif
+</span></code></pre></td></tr></table>
+</div>
+</div>
+<h1 id="實作jni">實作JNI</h1>
+
+<p>步驟如下</p>
+
+<ol>
+<li>在jni資料夾中，新增一個myJNI.cpp</li>
+<li>include剛剛自動產生的header</li>
+<li>實作剛剛只宣告未實作的程式碼</li>
+<li>(細節注意)</li>
+</ol>
+
+<h2 id="新增myjni-cpp">新增myJNI.cpp</h2>
+
+<p>在jni資料夾中，新增一個myJNI.cpp</p>
+
+<h2 id="include剛剛自動產生的header">include剛剛自動產生的header</h2>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code class="language-c++" data-lang="c++"><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-c++" data-lang="c++"><span class="cp">#include</span> <span class="cpf">&#34;com_example_isa_myapplication_MainActivity.h&#34;</span><span class="cp">
+</span></code></pre></td></tr></table>
+</div>
+</div>
+<h2 id="實作剛剛只宣告未實作的程式碼">實作剛剛只宣告未實作的程式碼</h2>
+
+<p>由於Log功能要使用到android/log.h library，所以也要include進來。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code class="language-c++" data-lang="c++"><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-c++" data-lang="c++"><span class="cp">#include</span> <span class="cpf">&#34;com_example_isa_myapplication_MainActivity.h&#34;</span><span class="cp">
+</span><span class="cp">#include</span> <span class="cpf">&lt;android/log.h&gt;</span><span class="cp">
+</span><span class="cp"></span>
+<span class="n">JNIEXPORT</span> <span class="n">jstring</span> <span class="n">JNICALL</span> <span class="nf">Java_com_example_isa_myapplication_MainActivity_getMycstring</span>
+  <span class="p">(</span><span class="n">JNIEnv</span> <span class="o">*</span><span class="n">env</span><span class="p">,</span> <span class="n">jobject</span> <span class="n">jobj</span><span class="p">){</span>
+        <span class="k">return</span> <span class="p">(</span><span class="o">*</span><span class="n">env</span><span class="p">).</span><span class="n">NewStringUTF</span><span class="p">(</span><span class="s">&#34;MY !!  NDKString!!&#34;</span><span class="p">);</span>
+  <span class="p">}</span>
+  
+<span class="n">JNIEXPORT</span> <span class="kt">void</span> <span class="n">JNICALL</span> <span class="nf">Java_com_example_isa_myapplication_MainActivity_testLog</span>
+  <span class="p">(</span><span class="n">JNIEnv</span> <span class="o">*</span> <span class="n">env</span><span class="p">,</span> <span class="n">jobject</span> <span class="n">jobj</span><span class="p">){</span>
+    <span class="n">__android_log_print</span><span class="p">(</span><span class="n">ANDROID_LOG_INFO</span><span class="p">,</span> <span class="s">&#34;JNI&#34;</span><span class="p">,</span> <span class="s">&#34;JNI Test&#34;</span><span class="p">);</span>
+  <span class="p">}</span>
+</code></pre></td></tr></table>
+</div>
+</div>
+<h2 id="細節注意">細節注意</h2>
+
+<p>當然僅僅如此還不夠，觀看.h檔可以發現有extern &ldquo;C&rdquo;包圍著宣告的函式，所以也要一併複製。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code class="language-c++" data-lang="c++"><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-c++" data-lang="c++"><span class="cp">#include</span> <span class="cpf">&#34;com_example_isa_myapplication_MainActivity.h&#34;</span><span class="cp">
+</span><span class="cp">#include</span> <span class="cpf">&lt;android/log.h&gt;</span><span class="cp">
+</span><span class="cp"></span>
+
+<span class="cp">#ifdef __cplusplus
+</span><span class="cp"></span><span class="k">extern</span> <span class="s">&#34;C&#34;</span> <span class="p">{</span>
+<span class="cp">#endif
+</span><span class="cp"></span>
+<span class="n">JNIEXPORT</span> <span class="n">jstring</span> <span class="n">JNICALL</span> <span class="n">Java_com_example_isa_myapplication_MainActivity_getMycstring</span>
+  <span class="p">(</span><span class="n">JNIEnv</span> <span class="o">*</span><span class="n">env</span><span class="p">,</span> <span class="n">jobject</span> <span class="n">jobj</span><span class="p">){</span>
+        <span class="k">return</span> <span class="p">(</span><span class="o">*</span><span class="n">env</span><span class="p">).</span><span class="n">NewStringUTF</span><span class="p">(</span><span class="s">&#34;MY !!  NDKString!!&#34;</span><span class="p">);</span>
+  <span class="p">}</span>
+  
+  <span class="n">JNIEXPORT</span> <span class="kt">void</span> <span class="n">JNICALL</span> <span class="n">Java_com_example_isa_myapplication_MainActivity_testLog</span>
+  <span class="p">(</span><span class="n">JNIEnv</span> <span class="o">*</span> <span class="n">env</span><span class="p">,</span> <span class="n">jobject</span> <span class="n">jobj</span><span class="p">){</span>
+    <span class="n">__android_log_print</span><span class="p">(</span><span class="n">ANDROID_LOG_INFO</span><span class="p">,</span> <span class="s">&#34;JNI&#34;</span><span class="p">,</span> <span class="s">&#34;JNI Test&#34;</span><span class="p">);</span>
+  <span class="p">}</span>
+  
+<span class="cp">#ifdef __cplusplus
+</span><span class="cp"></span><span class="p">}</span>
+<span class="cp">#endif
+</span></code></pre></td></tr></table>
+</div>
+</div>
+<p>切記不要連 #ifndef _Included_com_example_isa_myapplication_MainActivity 的相關句子也複製進來。<br />
+在.h檔已經定義過，若在.cpp重複定義，則中間的所有內容都會被忽略掉。</p>
+
+<h1 id="設定gradle">設定gradle</h1>
+
+<p>在defaultConfig這個區塊內加入</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></pre></td>
+<td class="lntd">
+<pre class="chroma">ndk{
+  moduleName &#34;myJNI&#34;
+  ldLibs &#34;log&#34;
+}</pre></td></tr></table>
+</div>
+</div>
+<p>moduleName為你剛剛在System.loadLibrary裡面設定的名字。<br />
+ldLibs &ldquo;log&rdquo;可以讓cpp檔include log功能的時候不會出錯。</p>
+
+<p>整體看起來是這樣</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span></pre></td>
+<td class="lntd">
+<pre class="chroma">android {
+    compileSdkVersion 23
+    buildToolsVersion &#34;23.0.2&#34;
+
+    defaultConfig {
+        applicationId &#34;com.example.isa.myapplication&#34;
+        minSdkVersion 15
+        targetSdkVersion 23
+        versionCode 1
+        versionName &#34;1.0&#34;
+        ndk{
+            moduleName &#34;myJNI&#34;
+            ldLibs &#34;log&#34;
+        }
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile(&#39;proguard-android.txt&#39;), &#39;proguard-rules.pro&#39;
+        }
+    }
+}</pre></td></tr></table>
+</div>
+</div>
+<p>最後編譯就完成了。</p>
+
+<h1 id="參考資料">參考資料</h1>
+
+<p><a href="http://blog.xuite.net/lwchafter30/blog/373974237-Android+studio+1.5.1+NDK+JNI%E7%92%B0%E5%A2%83%E5%AE%89%E8A3%9D%E8%88%87%E5%9F%B7%E8%A1%8C%E5%8E%9F%E7%90%86" title="Android studio 1.5.1 NDK JNI環境安裝與執行原理">Android studio 1.5.1 NDK JNI環境安裝與執行原理</a></p>
+
+    </div>
+
+    
+<footer class="post-footer">
+      <div class="post-tags">
+          <a href="/tags/android/">android</a>
+          <a href="/tags/jni/">jni</a>
+          </div>
+      <nav class="post-nav">
+        <a class="prev" href="/2016-09-05/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">從0到1 與1到1億</span>
+            <span class="prev-text nav-mobile"></span>
+          </a>
+        <a class="next" href="/2016-07-24/">
+            <span class="next-text nav-default">renpy (5) 自己撰寫button的Action</span>
+            <span class="next-text nav-mobile"></span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        <div id="disqus_thread"></div>
+    <script type="text/javascript">
+    (function() {
+      
+      
+      if (window.location.hostname === 'localhost') return;
+
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      var disqus_shortname = 'blog-vygy2ifrxm';
+      dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="cdfq152313@gmail.com" class="iconfont icon-email" title="email"></a>
+      <a href="https://www.facebook.com/AddweupDennyCheng" class="iconfont icon-facebook" title="facebook"></a>
+      <a href="https://github.com/cdfq152313/" class="iconfont icon-github" title="github"></a>
+  <a href="https://cdfq152313.github.io/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    %!(EXTRA string=<a class="hexo-link" href="https://gohugo.io">Hugo</a>)
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+     - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  
+
+  <span class="copyright-year">
+    &copy; 
+    2015 - 
+    2019
+    <span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">Denny Cheng</span>
+  </span>
+</div>
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+<script type="text/javascript" src="/dist/even.26188efa.min.js"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>

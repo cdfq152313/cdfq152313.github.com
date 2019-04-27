@@ -14,28 +14,28 @@
     
     <item>
       <title>[讀書心得] 圖解Java多線程設計模式</title>
-      <link>https://cdfq152313.github.io/post/review/%E5%9C%96%E8%A7%A3java%E5%A4%9A%E7%B7%9A%E7%A8%8B%E8%A8%AD%E8%A8%88%E6%A8%A1%E5%BC%8F/</link>
+      <link>https://cdfq152313.github.io/2018-03-29/</link>
       <pubDate>Thu, 29 Mar 2018 00:00:00 +0000</pubDate>
       
-      <guid>https://cdfq152313.github.io/post/review/%E5%9C%96%E8%A7%A3java%E5%A4%9A%E7%B7%9A%E7%A8%8B%E8%A8%AD%E8%A8%88%E6%A8%A1%E5%BC%8F/</guid>
+      <guid>https://cdfq152313.github.io/2018-03-29/</guid>
       <description>[天瓏連結] 圖解Java多線程設計模式 大要 簡單條列心得如下。 他會假設你有Java的基礎知識，並假設你Java的執行緒相關函式還沒那麼熟，所以</description>
     </item>
     
     <item>
       <title>[Java] Date SimpleDateFormat Calendar之轉換與時區(UTC/GMT)問題</title>
-      <link>https://cdfq152313.github.io/post/notes/2017/04-27/</link>
+      <link>https://cdfq152313.github.io/2017-04-27/</link>
       <pubDate>Thu, 27 Apr 2017 12:44:55 +0800</pubDate>
       
-      <guid>https://cdfq152313.github.io/post/notes/2017/04-27/</guid>
+      <guid>https://cdfq152313.github.io/2017-04-27/</guid>
       <description>簡介 這篇主要探討怎麼把當地時間轉換成GMT(UTC)時間，不在意一秒誤差的話這兩者基本上是一樣的。 主要用到下列三個元件 Date： 最基礎的時間</description>
     </item>
     
     <item>
       <title>Java (Android) AES</title>
-      <link>https://cdfq152313.github.io/post/notes/2017/02-22/</link>
+      <link>https://cdfq152313.github.io/2017-02-22/</link>
       <pubDate>Wed, 22 Feb 2017 00:00:00 +0000</pubDate>
       
-      <guid>https://cdfq152313.github.io/post/notes/2017/02-22/</guid>
+      <guid>https://cdfq152313.github.io/2017-02-22/</guid>
       <description>最後編輯時間 2017/05/27 平台 Android Studio compileSdkVersion 25 buildToolsVersion &amp;ldquo;25.0.1&amp;rdquo; Base64的轉換有使用到Android的函式庫，若是純Java的使用者必須自行搜尋替代方案。 金鑰初始化 AES</description>
     </item>
     

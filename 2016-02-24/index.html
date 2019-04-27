@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="zh-hant">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>在AOSP中增加預設app (1) : prebuilt apk - Denny&#39;s Blog</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="Denny Cheng" /><meta name="description" content="平台及環境設置 平台 實驗平台：Nexus 5 Android版本：android-4.4_r1 前置知識： Howto Build Android KitKat (4.4) for the Google Nexus 5 環境設置 在AOSP資料" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.54.0 with even 4.0.0" />
+
+
+<link rel="canonical" href="https://cdfq152313.github.io/2016-02-24/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+
+<link href="/dist/even.c2a46f00.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="在AOSP中增加預設app (1) : prebuilt apk" />
+<meta property="og:description" content="平台及環境設置 平台 實驗平台：Nexus 5 Android版本：android-4.4_r1 前置知識： Howto Build Android KitKat (4.4) for the Google Nexus 5 環境設置 在AOSP資料" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://cdfq152313.github.io/2016-02-24/" />
+<meta property="article:published_time" content="2016-02-24T00:00:00&#43;00:00"/>
+<meta property="article:modified_time" content="2016-02-24T00:00:00&#43;00:00"/>
+
+<meta itemprop="name" content="在AOSP中增加預設app (1) : prebuilt apk">
+<meta itemprop="description" content="平台及環境設置 平台 實驗平台：Nexus 5 Android版本：android-4.4_r1 前置知識： Howto Build Android KitKat (4.4) for the Google Nexus 5 環境設置 在AOSP資料">
+
+
+<meta itemprop="datePublished" content="2016-02-24T00:00:00&#43;00:00" />
+<meta itemprop="dateModified" content="2016-02-24T00:00:00&#43;00:00" />
+<meta itemprop="wordCount" content="1176">
+
+
+
+<meta itemprop="keywords" content="android,aosp," />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="在AOSP中增加預設app (1) : prebuilt apk"/>
+<meta name="twitter:description" content="平台及環境設置 平台 實驗平台：Nexus 5 Android版本：android-4.4_r1 前置知識： Howto Build Android KitKat (4.4) for the Google Nexus 5 環境設置 在AOSP資料"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">Denny&#39;s Blog</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">Home</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">Archives</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">Tags</li>
+      </a><a href="/about/">
+        <li class="mobile-menu-item">About</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">Denny&#39;s Blog</a>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">Home</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">Archives</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">Tags</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/about/">About</a>
+      </li>
+  </ul>
+</nav>
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">在AOSP中增加預設app (1) : prebuilt apk</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2016-02-24 </span>
+        <div class="post-category">
+            <a href="/categories/notes/"> notes </a>
+            </div>
+        
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title"></h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+<ul>
+<li><a href="#平台及環境設置">平台及環境設置</a>
+<ul>
+<li><a href="#平台">平台</a></li>
+<li><a href="#環境設置">環境設置</a></li>
+</ul></li>
+<li><a href="#目標-在aosp當中加入一個已經編譯好的apk檔-hello-apk">目標：在AOSP當中加入一個已經編譯好的apk檔，Hello.apk</a>
+<ul>
+<li><a href="#手動編譯設置">手動編譯設置</a></li>
+<li><a href="#自動編譯設置">自動編譯設置</a></li>
+</ul></li>
+<li><a href="#reference">Reference</a></li>
+</ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      
+
+<h1 id="平台及環境設置">平台及環境設置</h1>
+
+<h2 id="平台">平台</h2>
+
+<p>實驗平台：Nexus 5<br />
+Android版本：android-4.4_r1<br />
+前置知識： <a href="https://nosemaj.org/howto-build-android-kitkat-nexus-5" title="Howto Build Android KitKat (4.4) for the Google Nexus 5">Howto Build Android KitKat (4.4) for the Google Nexus 5</a></p>
+
+<h2 id="環境設置">環境設置</h2>
+
+<p>在AOSP資料夾中</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash"><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash"><span class="nb">source</span> build/envsetup.sh
+lunch aosp_hammerhead-userdebug</code></pre></td></tr></table>
+</div>
+</div>
+<h1 id="目標-在aosp當中加入一個已經編譯好的apk檔-hello-apk">目標：在AOSP當中加入一個已經編譯好的apk檔，Hello.apk</h1>
+
+<h2 id="手動編譯設置">手動編譯設置</h2>
+
+<p>預設的app放在 <code>AOSP/packages/apps</code>下，任意觀看此目錄下的資料夾，會發現皆有<strong>Android.mk</strong>此檔案，此為AOSP編譯規則。<br />
+參看 <a href="http://android.mk/" title="Secrets of Android.mk">Secrets of Android.mk</a>此份文件中的<a href="http://android.mk/#prebuiltAPK">Adding a prebuilt APK</a>章節。</p>
+
+<p>依樣畫葫蘆，在<code>AOSP/packages/apps</code>目錄中手動創造Hello資料夾，放入Android.mk。</p>
+
+<p>Android.mk</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code class="language-makefile" data-lang="makefile"><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-makefile" data-lang="makefile"><span class="nv">LOCAL_PATH</span> <span class="o">:=</span> <span class="k">$(</span>call my-dir<span class="k">)</span>
+<span class="err">include</span> <span class="k">$(</span>CLEAR_VARS<span class="k">)</span>
+
+<span class="c"># Module name should match apk name to be installed.
+</span><span class="c"></span><span class="nv">LOCAL_MODULE</span> <span class="o">:=</span> Hello
+<span class="nv">LOCAL_SRC_FILES</span> <span class="o">:=</span> <span class="k">$(</span>LOCAL_MODULE<span class="k">)</span>.apk
+<span class="nv">LOCAL_MODULE_CLASS</span> <span class="o">:=</span> APPS
+<span class="nv">LOCAL_MODULE_SUFFIX</span> <span class="o">:=</span> <span class="k">$(</span>COMMON_ANDROID_PACKAGE_SUFFIX<span class="k">)</span>
+<span class="nv">LOCAL_CERTIFICATE</span> <span class="o">:=</span> PRESIGNED
+
+<span class="err">include</span> <span class="k">$(</span>BUILD_PREBUILT<span class="k">)</span>
+</code></pre></td></tr></table>
+</div>
+</div>
+<p>並使用Android Studio(或eclipse)隨便製造出一個Hello.apk，同樣將其放置在<code>AOSP/packages/apps</code>目錄下。<br />
+在<a href="https://source.android.com/source/building.html#initialize" title="Set up environment">設置好環境</a>後，使用指令<code>mm</code>在Hello資料夾底下進行編譯，即可將檔案複製到<code>AOSP/out/target/product/板子名/system/app/</code>裏面去。<br />
+最後執行<code>make snod</code>即可將此apk包入system.img之中。</p>
+
+<blockquote>
+<p>註：若放置的apk沒簽名，可能會出現</p>
+</blockquote>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash"><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash">build/core/prebuilt.mk:122: *** No LOCAL_CERTIFICATE specified <span class="k">for</span> prebuilt <span class="s2">&#34;packages/apps/Hello/Hello .apk&#34;</span>.  Stop.</code></pre></td></tr></table>
+</div>
+</div>
+<p>此錯誤訊息。
+關於如何產生簽名過後的apk，可參看<a href="http://developer.android.com/intl/zh-tw/tools/publishing/app-signing.html" title="Signing Your Applications">Android官網</a>。<br />
+眼尖的人應該注意到，在上述的Android.mk當中多了一行<code>LOCAL_CERTIFICATE := PRESIGNED</code>，若沒有此行，則即使在Android Studio中已經編譯出簽名過後的apk，依然會出現錯誤訊息。要小心。</p>
+
+<h2 id="自動編譯設置">自動編譯設置</h2>
+
+<p>上述的手動編譯可總結為三步驟</p>
+
+<ol>
+<li>在AOSP/packages/apps裡新增Hello資料夾，並放入Android.mk與Hello.apk</li>
+<li>在Hello資料夾使用指令<code>mm</code>，檔案會複製到<code>AOSP/out/target/product/板子名/system/app/</code></li>
+<li>使用指令<code>make snod</code>將檔案打包進system.img之中</li>
+</ol>
+
+<p>想像每次修改檔案，皆需重複執行2,3步驟，不太方便。若有不只一個的pre-built apk，則進入每個資料夾使用mm更是麻煩。所以我們要修改make規則，讓AOSP在執行make時，也能偵測到這些新增資料夾。<br />
+修改的地方位在<code>AOSP/build/target/product/generic_no_telephony.mk</code>，可以發現這個檔案中有不少的原生app名稱。<br />
+將<code>Hello</code>加入<code>PRODUCT_PACKAGES</code>之下。如</p>
+
+<p>generic_no_telephony.mk</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code class="language-makefile" data-lang="makefile"><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-makefile" data-lang="makefile"><span class="err">(...省略...)</span>
+ PRODUCT_PACKAGES :<span class="o">=</span> <span class="se">\
+</span><span class="se"></span>      Hello
+<span class="err">(...省略...)</span>
+</code></pre></td></tr></table>
+</div>
+</div>
+<p>如此一來就可以在一般make時偵測到<code>AOSP/packages/apps</code>所新增的Hello資料夾。</p>
+
+<h1 id="reference">Reference</h1>
+
+<ul>
+<li><a href="https://nosemaj.org/howto-build-android-kitkat-nexus-5" title="Howto Build Android KitKat (4.4) for the Google Nexus 5">Howto Build Android KitKat (4.4) for the Google Nexus 5</a></li>
+<li><a href="http://android.mk/" title="Secrets of Android.mk">Secrets of Android.mk</a></li>
+<li><a href="http://stackoverflow.com/questions/10579827/add-apk-files-in-aosp" title="Add .apk files in aosp">Add .apk files in aosp</a></li>
+<li><a href="https://source.android.com/source/building.html#initialize" title="Set up environment">Building the System</a></li>
+<li><a href="http://mrslowblog.blogspot.tw/2013/01/sign-apk-android-app.html" title=" [教學]簽署應用程式 sign APK 發佈 Android App "> [教學]簽署應用程式 sign APK 發佈 Android App </a></li>
+<li><a href="http://developer.android.com/intl/zh-tw/tools/publishing/app-signing.html" title="Signing Your Applications">Signing Your Applications</a></li>
+</ul>
+
+    </div>
+
+    
+<footer class="post-footer">
+      <div class="post-tags">
+          <a href="/tags/android/">android</a>
+          <a href="/tags/aosp/">aosp</a>
+          </div>
+      <nav class="post-nav">
+        <a class="prev" href="/2016-02-28/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">在AOSP中增加預設app (2) : 自行編譯</span>
+            <span class="prev-text nav-mobile"></span>
+          </a>
+        <a class="next" href="/2015-08-12/">
+            <span class="next-text nav-default">在mutt設定gmail</span>
+            <span class="next-text nav-mobile"></span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        <div id="disqus_thread"></div>
+    <script type="text/javascript">
+    (function() {
+      
+      
+      if (window.location.hostname === 'localhost') return;
+
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      var disqus_shortname = 'blog-vygy2ifrxm';
+      dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="cdfq152313@gmail.com" class="iconfont icon-email" title="email"></a>
+      <a href="https://www.facebook.com/AddweupDennyCheng" class="iconfont icon-facebook" title="facebook"></a>
+      <a href="https://github.com/cdfq152313/" class="iconfont icon-github" title="github"></a>
+  <a href="https://cdfq152313.github.io/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    %!(EXTRA string=<a class="hexo-link" href="https://gohugo.io">Hugo</a>)
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+     - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  
+
+  <span class="copyright-year">
+    &copy; 
+    2015 - 
+    2019
+    <span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">Denny Cheng</span>
+  </span>
+</div>
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+<script type="text/javascript" src="/dist/even.26188efa.min.js"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>

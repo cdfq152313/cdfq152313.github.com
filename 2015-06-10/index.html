@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="zh-hant">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>llvm - helloworld - Denny&#39;s Blog</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="Denny Cheng" /><meta name="description" content="環境設置 ubuntu體系：sudo apt-get install llvm MAC: brew install llvm makefile (MAC) 1 2 3 4 5 6 7 8 9 BIN_PATH=/usr/local/Cellar/llvm/3.6.1/bin/ export PATH:=$(PATH):$(BIN_PATH) LLVM_CONFIG=llvm-config FLAGS= --cxxflags --ldflags --system-libs --libs core toy: toy.cpp clang&#43;&#43; -g -O3 toy.cpp `$(LLVM_CONFIG) $(FLAGS)` -o toy clean: rm -f toy top module 1 2 3 4 5 6 7 8 9" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.54.0 with even 4.0.0" />
+
+
+<link rel="canonical" href="https://cdfq152313.github.io/2015-06-10/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+
+<link href="/dist/even.c2a46f00.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="llvm - helloworld" />
+<meta property="og:description" content="環境設置 ubuntu體系：sudo apt-get install llvm MAC: brew install llvm makefile (MAC) 1 2 3 4 5 6 7 8 9 BIN_PATH=/usr/local/Cellar/llvm/3.6.1/bin/ export PATH:=$(PATH):$(BIN_PATH) LLVM_CONFIG=llvm-config FLAGS= --cxxflags --ldflags --system-libs --libs core toy: toy.cpp clang&#43;&#43; -g -O3 toy.cpp `$(LLVM_CONFIG) $(FLAGS)` -o toy clean: rm -f toy top module 1 2 3 4 5 6 7 8 9" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://cdfq152313.github.io/2015-06-10/" />
+<meta property="article:published_time" content="2015-06-10T00:00:00&#43;00:00"/>
+<meta property="article:modified_time" content="2015-06-10T00:00:00&#43;00:00"/>
+
+<meta itemprop="name" content="llvm - helloworld">
+<meta itemprop="description" content="環境設置 ubuntu體系：sudo apt-get install llvm MAC: brew install llvm makefile (MAC) 1 2 3 4 5 6 7 8 9 BIN_PATH=/usr/local/Cellar/llvm/3.6.1/bin/ export PATH:=$(PATH):$(BIN_PATH) LLVM_CONFIG=llvm-config FLAGS= --cxxflags --ldflags --system-libs --libs core toy: toy.cpp clang&#43;&#43; -g -O3 toy.cpp `$(LLVM_CONFIG) $(FLAGS)` -o toy clean: rm -f toy top module 1 2 3 4 5 6 7 8 9">
+
+
+<meta itemprop="datePublished" content="2015-06-10T00:00:00&#43;00:00" />
+<meta itemprop="dateModified" content="2015-06-10T00:00:00&#43;00:00" />
+<meta itemprop="wordCount" content="233">
+
+
+
+<meta itemprop="keywords" content="llvm,compiler," />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="llvm - helloworld"/>
+<meta name="twitter:description" content="環境設置 ubuntu體系：sudo apt-get install llvm MAC: brew install llvm makefile (MAC) 1 2 3 4 5 6 7 8 9 BIN_PATH=/usr/local/Cellar/llvm/3.6.1/bin/ export PATH:=$(PATH):$(BIN_PATH) LLVM_CONFIG=llvm-config FLAGS= --cxxflags --ldflags --system-libs --libs core toy: toy.cpp clang&#43;&#43; -g -O3 toy.cpp `$(LLVM_CONFIG) $(FLAGS)` -o toy clean: rm -f toy top module 1 2 3 4 5 6 7 8 9"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">Denny&#39;s Blog</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">Home</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">Archives</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">Tags</li>
+      </a><a href="/about/">
+        <li class="mobile-menu-item">About</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">Denny&#39;s Blog</a>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">Home</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">Archives</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">Tags</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/about/">About</a>
+      </li>
+  </ul>
+</nav>
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">llvm - helloworld</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2015-06-10 </span>
+        <div class="post-category">
+            <a href="/categories/notes/"> notes </a>
+            </div>
+        
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title"></h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+<ul>
+<li><a href="#環境設置">環境設置</a></li>
+<li><a href="#makefile-mac">makefile (MAC)</a></li>
+<li><a href="#top-module">top module</a></li>
+<li><a href="#function">function</a>
+<ul>
+<li><a href="#宣告function">宣告function</a>
+<ul>
+<li><a href="#無參數">無參數</a></li>
+<li><a href="#有參數">有參數</a></li>
+</ul></li>
+<li><a href="#定義function">定義function</a>
+<ul>
+<li><a href="#引用已有的function">引用已有的function</a></li>
+<li><a href="#創造新的function">創造新的function</a></li>
+</ul></li>
+</ul></li>
+<li><a href="#新增變數">新增變數</a></li>
+<li><a href="#reference">Reference</a></li>
+</ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      
+
+<h1 id="環境設置">環境設置</h1>
+
+<ul>
+<li>ubuntu體系：sudo apt-get install llvm</li>
+<li>MAC: brew install llvm</li>
+</ul>
+
+<h1 id="makefile-mac">makefile (MAC)</h1>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code class="language-makefile" data-lang="makefile"><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span><span class="lnt">9
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-makefile" data-lang="makefile"><span class="nv">BIN_PATH</span><span class="o">=</span>/usr/local/Cellar/llvm/3.6.1/bin/
+<span class="k">export </span><span class="nv">PATH</span><span class="o">:=</span><span class="k">$(</span>PATH<span class="k">)</span>:<span class="k">$(</span>BIN_PATH<span class="k">)</span>
+<span class="nv">LLVM_CONFIG</span><span class="o">=</span>llvm-config
+<span class="nv">FLAGS</span><span class="o">=</span> --cxxflags --ldflags --system-libs --libs core
+
+<span class="nf">toy</span><span class="o">:</span> <span class="n">toy</span>.<span class="n">cpp</span>
+	clang++ -g -O3 toy.cpp <span class="sb">`</span><span class="k">$(</span>LLVM_CONFIG<span class="k">)</span> <span class="k">$(</span>FLAGS<span class="k">)</span><span class="sb">`</span> -o toy
+<span class="nf">clean</span><span class="o">:</span>
+	rm -f toy
+</code></pre></td></tr></table>
+</div>
+</div>
+<h1 id="top-module">top module</h1>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code class="language-c++" data-lang="c++"><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-c++" data-lang="c++"><span class="cp">#include</span> <span class="cpf">&#34;llvm/LLVMContext.h&#34;</span><span class="cp">
+</span><span class="cp">#include</span> <span class="cpf">&#34;llvm/Module.h&#34;</span><span class="cp">
+</span><span class="cp">#include</span> <span class="cpf">&#34;llvm/Support/IRBuilder.h&#34;</span><span class="cp">
+</span><span class="cp"></span>
+<span class="kt">int</span> <span class="nf">main</span><span class="p">()</span>
+<span class="p">{</span>
+  <span class="n">llvm</span><span class="o">::</span><span class="n">LLVMContext</span><span class="o">&amp;</span> <span class="n">context</span> <span class="o">=</span> <span class="n">llvm</span><span class="o">::</span><span class="n">getGlobalContext</span><span class="p">();</span>
+  <span class="n">llvm</span><span class="o">::</span><span class="n">Module</span><span class="o">*</span> <span class="n">module</span> <span class="o">=</span> <span class="k">new</span> <span class="n">llvm</span><span class="o">::</span><span class="n">Module</span><span class="p">(</span><span class="s">&#34;top&#34;</span><span class="p">,</span> <span class="n">context</span><span class="p">);</span>
+  <span class="n">llvm</span><span class="o">::</span><span class="n">IRBuilder</span><span class="o">&lt;&gt;</span> <span class="n">builder</span><span class="p">(</span><span class="n">context</span><span class="p">);</span>
+
+  <span class="n">module</span><span class="o">-&gt;</span><span class="n">dump</span><span class="p">(</span> <span class="p">);</span>
+<span class="p">}</span>
+</code></pre></td></tr></table>
+</div>
+</div>
+<h1 id="function">function</h1>
+
+<h2 id="宣告function">宣告function</h2>
+
+<h3 id="無參數">無參數</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code class="language-c++" data-lang="c++"><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-c++" data-lang="c++">  <span class="n">llvm</span><span class="o">::</span><span class="n">FunctionType</span> <span class="o">*</span><span class="n">funcType</span> <span class="o">=</span>
+      <span class="n">llvm</span><span class="o">::</span><span class="n">FunctionType</span><span class="o">::</span><span class="n">get</span><span class="p">(</span><span class="n">builder</span><span class="p">.</span><span class="n">getInt32Ty</span><span class="p">(),</span> <span class="nb">false</span><span class="p">);</span>
+  <span class="n">llvm</span><span class="o">::</span><span class="n">Function</span> <span class="o">*</span><span class="n">mainFunc</span> <span class="o">=</span> <span class="n">llvm</span><span class="o">::</span><span class="n">Function</span><span class="o">::</span><span class="n">Create</span><span class="p">(</span><span class="n">funcType</span><span class="p">,</span> <span class="n">llvm</span><span class="o">::</span><span class="n">Function</span><span class="o">::</span><span class="n">ExternalLinkage</span><span class="p">,</span> <span class="s">&#34;main&#34;</span><span class="p">,</span> <span class="n">module</span><span class="p">);</span>
+</code></pre></td></tr></table>
+</div>
+</div>
+<h3 id="有參數">有參數</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code class="language-c++" data-lang="c++"><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-c++" data-lang="c++">  <span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span> <span class="n">llvm</span><span class="o">::</span><span class="n">Type</span><span class="o">*</span> <span class="o">&gt;</span> <span class="n">putsArgs</span><span class="p">;</span>
+  <span class="n">putsArgs</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="n">builder</span><span class="p">.</span><span class="n">getInt8Ty</span><span class="p">()</span><span class="o">-&gt;</span><span class="n">getPointerTo</span><span class="p">());</span>
+  <span class="n">llvm</span><span class="o">::</span><span class="n">ArrayRef</span><span class="o">&lt;</span> <span class="n">llvm</span><span class="o">::</span><span class="n">Type</span><span class="o">*</span> <span class="o">&gt;</span>  <span class="n">argsRef</span><span class="p">(</span><span class="n">putsArgs</span><span class="p">);</span>
+
+  <span class="n">llvm</span><span class="o">::</span><span class="n">FunctionType</span> <span class="o">*</span><span class="n">putsType</span> <span class="o">=</span>
+    <span class="n">llvm</span><span class="o">::</span><span class="n">FunctionType</span><span class="o">::</span><span class="n">get</span><span class="p">(</span><span class="n">builder</span><span class="p">.</span><span class="n">getInt32Ty</span><span class="p">(),</span> <span class="n">argsRef</span><span class="p">,</span> <span class="nb">false</span><span class="p">);</span>
+</code></pre></td></tr></table>
+</div>
+</div>
+<h2 id="定義function">定義function</h2>
+
+<h3 id="引用已有的function">引用已有的function</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code class="language-c++" data-lang="c++"><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-c++" data-lang="c++">  <span class="n">llvm</span><span class="o">::</span><span class="n">Constant</span> <span class="o">*</span><span class="n">putsFunc</span> <span class="o">=</span> <span class="n">module</span><span class="o">-&gt;</span><span class="n">getOrInsertFunction</span><span class="p">(</span><span class="s">&#34;puts&#34;</span><span class="p">,</span> <span class="n">putsType</span><span class="p">);</span>
+</code></pre></td></tr></table>
+</div>
+</div>
+<h3 id="創造新的function">創造新的function</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code class="language-c++" data-lang="c++"><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-c++" data-lang="c++">  <span class="n">llvm</span><span class="o">::</span><span class="n">BasicBlock</span> <span class="o">*</span><span class="n">entry</span> <span class="o">=</span> <span class="n">llvm</span><span class="o">::</span><span class="n">BasicBlock</span><span class="o">::</span><span class="n">Create</span><span class="p">(</span><span class="n">context</span><span class="p">,</span> <span class="s">&#34;entrypoint&#34;</span><span class="p">,</span> <span class="n">mainFunc</span><span class="p">);</span>
+  <span class="n">builder</span><span class="p">.</span><span class="n">SetInsertPoint</span><span class="p">(</span><span class="n">entry</span><span class="p">);</span>
+</code></pre></td></tr></table>
+</div>
+</div>
+<p>增添function內容</p>
+
+<h1 id="新增變數">新增變數</h1>
+
+<ul>
+<li>global variable</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><span class="lnt">1
+</span></pre></td>
+<td class="lntd">
+<pre class="chroma">  llvm::Value *helloWorld = builder.CreateGlobalStringPtr(&#34;hello world!\n&#34;);</pre></td></tr></table>
+</div>
+</div>
+<ul>
+<li>local variable</li>
+</ul>
+
+<h1 id="reference">Reference</h1>
+
+<p><a href="http://www.ibm.com/developerworks/library/os-createcompilerllvm1/">Create a working compiler with the LLVM framework</a></p>
+
+    </div>
+
+    
+<footer class="post-footer">
+      <div class="post-tags">
+          <a href="/tags/llvm/">llvm</a>
+          <a href="/tags/compiler/">compiler</a>
+          </div>
+      <nav class="post-nav">
+        <a class="prev" href="/2015-08-12/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">在mutt設定gmail</span>
+            <span class="prev-text nav-mobile"></span>
+          </a>
+        <a class="next" href="/2015-06-07/">
+            <span class="next-text nav-default">在linux上跑git server</span>
+            <span class="next-text nav-mobile"></span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        <div id="disqus_thread"></div>
+    <script type="text/javascript">
+    (function() {
+      
+      
+      if (window.location.hostname === 'localhost') return;
+
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      var disqus_shortname = 'blog-vygy2ifrxm';
+      dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="cdfq152313@gmail.com" class="iconfont icon-email" title="email"></a>
+      <a href="https://www.facebook.com/AddweupDennyCheng" class="iconfont icon-facebook" title="facebook"></a>
+      <a href="https://github.com/cdfq152313/" class="iconfont icon-github" title="github"></a>
+  <a href="https://cdfq152313.github.io/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    %!(EXTRA string=<a class="hexo-link" href="https://gohugo.io">Hugo</a>)
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+     - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  
+
+  <span class="copyright-year">
+    &copy; 
+    2015 - 
+    2019
+    <span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">Denny Cheng</span>
+  </span>
+</div>
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+<script type="text/javascript" src="/dist/even.26188efa.min.js"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>

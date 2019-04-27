@@ -14,10 +14,10 @@
     
     <item>
       <title>Android JNI 環境建置</title>
-      <link>https://cdfq152313.github.io/post/notes/2016/08-05/</link>
+      <link>https://cdfq152313.github.io/2016-08-05/</link>
       <pubDate>Fri, 05 Aug 2016 00:00:00 +0000</pubDate>
       
-      <guid>https://cdfq152313.github.io/post/notes/2016/08-05/</guid>
+      <guid>https://cdfq152313.github.io/2016-08-05/</guid>
       <description>介紹 主要參考這篇：Android studio 1.5.1 NDK JNI環境安裝與執行原理 不過Android 2.1.2上步驟稍有簡化，還是可以達到同樣效果。 載NDK 設定</description>
     </item>
     

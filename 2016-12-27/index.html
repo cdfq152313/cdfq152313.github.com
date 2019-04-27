@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="zh-hant">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>Python Mac Sierra pyinstaller py2app 的權限問題 - Denny&#39;s Blog</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="Denny Cheng" /><meta name="description" content="最近遇到一個問題，使用pyinstaller製作執行檔後，在本機運作上ok，但是一傳給別人使用就會出問題。可是用右鍵show packages" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.54.0 with even 4.0.0" />
+
+
+<link rel="canonical" href="https://cdfq152313.github.io/2016-12-27/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+
+<link href="/dist/even.c2a46f00.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="Python Mac Sierra pyinstaller py2app 的權限問題" />
+<meta property="og:description" content="最近遇到一個問題，使用pyinstaller製作執行檔後，在本機運作上ok，但是一傳給別人使用就會出問題。可是用右鍵show packages" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://cdfq152313.github.io/2016-12-27/" />
+<meta property="article:published_time" content="2016-12-27T00:00:00&#43;00:00"/>
+<meta property="article:modified_time" content="2016-12-27T00:00:00&#43;00:00"/>
+
+<meta itemprop="name" content="Python Mac Sierra pyinstaller py2app 的權限問題">
+<meta itemprop="description" content="最近遇到一個問題，使用pyinstaller製作執行檔後，在本機運作上ok，但是一傳給別人使用就會出問題。可是用右鍵show packages">
+
+
+<meta itemprop="datePublished" content="2016-12-27T00:00:00&#43;00:00" />
+<meta itemprop="dateModified" content="2016-12-27T00:00:00&#43;00:00" />
+<meta itemprop="wordCount" content="467">
+
+
+
+<meta itemprop="keywords" content="python," />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Python Mac Sierra pyinstaller py2app 的權限問題"/>
+<meta name="twitter:description" content="最近遇到一個問題，使用pyinstaller製作執行檔後，在本機運作上ok，但是一傳給別人使用就會出問題。可是用右鍵show packages"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">Denny&#39;s Blog</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">Home</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">Archives</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">Tags</li>
+      </a><a href="/about/">
+        <li class="mobile-menu-item">About</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">Denny&#39;s Blog</a>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">Home</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">Archives</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">Tags</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/about/">About</a>
+      </li>
+  </ul>
+</nav>
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">Python Mac Sierra pyinstaller py2app 的權限問題</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2016-12-27 </span>
+        <div class="post-category">
+            <a href="/categories/notes/"> notes </a>
+            </div>
+        
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title"></h2>
+  <div class="post-toc-content always-active">
+    
+  </div>
+</div>
+    <div class="post-content">
+      <p>最近遇到一個問題，使用pyinstaller製作執行檔後，在本機運作上ok，但是一傳給別人使用就會出問題。可是用右鍵show packages裡面的Content/MacOS/執行檔，是可以正常使用的。<br />
+這讓我非常困惑，後來才發現是Sierra權限設定更改。</p>
+
+<p>英文好的可以直接看下面就解決了：<br />
+<a href="http://lapcatsoftware.com/articles/app-translocation.html">http://lapcatsoftware.com/articles/app-translocation.html</a></p>
+
+<p>英文不好的簡單翻譯就是：</p>
+
+<p>macos在Sierra的版本改變了對未知的應用程式的行為。如果你的應用程式是不明來源(Ex:網路下載)，那macos在執行這個程式的時候就會把程式挪進App Translocation這個唯讀空間再執行。<br />
+這有可能出現兩個問題，第一是你的程式如果涉及資料儲存，唯讀空間是不能存的，程式就會失敗。第二個問題是被移動的只有程式本身，萬一你的程式必須仰賴資料夾中的其他的檔案才能執行，那也會失敗。</p>
+
+<p>解決方法是拖拉這個app到任意其他位置(ex:桌面)，OSX就不會再幫你把這個app放進唯讀資料夾執行。</p>
+
+<p>還記得幾乎所有的MAC app都需要拖拉到應用程式裡面才能使用嗎? MAC應該就是希望你對想使用的APP進行過此一確認才加上這個功能。</p>
+
+    </div>
+
+    
+<footer class="post-footer">
+      <div class="post-tags">
+          <a href="/tags/python/">python</a>
+          </div>
+      <nav class="post-nav">
+        <a class="prev" href="/2016-12-28/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">[讀書心得] 圖解密碼學與比特幣原理</span>
+            <span class="prev-text nav-mobile"></span>
+          </a>
+        <a class="next" href="/2016-11-24/">
+            <span class="next-text nav-default">基礎知識惡補 - Http協定</span>
+            <span class="next-text nav-mobile"></span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        <div id="disqus_thread"></div>
+    <script type="text/javascript">
+    (function() {
+      
+      
+      if (window.location.hostname === 'localhost') return;
+
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      var disqus_shortname = 'blog-vygy2ifrxm';
+      dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="cdfq152313@gmail.com" class="iconfont icon-email" title="email"></a>
+      <a href="https://www.facebook.com/AddweupDennyCheng" class="iconfont icon-facebook" title="facebook"></a>
+      <a href="https://github.com/cdfq152313/" class="iconfont icon-github" title="github"></a>
+  <a href="https://cdfq152313.github.io/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    %!(EXTRA string=<a class="hexo-link" href="https://gohugo.io">Hugo</a>)
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+     - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  
+
+  <span class="copyright-year">
+    &copy; 
+    2015 - 
+    2019
+    <span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">Denny Cheng</span>
+  </span>
+</div>
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+<script type="text/javascript" src="/dist/even.26188efa.min.js"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>

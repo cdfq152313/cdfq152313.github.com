@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="zh-hant">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>renpy (6) 讀檔 - Denny&#39;s Blog</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="Denny Cheng" /><meta name="description" content="前言 renpy加入對話很簡單，不過想要加入文本就不是那麼容易了。有的時候想要在遊戲中閱讀長文本，還需要插入\n來作為換行，頗不方便。這個時候" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.54.0 with even 4.0.0" />
+
+
+<link rel="canonical" href="https://cdfq152313.github.io/2017-04-24/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+
+<link href="/dist/even.c2a46f00.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="renpy (6) 讀檔" />
+<meta property="og:description" content="前言 renpy加入對話很簡單，不過想要加入文本就不是那麼容易了。有的時候想要在遊戲中閱讀長文本，還需要插入\n來作為換行，頗不方便。這個時候" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://cdfq152313.github.io/2017-04-24/" />
+<meta property="article:published_time" content="2017-04-24T04:25:31&#43;00:00"/>
+<meta property="article:modified_time" content="2017-04-24T04:25:31&#43;00:00"/>
+
+<meta itemprop="name" content="renpy (6) 讀檔">
+<meta itemprop="description" content="前言 renpy加入對話很簡單，不過想要加入文本就不是那麼容易了。有的時候想要在遊戲中閱讀長文本，還需要插入\n來作為換行，頗不方便。這個時候">
+
+
+<meta itemprop="datePublished" content="2017-04-24T04:25:31&#43;00:00" />
+<meta itemprop="dateModified" content="2017-04-24T04:25:31&#43;00:00" />
+<meta itemprop="wordCount" content="780">
+
+
+
+<meta itemprop="keywords" content="python,renpy," />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="renpy (6) 讀檔"/>
+<meta name="twitter:description" content="前言 renpy加入對話很簡單，不過想要加入文本就不是那麼容易了。有的時候想要在遊戲中閱讀長文本，還需要插入\n來作為換行，頗不方便。這個時候"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">Denny&#39;s Blog</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">Home</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">Archives</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">Tags</li>
+      </a><a href="/about/">
+        <li class="mobile-menu-item">About</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">Denny&#39;s Blog</a>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">Home</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">Archives</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">Tags</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/about/">About</a>
+      </li>
+  </ul>
+</nav>
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">renpy (6) 讀檔</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2017-04-24 </span>
+        <div class="post-category">
+            <a href="/categories/notes/"> notes </a>
+            </div>
+        
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title"></h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+<ul>
+<li><a href="#前言">前言</a></li>
+<li><a href="#renpy讀檔函式">Renpy讀檔函式</a></li>
+<li><a href="#renpy路徑問題">Renpy路徑問題</a></li>
+<li><a href="#最後碎碎念">最後碎碎念</a></li>
+</ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      
+
+<h1 id="前言">前言</h1>
+
+<p>renpy加入對話很簡單，不過想要加入文本就不是那麼容易了。有的時候想要在遊戲中閱讀長文本，還需要插入\n來作為換行，頗不方便。這個時候讀檔功能就派上用場了。<br />
+在這裡要注意，不能使用python原生的開檔函式，否則程式有一定可能出錯(詳情看最後一段)。</p>
+
+<h1 id="renpy讀檔函式">Renpy讀檔函式</h1>
+
+<p><a href="https://www.renpy.org/doc/html/file_python.html">官方讀檔文件</a>在這裡。<br />
+不過在讀unicode檔案的時候，還需要做一些特別處理才行，否則讀出來的檔案都是亂碼。以下為範例程式碼，為python語法。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code class="language-python" data-lang="python"><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-python" data-lang="python"><span class="k">def</span> <span class="nf">read_file</span><span class="p">(</span><span class="n">filepath</span><span class="p">):</span>
+    <span class="kn">import</span> <span class="nn">codecs</span>
+
+    <span class="c1"># 開檔</span>
+    <span class="n">f</span> <span class="o">=</span> <span class="n">renpy</span><span class="o">.</span><span class="nb">file</span><span class="p">(</span><span class="n">filepath</span><span class="p">)</span>
+    <span class="c1"># 讀入檔案</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+    <span class="c1"># 轉換為unicode</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="n">codecs</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="s1">&#39;utf-8&#39;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">data</span></code></pre></td></tr></table>
+</div>
+</div>
+<p>如此一來，最後產生的data就會是unicode格式囉。</p>
+
+<p>另外，原本想使用官網上所提供的renpy.fsdecode(s)來做編碼轉換，但是失敗了，可能是沒搞懂用法。後來就使用python原生的codec來做轉換。運作得還算不錯。</p>
+
+<h1 id="renpy路徑問題">Renpy路徑問題</h1>
+
+<p>renpy的path一律是以game資料夾作為根目錄，往下一層目錄是使用&rsquo;/&lsquo;作為識別。所以不用自作聰明使用python原生地os.path.join函式來合成路徑。在windows合成出來的路徑反而會出錯，因為windows是用反斜線&rsquo;\&lsquo;來分割目錄的。<br />
+以下為組合路徑的方法。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code class="language-python" data-lang="python"><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-python" data-lang="python"><span class="c1"># 假設路徑為game目錄底下的info資料夾裡面的info01.txt檔案</span>
+<span class="n">filepath</span> <span class="o">=</span> <span class="s1">&#39;info/info01.txt&#39;</span></code></pre></td></tr></table>
+</div>
+</div>
+<h1 id="最後碎碎念">最後碎碎念</h1>
+
+<p>其實也並不是不能使用原生地python函式來做開檔，但是要記得一件事，如果你有在renpy的設定中封裝檔案，像下列程式碼。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code class="language-python" data-lang="python"><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-python" data-lang="python"><span class="c1"># 在options.rpy中</span>
+<span class="n">build</span><span class="o">.</span><span class="n">classify</span><span class="p">(</span><span class="s1">&#39;game/info/*.txt&#39;</span><span class="p">,</span> <span class="s1">&#39;data&#39;</span><span class="p">)</span></code></pre></td></tr></table>
+</div>
+</div>
+<p>那麼在製作釋出版時，這些資料會很自然地被封裝到data.rpa的檔案中。如此一來。python原生函式所取得的路徑，自然就會抓不到任何東西。<br />
+反過來說，只要你不封裝任何檔案，那你想使用任何python的函式都沒問題(ex: os.path.join / open / &hellip;)</p>
+
+    </div>
+
+    
+<footer class="post-footer">
+      <div class="post-tags">
+          <a href="/tags/python/">python</a>
+          <a href="/tags/renpy/">renpy</a>
+          </div>
+      <nav class="post-nav">
+        <a class="prev" href="/2017-04-27/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">[Java] Date SimpleDateFormat Calendar之轉換與時區(UTC/GMT)問題</span>
+            <span class="prev-text nav-mobile"></span>
+          </a>
+        <a class="next" href="/2017-04-02/">
+            <span class="next-text nav-default">Android 利用gson解析json</span>
+            <span class="next-text nav-mobile"></span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        <div id="disqus_thread"></div>
+    <script type="text/javascript">
+    (function() {
+      
+      
+      if (window.location.hostname === 'localhost') return;
+
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      var disqus_shortname = 'blog-vygy2ifrxm';
+      dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="cdfq152313@gmail.com" class="iconfont icon-email" title="email"></a>
+      <a href="https://www.facebook.com/AddweupDennyCheng" class="iconfont icon-facebook" title="facebook"></a>
+      <a href="https://github.com/cdfq152313/" class="iconfont icon-github" title="github"></a>
+  <a href="https://cdfq152313.github.io/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    %!(EXTRA string=<a class="hexo-link" href="https://gohugo.io">Hugo</a>)
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+     - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  
+
+  <span class="copyright-year">
+    &copy; 
+    2015 - 
+    2019
+    <span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">Denny Cheng</span>
+  </span>
+</div>
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+<script type="text/javascript" src="/dist/even.26188efa.min.js"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>

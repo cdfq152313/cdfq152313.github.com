@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="zh-hant">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>[Design] SocketIO與Queue - Denny&#39;s Blog</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="Denny Cheng" /><meta name="description" content="問題 今天才發現應該要有的一個小小設計，在使用SocketIO(或其他強連線函式庫)時，可能會希望連線後，立刻執行某條指令。 舉例來說，如果現在" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.54.0 with even 4.0.0" />
+
+
+<link rel="canonical" href="https://cdfq152313.github.io/2017-05-01/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+
+<link href="/dist/even.c2a46f00.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="[Design] SocketIO與Queue" />
+<meta property="og:description" content="問題 今天才發現應該要有的一個小小設計，在使用SocketIO(或其他強連線函式庫)時，可能會希望連線後，立刻執行某條指令。 舉例來說，如果現在" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://cdfq152313.github.io/2017-05-01/" />
+<meta property="article:published_time" content="2017-05-01T12:44:55&#43;08:00"/>
+<meta property="article:modified_time" content="2017-05-01T12:44:55&#43;08:00"/>
+
+<meta itemprop="name" content="[Design] SocketIO與Queue">
+<meta itemprop="description" content="問題 今天才發現應該要有的一個小小設計，在使用SocketIO(或其他強連線函式庫)時，可能會希望連線後，立刻執行某條指令。 舉例來說，如果現在">
+
+
+<meta itemprop="datePublished" content="2017-05-01T12:44:55&#43;08:00" />
+<meta itemprop="dateModified" content="2017-05-01T12:44:55&#43;08:00" />
+<meta itemprop="wordCount" content="684">
+
+
+
+<meta itemprop="keywords" content="設計模式," />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="[Design] SocketIO與Queue"/>
+<meta name="twitter:description" content="問題 今天才發現應該要有的一個小小設計，在使用SocketIO(或其他強連線函式庫)時，可能會希望連線後，立刻執行某條指令。 舉例來說，如果現在"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">Denny&#39;s Blog</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">Home</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">Archives</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">Tags</li>
+      </a><a href="/about/">
+        <li class="mobile-menu-item">About</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">Denny&#39;s Blog</a>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">Home</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">Archives</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">Tags</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/about/">About</a>
+      </li>
+  </ul>
+</nav>
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">[Design] SocketIO與Queue</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2017-05-01 </span>
+        <div class="post-category">
+            <a href="/categories/notes/"> notes </a>
+            </div>
+        
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title"></h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+<ul>
+<li><a href="#問題">問題</a></li>
+<li><a href="#更多問題">更多問題</a></li>
+<li><a href="#用queue解決">用Queue解決</a></li>
+</ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      
+
+<h1 id="問題">問題</h1>
+
+<p>今天才發現應該要有的一個小小設計，在使用SocketIO(或其他強連線函式庫)時，可能會希望連線後，立刻執行某條指令。<br />
+舉例來說，如果現在有兩台裝置(稱為AB)，想用SocketIO進行對接，步驟為</p>
+
+<ol>
+<li>B已經連上Server，並有一組房間編號。</li>
+<li>A在線下取得B之編號</li>
+<li>A連上Server</li>
+<li>A知會Server房間編號。</li>
+<li>A知會B，&rdquo;你好 拎北來阿。&rdquo;</li>
+</ol>
+
+<p>我一開始是4和5都直接塞在onConnection的時候，也就是一連上就執行。但是如果socketio斷線了，那重連的時候，5就會重複發送。也就是說B會再次看到&rdquo;你好 拎北來阿。&rdquo;</p>
+
+<h1 id="更多問題">更多問題</h1>
+
+<p>解決問題的方法也很單純，就是把5從onConnection切開來，等連上後再執行即可。不過這邊就出現另一個問題，我怎麼知道SocketIO連上了？我一開始想用Listener解決，等連上後通知我該執行5的動作。但是這樣程式碼寫起來超不直覺。</p>
+
+<p>明明應該是</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><span class="lnt">1
+</span><span class="lnt">2
+</span></pre></td>
+<td class="lntd">
+<pre class="chroma">1. socketIO 連上後知會房間編號
+2. socketIO 拎北來阿</pre></td></tr></table>
+</div>
+</div>
+<p>變成Listener的話就變成</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><span class="lnt">1
+</span><span class="lnt">2
+</span></pre></td>
+<td class="lntd">
+<pre class="chroma">1. socketIO 連上後知會房間編號, 再通知那個Call function的人我連上了。
+2. 我接收到通知了，拎北來阿</pre></td></tr></table>
+</div>
+</div>
+<p>怎麼樣都覺得第一種方法比較直觀容易理解。</p>
+
+<h1 id="用queue解決">用Queue解決</h1>
+
+<p>後來解決方法就是，做一個Queue蒐集沒Connect時的指令。所有沒Connect時的Message都會跑進這個Queue。等到Connect上後再把Queue裡的指令批次發送就好了。</p>
+
+<p>這樣就可以繼續用</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><span class="lnt">1
+</span><span class="lnt">2
+</span></pre></td>
+<td class="lntd">
+<pre class="chroma">1. socketIO 連上後知會房間編號
+2. socketIO 拎北來阿（這行可能尚未執行，放在Queue中等待連上時批次執行）</pre></td></tr></table>
+</div>
+</div>
+<p>這樣的方式來寫Code了。</p>
+
+    </div>
+
+    
+<footer class="post-footer">
+      <div class="post-tags">
+          <a href="/tags/%E8%A8%AD%E8%A8%88%E6%A8%A1%E5%BC%8F/">設計模式</a>
+          </div>
+      <nav class="post-nav">
+        <a class="prev" href="/2017-05-18/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">Mac/Linux的Bash主題(theme)設定</span>
+            <span class="prev-text nav-mobile"></span>
+          </a>
+        <a class="next" href="/2017-04-27/">
+            <span class="next-text nav-default">[Java] Date SimpleDateFormat Calendar之轉換與時區(UTC/GMT)問題</span>
+            <span class="next-text nav-mobile"></span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        <div id="disqus_thread"></div>
+    <script type="text/javascript">
+    (function() {
+      
+      
+      if (window.location.hostname === 'localhost') return;
+
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      var disqus_shortname = 'blog-vygy2ifrxm';
+      dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="cdfq152313@gmail.com" class="iconfont icon-email" title="email"></a>
+      <a href="https://www.facebook.com/AddweupDennyCheng" class="iconfont icon-facebook" title="facebook"></a>
+      <a href="https://github.com/cdfq152313/" class="iconfont icon-github" title="github"></a>
+  <a href="https://cdfq152313.github.io/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    %!(EXTRA string=<a class="hexo-link" href="https://gohugo.io">Hugo</a>)
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+     - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  
+
+  <span class="copyright-year">
+    &copy; 
+    2015 - 
+    2019
+    <span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">Denny Cheng</span>
+  </span>
+</div>
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+<script type="text/javascript" src="/dist/even.26188efa.min.js"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>

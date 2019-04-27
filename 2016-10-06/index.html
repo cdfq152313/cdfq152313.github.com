@@ -1,0 +1,562 @@
+<!DOCTYPE html>
+<html lang="zh-hant">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>Swift 聲音播放與錄製 - Denny&#39;s Blog</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="Denny Cheng" /><meta name="description" content="播放系統音效 超簡單只需要兩行 1 2 import AudioToolbox AudioServicesPlaySystemSound(1000) 播放自己放在app的音樂 先把自己的音效拖進Xcode，記得選擇&amp;rdquo;copy items if needed&amp;" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.54.0 with even 4.0.0" />
+
+
+<link rel="canonical" href="https://cdfq152313.github.io/2016-10-06/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+
+<link href="/dist/even.c2a46f00.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="Swift 聲音播放與錄製" />
+<meta property="og:description" content="播放系統音效 超簡單只需要兩行 1 2 import AudioToolbox AudioServicesPlaySystemSound(1000) 播放自己放在app的音樂 先把自己的音效拖進Xcode，記得選擇&rdquo;copy items if needed&" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://cdfq152313.github.io/2016-10-06/" />
+<meta property="article:published_time" content="2016-10-06T00:00:00&#43;00:00"/>
+<meta property="article:modified_time" content="2016-10-06T00:00:00&#43;00:00"/>
+
+<meta itemprop="name" content="Swift 聲音播放與錄製">
+<meta itemprop="description" content="播放系統音效 超簡單只需要兩行 1 2 import AudioToolbox AudioServicesPlaySystemSound(1000) 播放自己放在app的音樂 先把自己的音效拖進Xcode，記得選擇&rdquo;copy items if needed&">
+
+
+<meta itemprop="datePublished" content="2016-10-06T00:00:00&#43;00:00" />
+<meta itemprop="dateModified" content="2016-10-06T00:00:00&#43;00:00" />
+<meta itemprop="wordCount" content="1166">
+
+
+
+<meta itemprop="keywords" content="ios,swift," />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Swift 聲音播放與錄製"/>
+<meta name="twitter:description" content="播放系統音效 超簡單只需要兩行 1 2 import AudioToolbox AudioServicesPlaySystemSound(1000) 播放自己放在app的音樂 先把自己的音效拖進Xcode，記得選擇&rdquo;copy items if needed&"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">Denny&#39;s Blog</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">Home</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">Archives</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">Tags</li>
+      </a><a href="/about/">
+        <li class="mobile-menu-item">About</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">Denny&#39;s Blog</a>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">Home</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">Archives</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">Tags</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/about/">About</a>
+      </li>
+  </ul>
+</nav>
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">Swift 聲音播放與錄製</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2016-10-06 </span>
+        <div class="post-category">
+            <a href="/categories/notes/"> notes </a>
+            </div>
+        
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title"></h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+<ul>
+<li><a href="#播放系統音效">播放系統音效</a></li>
+<li><a href="#播放自己放在app的音樂">播放自己放在app的音樂</a>
+<ul>
+<li><a href="#步驟">步驟</a></li>
+<li><a href="#其他好用的方法">其他好用的方法</a></li>
+</ul></li>
+<li><a href="#播放手機內部的音樂">播放手機內部的音樂</a>
+<ul>
+<li><a href="#步驟-1">步驟</a></li>
+<li><a href="#權限設定">權限設定</a></li>
+<li><a href="#mpmediapickercontrollerdelegate的實作">MPMediaPickerControllerDelegate的實作</a></li>
+</ul></li>
+<li><a href="#錄音">錄音</a>
+<ul>
+<li><a href="#權限設定-1">權限設定</a></li>
+<li><a href="#步驟2-3-4-5">步驟2 3 4 5</a></li>
+<li><a href="#avaudiorecorderdelegate的實作">AVAudioRecorderDelegate的實作</a></li>
+<li><a href="#開始錄音">開始錄音</a></li>
+<li><a href="#停止錄音">停止錄音</a></li>
+</ul></li>
+</ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      
+
+<h1 id="播放系統音效">播放系統音效</h1>
+
+<p>超簡單只需要兩行</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code class="language-swift" data-lang="swift"><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-swift" data-lang="swift"><span class="kd">import</span> <span class="nc">AudioToolbox</span>
+<span class="n">AudioServicesPlaySystemSound</span><span class="p">(</span><span class="mi">1000</span><span class="p">)</span></code></pre></td></tr></table>
+</div>
+</div>
+<h1 id="播放自己放在app的音樂">播放自己放在app的音樂</h1>
+
+<p>先把自己的音效拖進Xcode，記得選擇&rdquo;copy items if needed&rdquo;，否則只會放入reference。<br />
+可以開一個新的Group(資料夾圖示)來專門放置音檔。</p>
+
+<h2 id="步驟">步驟</h2>
+
+<ol>
+<li>找到檔案在哪(用Bundle)</li>
+<li>產生URL</li>
+<li>產生AVAudioPlayer</li>
+</ol>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code class="language-swift" data-lang="swift"><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-swift" data-lang="swift"><span class="c1">// AVAudioPlayer初始化</span>
+<span class="kd">func</span> <span class="nf">myPlayerInit</span><span class="p">()-&gt;</span><span class="n">AVAudioPlayer</span><span class="p">?{</span>
+	<span class="k">guard</span> <span class="kd">let</span> <span class="nv">path</span> <span class="p">=</span> <span class="n">Bundle</span><span class="p">.</span><span class="n">main</span><span class="p">.</span><span class="n">path</span><span class="p">(</span><span class="n">forResource</span><span class="p">:</span> <span class="s">&#34;Right&#34;</span><span class="p">,</span> <span class="n">ofType</span><span class="p">:</span><span class="s">&#34;mp3&#34;</span><span class="p">)</span> <span class="k">else</span><span class="p">{</span>
+		<span class="k">return</span> <span class="kc">nil</span>
+	<span class="p">}</span>
+
+  <span class="kd">let</span> <span class="nv">audioURL</span> <span class="p">=</span> <span class="n">URL</span><span class="p">(</span><span class="n">fileURLWithPath</span><span class="p">:</span> <span class="n">path</span><span class="p">)</span>
+  <span class="k">do</span><span class="p">{</span>
+  	<span class="k">return</span> <span class="k">try</span> <span class="n">AVAudioPlayer</span><span class="p">(</span><span class="n">contentsOf</span><span class="p">:</span> <span class="n">audioURL</span><span class="p">)</span>
+  <span class="p">}</span>
+  <span class="k">catch</span><span class="p">{</span>
+    <span class="bp">print</span><span class="p">(</span><span class="s">&#34;AVAudio Player Init failed&#34;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="kc">nil</span>
+  <span class="p">}</span>
+<span class="p">}</span></code></pre></td></tr></table>
+</div>
+</div><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code class="language-swift" data-lang="swift"><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-swift" data-lang="swift"><span class="c1">// 利用button播放 每次按下都將聲音時間歸零</span>
+<span class="kd">let</span> <span class="nv">myPlayer</span> <span class="p">=</span> <span class="n">myPlayerInit</span><span class="p">()</span>
+<span class="n">myPlayer</span><span class="p">?.</span><span class="n">play</span><span class="p">()</span></code></pre></td></tr></table>
+</div>
+</div>
+<h2 id="其他好用的方法">其他好用的方法</h2>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code class="language-swift" data-lang="swift"><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-swift" data-lang="swift"><span class="n">myPlayer</span><span class="p">?.</span><span class="n">stop</span><span class="p">()</span> <span class="c1">// 停止</span>
+<span class="n">myPlayer</span><span class="p">?.</span><span class="n">currentTime</span> <span class="p">=</span> <span class="mi">0</span> <span class="c1">// 把音檔時間歸零</span>
+<span class="n">myPlayer</span><span class="p">?.</span><span class="n">numberOfLoops</span> <span class="p">=</span> <span class="mi">2</span> <span class="c1">// 重複播放次數，若為負數則為無限次播放</span>
+<span class="n">myPlayer</span><span class="p">?.</span><span class="n">volume</span> <span class="p">=</span> <span class="mf">0.5</span> <span class="c1">// 調整音量</span>
+
+<span class="c1">// 把播放速度調慢或調快</span>
+<span class="n">myPlayer</span><span class="p">?.</span><span class="n">enableRate</span> <span class="p">=</span> <span class="kc">true</span>
+<span class="n">myPlayer</span><span class="p">?.</span><span class="n">rate</span> <span class="p">=</span> <span class="mf">0.5</span></code></pre></td></tr></table>
+</div>
+</div>
+<h1 id="播放手機內部的音樂">播放手機內部的音樂</h1>
+
+<p>利用MPMediaPickerController，此一Controller會讓你選擇音樂。我們只需要指定選完音樂(或沒選到)要做什麼動作即可。</p>
+
+<h2 id="步驟-1">步驟</h2>
+
+<ol>
+<li>在Xcode調整權限
+
+<ul>
+<li>在info.plist裡面新增 &ldquo;Privacy - Media Library Ussage Description&rdquo;</li>
+<li>在右方新增你的理由</li>
+</ul></li>
+<li>新增MPMediaPickerController</li>
+<li>實作MPMediaPickerController之delegate (MPMediaPickerControllerDelegate)
+
+<ul>
+<li>取消不動作</li>
+<li>選取到音樂則播放</li>
+</ul></li>
+<li>指定2實作的delegate給1</li>
+</ol>
+
+<h2 id="權限設定">權限設定</h2>
+
+<p><img src="http://i.imgur.com/m9279lW.png" alt="存取影音檔案權限" /></p>
+
+<h2 id="mpmediapickercontrollerdelegate的實作">MPMediaPickerControllerDelegate的實作</h2>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code class="language-swift" data-lang="swift"><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-swift" data-lang="swift"><span class="c1">// 取消不動作直接消除視窗</span>
+<span class="kd">func</span> <span class="nf">mediaPickerDidCancel</span><span class="p">(</span><span class="kc">_</span> <span class="n">mediaPicker</span><span class="p">:</span> <span class="n">MPMediaPickerController</span><span class="p">)</span> <span class="p">{</span>
+	<span class="n">dismiss</span><span class="p">(</span><span class="n">animated</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span> <span class="n">completion</span><span class="p">:</span> <span class="kc">nil</span><span class="p">)</span>
+<span class="p">}</span>
+
+<span class="c1">// 選取到音樂則播放</span>
+<span class="kd">func</span> <span class="nf">mediaPicker</span><span class="p">(</span><span class="kc">_</span> <span class="n">mediaPicker</span><span class="p">:</span> <span class="n">MPMediaPickerController</span><span class="p">,</span> <span class="n">didPickMediaItems</span> <span class="n">mediaItemCollection</span><span class="p">:</span> <span class="n">MPMediaItemCollection</span><span class="p">)</span> <span class="p">{</span>
+  <span class="kd">let</span> <span class="nv">musicPlayer</span> <span class="p">=</span> <span class="n">MPMusicPlayerController</span><span class="p">.</span><span class="n">applicationMusicPlayer</span><span class="p">()</span>
+  <span class="n">musicPlayer</span><span class="p">.</span><span class="n">setQueue</span><span class="p">(</span><span class="n">with</span><span class="p">:</span><span class="n">mediaItemCollection</span><span class="p">)</span>
+  <span class="n">musicPlayer</span><span class="p">.</span><span class="n">play</span><span class="p">()</span>
+  <span class="n">dismiss</span><span class="p">(</span><span class="n">animated</span><span class="p">:</span><span class="kc">true</span><span class="p">,</span> <span class="n">completion</span><span class="p">:</span> <span class="kc">nil</span><span class="p">)</span>
+<span class="p">}</span></code></pre></td></tr></table>
+</div>
+</div>
+<p>若要停止MPmusicPlayerController一樣可以使用.stop函數</p>
+
+<h1 id="錄音">錄音</h1>
+
+<ol>
+<li>在info.plist增加麥克風權限</li>
+<li>選好放置路徑並產生URL</li>
+<li>設定錄音數據(dict)</li>
+<li>產生AVAudioRecorder實體</li>
+<li>指定AVAudioRecorder的delegate
+
+<ul>
+<li>指定錄完音後執行的動作</li>
+</ul></li>
+<li>開始錄音</li>
+</ol>
+
+<h2 id="權限設定-1">權限設定</h2>
+
+<p><img src="http://i.imgur.com/WwJpAMB.png" alt="麥克風權限" /></p>
+
+<h2 id="步驟2-3-4-5">步驟2 3 4 5</h2>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code class="language-swift" data-lang="swift"><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-swift" data-lang="swift"><span class="kd">func</span> <span class="nf">audioRecorderInit</span><span class="p">()-&gt;</span><span class="n">AVAudioRecorder</span><span class="p">?{</span>
+	<span class="c1">// 步驟2 設定路徑</span>
+  <span class="kd">let</span> <span class="nv">path</span> <span class="p">=</span> <span class="n">NSHomeDirectory</span><span class="p">()</span> <span class="o">+</span> <span class="s">&#34;/Documents/user.wav&#34;</span>
+  <span class="kd">let</span> <span class="nv">url</span> <span class="p">=</span> <span class="n">URL</span><span class="p">(</span><span class="n">fileURLWithPath</span><span class="p">:</span> <span class="n">path</span><span class="p">)</span>
+  <span class="c1">// 步驟3 設定錄音數據(dict)</span>
+  <span class="kd">let</span> <span class="nv">recordSettings</span><span class="p">:[</span><span class="nb">String</span><span class="p">:</span><span class="nb">Any</span><span class="p">]</span> <span class="p">=</span> <span class="p">[</span>
+    <span class="n">AVEncoderAudioQualityKey</span> <span class="p">:</span> <span class="n">AVAudioQuality</span><span class="p">.</span><span class="bp">min</span><span class="p">.</span><span class="n">rawValue</span><span class="p">,</span>
+    <span class="n">AVEncoderBitRateKey</span><span class="p">:</span> <span class="mi">16</span><span class="p">,</span>
+    <span class="n">AVNumberOfChannelsKey</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span>
+    <span class="n">AVSampleRateKey</span><span class="p">:</span> <span class="mf">44100.0</span>
+  <span class="p">]</span>
+  <span class="k">do</span> <span class="p">{</span>
+  	<span class="c1">// 步驟4 5 產生實體並指定delegate</span>
+  	<span class="kd">let</span> <span class="nv">audioRecorder</span> <span class="p">=</span> <span class="k">try</span> <span class="n">AVAudioRecorder</span><span class="p">(</span><span class="n">url</span><span class="p">:</span> <span class="n">url</span><span class="p">,</span> <span class="n">settings</span><span class="p">:</span><span class="n">recordSettings</span><span class="p">)</span>
+    <span class="n">audioRecorder</span><span class="p">.</span><span class="n">delegate</span> <span class="p">=</span> <span class="kc">self</span>
+    <span class="k">return</span> <span class="n">audioRecorder</span>
+  <span class="p">}</span>
+  <span class="k">catch</span><span class="p">{</span>
+  	<span class="bp">print</span><span class="p">(</span><span class="s">&#34;something is worng&#34;</span><span class="p">)</span>
+  	<span class="k">return</span> <span class="kc">nil</span>
+  <span class="p">}</span>
+<span class="p">}</span></code></pre></td></tr></table>
+</div>
+</div>
+<h2 id="avaudiorecorderdelegate的實作">AVAudioRecorderDelegate的實作</h2>
+
+<p>參數recorder的屬性url可以拿到錄製好的檔案路徑</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code class="language-swift" data-lang="swift"><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-swift" data-lang="swift"><span class="kd">func</span> <span class="nf">audioRecorderDidFinishRecording</span><span class="p">(</span><span class="kc">_</span> <span class="n">recorder</span><span class="p">:</span> <span class="n">AVAudioRecorder</span><span class="p">,</span> <span class="n">successfully</span> <span class="n">flag</span><span class="p">:</span> <span class="nb">Bool</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">if</span> <span class="n">flag</span> <span class="p">==</span> <span class="kc">true</span><span class="p">{</span>
+    <span class="k">do</span> <span class="p">{</span>
+    	<span class="k">try</span> <span class="n">audioPlayer</span> <span class="p">=</span> <span class="n">AVAudioPlayer</span><span class="p">(</span><span class="n">contentsOf</span><span class="p">:</span> <span class="n">recorder</span><span class="p">.</span><span class="n">url</span><span class="p">)</span>
+  	<span class="p">}</span>
+    <span class="k">catch</span><span class="p">{</span>
+    	<span class="bp">print</span><span class="p">(</span><span class="s">&#34;something is Wrong...&#34;</span><span class="p">)</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+<span class="p">}</span></code></pre></td></tr></table>
+</div>
+</div>
+<h2 id="開始錄音">開始錄音</h2>
+
+<p>將AVAudioSession調成AVAudioSessionCatetoryPlayAndRecord，可有效增大錄音音量。若不調整則會很小聲。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code class="language-swift" data-lang="swift"><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-swift" data-lang="swift"><span class="k">do</span> <span class="p">{</span>
+	<span class="k">try</span> <span class="n">AVAudioSession</span><span class="p">.</span><span class="n">sharedInstance</span><span class="p">().</span><span class="n">setCategory</span><span class="p">(</span><span class="n">AVAudioSessionCategoryPlayAndRecord</span><span class="p">)</span>
+<span class="p">}</span>
+<span class="k">catch</span><span class="p">{</span>
+	<span class="bp">print</span><span class="p">(</span><span class="s">&#34;can&#39;t set audio session&#34;</span><span class="p">)</span>
+<span class="p">}</span>
+<span class="n">audioRecorder</span><span class="p">?.</span><span class="n">prepareToRecord</span><span class="p">()</span>
+<span class="n">audioRecorder</span><span class="p">?.</span><span class="n">record</span><span class="p">()</span></code></pre></td></tr></table>
+</div>
+</div>
+<h2 id="停止錄音">停止錄音</h2>
+
+<p>記得把剛剛的AVAudioSession.sharedInstance()調回原樣</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code class="language-swift" data-lang="swift"><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-swift" data-lang="swift"><span class="kc">self</span><span class="p">.</span><span class="n">audioRecorder</span><span class="p">?.</span><span class="n">stop</span><span class="p">()</span>
+<span class="k">do</span><span class="p">{</span>
+	<span class="k">try</span> <span class="n">AVAudioSession</span><span class="p">.</span><span class="n">sharedInstance</span><span class="p">().</span><span class="n">setCategory</span><span class="p">(</span><span class="n">AVAudioSessionCategoryPlayback</span><span class="p">)</span>
+	<span class="k">try</span> <span class="n">AVAudioSession</span><span class="p">.</span><span class="n">sharedInstance</span><span class="p">().</span><span class="n">setActive</span><span class="p">(</span><span class="kc">false</span><span class="p">)</span>
+<span class="p">}</span>
+<span class="k">catch</span><span class="p">{</span>
+	<span class="bp">print</span><span class="p">(</span><span class="s">&#34;can&#39;t set audio session&#34;</span><span class="p">)</span>
+<span class="p">}</span></code></pre></td></tr></table>
+</div>
+</div>
+    </div>
+
+    
+<footer class="post-footer">
+      <div class="post-tags">
+          <a href="/tags/ios/">ios</a>
+          <a href="/tags/swift/">swift</a>
+          </div>
+      <nav class="post-nav">
+        <a class="prev" href="/2016-10-11/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">Swift 檔案路徑與讀寫檔</span>
+            <span class="prev-text nav-mobile"></span>
+          </a>
+        <a class="next" href="/2016-10-04/">
+            <span class="next-text nav-default">Swift 基礎語法筆記</span>
+            <span class="next-text nav-mobile"></span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        <div id="disqus_thread"></div>
+    <script type="text/javascript">
+    (function() {
+      
+      
+      if (window.location.hostname === 'localhost') return;
+
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      var disqus_shortname = 'blog-vygy2ifrxm';
+      dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="cdfq152313@gmail.com" class="iconfont icon-email" title="email"></a>
+      <a href="https://www.facebook.com/AddweupDennyCheng" class="iconfont icon-facebook" title="facebook"></a>
+      <a href="https://github.com/cdfq152313/" class="iconfont icon-github" title="github"></a>
+  <a href="https://cdfq152313.github.io/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    %!(EXTRA string=<a class="hexo-link" href="https://gohugo.io">Hugo</a>)
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+     - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  
+
+  <span class="copyright-year">
+    &copy; 
+    2015 - 
+    2019
+    <span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">Denny Cheng</span>
+  </span>
+</div>
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+<script type="text/javascript" src="/dist/even.26188efa.min.js"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>

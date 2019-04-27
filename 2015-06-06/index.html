@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="zh-hant">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>llvm study - Denny&#39;s Blog</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="Denny Cheng" /><meta name="description" content="Overview llvm 示意圖 通過front end後程式碼會被轉為中間碼( LLVM Intermediate Representation (IR) ) 紅色部分為llvm提供的功能。 出作業應該不會用到1 (要自己寫)，但可能會用到" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.54.0 with even 4.0.0" />
+
+
+<link rel="canonical" href="https://cdfq152313.github.io/2015-06-06/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+
+<link href="/dist/even.c2a46f00.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="llvm study" />
+<meta property="og:description" content="Overview llvm 示意圖 通過front end後程式碼會被轉為中間碼( LLVM Intermediate Representation (IR) ) 紅色部分為llvm提供的功能。 出作業應該不會用到1 (要自己寫)，但可能會用到" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://cdfq152313.github.io/2015-06-06/" />
+<meta property="article:published_time" content="2015-06-06T00:00:00&#43;00:00"/>
+<meta property="article:modified_time" content="2015-06-06T00:00:00&#43;00:00"/>
+
+<meta itemprop="name" content="llvm study">
+<meta itemprop="description" content="Overview llvm 示意圖 通過front end後程式碼會被轉為中間碼( LLVM Intermediate Representation (IR) ) 紅色部分為llvm提供的功能。 出作業應該不會用到1 (要自己寫)，但可能會用到">
+
+
+<meta itemprop="datePublished" content="2015-06-06T00:00:00&#43;00:00" />
+<meta itemprop="dateModified" content="2015-06-06T00:00:00&#43;00:00" />
+<meta itemprop="wordCount" content="654">
+
+
+
+<meta itemprop="keywords" content="compiler,llvm," />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="llvm study"/>
+<meta name="twitter:description" content="Overview llvm 示意圖 通過front end後程式碼會被轉為中間碼( LLVM Intermediate Representation (IR) ) 紅色部分為llvm提供的功能。 出作業應該不會用到1 (要自己寫)，但可能會用到"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">Denny&#39;s Blog</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">Home</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">Archives</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">Tags</li>
+      </a><a href="/about/">
+        <li class="mobile-menu-item">About</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">Denny&#39;s Blog</a>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">Home</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">Archives</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">Tags</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/about/">About</a>
+      </li>
+  </ul>
+</nav>
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">llvm study</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2015-06-06 </span>
+        <div class="post-category">
+            <a href="/categories/notes/"> notes </a>
+            </div>
+        
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title"></h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+<ul>
+<li><a href="#overview">Overview</a></li>
+<li><a href="#llvm-指令">llvm 指令</a></li>
+<li><a href="#llvm-function">llvm function</a></li>
+<li><a href="#identifiers">Identifiers</a></li>
+<li><a href="#利用clang-front-end-做測試">利用clang front end 做測試</a></li>
+<li><a href="#1-用interpreter執行llvm-ir">1. 用interpreter執行llvm IR</a></li>
+<li><a href="#2-把llvm-ir-編譯成assembly-code">2. 把llvm IR 編譯成assembly code</a></li>
+<li><a href="#結論">結論</a></li>
+<li><a href="#參考資料">參考資料</a></li>
+</ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      
+
+<h1 id="overview">Overview</h1>
+
+<p>llvm 示意圖
+<img src="http://www.aosabook.org/images/llvm/SimpleCompiler.png" alt="" />
+<img src="http://i.imgur.com/YWNh2wy.png" alt="" />
+通過front end後程式碼會被轉為中間碼( LLVM Intermediate Representation (IR) )
+紅色部分為llvm提供的功能。
+出作業應該不會用到1 (要自己寫)，但可能會用到
+2. IR interpreter (指令lli)
+3. IR compiler (指令 llc)</p>
+
+<h1 id="llvm-指令">llvm 指令</h1>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></pre></td>
+<td class="lntd">
+<pre class="chroma">v    =  operation   type      op1,       op2 ,     opn
+%sum =     add             i32      %op1,      %op2  
+運算結果   運算元      型態      運算子們</pre></td></tr></table>
+</div>
+</div>
+<h1 id="llvm-function">llvm function</h1>
+
+<p>宣告</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><span class="lnt">1
+</span><span class="lnt">2
+</span></pre></td>
+<td class="lntd">
+<pre class="chroma">define i32            @add1       (   i32 %a,   i32 %b )
+define 回傳型態 @函數名稱(  參數列          )</pre></td></tr></table>
+</div>
+</div>
+<p>回傳</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></pre></td>
+<td class="lntd">
+<pre class="chroma">ret i32 5                       ; 回傳integer ，值為5
+ret void                        ; 回傳void
+ret { i32, i8 } { i32 4, i8 2 } ; 回傳結構 {int 32, int 8} ,  值為 4 , 2</pre></td></tr></table>
+</div>
+</div>
+<p>範例</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></pre></td>
+<td class="lntd">
+<pre class="chroma">define i32 @add1(i32 %a, i32 %b) {
+entry:
+  %tmp1 = add i32 %a, %b
+  ret i32 %tmp1
+}</pre></td></tr></table>
+</div>
+</div>
+<h1 id="identifiers">Identifiers</h1>
+
+<ul>
+<li>regular expression: &lsquo;[%@][a-zA-Z$._][a-zA-Z$._0-9]*&lsquo;.<br /></li>
+<li>@全域變數</li>
+<li>%區域變數</li>
+<li>雙引號為字串，可用跳脫字元 \， 後面接ASCII code (ex: 換行為\0A, 而非\n)</li>
+<li>@1 $2這些應該是暫存變數(不確定)</li>
+<li>全部皆為SSA(single static assigment)
+
+<ul>
+<li>將變數編上編號</li>
+<li>每個變數只會賦值一次</li>
+</ul></li>
+</ul>
+
+<h1 id="利用clang-front-end-做測試">利用clang front end 做測試</h1>
+
+<p>安裝</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash"><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash">    sudo apt-get install clang llvm</code></pre></td></tr></table>
+</div>
+</div>
+<p>把C code 變成 llvm IR (以test.c為例)</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash"><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash">    clang test.c -emit-llvm -S</code></pre></td></tr></table>
+</div>
+</div>
+<p>C code</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code class="language-c" data-lang="c"><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-c" data-lang="c">    <span class="cp">#include</span><span class="cpf">&lt;stdio.h&gt;</span><span class="cp">
+</span><span class="cp"></span>    <span class="kt">int</span> <span class="nf">main</span><span class="p">()</span>
+    <span class="p">{</span>
+        <span class="kt">int</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">;</span>
+        <span class="n">a</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+        <span class="n">b</span> <span class="o">=</span> <span class="n">a</span> <span class="o">+</span> <span class="mi">1</span><span class="p">;</span>
+        <span class="n">printf</span><span class="p">(</span><span class="s">&#34;%d</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">,</span> <span class="n">b</span><span class="p">);</span>
+    <span class="p">}</span></code></pre></td></tr></table>
+</div>
+</div>
+<p>llvm IR (test.ll)</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code class="language-llvm" data-lang="llvm"><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-llvm" data-lang="llvm">    <span class="c">; Function Attrs: nounwind uwtable
+</span><span class="c"></span>    <span class="k">define</span> <span class="k">i32</span> <span class="vg">@main</span><span class="p">()</span> <span class="vg">#0</span> <span class="p">{</span>
+      <span class="nv">%a</span> <span class="p">=</span> <span class="k">alloca</span> <span class="k">i32</span><span class="p">,</span> <span class="k">align</span> <span class="m">4</span>
+      <span class="nv">%b</span> <span class="p">=</span> <span class="k">alloca</span> <span class="k">i32</span><span class="p">,</span> <span class="k">align</span> <span class="m">4</span>
+      <span class="k">store</span> <span class="k">i32</span> <span class="m">1</span><span class="p">,</span> <span class="k">i32</span><span class="p">*</span> <span class="nv">%a</span><span class="p">,</span> <span class="k">align</span> <span class="m">4</span>
+      <span class="n">%1</span> <span class="p">=</span> <span class="k">load</span> <span class="k">i32</span><span class="p">*</span> <span class="nv">%a</span><span class="p">,</span> <span class="k">align</span> <span class="m">4</span>
+      <span class="n">%2</span> <span class="p">=</span> <span class="k">add</span> <span class="k">nsw</span> <span class="k">i32</span> <span class="n">%1</span><span class="p">,</span> <span class="m">1</span>
+      <span class="k">store</span> <span class="k">i32</span> <span class="n">%2</span><span class="p">,</span> <span class="k">i32</span><span class="p">*</span> <span class="nv">%b</span><span class="p">,</span> <span class="k">align</span> <span class="m">4</span>
+      <span class="n">%3</span> <span class="p">=</span> <span class="k">load</span> <span class="k">i32</span><span class="p">*</span> <span class="nv">%b</span><span class="p">,</span> <span class="k">align</span> <span class="m">4</span>
+      <span class="n">%4</span> <span class="p">=</span> <span class="k">call</span> <span class="k">i32</span> <span class="p">(</span><span class="k">i8</span><span class="p">*,</span> <span class="p">...)*</span> <span class="vg">@printf</span><span class="p">(</span><span class="k">i8</span><span class="p">*</span> <span class="k">getelementptr</span> <span class="k">inbounds</span> <span class="p">([</span><span class="m">4</span> <span class="k">x</span> <span class="k">i8</span><span class="p">]*</span> <span class="vg">@.str</span><span class="p">,</span> <span class="k">i32</span> <span class="m">0</span><span class="p">,</span> <span class="k">i32</span> <span class="m">0</span><span class="p">),</span> <span class="k">i32</span> <span class="n">%3</span><span class="p">)</span>
+      <span class="k">ret</span> <span class="k">i32</span> <span class="m">0</span>
+    <span class="p">}</span>
+
+    <span class="k">declare</span> <span class="k">i32</span> <span class="vg">@printf</span><span class="p">(</span><span class="k">i8</span><span class="p">*,</span> <span class="p">...)</span> <span class="vg">#1</span></code></pre></td></tr></table>
+</div>
+</div>
+<h1 id="1-用interpreter執行llvm-ir">1. 用interpreter執行llvm IR</h1>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash"><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash">    lli test.ll</code></pre></td></tr></table>
+</div>
+</div>
+<h1 id="2-把llvm-ir-編譯成assembly-code">2. 把llvm IR 編譯成assembly code</h1>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash"><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash">    llc test.ll</code></pre></td></tr></table>
+</div>
+</div>
+<p>產生出 test.s
+利用clang把assembly轉成machine code</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash"><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash">    clang test.ll</code></pre></td></tr></table>
+</div>
+</div>
+<p>執行</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash"><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash">    ./test.ll</code></pre></td></tr></table>
+</div>
+</div>
+<h1 id="結論">結論</h1>
+
+<p>用llvm學習compiler，不需考慮暫存器分配(assembly code geneate)，但需要考慮SSA。</p>
+
+<h1 id="參考資料">參考資料</h1>
+
+<p><a href="http://www.slideshare.net/kitocheng/ss-42438227">神人投影片</a>
+<a href="http://llvm.org/docs/LangRef.html">llvm reference</a></p>
+
+    </div>
+
+    
+<footer class="post-footer">
+      <div class="post-tags">
+          <a href="/tags/compiler/">compiler</a>
+          <a href="/tags/llvm/">llvm</a>
+          </div>
+      <nav class="post-nav">
+        <a class="prev" href="/2015-06-07/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">在linux上跑git server</span>
+            <span class="prev-text nav-mobile"></span>
+          </a>
+        <a class="next" href="/2015-06-05/">
+            <span class="next-text nav-default">git 基本指令</span>
+            <span class="next-text nav-mobile"></span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        <div id="disqus_thread"></div>
+    <script type="text/javascript">
+    (function() {
+      
+      
+      if (window.location.hostname === 'localhost') return;
+
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      var disqus_shortname = 'blog-vygy2ifrxm';
+      dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="cdfq152313@gmail.com" class="iconfont icon-email" title="email"></a>
+      <a href="https://www.facebook.com/AddweupDennyCheng" class="iconfont icon-facebook" title="facebook"></a>
+      <a href="https://github.com/cdfq152313/" class="iconfont icon-github" title="github"></a>
+  <a href="https://cdfq152313.github.io/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    %!(EXTRA string=<a class="hexo-link" href="https://gohugo.io">Hugo</a>)
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+     - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  
+
+  <span class="copyright-year">
+    &copy; 
+    2015 - 
+    2019
+    <span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">Denny Cheng</span>
+  </span>
+</div>
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+<script type="text/javascript" src="/dist/even.26188efa.min.js"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>

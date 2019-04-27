@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="zh-hant">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>在mutt設定gmail - Denny&#39;s Blog</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="Denny Cheng" /><meta name="description" content="總設定 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 set editor = &amp;#34;vim&amp;#34; set send_charset=&amp;#34;us-ascii:utf-8&amp;#34; set from = &amp;#34;你的帳號@gmail.com&amp;#34; set realname = &amp;#34;你的" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.54.0 with even 4.0.0" />
+
+
+<link rel="canonical" href="https://cdfq152313.github.io/2015-08-12/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+
+<link href="/dist/even.c2a46f00.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="在mutt設定gmail" />
+<meta property="og:description" content="總設定 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 set editor = &#34;vim&#34; set send_charset=&#34;us-ascii:utf-8&#34; set from = &#34;你的帳號@gmail.com&#34; set realname = &#34;你的" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://cdfq152313.github.io/2015-08-12/" />
+<meta property="article:published_time" content="2015-08-12T00:00:00&#43;00:00"/>
+<meta property="article:modified_time" content="2015-08-12T00:00:00&#43;00:00"/>
+
+<meta itemprop="name" content="在mutt設定gmail">
+<meta itemprop="description" content="總設定 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 set editor = &#34;vim&#34; set send_charset=&#34;us-ascii:utf-8&#34; set from = &#34;你的帳號@gmail.com&#34; set realname = &#34;你的">
+
+
+<meta itemprop="datePublished" content="2015-08-12T00:00:00&#43;00:00" />
+<meta itemprop="dateModified" content="2015-08-12T00:00:00&#43;00:00" />
+<meta itemprop="wordCount" content="1108">
+
+
+
+<meta itemprop="keywords" content="mutt," />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="在mutt設定gmail"/>
+<meta name="twitter:description" content="總設定 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 set editor = &#34;vim&#34; set send_charset=&#34;us-ascii:utf-8&#34; set from = &#34;你的帳號@gmail.com&#34; set realname = &#34;你的"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">Denny&#39;s Blog</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">Home</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">Archives</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">Tags</li>
+      </a><a href="/about/">
+        <li class="mobile-menu-item">About</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">Denny&#39;s Blog</a>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">Home</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">Archives</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">Tags</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/about/">About</a>
+      </li>
+  </ul>
+</nav>
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">在mutt設定gmail</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2015-08-12 </span>
+        <div class="post-category">
+            <a href="/categories/notes/"> notes </a>
+            </div>
+        
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title"></h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+<ul>
+<li><a href="#總設定">總設定</a></li>
+<li><a href="#細部設定">細部設定</a>
+<ul>
+<li><a href="#編碼與編輯器">編碼與編輯器</a></li>
+<li><a href="#imap">imap</a></li>
+</ul></li>
+<li><a href="#smtp">smtp</a>
+<ul>
+<li><a href="#其他設定">其他設定</a></li>
+<li><a href="#快捷鍵">快捷鍵</a></li>
+</ul></li>
+<li><a href="#reference">Reference</a></li>
+</ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      
+
+<h1 id="總設定">總設定</h1>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash"><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash"><span class="nb">set</span> <span class="nv">editor</span> <span class="o">=</span> <span class="s2">&#34;vim&#34;</span>
+<span class="nb">set</span> <span class="nv">send_charset</span><span class="o">=</span><span class="s2">&#34;us-ascii:utf-8&#34;</span>
+<span class="nb">set</span> <span class="nv">from</span> <span class="o">=</span> <span class="s2">&#34;你的帳號@gmail.com&#34;</span>  
+<span class="nb">set</span> <span class="nv">realname</span> <span class="o">=</span> <span class="s2">&#34;你的名字 可隨便打&#34;</span>
+<span class="nb">set</span> <span class="nv">imap_user</span> <span class="o">=</span> <span class="s2">&#34;你的帳號@gmail.com&#34;</span>  
+<span class="nb">set</span> <span class="nv">imap_pass</span> <span class="o">=</span> <span class="s2">&#34;你的密碼&#34;</span>  
+<span class="nb">set</span> <span class="nv">folder</span> <span class="o">=</span> <span class="s2">&#34;imaps://imap.gmail.com:993&#34;</span>  
+<span class="nb">set</span> <span class="nv">spoolfile</span> <span class="o">=</span> <span class="s2">&#34;+INBOX&#34;</span>  
+<span class="nb">set</span> <span class="nv">postponed</span> <span class="o">=</span><span class="s2">&#34;+[Gmail]/Drafts&#34;</span>  
+<span class="nb">set</span> <span class="nv">header_cache</span> <span class="o">=</span>~/.mutt/cache/headers  
+<span class="nb">set</span> <span class="nv">message_cachedir</span> <span class="o">=</span>~/.mutt/cache/bodies  
+<span class="nb">set</span> <span class="nv">certificate_file</span> <span class="o">=</span>~/.mutt/certificates  
+<span class="nb">set</span> <span class="nv">smtp_url</span> <span class="o">=</span> <span class="s2">&#34;smtp://你的帳號@smtp.gmail.com:587/&#34;</span>  
+<span class="nb">set</span> <span class="nv">smtp_pass</span> <span class="o">=</span> <span class="s2">&#34;你的密碼&#34;</span>  
+<span class="nb">set</span> <span class="nv">move</span> <span class="o">=</span> no
+<span class="nb">set</span> <span class="nv">imap_keepalive</span> <span class="o">=</span> <span class="m">900</span>  
+
+<span class="nb">bind</span> pager &lt;up&gt; previous-line <span class="c1">#scroll inside the message rather than the index</span>
+<span class="nb">bind</span> pager &lt;down&gt; next-line
+<span class="nb">bind</span> index &lt;left&gt; last-entry
+<span class="nb">bind</span> pager &lt;left&gt; <span class="nb">exit</span>
+<span class="nb">bind</span> index &lt;right&gt; display-message
+<span class="nb">bind</span> pager &lt;right&gt; next-page
+<span class="nb">bind</span> browser &lt;right&gt; <span class="k">select</span>-entry</code></pre></td></tr></table>
+</div>
+</div>
+<h1 id="細部設定">細部設定</h1>
+
+<h2 id="編碼與編輯器">編碼與編輯器</h2>
+
+<p>通常在Ubuntu底下的預設編輯器是nano而不是vim，所以需要調整。<br />
+utf-8則是<a href="http://lxr.free-electrons.com/source/Documentation/email-clients.txt">Linux Cross Reference</a>中建議的。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash"><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash"><span class="nb">set</span> <span class="nv">editor</span> <span class="o">=</span> <span class="s2">&#34;vim&#34;</span>
+<span class="nb">set</span> <span class="nv">send_charset</span><span class="o">=</span><span class="s2">&#34;us-ascii:utf-8&#34;</span></code></pre></td></tr></table>
+</div>
+</div>
+<h2 id="imap">imap</h2>
+
+<p>imap的服務可以讓你同步本機端與雲端上的信件，當你在mutt刪除/標記信件，gmail的內容也會隨之改變。<br />
+使用這項服務前請記得到gmail中，設定-&gt;轉寄和POP/IMAP-&gt;IMAP存取-&gt;啟用IMAP<br />
+需要設定的項目有imap_user,imap_pass,folder。</p>
+
+<ul>
+<li>imap_user無須贅言，你的gmail帳號。</li>
+<li>imap_pass此處輸入密碼，但有兩種情況。
+
+<ul>
+<li>無二階段驗證：使用你平常的密碼即可。</li>
+<li>有二階段驗證：必須申請應用程式密碼，請參閱<a href="https://support.google.com/accounts/answer/185833?hl=zh-Hant">使用應用程式密碼登入</a>。</li>
+</ul></li>
+<li>folder統一使用imaps://imap.gmail.com:993即可，可參閱<a href="https://support.google.com/mail/troubleshooter/1668960?hl=zh-Hant#ts=1665018,1665144">開始使用 IMAP 和 POP3</a>。</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash"><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash"><span class="nb">set</span> <span class="nv">imap_user</span> <span class="o">=</span> <span class="s2">&#34;你的帳號@gmail.com&#34;</span>  
+<span class="nb">set</span> <span class="nv">imap_pass</span> <span class="o">=</span> <span class="s2">&#34;你的密碼&#34;</span>  
+<span class="nb">set</span> <span class="nv">folder</span> <span class="o">=</span> <span class="s2">&#34;imaps://imap.gmail.com:993&#34;</span>  </code></pre></td></tr></table>
+</div>
+</div>
+<h1 id="smtp">smtp</h1>
+
+<p>設定smtp可以讓你的mutt可以透過gmail傳送信件，可參考<a href="https://support.google.com/mail/answer/78775?hl=zh-Hant">使用 POP 或 IMAP 發送郵件時遇到問題</a><br />
+smtp_pass同imap密碼。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash"><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash"><span class="nb">set</span> <span class="nv">smtp_url</span> <span class="o">=</span> <span class="s2">&#34;smtp://你的帳號@smtp.gmail.com:587/&#34;</span>  
+<span class="nb">set</span> <span class="nv">smtp_pass</span> <span class="o">=</span> <span class="s2">&#34;你的密碼&#34;</span>  </code></pre></td></tr></table>
+</div>
+</div>
+<h2 id="其他設定">其他設定</h2>
+
+<p>下面是由 <a href="http://go2linux.garron.me/linux/2010/10/how-send-email-command-line-gmail-mutt-789/">How to send email from the command line - Gmail Mutt -</a> 照抄來的設定</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span></pre></td>
+<td class="lntd">
+<pre class="chroma">set spoolfile = &#34;+INBOX&#34;  
+set postponed =&#34;+[Gmail]/Drafts&#34;  
+set header_cache =~/.mutt/cache/headers  
+set message_cachedir =~/.mutt/cache/bodies
+set certificate_file =~/.mutt/certificates
+
+set move = no
+set imap_keepalive = 900  </pre></td></tr></table>
+</div>
+</div>
+<h2 id="快捷鍵">快捷鍵</h2>
+
+<p>原始的鍵盤設定有點彆扭，如果你在讀email時按&rdquo;下&rdquo;，則會跳至下一封信，而非下一行。<br />
+透過更改快捷鍵把他改成類似bbs的設定。<br />
+上：讀信件時向上一行<br />
+下：讀信件時向下一行<br />
+左：讀信件時離開信件，在信件目錄時跳到最底部的信件<br />
+右：讀信件時向下一頁，在信件目錄時進入信件，在信箱時進入信箱</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></pre></td>
+<td class="lntd">
+<pre class="chroma">bind pager &lt;up&gt; previous-line #scroll inside the message rather than the index
+bind pager &lt;down&gt; next-line
+bind index &lt;left&gt; last-entry
+bind pager &lt;left&gt; exit
+bind index &lt;right&gt; display-message
+bind pager &lt;right&gt; next-page
+bind browser &lt;right&gt; select-entry</pre></td></tr></table>
+</div>
+</div>
+<h1 id="reference">Reference</h1>
+
+<ul>
+<li><a href="http://lxr.free-electrons.com/source/Documentation/email-clients.txt">Linux Cross Reference</a></li>
+<li><a href="https://support.google.com/accounts/answer/185833?hl=zh-Hant">使用應用程式密碼登入</a></li>
+<li><a href="https://support.google.com/mail/troubleshooter/1668960?hl=zh-Hant#ts=1665018,1665144">開始使用 IMAP 和 POP3</a></li>
+<li><a href="https://support.google.com/mail/answer/78775?hl=zh-Hant">使用 POP 或 IMAP 發送郵件時遇到問題</a></li>
+<li><a href="http://go2linux.garron.me/linux/2010/10/how-send-email-command-line-gmail-mutt-789/">How to send email from the command line - Gmail Mutt -</a></li>
+</ul>
+
+    </div>
+
+    
+<footer class="post-footer">
+      <div class="post-tags">
+          <a href="/tags/mutt/">mutt</a>
+          </div>
+      <nav class="post-nav">
+        <a class="prev" href="/2016-02-24/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">在AOSP中增加預設app (1) : prebuilt apk</span>
+            <span class="prev-text nav-mobile"></span>
+          </a>
+        <a class="next" href="/2015-06-10/">
+            <span class="next-text nav-default">llvm - helloworld</span>
+            <span class="next-text nav-mobile"></span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        <div id="disqus_thread"></div>
+    <script type="text/javascript">
+    (function() {
+      
+      
+      if (window.location.hostname === 'localhost') return;
+
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      var disqus_shortname = 'blog-vygy2ifrxm';
+      dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="cdfq152313@gmail.com" class="iconfont icon-email" title="email"></a>
+      <a href="https://www.facebook.com/AddweupDennyCheng" class="iconfont icon-facebook" title="facebook"></a>
+      <a href="https://github.com/cdfq152313/" class="iconfont icon-github" title="github"></a>
+  <a href="https://cdfq152313.github.io/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    %!(EXTRA string=<a class="hexo-link" href="https://gohugo.io">Hugo</a>)
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+     - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  
+
+  <span class="copyright-year">
+    &copy; 
+    2015 - 
+    2019
+    <span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">Denny Cheng</span>
+  </span>
+</div>
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+<script type="text/javascript" src="/dist/even.26188efa.min.js"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>

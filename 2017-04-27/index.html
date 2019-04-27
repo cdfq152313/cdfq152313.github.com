@@ -1,0 +1,674 @@
+<!DOCTYPE html>
+<html lang="zh-hant">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>[Java] Date SimpleDateFormat Calendar之轉換與時區(UTC/GMT)問題 - Denny&#39;s Blog</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="Denny Cheng" /><meta name="description" content="簡介 這篇主要探討怎麼把當地時間轉換成GMT(UTC)時間，不在意一秒誤差的話這兩者基本上是一樣的。 主要用到下列三個元件 Date： 最基礎的時間" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.54.0 with even 4.0.0" />
+
+
+<link rel="canonical" href="https://cdfq152313.github.io/2017-04-27/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+
+<link href="/dist/even.c2a46f00.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="[Java] Date SimpleDateFormat Calendar之轉換與時區(UTC/GMT)問題" />
+<meta property="og:description" content="簡介 這篇主要探討怎麼把當地時間轉換成GMT(UTC)時間，不在意一秒誤差的話這兩者基本上是一樣的。 主要用到下列三個元件 Date： 最基礎的時間" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://cdfq152313.github.io/2017-04-27/" />
+<meta property="article:published_time" content="2017-04-27T12:44:55&#43;08:00"/>
+<meta property="article:modified_time" content="2017-04-27T12:44:55&#43;08:00"/>
+
+<meta itemprop="name" content="[Java] Date SimpleDateFormat Calendar之轉換與時區(UTC/GMT)問題">
+<meta itemprop="description" content="簡介 這篇主要探討怎麼把當地時間轉換成GMT(UTC)時間，不在意一秒誤差的話這兩者基本上是一樣的。 主要用到下列三個元件 Date： 最基礎的時間">
+
+
+<meta itemprop="datePublished" content="2017-04-27T12:44:55&#43;08:00" />
+<meta itemprop="dateModified" content="2017-04-27T12:44:55&#43;08:00" />
+<meta itemprop="wordCount" content="2303">
+
+
+
+<meta itemprop="keywords" content="java," />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="[Java] Date SimpleDateFormat Calendar之轉換與時區(UTC/GMT)問題"/>
+<meta name="twitter:description" content="簡介 這篇主要探討怎麼把當地時間轉換成GMT(UTC)時間，不在意一秒誤差的話這兩者基本上是一樣的。 主要用到下列三個元件 Date： 最基礎的時間"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">Denny&#39;s Blog</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">Home</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">Archives</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">Tags</li>
+      </a><a href="/about/">
+        <li class="mobile-menu-item">About</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">Denny&#39;s Blog</a>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">Home</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">Archives</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">Tags</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/about/">About</a>
+      </li>
+  </ul>
+</nav>
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">[Java] Date SimpleDateFormat Calendar之轉換與時區(UTC/GMT)問題</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2017-04-27 </span>
+        <div class="post-category">
+            <a href="/categories/notes/"> notes </a>
+            </div>
+        
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title"></h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+<ul>
+<li><a href="#簡介">簡介</a></li>
+<li><a href="#格式化字串">格式化字串</a>
+<ul>
+<li><a href="#date">Date</a></li>
+<li><a href="#calendar">Calendar</a></li>
+</ul></li>
+<li><a href="#取得現在時間">取得現在時間</a></li>
+<li><a href="#顯示現在gmt時間">顯示現在GMT時間</a>
+<ul>
+<li><a href="#date-1">Date</a></li>
+<li><a href="#calendar-1">Calendar</a></li>
+</ul></li>
+<li><a href="#由字串取得時間">由字串取得時間</a>
+<ul>
+<li><a href="#格式化字串轉換為date">格式化字串轉換為Date</a></li>
+<li><a href="#格式化字串為calendar">格式化字串為Calendar</a></li>
+</ul></li>
+<li><a href="#由gmt字串取得時間">由GMT字串取得時間</a>
+<ul>
+<li><a href="#格式化gmt字串為date">格式化GMT字串為Date</a></li>
+<li><a href="#格式化gmt字串為calendar">格式化GMT字串為Calendar</a></li>
+</ul></li>
+<li><a href="#快速複製區">快速複製區</a></li>
+</ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      
+
+<h1 id="簡介">簡介</h1>
+
+<p>這篇主要探討怎麼把當地時間轉換成GMT(UTC)時間，不在意一秒誤差的話這兩者基本上是一樣的。<br />
+主要用到下列三個元件</p>
+
+<ul>
+<li>Date：
+
+<ul>
+<li>最基礎的時間紀錄</li>
+<li>無法呈現任何有意義的資訊(例如年月的int，或格式化過的字串)</li>
+</ul></li>
+<li>SimpleDateFormat
+
+<ul>
+<li>擅長格式化字串與Date之間的轉換</li>
+</ul></li>
+<li>Calendar
+
+<ul>
+<li>擅長對時間作操作(比較，加減)</li>
+<li>擅長單獨取出欄位(年、月、日、時、分、秒等)</li>
+</ul></li>
+</ul>
+
+<h1 id="格式化字串">格式化字串</h1>
+
+<p>這邊示範如果取得一個Date或一個Calendar，應該如何將其格式化為字串。<br />
+格式統一採用 &ldquo;年-月-日 時:分:秒&rdquo;。</p>
+
+<h2 id="date">Date</h2>
+
+<p>Date本身沒辦法呈現任何有意義的資訊，只是一個時間記錄器而已。<br />
+因此必須依靠SimpleDateFormat來將Date格式化為有意義的字串。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code class="language-java" data-lang="java"><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-java" data-lang="java"><span class="n">String</span> <span class="nf">formatDate</span><span class="o">(</span><span class="n">Date</span> <span class="n">date</span><span class="o">){</span>
+	<span class="n">SimpleDateFormat</span> <span class="n">sdf</span> <span class="o">=</span> <span class="k">new</span> <span class="n">SimpleDateFormat</span><span class="o">(</span><span class="s">&#34;yyyy-MM-dd HH:mm:ss&#34;</span><span class="o">);</span> <span class="c1">// HH是24小時制，hh是12小時制
+</span><span class="c1"></span>	<span class="k">return</span> <span class="n">sdf</span><span class="o">.</span><span class="na">format</span><span class="o">(</span><span class="n">date</span><span class="o">);</span>
+<span class="o">}</span></code></pre></td></tr></table>
+</div>
+</div>
+<h2 id="calendar">Calendar</h2>
+
+<p>Calendar有一個method叫getTime，可以取出此Calendar目前的Date。在有<code>formatDate</code>此函式的情況下，其實只要先getTime再丟給formatDate即可。<br />
+只是這邊為了展示calendar單獨取值的方法走了不一樣的路徑。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code class="language-java" data-lang="java"><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span><span class="lnt">9
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-java" data-lang="java"><span class="n">String</span> <span class="nf">formatCalendar</span><span class="o">(</span><span class="n">Calendar</span> <span class="n">calendar</span><span class="o">){</span>
+	<span class="kt">int</span> <span class="n">year</span> <span class="o">=</span> <span class="n">calendar</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="n">Calendar</span><span class="o">.</span><span class="na">YEAR</span><span class="o">);</span>
+	<span class="kt">int</span> <span class="n">month</span> <span class="o">=</span> <span class="n">calendar</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="n">Calendar</span><span class="o">.</span><span class="na">MONTH</span><span class="o">)</span> <span class="o">+</span> <span class="n">1</span><span class="o">;</span> <span class="c1">// 1月的值為0
+</span><span class="c1"></span>	<span class="kt">int</span> <span class="n">day</span> <span class="o">=</span> <span class="n">calendar</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="n">Calendar</span><span class="o">.</span><span class="na">DAY_OF_MONTH</span><span class="o">);</span>
+	<span class="kt">int</span> <span class="n">hour</span> <span class="o">=</span> <span class="n">calendar</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="n">Calendar</span><span class="o">.</span><span class="na">HOUR_OF_DAY</span><span class="o">);</span> <span class="c1">// HOUR_OF_DAY是24小時制，HOUR是12小時制
+</span><span class="c1"></span>	<span class="kt">int</span> <span class="n">minute</span> <span class="o">=</span> <span class="n">calendar</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="n">Calendar</span><span class="o">.</span><span class="na">MINUTE</span><span class="o">);</span>
+	<span class="kt">int</span> <span class="n">second</span> <span class="o">=</span> <span class="n">calendar</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="n">Calendar</span><span class="o">.</span><span class="na">SECOND</span><span class="o">);</span>
+	<span class="k">return</span> <span class="n">String</span><span class="o">.</span><span class="na">format</span><span class="o">(</span><span class="s">&#34;%d-%02d-%02d %02d:%02d:%02d&#34;</span><span class="o">,</span> <span class="n">year</span><span class="o">,</span> <span class="n">month</span><span class="o">,</span> <span class="n">day</span><span class="o">,</span> <span class="n">hour</span><span class="o">,</span> <span class="n">minute</span><span class="o">,</span> <span class="n">second</span><span class="o">);</span>
+<span class="o">}</span></code></pre></td></tr></table>
+</div>
+</div>
+<p><code>hint: 這兩個function在後續的程式碼中會常常用到</code></p>
+
+<h1 id="取得現在時間">取得現在時間</h1>
+
+<p>使用Date和Calendar都可以直接取得現在時間，程式碼分別如下。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code class="language-java" data-lang="java"><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-java" data-lang="java"><span class="n">Date</span> <span class="n">date</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Date</span><span class="o">();</span> <span class="c1">// 直接初始化即可取得現在時間
+</span><span class="c1"></span><span class="n">Calendar</span> <span class="n">calendar</span> <span class="o">=</span> <span class="n">Calendar</span><span class="o">.</span><span class="na">getInstance</span><span class="o">();</span> <span class="o">//</span> <span class="n">getInstance可以取得現在時間</span></code></pre></td></tr></table>
+</div>
+</div>
+<p>要記得，如果單獨使用Date的話基本上是無法呈現任何有用資訊的。<br />
+可以配合剛剛的format method來印出格式化資訊觀看。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code class="language-java" data-lang="java"><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-java" data-lang="java"><span class="n">Date</span> <span class="n">currentTime</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Date</span><span class="o">();</span> <span class="c1">// 現在時間的Date物件
+</span><span class="c1"></span><span class="n">String</span> <span class="n">display</span> <span class="o">=</span> <span class="n">formatDate</span><span class="o">(</span><span class="n">currentTime</span><span class="o">);</span>
+<span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span> <span class="n">display</span> <span class="o">);</span></code></pre></td></tr></table>
+</div>
+</div><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code class="language-java" data-lang="java"><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-java" data-lang="java"><span class="n">Calendar</span> <span class="n">currentTime</span> <span class="o">=</span> <span class="n">Calendar</span><span class="o">.</span><span class="na">getInstance</span><span class="o">();</span> <span class="c1">// 現在時間的Calendar物件
+</span><span class="c1"></span><span class="n">String</span> <span class="n">display</span> <span class="o">=</span> <span class="n">formatCalendar</span><span class="o">(</span><span class="n">calendar</span><span class="o">)</span>
+<span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span> <span class="n">display</span> <span class="o">);</span></code></pre></td></tr></table>
+</div>
+</div>
+<h1 id="顯示現在gmt時間">顯示現在GMT時間</h1>
+
+<h2 id="date-1">Date</h2>
+
+<p>默念三次</p>
+
+<p><strong>Date本身是絕對時間</strong><br />
+<strong>Date本身是絕對時間</strong><br />
+<strong>Date本身是絕對時間</strong></p>
+
+<p>格式化Date為有意義的字串是SimpleDateFormat提供的功能。<br />
+SimpleDateFormat會以使用者所在的時區當作預設顯示時區，若要調整可以在兩個地方修改。</p>
+
+<ol>
+<li>初始化時指定地區</li>
+<li>初始化後再set時區</li>
+</ol>
+
+<p>下面選的是第二種。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code class="language-java" data-lang="java"><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-java" data-lang="java"><span class="n">String</span> <span class="nf">formatDateInGMT</span><span class="o">(</span><span class="n">Date</span> <span class="n">date</span><span class="o">){</span>
+	<span class="n">SimpleDateFormat</span> <span class="n">sdf</span> <span class="o">=</span> <span class="k">new</span> <span class="n">SimpleDateFormat</span><span class="o">(</span><span class="s">&#34;yyyy-MM-dd HH:mm:ss&#34;</span><span class="o">);</span> <span class="c1">// HH是24小時制，hh是12小時制
+</span><span class="c1"></span>	<span class="n">sdf</span><span class="o">.</span><span class="na">setTimeZone</span><span class="o">(</span><span class="n">TimeZone</span><span class="o">.</span><span class="na">getTimeZone</span><span class="o">(</span><span class="s">&#34;GMT&#34;</span><span class="o">)</span> <span class="o">);</span>
+	<span class="k">return</span> <span class="n">sdf</span><span class="o">.</span><span class="na">format</span><span class="o">(</span><span class="n">date</span><span class="o">);</span>
+<span class="o">}</span></code></pre></td></tr></table>
+</div>
+</div>
+<p>接下來只要獲得現在的Date，就可以印出對應的GMT時間了。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code class="language-java" data-lang="java"><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-java" data-lang="java"><span class="n">Date</span> <span class="n">date</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Date</span><span class="o">();</span>
+<span class="n">String</span> <span class="n">display</span> <span class="o">=</span> <span class="n">formatDateInGMT</span><span class="o">(</span><span class="n">date</span><span class="o">);</span>
+<span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">display</span><span class="o">);</span></code></pre></td></tr></table>
+</div>
+</div>
+<h2 id="calendar-1">Calendar</h2>
+
+<p>Calendar本身就可以設定時區。<br />
+因此若要顯示現在的GMT時間的話，只要在取得Calendar實例後更改時區即可。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code class="language-java" data-lang="java"><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-java" data-lang="java"><span class="n">Calendar</span> <span class="n">calendar</span> <span class="o">=</span> <span class="n">Calendar</span><span class="o">.</span><span class="na">getInstance</span><span class="o">();</span>
+<span class="n">calendar</span><span class="o">.</span><span class="na">setTimeZone</span><span class="o">(</span><span class="n">TimeZone</span><span class="o">.</span><span class="na">getTimeZone</span><span class="o">(</span><span class="s">&#34;GMT&#34;</span><span class="o">));</span>
+<span class="n">String</span> <span class="n">display</span> <span class="o">=</span> <span class="n">formatCalendar</span><span class="o">(</span><span class="n">calendar</span><span class="o">);</span>
+<span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">display</span><span class="o">);</span></code></pre></td></tr></table>
+</div>
+</div>
+<h1 id="由字串取得時間">由字串取得時間</h1>
+
+<p>SimpleDateFormat可以很方便的在格式化字串和Date之間做轉換，但遺憾的是無法將格式化字串直接轉換為Calendar，必須要用Date來設定Calendar才行。</p>
+
+<h2 id="格式化字串轉換為date">格式化字串轉換為Date</h2>
+
+<p>下方的範例利用SimpleDateFormat將字串轉換為Date</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code class="language-java" data-lang="java"><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-java" data-lang="java"><span class="kd">public</span> <span class="n">Date</span> <span class="nf">convertStringToDate</span><span class="o">(</span><span class="n">String</span> <span class="n">time</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">ParseException</span> <span class="o">{</span>
+	<span class="c1">// 假設input的字串是 &#34;年-月-日 時:分:秒&#34; 格式
+</span><span class="c1"></span>	<span class="n">SimpleDateFormat</span> <span class="n">sdf</span> <span class="o">=</span> <span class="k">new</span> <span class="n">SimpleDateFormat</span><span class="o">(</span><span class="s">&#34;yyyy-MM-dd HH:mm:ss&#34;</span><span class="o">);</span>
+	<span class="n">Date</span> <span class="n">date</span> <span class="o">=</span> <span class="n">sdf</span><span class="o">.</span><span class="na">parse</span><span class="o">(</span><span class="n">time</span><span class="o">);</span>
+	<span class="k">return</span> <span class="n">date</span><span class="o">;</span>
+<span class="o">}</span></code></pre></td></tr></table>
+</div>
+</div>
+<p>觀看有沒有成功一樣可以使用formatDate來觀看，這邊就不說明了。</p>
+
+<h2 id="格式化字串為calendar">格式化字串為Calendar</h2>
+
+<p>先取得Date，再設定Calendar，會用到上方的convertStringToDate函式。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code class="language-java" data-lang="java"><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-java" data-lang="java"><span class="kd">public</span> <span class="n">Calendar</span> <span class="nf">convertStringToCalendar</span><span class="o">(</span><span class="n">String</span> <span class="n">time</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">ParseException</span> <span class="o">{</span>
+	<span class="c1">// 假設input的字串是 &#34;年-月-日 時:分:秒&#34; 格式
+</span><span class="c1"></span>	<span class="n">Date</span> <span class="n">date</span> <span class="o">=</span> <span class="n">convertStringToDate</span><span class="o">(</span><span class="n">time</span><span class="o">);</span>
+	<span class="n">Calendar</span> <span class="n">calendar</span> <span class="o">=</span> <span class="n">Calendar</span><span class="o">.</span><span class="na">getInstance</span><span class="o">();</span>
+	<span class="n">calendar</span><span class="o">.</span><span class="na">setTime</span><span class="o">(</span><span class="n">date</span><span class="o">);</span>
+	<span class="k">return</span> <span class="n">calendar</span><span class="o">;</span>
+<span class="o">}</span></code></pre></td></tr></table>
+</div>
+</div>
+<h1 id="由gmt字串取得時間">由GMT字串取得時間</h1>
+
+<p>先默念三次</p>
+
+<p><strong>Date是絕對時間</strong><br />
+<strong>Date是絕對時間</strong><br />
+<strong>Date是絕對時間</strong></p>
+
+<p>因此要從字串轉換為Date時，該告知的是SimpleDateFormat<strong>此時間字串是在GMT時區</strong>，如此SimpleDateFormat轉出來的Date才會正確。</p>
+
+<h2 id="格式化gmt字串為date">格式化GMT字串為Date</h2>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code class="language-java" data-lang="java"><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-java" data-lang="java"><span class="kd">public</span> <span class="n">Date</span> <span class="nf">convertGMTStringToDate</span><span class="o">(</span><span class="n">String</span> <span class="n">time</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">ParseException</span> <span class="o">{</span>
+	<span class="c1">// 假設input的字串是 &#34;年-月-日 時:分:秒&#34; 格式
+</span><span class="c1"></span>	<span class="n">SimpleDateFormat</span> <span class="n">sdf</span> <span class="o">=</span> <span class="k">new</span> <span class="n">SimpleDateFormat</span><span class="o">(</span><span class="s">&#34;yyyy-MM-dd HH:mm:ss&#34;</span><span class="o">);</span>
+	<span class="n">sdf</span><span class="o">.</span><span class="na">setTimeZone</span><span class="o">(</span><span class="n">TimeZone</span><span class="o">.</span><span class="na">getTimeZone</span><span class="o">(</span><span class="s">&#34;GMT&#34;</span><span class="o">)</span> <span class="o">);</span> <span class="c1">// 告知接下來的字串時區位在GMT
+</span><span class="c1"></span>	<span class="n">Date</span> <span class="n">date</span> <span class="o">=</span> <span class="n">sdf</span><span class="o">.</span><span class="na">parse</span><span class="o">(</span><span class="n">time</span><span class="o">);</span>
+	<span class="k">return</span> <span class="n">date</span><span class="o">;</span>
+<span class="o">}</span></code></pre></td></tr></table>
+</div>
+</div>
+<p>驗證一樣可以用</p>
+
+<ul>
+<li>formatDate</li>
+<li>formatDateInGMT</li>
+</ul>
+
+<p>這兩個函式來格式化結果並印出觀看。</p>
+
+<h2 id="格式化gmt字串為calendar">格式化GMT字串為Calendar</h2>
+
+<p>轉換為Calendar也是同理，先取得Date，再設定Calendar。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code class="language-java" data-lang="java"><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-java" data-lang="java"><span class="kd">public</span> <span class="n">Calendar</span> <span class="nf">convertGMTStringToCalendar</span><span class="o">(</span><span class="n">String</span> <span class="n">time</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">ParseException</span> <span class="o">{</span>
+	<span class="c1">// 假設input的字串是 &#34;年-月-日 時:分:秒&#34; 格式
+</span><span class="c1"></span>	<span class="n">Date</span> <span class="n">date</span> <span class="o">=</span> <span class="n">convertGMTStringToDate</span><span class="o">(</span><span class="n">time</span><span class="o">);</span>
+	<span class="n">Calendar</span> <span class="n">calendar</span> <span class="o">=</span> <span class="n">Calendar</span><span class="o">.</span><span class="na">getInstance</span><span class="o">();</span>
+	<span class="n">calendar</span><span class="o">.</span><span class="na">setTime</span><span class="o">(</span><span class="n">date</span><span class="o">);</span>
+	<span class="k">return</span> <span class="n">calendar</span><span class="o">;</span>
+<span class="o">}</span></code></pre></td></tr></table>
+</div>
+</div>
+<p>驗證一樣可以用</p>
+
+<ul>
+<li>formatCalendar()</li>
+</ul>
+
+<p>來格式化結果。要記得若要觀看不同時區的結果，必須先設定Calendar。</p>
+
+<h1 id="快速複製區">快速複製區</h1>
+
+<p>剛剛講解中一些重要函式的快速複製區，提供給以後的自己使用。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code class="language-java" data-lang="java"><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span><span class="lnt">42
+</span><span class="lnt">43
+</span><span class="lnt">44
+</span><span class="lnt">45
+</span><span class="lnt">46
+</span><span class="lnt">47
+</span><span class="lnt">48
+</span><span class="lnt">49
+</span><span class="lnt">50
+</span><span class="lnt">51
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-java" data-lang="java"><span class="n">String</span> <span class="nf">formatDate</span><span class="o">(</span><span class="n">Date</span> <span class="n">date</span><span class="o">){</span>
+	<span class="n">SimpleDateFormat</span> <span class="n">sdf</span> <span class="o">=</span> <span class="k">new</span> <span class="n">SimpleDateFormat</span><span class="o">(</span><span class="s">&#34;yyyy-MM-dd HH:mm:ss&#34;</span><span class="o">);</span> <span class="c1">// HH是24小時制，hh是12小時制
+</span><span class="c1"></span>	<span class="k">return</span> <span class="n">sdf</span><span class="o">.</span><span class="na">format</span><span class="o">(</span><span class="n">date</span><span class="o">);</span>
+<span class="o">}</span>
+
+<span class="n">String</span> <span class="nf">formatDateInGMT</span><span class="o">(</span><span class="n">Date</span> <span class="n">date</span><span class="o">){</span>
+	<span class="n">SimpleDateFormat</span> <span class="n">sdf</span> <span class="o">=</span> <span class="k">new</span> <span class="n">SimpleDateFormat</span><span class="o">(</span><span class="s">&#34;yyyy-MM-dd HH:mm:ss&#34;</span><span class="o">);</span> <span class="c1">// HH是24小時制，hh是12小時制
+</span><span class="c1"></span>	<span class="n">sdf</span><span class="o">.</span><span class="na">setTimeZone</span><span class="o">(</span><span class="n">TimeZone</span><span class="o">.</span><span class="na">getTimeZone</span><span class="o">(</span><span class="s">&#34;GMT&#34;</span><span class="o">)</span> <span class="o">);</span>
+	<span class="k">return</span> <span class="n">sdf</span><span class="o">.</span><span class="na">format</span><span class="o">(</span><span class="n">date</span><span class="o">);</span>
+<span class="o">}</span>
+
+<span class="n">String</span> <span class="nf">formatCalendar</span><span class="o">(</span><span class="n">Calendar</span> <span class="n">calendar</span><span class="o">){</span>
+	<span class="kt">int</span> <span class="n">year</span> <span class="o">=</span> <span class="n">calendar</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="n">Calendar</span><span class="o">.</span><span class="na">YEAR</span><span class="o">);</span>
+	<span class="kt">int</span> <span class="n">month</span> <span class="o">=</span> <span class="n">calendar</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="n">Calendar</span><span class="o">.</span><span class="na">MONTH</span><span class="o">)</span> <span class="o">+</span> <span class="n">1</span><span class="o">;</span> <span class="c1">// 1月的值為0
+</span><span class="c1"></span>	<span class="kt">int</span> <span class="n">day</span> <span class="o">=</span> <span class="n">calendar</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="n">Calendar</span><span class="o">.</span><span class="na">DAY_OF_MONTH</span><span class="o">);</span>
+	<span class="kt">int</span> <span class="n">hour</span> <span class="o">=</span> <span class="n">calendar</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="n">Calendar</span><span class="o">.</span><span class="na">HOUR_OF_DAY</span><span class="o">);</span> <span class="c1">// HOUR_OF_DAY是24小時制，HOUR是12小時制
+</span><span class="c1"></span>	<span class="kt">int</span> <span class="n">minute</span> <span class="o">=</span> <span class="n">calendar</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="n">Calendar</span><span class="o">.</span><span class="na">MINUTE</span><span class="o">);</span>
+	<span class="kt">int</span> <span class="n">second</span> <span class="o">=</span> <span class="n">calendar</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="n">Calendar</span><span class="o">.</span><span class="na">SECOND</span><span class="o">);</span>
+	<span class="k">return</span> <span class="n">String</span><span class="o">.</span><span class="na">format</span><span class="o">(</span><span class="s">&#34;%d-%02d-%02d %02d:%02d:%02d&#34;</span><span class="o">,</span> <span class="n">year</span><span class="o">,</span> <span class="n">month</span><span class="o">,</span> <span class="n">day</span><span class="o">,</span> <span class="n">hour</span><span class="o">,</span> <span class="n">minute</span><span class="o">,</span> <span class="n">second</span><span class="o">);</span>
+<span class="o">}</span>
+
+<span class="kd">public</span> <span class="n">Date</span> <span class="nf">convertStringToDate</span><span class="o">(</span><span class="n">String</span> <span class="n">time</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">ParseException</span> <span class="o">{</span>
+	<span class="c1">// 假設input的字串是 &#34;年-月-日 時:分:秒&#34; 格式
+</span><span class="c1"></span>	<span class="n">SimpleDateFormat</span> <span class="n">sdf</span> <span class="o">=</span> <span class="k">new</span> <span class="n">SimpleDateFormat</span><span class="o">(</span><span class="s">&#34;yyyy-MM-dd HH:mm:ss&#34;</span><span class="o">);</span>
+	<span class="n">Date</span> <span class="n">date</span> <span class="o">=</span> <span class="n">sdf</span><span class="o">.</span><span class="na">parse</span><span class="o">(</span><span class="n">time</span><span class="o">);</span>
+	<span class="k">return</span> <span class="n">date</span><span class="o">;</span>
+<span class="o">}</span>
+
+<span class="kd">public</span> <span class="n">Calendar</span> <span class="nf">convertStringToCalendar</span><span class="o">(</span><span class="n">String</span> <span class="n">time</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">ParseException</span> <span class="o">{</span>
+	<span class="c1">// 假設input的字串是 &#34;年-月-日 時:分:秒&#34; 格式
+</span><span class="c1"></span>	<span class="n">Date</span> <span class="n">date</span> <span class="o">=</span> <span class="n">convertStringToDate</span><span class="o">(</span><span class="n">time</span><span class="o">);</span>
+	<span class="n">Calendar</span> <span class="n">calendar</span> <span class="o">=</span> <span class="n">Calendar</span><span class="o">.</span><span class="na">getInstance</span><span class="o">();</span>
+	<span class="n">calendar</span><span class="o">.</span><span class="na">setTime</span><span class="o">(</span><span class="n">date</span><span class="o">);</span>
+	<span class="k">return</span> <span class="n">calendar</span><span class="o">;</span>
+<span class="o">}</span>
+
+<span class="kd">public</span> <span class="n">Date</span> <span class="nf">convertGMTStringToDate</span><span class="o">(</span><span class="n">String</span> <span class="n">time</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">ParseException</span> <span class="o">{</span>
+	<span class="c1">// 假設input的字串是 &#34;年-月-日 時:分:秒&#34; 格式
+</span><span class="c1"></span>	<span class="n">SimpleDateFormat</span> <span class="n">sdf</span> <span class="o">=</span> <span class="k">new</span> <span class="n">SimpleDateFormat</span><span class="o">(</span><span class="s">&#34;yyyy-MM-dd HH:mm:ss&#34;</span><span class="o">);</span>
+	<span class="n">sdf</span><span class="o">.</span><span class="na">setTimeZone</span><span class="o">(</span><span class="n">TimeZone</span><span class="o">.</span><span class="na">getTimeZone</span><span class="o">(</span><span class="s">&#34;GMT&#34;</span><span class="o">)</span> <span class="o">);</span> <span class="c1">// 告知接下來的字串時區位在GMT
+</span><span class="c1"></span>	<span class="n">Date</span> <span class="n">date</span> <span class="o">=</span> <span class="n">sdf</span><span class="o">.</span><span class="na">parse</span><span class="o">(</span><span class="n">time</span><span class="o">);</span>
+	<span class="k">return</span> <span class="n">date</span><span class="o">;</span>
+<span class="o">}</span>
+
+<span class="kd">public</span> <span class="n">Calendar</span> <span class="nf">convertGMTStringToCalendar</span><span class="o">(</span><span class="n">String</span> <span class="n">time</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">ParseException</span> <span class="o">{</span>
+	<span class="c1">// 假設input的字串是 &#34;年-月-日 時:分:秒&#34; 格式
+</span><span class="c1"></span>	<span class="n">Date</span> <span class="n">date</span> <span class="o">=</span> <span class="n">convertGMTStringToDate</span><span class="o">(</span><span class="n">time</span><span class="o">);</span>
+	<span class="n">Calendar</span> <span class="n">calendar</span> <span class="o">=</span> <span class="n">Calendar</span><span class="o">.</span><span class="na">getInstance</span><span class="o">();</span>
+	<span class="n">calendar</span><span class="o">.</span><span class="na">setTime</span><span class="o">(</span><span class="n">date</span><span class="o">);</span>
+	<span class="k">return</span> <span class="n">calendar</span><span class="o">;</span>
+<span class="o">}</span></code></pre></td></tr></table>
+</div>
+</div>
+    </div>
+
+    
+<footer class="post-footer">
+      <div class="post-tags">
+          <a href="/tags/java/">java</a>
+          </div>
+      <nav class="post-nav">
+        <a class="prev" href="/2017-05-01/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">[Design] SocketIO與Queue</span>
+            <span class="prev-text nav-mobile"></span>
+          </a>
+        <a class="next" href="/2017-04-24/">
+            <span class="next-text nav-default">renpy (6) 讀檔</span>
+            <span class="next-text nav-mobile"></span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        <div id="disqus_thread"></div>
+    <script type="text/javascript">
+    (function() {
+      
+      
+      if (window.location.hostname === 'localhost') return;
+
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      var disqus_shortname = 'blog-vygy2ifrxm';
+      dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="cdfq152313@gmail.com" class="iconfont icon-email" title="email"></a>
+      <a href="https://www.facebook.com/AddweupDennyCheng" class="iconfont icon-facebook" title="facebook"></a>
+      <a href="https://github.com/cdfq152313/" class="iconfont icon-github" title="github"></a>
+  <a href="https://cdfq152313.github.io/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    %!(EXTRA string=<a class="hexo-link" href="https://gohugo.io">Hugo</a>)
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+     - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  
+
+  <span class="copyright-year">
+    &copy; 
+    2015 - 
+    2019
+    <span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">Denny Cheng</span>
+  </span>
+</div>
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+<script type="text/javascript" src="/dist/even.26188efa.min.js"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>
