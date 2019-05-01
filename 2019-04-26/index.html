@@ -51,7 +51,7 @@
 
 <meta itemprop="datePublished" content="2019-04-26T23:50:00&#43;08:00" />
 <meta itemprop="dateModified" content="2019-04-26T23:50:00&#43;08:00" />
-<meta itemprop="wordCount" content="1677">
+<meta itemprop="wordCount" content="1685">
 
 
 
@@ -141,6 +141,7 @@
 <li><a href="#named-constructors">Named constructors</a></li>
 <li><a href="#const-constructor">const constructor</a></li>
 <li><a href="#factory-constructor">factory constructor</a></li>
+<li><a href="#reference">Reference</a></li>
 </ul>
 </nav>
   </div>
@@ -299,11 +300,11 @@
 <span class="kd">class</span> <span class="nc">Cat</span><span class="p">{</span>
   <span class="c1">// 適用於Optional named parameters
 </span><span class="c1"></span>  <span class="kt">int</span> <span class="n">age</span><span class="p">;</span>
-  <span class="n">Cat</span><span class="p">.</span><span class="n">baby</span><span class="p">({</span><span class="k">this</span><span class="p">.</span><span class="n">age</span><span class="o">=</span><span class="m">0</span><span class="p">});</span>
-  <span class="c1">// 或是
+  <span class="c1">// 新版寫法
+</span><span class="c1"></span>  <span class="n">Cat</span><span class="p">.</span><span class="n">baby</span><span class="p">({</span><span class="k">this</span><span class="p">.</span><span class="n">age</span><span class="o">=</span><span class="m">0</span><span class="p">});</span>
+  <span class="c1">// 舊版寫法，可能會被廢棄，不再建議使用。
 </span><span class="c1"></span>  <span class="n">Cat</span><span class="p">.</span><span class="n">baby2</span><span class="p">({</span><span class="k">this</span><span class="p">.</span><span class="nl">age:</span><span class="m">0</span><span class="p">});</span>
-  <span class="c1">// 備註: 完全搞不懂為什麼要有兩種寫法 ?_?
-</span><span class="c1"></span><span class="p">}</span></code></pre></td></tr></table>
+<span class="p">}</span></code></pre></td></tr></table>
 </div>
 </div>
 <p>值得注意的是，如果field為final，則第一種(在大括號內初始化)的方法就不再適用，編譯器會報出錯誤訊息。<br />
@@ -423,6 +424,12 @@ a跟b明明都是由constructor所產生，但卻產生了一樣的instance，�
 <p>這個範例可以很清楚的看到，factory constructor的instance製造是仰賴其他constructor，而且最後還必須return instance。<br />
 所以factory constructor根本不是constructor，而是一個factory，只是用個語法糖讓他看起來像constructor罷了。</p>
 
+<h1 id="reference">Reference</h1>
+
+<ul>
+<li><a href="https://www.dartlang.org/guides/language/language-tour">官網教學</a></li>
+</ul>
+
     </div>
 
     
@@ -431,7 +438,11 @@ a跟b明明都是由constructor所產生，但卻產生了一樣的instance，�
           <a href="/tags/dart/">dart</a>
           </div>
       <nav class="post-nav">
-        
+        <a class="prev" href="/2019-04-29/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">Dart - Mixin</span>
+            <span class="prev-text nav-mobile"></span>
+          </a>
         <a class="next" href="/2018-03-29/">
             <span class="next-text nav-default">[讀書心得] 圖解Java多線程設計模式</span>
             <span class="next-text nav-mobile"></span>

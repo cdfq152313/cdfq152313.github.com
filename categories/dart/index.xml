@@ -7,10 +7,19 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-hant</language>
     <copyright>Denny Cheng</copyright>
-    <lastBuildDate>Fri, 26 Apr 2019 23:50:00 +0800</lastBuildDate>
+    <lastBuildDate>Mon, 29 Apr 2019 23:50:00 +0800</lastBuildDate>
     
 	<atom:link href="https://cdfq152313.github.io/categories/dart/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Dart - Mixin</title>
+      <link>https://cdfq152313.github.io/2019-04-29/</link>
+      <pubDate>Mon, 29 Apr 2019 23:50:00 +0800</pubDate>
+      
+      <guid>https://cdfq152313.github.io/2019-04-29/</guid>
+      <description>前言 mixin可以簡單的理解為&amp;rdquo;已經實作的interface&amp;rdquo;。以下範例: 1 2 3 4 5 6 7 8 9 10 11 mixin CryAbility{ void cry() =&amp;gt; print(&amp;#34;cry very loud&amp;#34;); } class</description>
+    </item>
     
     <item>
       <title>Dart Class Constructor</title>
