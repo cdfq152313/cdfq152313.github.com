@@ -7,10 +7,19 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-hant</language>
     <copyright>Denny Cheng</copyright>
-    <lastBuildDate>Mon, 29 Apr 2019 23:50:00 +0800</lastBuildDate>
+    <lastBuildDate>Mon, 20 May 2019 23:50:00 +0800</lastBuildDate>
     
 	<atom:link href="https://cdfq152313.github.io/post/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>[讀書心得] Java 8 Lambdas 技術手冊 (Java 8 Lambdas: Pragmatic Functional Programming) </title>
+      <link>https://cdfq152313.github.io/2019-05-20/</link>
+      <pubDate>Mon, 20 May 2019 23:50:00 +0800</pubDate>
+      
+      <guid>https://cdfq152313.github.io/2019-05-20/</guid>
+      <description>[讀書心得] Java 8 Lambdas 技術手冊 (Java 8 Lambdas: Pragmatic Functional Programming) https://www.tenlong.com.tw/products/9789863474067?list_name=srh 這本書薄薄一本，精華大概在3~6章，大致上有: 如何使用map/reduce/filter/flatm</description>
+    </item>
     
     <item>
       <title>Dart - Mixin</title>
